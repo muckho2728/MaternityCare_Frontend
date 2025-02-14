@@ -1,0 +1,81 @@
+/* Home.css */
+
+.home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 100vh;
+}
+
+.main-content {
+    width: 100%;
+    padding: 0; /* Loại bỏ padding trên */
+    background-color: #f9f9f9;
+}
+
+.carousel {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin: 0; /* Đảm bảo không có margin */
+}
+
+.carousel-image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.carousel-prev, .carousel-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.carousel-prev {
+    left: 10px;
+}
+
+.carousel-next {
+    right: 10px;
+}
+
+.introduction {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.introduction h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.introduction p {
+    width: 90%;
+    margin: auto;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+}
+
+.slide-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    height: auto;
+    display: block;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    margin-top: -60px;
+    padding: 0 20px;
+
+}
