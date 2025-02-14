@@ -19,6 +19,7 @@
 .form-group {
     width: 100%; 
     margin-bottom: 15px; 
+    
 }
 
 .form-group p {
@@ -29,7 +30,8 @@
 
 .register-page input[type="text"],
 .register-page input[type="password"],
-.register-page input[type="date"] {
+.register-page input[type="date"],
+.register-page input[type="email"] {
     width: calc(100% - 20px); 
     padding: 10px; 
     margin: 1px 0; 
@@ -39,8 +41,20 @@
     transition: border-color 0.3s;
 }
 
+.register-page input[type="email"] {
+    background-color: #e0e0e0; /* Màu nền giống các ô khác */
+    border: 1px solid #ccc; /* Viền giống các ô khác */
+    border-radius: 5px;
+    padding: 10px;
+    transition: border-color 0.3s;
+}
+
 .register-page input:focus {
     border-color: #007bff; 
+}
+
+.register-page input[type="email"]:focus {
+    border-color: #007bff; /* Màu viền khi focus giống các ô khác */
 }
 
 .register-page button {
@@ -52,7 +66,6 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 .register-page button:hover {
