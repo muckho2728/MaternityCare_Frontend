@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
 import logo from '../../assets/MaternityCare.png';
@@ -7,6 +7,7 @@ import { useAuth } from '../../constants/AuthContext';
 const Header = () => {
     const { user, logout } = useAuth();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -18,6 +19,19 @@ const Header = () => {
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
 
     return (
         <header className="header">
@@ -55,7 +69,7 @@ const Header = () => {
                         </svg>
                     </button>
                     {user ? (
-                        <div className="profile-dropdown">
+                        <div className="profile-dropdown" ref={dropdownRef}>
                             <button 
                                 className="profile-button" 
                                 onClick={toggleDropdown}
@@ -67,12 +81,13 @@ const Header = () => {
                             </button>
                             {isDropdownOpen && (
                                 <div className="dropdown-menu">
-                                    <Link to="/profile" className="dropdown-item">Profile</Link>
+                                    <Link to="/profile" className="dropdown-item">Thông tin người dùng</Link>
+                                    <Link to="/user-profile" className="dropdown-item">Thông tin sức khỏe thai nhi</Link>
                                     <button 
                                         className="dropdown-item logout-button" 
                                         onClick={handleLogout}
                                     >
-                                        Logout
+                                        Đăng xuất
                                     </button>
                                 </div>
                             )}

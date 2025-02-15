@@ -27,19 +27,18 @@
 }
 
 .form-group {
-    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .form-group label {
-    display: block;
     margin-bottom: 0.5rem;
     color: #333;
     font-weight: 500;
 }
 
-.form-group input,
-.form-group select {
-    width: calc(100% - 20px);
+.form-group input {
+    width: 100%;
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -47,19 +46,10 @@
     background-color: #f9f9f9;
 }
 
-.form-group input:focus,
-.form-group select:focus {
+.form-group input:focus {
     outline: none;
     border-color: #4CAF50;
     box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
-}
-
-/* Style for number input arrows */
-.form-group input[type="number"]::-webkit-inner-spin-button,
-.form-group input[type="number"]::-webkit-outer-spin-button {
-    opacity: 1;
-    height: 30px;
-    cursor: pointer;
 }
 
 .submit-button {
@@ -79,18 +69,9 @@
     background-color: #45a049;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
-    .create-fetus-health-container {
-        padding: 1rem;
-    }
-
     .form-row {
         grid-template-columns: 1fr;
         gap: 1rem;
-    }
-
-    .health-form {
-        padding: 1.5rem;
     }
 }

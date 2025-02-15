@@ -21,6 +21,41 @@ const CreateFetusHealth = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        if (name === 'week') {
+            if (value >= 1 && value <= 4) {
+                setHealthData(prevState => ({
+                    ...prevState,
+                    crownRumpLength: 'Không có dữ liệu'
+                }));
+            } else {
+                setHealthData(prevState => ({
+                    ...prevState,
+                    crownRumpLength: ''
+                }));
+            }
+            if (value >= 1 && value <= 11) {
+                setHealthData(prevState => ({
+                    ...prevState,
+                    headCircumference: 'Không có dữ liệu'
+                }));
+            } else {
+                setHealthData(prevState => ({
+                    ...prevState,
+                    headCircumference: ''
+                }));
+            }
+            if (value >= 1 && value <= 11) {
+                setHealthData(prevState => ({
+                    ...prevState,
+                    biparietalDiameter: 'Không có dữ liệu'
+                }));
+            } else {
+                setHealthData(prevState => ({
+                    ...prevState,
+                    biparietalDiameter: ''
+                }));
+            }
+        }
         setHealthData(prevState => ({
             ...prevState,
             [name]: value
@@ -42,19 +77,20 @@ const CreateFetusHealth = () => {
                             onChange={handleChange}
                             required
                             min="1"
-                            max="42"
+                            max="41"
                         />
                     </div>
 
                     <div className="form-group">
-                        <label>Chu vi đầu (Head Circumference) (cm)</label>
+                        <label>Chu vi đầu (Head Circumference) (mm)</label>
                         <input
                             type="number"
                             name="headCircumference"
                             value={healthData.headCircumference}
                             onChange={handleChange}
                             required
-                            step="0.1"
+                            step="1"
+                            disabled={healthData.week >= 1 && healthData.week <= 11}
                         />
                     </div>
                 </div>
@@ -76,14 +112,15 @@ const CreateFetusHealth = () => {
                     </div>
 
                     <div className="form-group">
-                        <label> Chiều dài đầu mông (Crown Rump Length) (mm)</label>
+                        <label> Chiều dài đầu mông (Crown Rump Length) (cm)</label>
                         <input
                             type="number"
                             name="crownRumpLength"
                             value={healthData.crownRumpLength}
                             onChange={handleChange}
                             required
-                            step="0.1"
+                            step="0.5"
+                            disabled={healthData.week >= 1 && healthData.week <= 4}
                         />
                     </div>
                 </div>
@@ -97,7 +134,8 @@ const CreateFetusHealth = () => {
                             value={healthData.biparietalDiameter}
                             onChange={handleChange}
                             required
-                            step="0.1"
+                            step="1"
+                            disabled={healthData.week >= 1 && healthData.week <= 11}
                         />
                     </div>
 
