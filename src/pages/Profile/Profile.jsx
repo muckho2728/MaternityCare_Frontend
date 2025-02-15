@@ -93,7 +93,7 @@ const Profile = () => {
 
   return (
     <Layout style={{ minHeight: '100vh', width: '100vw' }}>
-      <Content style={{ padding: '12px', marginTop: '24px', maxWidth: '1400px', margin: '0 auto' }}>
+      <Content style={{ padding: '12px', marginTop: '24px', maxWidth: '1400px', margin: '0 auto', marginLeft: '50px' }}>
         <Row gutter={24}>
           {/* Menu bên trái */}
           <Col span={6}>
