@@ -1,4 +1,3 @@
-
 import { activeUserAPI, getAllUserAPI, getUserByIdAPI,updateUserAPI ,changePasswordByUserIdAPI} from '../../../apis/userAPI';
 import { setListUser, setUser,setCurrentUser } from '../reducers/userReducer';
 
@@ -19,7 +18,7 @@ export const fetchUserByIdAction = (id) => {
       const res = await getUserByIdAPI(id);
       dispatch(setUser(res.data));
     } catch (error) {
-      console.error(`Failed to fetch user with id ${id}:`, error.response ? error.response.data : error.message);
+      console.error(`Failed to fetch user by ID ${id}:`, error.response ? error.response.data : error.message, error);
     }
   };
 };

@@ -1,0 +1,83 @@
+.login-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    max-width: 400px;
+    margin: auto;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.login-page h1 {
+    margin-bottom: 20px;
+    font-size: 2em;
+    color: #333;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #007bff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #e0e0e0;
+}
+
+.input-field:focus {
+    border-color: #646cff;
+    outline: none;
+}
+
+.login-button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background-color: #ccc;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background-color: #bbb;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.remember-me input {
+    margin-right: 5px;
+}
+
+.links {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.register {
+    margin-top: 10px;
+}
+
+.register-link {
+    color: #2d92ba;
+    text-decoration: none;
+}
