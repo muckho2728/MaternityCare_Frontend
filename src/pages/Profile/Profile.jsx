@@ -3,25 +3,60 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Layout, Menu, Input, Button, Form, Typography, Card, Row, Col, Space, message, Upload } from 'antd';
 import { UserOutlined, HeartOutlined, TeamOutlined } from '@ant-design/icons';
 import { updateUserByIdAction, changePassworbyUserIdAction, fetchUserByIdAction } from '../../../../MaternityCare_Frontend/src/store/redux/action/userAction';
+import api from '../../constants/axios';
 
 const { Content } = Layout;
 const { Title } = Typography;
 
 const Profile = () => {
-  const userId = '3e852369-e934-4184-97db-08dd4921d556';
   const dispatch = useDispatch();
   const [profileForm] = Form.useForm();
   const [passwordForm] = Form.useForm();
   const userLogin = useSelector((state) => state.userReducer.currentUser);
   const userDetailData = useSelector((state) => state.userReducer.user);
   const [previewAvatar, setPreviewAvatar] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
+  const [currentUser, setCurrentUser] = useState(null); // Sử dụng currentUser thay vì user
+console.log(userDetailData)
+  // Lấy thông tin người dùng hiện tại
   useEffect(() => {
-    if (userLogin) {
-      dispatch(fetchUserByIdAction(userId));
-    }
-  }, [dispatch, userLogin]);
+    const fetchCurrentUser = async (url) => {
+      const token = localStorage.getItem('token'); // Lấy token từ localStorage
+      if (!token) {
+        console.error('No token found');
+        return;
+      }
 
+      try {
+        const response = await api.get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`, // Thêm token vào header
+          },
+        });
+        console.log('Current user data:', response.data);
+        setCurrentUser(response.data); // Cập nhật currentUser thay vì user
+      } catch (error) {
+        console.error('Failed to fetch current user:', error.response ? error.response.data : error.message);
+        throw error;
+      }
+    };
+
+    fetchCurrentUser('https://maternitycare.azurewebsites.net/api/authentications/current-user');
+  }, []); // Không phụ thuộc vào user
+
+  if (userLogin) {
+    console.log('userDetailData:', userDetailData);
+  }
+  // Gọi API để lấy thông tin chi tiết người dùng khi currentUser thay đổi
+  useEffect(() => {
+    if (currentUser && currentUser.id) {
+      dispatch(fetchUserByIdAction(currentUser.id));
+    }
+
+  }, [currentUser, dispatch]);
+
+  // Cập nhật form khi userDetailData thay đổi
   useEffect(() => {
     if (userDetailData) {
       profileForm.setFieldsValue({
@@ -33,10 +68,12 @@ const Profile = () => {
         avatar: userDetailData?.avatar,
         experience: userDetailData?.experience,
         status: userDetailData?.status,
+        cccd: userDetailData?.cccd,
       });
     }
   }, [userDetailData, profileForm]);
-  const handleSubmit = async(values) => {
+
+  const handleSubmit = async (values) => {
     const formData = new FormData();
     formData.append('fullName', values.fullName);
     formData.append('dateOfBirth', values.dateOfBirth);
@@ -44,17 +81,16 @@ const Profile = () => {
     if (previewAvatar) {
       const response = await fetch(previewAvatar);
       const blob = await response.blob();
-      
+
       // Lấy tên gốc từ URL nếu có
       const fileName = previewAvatar.split('/').pop() || 'avatar.png';
-      
+
       formData.append('avatar', blob, fileName);
     }
 
     dispatch(updateUserByIdAction(userDetailData.id, formData))
       .then(() => {
         message.success('Cập nhật thông tin thành công!');
-
         dispatch(fetchUserByIdAction(userDetailData.id));
       })
       .catch((error) => {
@@ -73,7 +109,6 @@ const Profile = () => {
       currentPassword: currentPassword,
       newPassword: newPassword,
       confirmPassword: confirmPassword,
-
     };
 
     dispatch(changePassworbyUserIdAction(userDetailData.id, userDetails))
@@ -84,12 +119,7 @@ const Profile = () => {
       .catch((error) => {
         message.error('Đổi mật khẩu thất bại: ' + (error.message || 'Lỗi không xác định'));
       });
-  }
-
-  // if (!userLogin) {
-  //   return null; 
-  // }
-
+  };
 
   return (
     <Layout style={{ minHeight: '100vh', width: '100vw' }}>
@@ -98,17 +128,23 @@ const Profile = () => {
           {/* Menu bên trái */}
           <Col span={6}>
             <Card style={{ borderRadius: '8px', backgroundColor: '#f9f9f9', padding: '10px' }}>
-              <Menu mode="vertical" defaultSelectedKeys={['1']} style={{ border: 'none' }}>
-                <Menu.Item key="1" icon={<UserOutlined />}>
-                  Thông tin người dùng
-                </Menu.Item>
-                <Menu.Item key="2" icon={<HeartOutlined />}>
-                  Thông tin sức khỏe thai nhi
-                </Menu.Item>
-                <Menu.Item key="3" icon={<TeamOutlined />}>
-                  Quản lý đội
-                </Menu.Item>
-              </Menu>
+              <Menu mode="vertical" defaultSelectedKeys={['1']} style={{ border: 'none' }} items={[
+                {
+                  key: '1',
+                  icon: <UserOutlined />,
+                  label: 'Thông tin người dùng',
+                },
+                {
+                  key: '2',
+                  icon: <HeartOutlined />,
+                  label: 'Thông tin sức khỏe thai nhi',
+                },
+                {
+                  key: '3',
+                  icon: <TeamOutlined />,
+                  label: 'Quản lý đội',
+                },
+              ]} />
             </Card>
           </Col>
 
@@ -149,66 +185,62 @@ const Profile = () => {
                 <Col span={16}>
                   <Title level={3}>Thông tin cá nhân</Title>
                   <Form
-                    form={profileForm}
-                    layout="vertical"
-                    style={{
-                      backgroundColor: '#f9f9f9',
-                      padding: '20px',
-                      borderRadius: '8px',
-                    }}
+                     form={profileForm}
+                     layout="vertical"
+                     style={{
+                       backgroundColor: '#f9f9f9',
+                       padding: '20px',
+                       borderRadius: '8px',
+                     }}
+                     onFinish={handleSubmit}
                   >
                     <Row gutter={16}>
-                  <Col span={12}>
-                    <Form.Item label="Họ và Tên" name="fullName">
-                      <Input />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item label="Email" name="email">
-                      <Input disabled />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item label="Tên đăng nhập" name="username">
-                      <Input disabled />
-                    </Form.Item>
-                  </Col>
-                  
-                  <Col span={12}>
-                    <Form.Item label="Căn cước công dân" name="cccd">
-                      <Input disabled />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item label="Ngày Sinh" name="dateOfBirth">
-                      <Input type="date" />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item label="Kinh Nghiệm" name="experience">
-                      <Input type="number" disabled/>
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item label="Vai Trò" name="roleId">
-                      <Input disabled />
-                    </Form.Item>
-                  </Col>
-                  <Col span={12}>
-                    <Form.Item label="Trạng Thái" name="status">
-                      <Input disabled  />
-                    </Form.Item>
-                  </Col>
-                </Row>
-                <Form.Item>
+                      <Col span={12}>
+                        <Form.Item label="Họ và Tên" name="fullName">
+                          <Input disabled={!isEditing} />
+                        </Form.Item>
+                      </Col>
+                      <Col span={12}>
+                        <Form.Item label="Email" name="email">
+                          <Input disabled />
+                        </Form.Item>
+                      </Col>
+                      <Col span={12}>
+                        <Form.Item label="Tên đăng nhập" name="username">
+                          <Input disabled />
+                        </Form.Item>
+                      </Col>
+
+                      <Col span={12}>
+                        <Form.Item label="Căn cước công dân" name="cccd">
+                          <Input disabled />
+                        </Form.Item>
+                      </Col>
+                      <Col span={12}>
+                        <Form.Item label="Ngày Sinh" name="dateOfBirth">
+                          <Input type="date" disabled={!isEditing} />
+                        </Form.Item>
+                      </Col>
+                      <Col span={12}>
+                        <Form.Item label="Vai Trò" name="roleId">
+                          <Input disabled />
+                        </Form.Item>
+                      </Col>
+                    </Row>
+                    <Form.Item>
                       <Space style={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
-                          Lưu
-                        </Button>
+                        {!isEditing ? (
+                          <Button type="primary" onClick={() => setIsEditing(true)} style={{ width: '100%' }}>
+                            Chỉnh sửa
+                          </Button>
+                        ) : (
+                          <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
+                            Lưu
+                          </Button>
+                        )}
                       </Space>
                     </Form.Item>
                   </Form>
-
                   <Title level={3}>Đổi mật khẩu</Title>
                   <Form form={passwordForm} layout="vertical" style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '8px' }}>
                     <Row gutter={16}>

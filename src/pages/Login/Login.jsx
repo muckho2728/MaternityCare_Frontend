@@ -52,21 +52,21 @@ const Login = () => {
     e.preventDefault();
     const newErrors = validateForm();
     if (Object.keys(newErrors).length === 0) {
-      try {
-        const response = await api.post("https://maternitycare.azurewebsites.net/api/authentications/login", formData);
-        
-        // Lưu thông tin người dùng vào AuthContext
-        login({ 
-          token: response.data.token, 
-          username: formData.username 
-        });
-        
-        // Chuyển hướng về trang chủ sau khi đăng nhập
-        navigate('/');
-        
-        toast.success("Đăng nhập thành công!");
-      } catch (error) {
-        toast.error(error.response?.data?.detail || "Đăng nhập thất bại");
+    try {
+      const response = await api.post("https://maternitycare.azurewebsites.net/api/authentications/login", formData);
+      console.log(response.data.accessToken);
+      // Lưu thông tin người dùng vào AuthContext
+      login({ 
+        token: response.data.accessToken, 
+        username: formData.username 
+      });
+      
+      // Chuyển hướng về trang chủ sau khi đăng nhập
+      navigate('/');
+      
+      toast.success("Đăng nhập thành công!");
+    } catch (error) {
+      toast.error(error.response?.data?.detail || "Đăng nhập thất bại");
       }
     } else {
       setErrors(newErrors);
