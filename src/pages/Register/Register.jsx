@@ -47,8 +47,8 @@ const Register = () => {
         try {
             const response = await api.post("https://maternitycare.azurewebsites.net/api/authentications/register", formData);
             toast.success("Đăng kí thành công");
-            localStorage.setItem("user", JSON.stringify(response.data)); // ✅ Lưu user vào localStorage
-            navigate("/profile");
+            console.log(formData);
+            navigate("/login");
         } catch (err) {
             console.log(err.response.data.detail);
             toast.error(err.response.data.detail || "Đăng kí thất bại");
