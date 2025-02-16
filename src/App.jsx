@@ -1,17 +1,8 @@
 import React from 'react';
-<<<<<<< HEAD
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-=======
->>>>>>> 3fdc1630381ab5478dd11853af547530739edbb2
 import { Provider } from 'react-redux';
 import { store } from './store/config';
 import ManageUsersPage from './pages/Admin/ManageUsersPage';
 import Profile from './pages/Profile/Profile';
-<<<<<<< HEAD
-import LoginPage from './pages/Login/Login';
-import RegisPage from './pages/Register/Register';
-import ForgetPage from './pages/ForgotPassword/ForgetP';
-=======
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import CreateFetus from './pages/CreateFetus/CreateFetus'
 import CreateFetusHealth from './pages/CreateFetusHealth/CreateFetusHealth'
@@ -23,7 +14,6 @@ import Register from './pages/Register/Register'
 import { AuthProvider } from './constants/AuthContext'
 ;
 
->>>>>>> 3fdc1630381ab5478dd11853af547530739edbb2
 function App() {
   return (
     <AuthProvider>
