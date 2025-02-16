@@ -21,8 +21,11 @@ apiClient.interceptors.request.use((config) => {
 
 // Xử lý lỗi chung cho tất cả API calls
 const handleRequest = async (apiCall) => {
+    
     try {
+        console.log("apiCall",apiCall);
         const response = await apiCall;
+        console.log("response",response);
         return response.data;
     } catch (error) {
         console.error("API Error:", error.response?.data || error.message);
@@ -33,8 +36,12 @@ const handleRequest = async (apiCall) => {
 // 🟢 Lấy danh sách tất cả user
 export const getAllUserAPI = () => handleRequest(apiClient.get("/users"));
 
+
+export const getCurrentUserAPI = () => handleRequest(apiClient.get("/users/current"));
+
 // 🔍 Lấy thông tin user theo ID
 export const getUserByIdAPI = (id) => handleRequest(apiClient.get(`/users/${id}`));
+
 
 // 📝 Cập nhật thông tin user
 export const updateUserAPI = (id, data) => handleRequest(apiClient.put(`/users/${id}`, data));

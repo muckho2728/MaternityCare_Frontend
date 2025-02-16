@@ -12,7 +12,8 @@ import Home from './pages/Home/Home'
 import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
 import { AuthProvider } from './constants/AuthContext'
-;
+import ViewFetusHealth from './pages/ViewFetusHealth/ViewFetusHealth'
+import Blog from './pages/Community/Blog'
 
 function App() {
   return (
@@ -30,6 +31,8 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/management-users" element={<ManageUsersPage />} />
               <Route path="/profile" element={<Profile />} /> 
+              <Route path="/view-fetus-health" element={<ViewFetusHealth />} /> 
+              <Route path="/community" element={<Blog />} />
             </Routes>
           </main>
           <Footer />
