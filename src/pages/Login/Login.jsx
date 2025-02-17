@@ -12,7 +12,6 @@ const Login = () => {
   //code remember me
   const [loading, setLoading] = useState(false);
   const [remember, setRemember] = useState(false);
-  const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
   const [ActiveTab, setActiveTab] = useState('login');
 
@@ -32,10 +31,6 @@ const Login = () => {
     }));
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  }
-
   const validateForm = () => {
     const newErrors = {};
     if (!formData.username.trim() || formData.username.length < 1) {
@@ -52,33 +47,36 @@ const Login = () => {
     e.preventDefault();
     const newErrors = validateForm();
     if (Object.keys(newErrors).length === 0) {
-      try {
-        const response = await api.post("https://maternitycare.azurewebsites.net/api/authentications/login", formData);
-        console.log(formData);
-        toast.success("Đăng nhập thành công!");
-        // Lưu thông tin người dùng vào AuthContext
-        login({ 
-          token: response.data.token, 
-          username: formData.username 
-        });
+      if(ActiveTab == "login") {
         
-        // Chuyển hướng về trang chủ sau khi đăng nhập
-        navigate('/');
-        
-      } catch (error) {
-        console.log(error.response);
-        toast.error(error.response?.data?.detail || "Đăng nhập thất bại");
-      }
-    } else {
-      setErrors(newErrors);
+    try {
+      const response = await api.post("https://maternitycare.azurewebsites.net/api/authentications/login", formData);
+      console.log(response);
+      // Lưu thông tin người dùng vào AuthContext
+      login({ 
+        token: response.data.accessToken, 
+        username: formData.username 
+      });
+      
+      // Chuyển hướng về trang chủ sau khi đăng nhập
+      navigate('/');
+      
+      toast.success("Đăng nhập thành công!");
+    } catch (error) {
+      console.log(error.response);
+      toast.error(error || "Đăng nhập thất bại");
+    } finally {
+      setErrors({});
     }
+  }
+  }
   };
 
   //form login
   return (
     <div className="login-page">
       <h1>Đăng Nhập</h1>
-      <form onSubmit={handleSubmit}>
+      <form>
         <input
           type="text"
           name="username"
@@ -101,12 +99,11 @@ const Login = () => {
           </label>
           <Link to="/forget" className="forgot-password">Quên mật khẩu?</Link>
         </div>
-        <button type="submit" className={`login-button ${ActiveTab == "login" ? "active class" : ""}`} >Đăng nhập</button>
+        <button type="submit" className={`login-button ${ActiveTab == "login" ? "active class" : ""}`} disabled={loading} onClick={handleSubmit}>{loading ? 'Đang đăng nhập...' : 'Đăng nhập'}</button>
         <div className="register">
           Chưa có tài khoản? <Link to="/register" className="register-link">Đăng ký ngay</Link>
         </div>
       </form>
-
     </div>
   );
 };
