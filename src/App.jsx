@@ -14,6 +14,7 @@ import Register from './pages/Register/Register'
 import { AuthProvider } from './constants/AuthContext'
 import ViewFetusHealth from './pages/ViewFetusHealth/ViewFetusHealth'
 import Blog from './pages/Community/Blog'
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
               <Route path="/view-fetus-health" element={<ViewFetusHealth />} /> 
               <Route path="/community" element={<Blog />} />
             </Routes>
+            <ToastContainer/>
           </main>
           <Footer />
         </div>

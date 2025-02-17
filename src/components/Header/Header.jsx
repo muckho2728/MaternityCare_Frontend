@@ -45,16 +45,16 @@ const Header = () => {
 
                 <nav className="main-nav">
                     <ul className="nav-list">
-                        <li><Link to="/community">Community</Link></li>
-                        <li><Link to="/create-fetus">Pregnancy Tracker</Link></li>
-                        <li><Link to="/view-package">View Package</Link></li>
-                        <li><Link to="/booking">Booking</Link></li>
+                        <li><Link to="/community">Diễn Đàn</Link></li>
+                        <li><Link to="/create-fetus">Theo Dõi Thai Kỳ</Link></li>
+                        <li><Link to="/view-package">Dịch Vụ</Link></li>
+                        <li><Link to="/booking">Đặt Lịch</Link></li>
                     </ul>
                 </nav>
 
                 <div className="header-actions">
                     <div className="search-box">
-                        <input type="text" placeholder="Search..." />
+                        <input type="text" placeholder="Tìm kiếm..." />
                         <button className="search-button">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <circle cx="11" cy="11" r="8"></circle>
@@ -81,8 +81,8 @@ const Header = () => {
                             </button>
                             {isDropdownOpen && (
                                 <div className="dropdown-menu">
-                                    <Link to="/profile" className="dropdown-item">Thông tin người dùng</Link>
-                                    <Link to="/user-profile" className="dropdown-item">Thông tin sức khỏe thai nhi</Link>
+                                    <Link to="/profile" className="dropdown-item">Hồ sơ người dùng</Link>
+                                    <Link to="/user-profile" className="dropdown-item">Hồ sơ sức khỏe</Link>
                                     <button 
                                         className="dropdown-item logout-button" 
                                         onClick={handleLogout}
