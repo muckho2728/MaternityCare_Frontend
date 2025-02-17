@@ -21,13 +21,13 @@ const Register = () => {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const newErrors = ValidateForm();
     if (Object.keys(newErrors).length === 0) {
       try {
-          // console.log(formData);
         const response = await api.post("https://maternitycare.azurewebsites.net/api/authentications/register", formData);
         console.log(response);
-            toast.success("Đăng kí thành công");
+        toast.success("Đăng kí thành công");
         console.log(formData);
         navigate("/login");
       } catch (err) {
@@ -38,9 +38,9 @@ const Register = () => {
       }
     } else {
       setErrors(newErrors);
+      setLoading(false);
     }
   };
-
 
   const ValidateForm = () => {
     const newErrors = {};
@@ -114,7 +114,7 @@ const Register = () => {
         <input type="password" name="confirmPassword" value={formData.confirmPassword} placeholder="vd:12345678" className={`form-control ${errors.confirmPassword ? "is-invalid" : ""}`} onChange={handleInputChange} />
         {errors.confirmPassword && <span className="invalid-feedback">{errors.confirmPassword}</span>}
       </div>
-      <button type="submit" className="btn btn-primary" onClick={handleRegister}>Đăng ký</button>
+      <button type="submit" className="btn btn-primary" onClick={handleRegister}>{loading ? 'Đang đăng ký...' : 'Đăng ký'}</button>
       <p>Đã có tài khoản? <button><Link to="/login" className="btn btn-link">Đăng nhập ngay</Link></button></p>
     </div>
   );
