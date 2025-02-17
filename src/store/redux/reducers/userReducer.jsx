@@ -1,33 +1,37 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-    user:{},
+    user: {},
     listUser: [],
-    currentUser:{}
-}
+    currentUser: {}
+};
 
 const userReducer = createSlice({
   name: 'userReducer',
   initialState,
   reducers: {
     setUser: (state, action) => {
-        state.user = action.payload
+        console.log("action", action.payload); // Debug action payload
+        state.user = action.payload;
     },
     setListUser: (state, action) => {
-        state.listUser = action.payload
+        state.listUser = action.payload;
     },
     setCurrentUser: (state, action) => {
-        state.currentUser = action.payload
+        console.log("Setting current user:", action.payload); // Debug action payload
+        state.currentUser = action.payload;
     },
     updateUserLoginAction: (state, action) => {
         state.currentUser = {
-            ...state.userLogin,
+            ...state.currentUser, // Sửa từ state.userLogin thành state.currentUser
             ...action.payload
         };
-    },
+    }
   }
 });
 
-export const {setListUser,setUser,setCurrentUser,updateUserLoginAction} = userReducer.actions
+// Export actions
+export const { setListUser, setUser, setCurrentUser, updateUserLoginAction } = userReducer.actions;
 
-export default userReducer.reducer
+// Export reducer
+export default userReducer.reducer;

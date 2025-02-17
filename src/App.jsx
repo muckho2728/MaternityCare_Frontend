@@ -13,7 +13,8 @@ import Register from './pages/Register/Register'
 import LoginPage from './pages/Login/Login';
 import ForgetPage from './pages/ForgotPassword/ForgetP';
 import { AuthProvider } from './constants/AuthContext'
-;
+import ViewFetusHealth from './pages/ViewFetusHealth/ViewFetusHealth'
+import Blog from './pages/Community/Blog'
 import { ToastContainer } from 'react-toastify';
 
 function App() {
@@ -31,10 +32,8 @@ function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/management-users" element={<ManageUsersPage />} />
               <Route path="/profile" element={<Profile />} /> 
-              <Route path="/" element={<Navigate to="/login" replace />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/forget" element={<ForgetPage />} />
+              <Route path="/view-fetus-health" element={<ViewFetusHealth />} /> 
+              <Route path="/community" element={<Blog />} />
             </Routes>
             <ToastContainer/>
           </main>

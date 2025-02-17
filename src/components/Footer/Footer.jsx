@@ -9,7 +9,7 @@ const Footer = () => {
                 <div className="footer-section">
                     <h3>Maternity Care</h3>
                     <ul>
-                        <li><Link to="/create-fetus">Pregnancy Tracker</Link></li>
+                        <li><Link to="/create-fetus">Theo Dõi Thai Kỳ</Link></li>
                         <li><Link to="/health-records">Health Records</Link></li>
                         <li><Link to="/nutrition">Nutrition Guide</Link></li>
                     </ul>
@@ -18,7 +18,7 @@ const Footer = () => {
                 <div className="footer-section">
                     <h3>Resources</h3>
                     <ul>
-                        <li><Link to="/articles">Community</Link></li>
+                        <li><Link to="/community">Diễn Đàn</Link></li>
                         <li><Link to="/faq">FAQ</Link></li>
                         <li><Link to="/support">Support</Link></li>
                     </ul>
