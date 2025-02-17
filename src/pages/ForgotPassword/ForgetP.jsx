@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { FiEye, FiEyeOff, FiMail, FiLock } from "react-icons/fi";
 import { BiLoaderAlt } from "react-icons/bi";
-import "./src/index.css";
-import api from './config/axios';
+import api from '../../constants/axios';
 import { toast } from 'react-toastify';
 import { Link } from 'react-router-dom';
 

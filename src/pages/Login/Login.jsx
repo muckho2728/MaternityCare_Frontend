@@ -54,7 +54,8 @@ const Login = () => {
     if (Object.keys(newErrors).length === 0) {
       try {
         const response = await api.post("https://maternitycare.azurewebsites.net/api/authentications/login", formData);
-        
+        console.log(formData);
+        toast.success("Đăng nhập thành công!");
         // Lưu thông tin người dùng vào AuthContext
         login({ 
           token: response.data.token, 
@@ -64,8 +65,8 @@ const Login = () => {
         // Chuyển hướng về trang chủ sau khi đăng nhập
         navigate('/');
         
-        toast.success("Đăng nhập thành công!");
       } catch (error) {
+        console.log(error.response);
         toast.error(error.response?.data?.detail || "Đăng nhập thất bại");
       }
     } else {
