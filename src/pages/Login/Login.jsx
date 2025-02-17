@@ -52,6 +52,14 @@ const Login = () => {
     e.preventDefault();
     const newErrors = validateForm();
     if (Object.keys(newErrors).length === 0) {
+      handleLogin();
+    } else {
+      setErrors(newErrors);
+    }
+  };
+
+  const handleLogin = async () => {
+    setLoading(true);
     try {
       const response = await api.post("https://maternitycare.azurewebsites.net/api/authentications/login", formData);
       console.log(response.data.accessToken);
@@ -67,9 +75,8 @@ const Login = () => {
       toast.success("Đăng nhập thành công!");
     } catch (error) {
       toast.error(error.response?.data?.detail || "Đăng nhập thất bại");
-      }
-    } else {
-      setErrors(newErrors);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -100,7 +107,7 @@ const Login = () => {
           </label>
           <Link to="/forget" className="forgot-password">Quên mật khẩu?</Link>
         </div>
-        <button type="submit" className={`login-button ${ActiveTab == "login" ? "active class" : ""}`} >Đăng nhập</button>
+        <button type="submit" className={`login-button ${ActiveTab == "login" ? "active class" : ""}`} disabled={loading} >{loading ? 'Đang đăng nhập...' : 'Đăng nhập'}</button>
         <div className="register">
           Chưa có tài khoản? <Link to="/register" className="register-link">Đăng ký ngay</Link>
         </div>
