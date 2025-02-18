@@ -34,6 +34,7 @@ function App() {
               <Route path="/profile" element={<Profile />} /> 
               <Route path="/view-fetus-health" element={<ViewFetusHealth />} /> 
               <Route path="/community" element={<Blog />} />
+              <Route path="/login" element={<LoginPage />} />
             </Routes>
             <ToastContainer/>
           </main>
