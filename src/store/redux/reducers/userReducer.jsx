@@ -13,6 +13,8 @@ const userReducer = createSlice({
     setUser: (state, action) => {
         console.log("action", action.payload); // Debug action payload
         state.user = action.payload;
+        const userId = action.payload.id;
+        localStorage.setItem('userId', userId); // Giả sử bạn lưu userId trong localStorage
     },
     setListUser: (state, action) => {
         state.listUser = action.payload;

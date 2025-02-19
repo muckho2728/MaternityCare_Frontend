@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Carousel } from 'antd';
 import './Home.css';
 import slide1 from '../../assets/Slide1.png';
 import slide2 from '../../assets/Slide2.jpg';
 import slide3 from '../../assets/Slide3.jpg';
 import slide4 from '../../assets/Slide4.jpg';
+import { fetchCurrentUserAction, fetchUserByIdAction } from '../../store/redux/action/userAction';
 
 const Home = () => {
+
+    
+
+
     return (
         <div className="home">
             <main className="main-content">
