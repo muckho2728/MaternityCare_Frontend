@@ -4,47 +4,47 @@ import './Login.css';
 import api from '../../constants/axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../constants/AuthContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUserByIdAction } from '../../store/redux/action/userAction'; // Đảm bảo import đúng action
 
 const Login = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
-  
-  //code remember me
+  const dispatch = useDispatch();
+
   const [loading, setLoading] = useState(false);
   const [remember, setRemember] = useState(false);
   const [errors, setErrors] = useState({});
-  const [ActiveTab, setActiveTab] = useState('login');
+  const userDetailData = useSelector((state) => state.userReducer.user);  
 
-  const handleCheckboxChange = () => {
-    setRemember(!remember);
-  }
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
 
-  const handleInputChange = async (e) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
-      [name]: value
+      [name]: value,
     }));
   };
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.username.trim() || formData.username.length < 1) {
+    if (!formData.username.trim()) {
       newErrors.username = "Username cannot be empty";
     }
     if (!formData.password || formData.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters";
     }
     setErrors(newErrors);
-    return newErrors
+    return Object.keys(newErrors).length === 0; // Trả về true nếu không có lỗi
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+<<<<<<< HEAD
     const newErrors = validateForm();
     if (Object.keys(newErrors).length === 0) {
       if(ActiveTab == "login") {
@@ -52,15 +52,39 @@ const Login = () => {
     try {
       const response = await api.post("https://maternitycare.azurewebsites.net/api/authentications/login", formData);
       console.log(response);
+=======
+    if (!validateForm()) return; // Dừng nếu có lỗi
+
+    setLoading(true);
+    try {
+      const response = await api.post(
+        "https://maternitycare.azurewebsites.net/api/authentications/login",
+        formData
+      );
+      console.log(response);
+
+>>>>>>> ccf4c17918c099088f115ff79b4b8b9a4ab91061
       // Lưu thông tin người dùng vào AuthContext
-      login({ 
-        token: response.data.accessToken, 
-        username: formData.username 
+      login({
+        token: response.data.accessToken,
+        username: formData.username,
       });
-      
+
+      // Lấy thông tin người dùng hiện tại và dispatch action
+      const userResponse = await api.get(
+        "https://maternitycare.azurewebsites.net/api/authentications/current-user",
+        {
+          headers: {
+            Authorization: `Bearer ${response.data.accessToken}`,
+          },
+        }
+
+        
+      );
+      dispatch(fetchUserByIdAction(userResponse.data.id)); // Dispatch action để lưu thông tin người dùng vào Redux
+
       // Chuyển hướng về trang chủ sau khi đăng nhập
       navigate('/');
-      
       toast.success("Đăng nhập thành công!");
     } catch (error) {
       console.log(error.response);
@@ -72,7 +96,7 @@ const Login = () => {
   }
   };
 
-  //form login
+
   return (
     <div className="login-page">
       <h1>Đăng Nhập</h1>
@@ -85,6 +109,8 @@ const Login = () => {
           placeholder="Tên người dùng"
           className="input-field"
         />
+        {errors.username && <p className="error-message">{errors.username}</p>}
+
         <input
           type="password"
           name="password"
@@ -93,15 +119,39 @@ const Login = () => {
           placeholder="Mật khẩu"
           className="input-field"
         />
+        {errors.password && <p className="error-message">{errors.password}</p>}
+
         <div className="options">
           <label>
-            <input type="checkbox" checked={remember} onChange={(e) => setRemember(e.target.checked)} /> Tự động đăng nhập
+            <input
+              type="checkbox"
+              checked={remember}
+              onChange={(e) => setRemember(e.target.checked)}
+            />{" "}
+            Tự động đăng nhập
           </label>
-          <Link to="/forget" className="forgot-password">Quên mật khẩu?</Link>
+          <Link to="/forget" className="forgot-password">
+            Quên mật khẩu?
+          </Link>
         </div>
+<<<<<<< HEAD
         <button type="submit" className={`login-button ${ActiveTab == "login" ? "active class" : ""}`} disabled={loading} onClick={handleSubmit}>{loading ? 'Đang đăng nhập...' : 'Đăng nhập'}</button>
+=======
+
+        <button
+          type="submit"
+          className={`login-button ${loading ? "loading" : ""}`}
+          disabled={loading}
+        >
+          {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
+        </button>
+
+>>>>>>> ccf4c17918c099088f115ff79b4b8b9a4ab91061
         <div className="register">
-          Chưa có tài khoản? <Link to="/register" className="register-link">Đăng ký ngay</Link>
+          Chưa có tài khoản?{" "}
+          <Link to="/register" className="register-link">
+            Đăng ký ngay
+          </Link>
         </div>
       </form>
     </div>
