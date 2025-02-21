@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './Blog.css';
-import LikeandCom from "../Likeandcom/LikeandCom";
+import Like from "../Likeandcom/Like";
+import Comment from "../Likeandcom/Comment";
 
 const Blog = () => {
     const [blogs, setBlogs] = useState([]);
@@ -67,7 +68,9 @@ const Blog = () => {
                         <p>{blog.content}</p>
                         <button onClick={() => setCurrentBlog(blog)}>Cập nhật</button>
                         <button onClick={() => handleDelete(blog.id)}>Xóa</button>
-                        <LikeandCom />
+                        <Like/>
+                       <Comment/>
+
                     </div>
                 ))}
             </div>
