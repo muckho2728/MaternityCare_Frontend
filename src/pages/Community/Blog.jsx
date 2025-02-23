@@ -1,13 +1,8 @@
-<<<<<<< HEAD
-import React, { useState } from 'react';
-import './Blog.css';
-import Like from "../Likeandcom/Like";
-import Comment from "../Likeandcom/Comment";
-=======
+import Like from "../../components/Like/Like";
+import Comment from "../../components/Comment/Comment";
 import React, { useState } from "react";
 import { Edit, Trash2, Search, Plus } from "lucide-react";
 import "./Blog.css";
->>>>>>> ccf4c17918c099088f115ff79b4b8b9a4ab91061
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([
@@ -45,44 +40,6 @@ const Blog = () => {
     blog.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-<<<<<<< HEAD
-    return (
-        <div className="blog-container">
-            <h1>Xin chào bạn đã đến với trang Comunity của chúng tôi!</h1>
-            <p>Trang Blog này là nơi chia sẻ kiến thức, kinh nghiệm và ý tưởng về các chủ đề khác nhau. Bạn có thể tìm kiếm, đọc và chia sẻ các bài viết trên trang này.</p>
-            <input type="text" placeholder="Tìm kiếm..." value={searchTerm} onChange={handleSearch} />
-            {isCreating ? (
-                <div className="blog-form">
-                    <input
-                        type="text"
-                        placeholder="Tiêu đề bài viết"
-                        value={currentBlog.title}
-                        onChange={(e) => setCurrentBlog({ ...currentBlog, title: e.target.value })}
-                    />
-                    <textarea
-                        placeholder="Nội dung bài viết"
-                        value={currentBlog.content}
-                        onChange={(e) => setCurrentBlog({ ...currentBlog, content: e.target.value })}
-                    />
-                    <button onClick={handleCreate}>Đăng bài viết</button>
-                </div>
-            ) : (
-                <button onClick={handleCreatePost}>Tạo bài viết</button>
-            )}
-            <div className="blog-list">
-                {blogs.filter(blog => blog.title.includes(searchTerm)).map(blog => (
-                    <div key={blog.id} className="blog-item">
-                        <h2>{blog.title}</h2>
-                        <p>{blog.content}</p>
-                        <button onClick={() => setCurrentBlog(blog)}>Cập nhật</button>
-                        <button onClick={() => handleDelete(blog.id)}>Xóa</button>
-                        <Like/>
-                       <Comment/>
-
-                    </div>
-                ))}
-            </div>
-=======
   return (
     <div className="blog-container">
       <h1 className="blog-title">Diễn Đàn</h1>
@@ -130,7 +87,6 @@ const Blog = () => {
           <button onClick={handleCreate} className="blog-btn blog-btn-create">
             Đăng bài viết
           </button>
->>>>>>> ccf4c17918c099088f115ff79b4b8b9a4ab91061
         </div>
       )}
 
@@ -162,6 +118,7 @@ const Blog = () => {
           <div key={blog.id} className="blog-item">
             <h3 className="blog-item-title">{blog.title}</h3>
             <p className="blog-item-content">{blog.content}</p>
+            <Like/>
             <div className="blog-item-actions">
               <button className="blog-btn blog-btn-edit" onClick={() => setEditingBlog(blog)}>
                 <Edit size={16} />
@@ -170,6 +127,7 @@ const Blog = () => {
                 <Trash2 size={16} />
               </button>
             </div>
+            <Comment/>
           </div>
         ))
       ) : (

@@ -37,6 +37,7 @@ function App() {
               <Route path="/community" element={<Blog />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/censor" element={<Censor />} />
+              <Route path="/forgot-password" element={<ForgetPage />} />
             </Routes>
             <ToastContainer/>
           </main>
