@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Button, Col, Radio, Drawer, Row, Modal, Form, Input, Table, Select, notification, Upload, Space } from 'antd';
 import { EyeOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import styles from '../../assets/ManageUsersPage.module.scss';
-import { fetchUsersAction, updateUserByIdAction, fetchUserByIdAction, activateUserAction } from '../../../../MaternityCare_Frontend/src/store/redux/action/userAction';
+import { fetchUsersAction, updateUserByIdAction, fetchUserByIdAction, activateUserAction } from '../../store/redux/action/userAction';
 const { confirm } = Modal;
 const { Option } = Select;
 

@@ -1,0 +1,58 @@
+.payment-detail {
+    padding: 40px;
+    background-color: #f4f7fa;
+}
+
+.personal-card {
+    background: linear-gradient(135deg, #6b5b95, #b8b5d7);
+    color: white;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.card-info {
+    padding: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    color: #333;
+    position: relative; 
+    overflow: hidden;   
+    height: 100px;    
+}
+
+.card-number {
+    font-size: 24px;
+    font-weight: bold;
+    position: absolute;
+    bottom: 30px; 
+    left: 20px; 
+}
+
+.card-expiry {
+    font-size: 14px;
+    position: absolute;
+    bottom: 10px; 
+    right: 20px; 
+}
+
+.transactions-card {
+    margin-top: 20px;
+}
+
+.transaction {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.summary-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+}

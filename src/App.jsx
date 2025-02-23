@@ -18,6 +18,11 @@ import Blog from './pages/Community/Blog'
 import { ToastContainer } from 'react-toastify';
 import Censor from './pages/AdminCensor/Censor'
 
+import PackageList from './pages/PackageList/PackageList'
+// import PaymentPage from './pages/PaymentPage/PaymentPage';
+import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
+import CreatePackage from './pages/Admin/CreatePackage';
+import UpdatePackage from './pages/Admin/UpdatePackage';
 function App() {
   return (
     <AuthProvider>
@@ -38,6 +43,11 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/censor" element={<Censor />} />
               <Route path="/forgot-password" element={<ForgetPage />} />
+              <Route path="/package-list" element={<PackageList />} />
+              {/* <Route path="/payment-page" element={<PaymentPage />} /> */}
+              <Route path="/payment-detail" element={<PaymentDetail />} />
+              <Route path="/create-package" element={<CreatePackage />} />
+              <Route path="/update-package" element={<UpdatePackage />} />
             </Routes>
             <ToastContainer/>
           </main>
