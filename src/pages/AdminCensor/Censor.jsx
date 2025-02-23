@@ -29,7 +29,7 @@ const Censor = () => {
 
   return (
     <div>
-      <h1>Censor Dashboard</h1>
+      <h1>Duyệt bài viết</h1>
       <select onChange={(e) => setStatusFilter(e.target.value)} value={statusFilter}>
         <option value="all">All</option>
         <option value="pending">Pending</option>
