@@ -1,112 +1,114 @@
-import React, { useState } from "react";
-import { Edit, Trash2, Search, Plus } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Trash2, Search, Plus, Heart, MessageCircle, Edit } from "lucide-react";
 import "./Blog.css";
+import defaultImage from "../../assets/default-blog.jpg";
 
 const Blog = () => {
-  const [blogs, setBlogs] = useState([
-    // { id: 1, title: "Bài viết đầu tiên", content: "Đây là nội dung bài viết đầu tiên." },
-    // { id: 2, title: "Bài viết thứ hai", content: "Nội dung của bài viết thứ hai." },
-  ]);
-
+  const [blogs, setBlogs] = useState([]);
+  const [tags, setTags] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [newBlog, setNewBlog] = useState({ title: "", content: "" });
-  const [editingBlog, setEditingBlog] = useState(null);
+  const [selectedTag, setSelectedTag] = useState("");
+  const [newBlog, setNewBlog] = useState({ title: "", content: "", image: "", likes: 0, comments: [] });
   const [isCreating, setIsCreating] = useState(false);
+  const [editingBlog, setEditingBlog] = useState(null);
+  const [commentInputs, setCommentInputs] = useState({});
 
-  // Thêm bài viết mới
+  useEffect(() => {
+    // Fetch danh sách tags
+    fetch("https://maternitycare.azurewebsites.net/api/tags")
+      .then((res) => res.json())
+      .then((data) => setTags(data))
+      .catch((err) => console.error("Error fetching tags:", err));
+
+    // Fetch danh sách bài viết
+    fetch("https://maternitycare.azurewebsites.net/api/blogs")
+      .then((res) => res.json())
+      .then((data) => setBlogs(data))
+      .catch((err) => console.error("Error fetching blogs:", err));
+  }, []);
+
+  // Lọc bài viết theo tag và tìm kiếm
+  const filteredBlogs = blogs.filter((blog) => 
+    (selectedTag ? blog.tagId === selectedTag : true) &&
+    (blog.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+     blog.content.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
   const handleCreate = () => {
     if (!newBlog.title || !newBlog.content) return;
     setBlogs([...blogs, { ...newBlog, id: Date.now() }]);
-    setNewBlog({ title: "", content: "" });
+    setNewBlog({ title: "", content: "", image: "", likes: 0, comments: [] });
     setIsCreating(false);
   };
 
-  // Cập nhật bài viết
+  const handleEdit = (blog) => {
+    setEditingBlog(blog);
+    setNewBlog({ title: blog.title, content: blog.content, image: blog.image });
+  };
+
   const handleUpdate = () => {
-    if (!editingBlog.title || !editingBlog.content) return;
-    setBlogs(blogs.map((blog) => (blog.id === editingBlog.id ? editingBlog : blog)));
+    if (!editingBlog) return;
+    setBlogs(blogs.map(blog => (blog.id === editingBlog.id ? { ...editingBlog, ...newBlog } : blog)));
     setEditingBlog(null);
+    setNewBlog({ title: "", content: "", image: "" });
   };
 
-  // Xóa bài viết
   const handleDelete = (id) => {
-    setBlogs(blogs.filter((blog) => blog.id !== id));
+    setBlogs(blogs.filter(blog => blog.id !== id));
   };
 
-  // Lọc bài viết theo từ khóa
-  const filteredBlogs = blogs.filter((blog) =>
-    blog.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleLike = (id) => {
+    setBlogs(blogs.map(blog => blog.id === id ? { ...blog, likes: blog.likes + 1 } : blog));
+  };
+
+  const handleComment = (id) => {
+    if (!commentInputs[id]) return;
+    setBlogs(blogs.map(blog =>
+      blog.id === id ? {
+        ...blog,
+        comments: [...blog.comments, { id: Date.now(), text: commentInputs[id], user: "Bạn", likes: 0 }]
+      } : blog
+    ));
+    setCommentInputs({ ...commentInputs, [id]: "" });
+  };
 
   return (
     <div className="blog-container">
-      <h1 className="blog-title">Diễn Đàn</h1>
-      <h1 className="blog-title">Xin chào bạn đã đến với trang Diễn Đàn của chúng tôi!</h1>
-      <p className="blog-description">Trang này là nơi chia sẻ kiến thức, kinh nghiệm và ý tưởng về các chủ đề khác nhau. Bạn có thể tìm kiếm, đọc và chia sẻ các bài viết trên trang này</p>
+      <h1 className="blog-title">Diễn Đàn Mẹ Bầu</h1>
+      <p className="blog-description">Chia sẻ kinh nghiệm với cộng đồng mẹ bầu!</p>
 
-     {/* Thanh tìm kiếm */}
-     <div className="blog-search">
-        <input
-          type="text"
-          placeholder="Tìm kiếm bài viết..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="blog-search-input"
-        />
-        <button className="blog-search-btn">
-          <Search size={18} />
-        </button>
-      </div>
-
-      {/* Nút tạo bài viết mới */}
-      {!isCreating && (
-        <button className="blog-btn blog-btn-new" onClick={() => setIsCreating(true)}>
-          <Plus size={18} /> Thêm bài viết mới
-        </button>
-      )}
-
-      {/* Form thêm/sửa bài viết */}
-      {isCreating && (
-        <div className="blog-form">
-          <h2>Thêm bài viết mới</h2>
+      {/* Thanh tìm kiếm & Lọc tag */}
+      <div className="blog-controls">
+        <div className="blog-search">
           <input
             type="text"
-            placeholder="Tiêu đề bài viết"
-            value={newBlog.title}
-            onChange={(e) => setNewBlog({ ...newBlog, title: e.target.value })}
-            className="blog-input"
+            placeholder="Tìm kiếm bài viết..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="blog-search-input"
           />
-          <textarea
-            placeholder="Nội dung bài viết"
-            value={newBlog.content}
-            onChange={(e) => setNewBlog({ ...newBlog, content: e.target.value })}
-            className="blog-textarea"
-          />
-          <button onClick={handleCreate} className="blog-btn blog-btn-create">
-            Đăng bài viết
+          <button className="blog-search-btn">
+            <Search size={18} />
           </button>
         </div>
-      )}
 
-      {editingBlog && (
+        <div className="blog-filter">
+          <label htmlFor="tagFilter">Lọc theo Tag:</label>
+          <select id="tagFilter" onChange={(e) => setSelectedTag(e.target.value)} value={selectedTag}>
+            <option value="">Tất cả</option>
+            {tags.map(tag => <option key={tag.id} value={tag.id}>{tag.name}</option>)}
+          </select>
+        </div>
+      </div>
+
+      {/* Form tạo bài viết */}
+      {!isCreating && <button className="blog-btn blog-btn-new" onClick={() => setIsCreating(true)}> <Plus size={18} /> Đăng bài viết </button>}
+      {isCreating && (
         <div className="blog-form">
-          <h2>Cập nhật bài viết</h2>
-          <input
-            type="text"
-            placeholder="Tiêu đề bài viết"
-            value={editingBlog.title}
-            onChange={(e) => setEditingBlog({ ...editingBlog, title: e.target.value })}
-            className="blog-input"
-          />
-          <textarea
-            placeholder="Nội dung bài viết"
-            value={editingBlog.content}
-            onChange={(e) => setEditingBlog({ ...editingBlog, content: e.target.value })}
-            className="blog-textarea"
-          />
-          <button onClick={handleUpdate} className="blog-btn blog-btn-update">
-            Cập nhật
-          </button>
+          <h2>{editingBlog ? "Chỉnh sửa bài viết" : "Đăng bài viết"}</h2>
+          <input type="text" placeholder="Tiêu đề bài viết" value={newBlog.title} onChange={(e) => setNewBlog({ ...newBlog, title: e.target.value })} className="blog-input" />
+          <textarea placeholder="Nội dung bài viết" value={newBlog.content} onChange={(e) => setNewBlog({ ...newBlog, content: e.target.value })} className="blog-textarea" />
+          <button onClick={editingBlog ? handleUpdate : handleCreate} className="blog-btn-create">{editingBlog ? "Cập nhật" : "Đăng bài"}</button>
         </div>
       )}
 
@@ -114,15 +116,49 @@ const Blog = () => {
       {filteredBlogs.length > 0 ? (
         filteredBlogs.map((blog) => (
           <div key={blog.id} className="blog-item">
-            <h3 className="blog-item-title">{blog.title}</h3>
-            <p className="blog-item-content">{blog.content}</p>
-            <div className="blog-item-actions">
-              <button className="blog-btn blog-btn-edit" onClick={() => setEditingBlog(blog)}>
-                <Edit size={16} />
-              </button>
-              <button className="blog-btn blog-btn-delete" onClick={() => handleDelete(blog.id)}>
-                <Trash2 size={16} />
-              </button>
+            <img src={blog.image || defaultImage} alt="Blog" className="blog-item-image" />
+            <div className="blog-item-content">
+              <h3>{blog.title}</h3>
+              <p>{blog.content}</p>
+              <small>Tag: {tags.find(tag => tag.id === blog.tagId)?.name || "Không có"}</small>
+
+              {/* Các nút hành động */}
+              <div className="blog-item-actions">
+                <button className="blog-btn blog-btn-like" onClick={() => handleLike(blog.id)}> 
+                  <Heart size={16} /> {blog.likes} 
+                </button>
+                <button className="blog-btn blog-btn-delete" onClick={() => handleDelete(blog.id)}> 
+                  <Trash2 size={16} /> 
+                </button>
+                <button className="blog-btn blog-btn-comment">
+                  <MessageCircle size={16} /> Bình luận
+                </button>
+                <button className="blog-btn" onClick={() => handleEdit(blog)}> 
+                  <Edit size={16} /> Chỉnh sửa 
+                </button>
+              </div>
+
+              {/* Bình luận */}
+              <div className="blog-comments">
+                {blog.comments.map(comment => (
+                  <div key={comment.id} className="blog-comment">
+                    <strong>{comment.user}</strong>: {comment.text}
+                    <button className="comment-like" onClick={() => handleLike(blog.id)}> 
+                      <Heart size={14} /> {comment.likes} 
+                    </button>
+                  </div>
+                ))}
+
+                {/* Ô nhập bình luận */}
+                <input
+                  type="text"
+                  placeholder="Viết bình luận..."
+                  className="blog-input"
+                  value={commentInputs[blog.id] || ""}
+                  onChange={(e) => setCommentInputs({ ...commentInputs, [blog.id]: e.target.value })}
+                  onKeyDown={(e) => e.key === "Enter" && handleComment(blog.id)}
+                />
+              </div>
             </div>
           </div>
         ))

@@ -1,159 +1,121 @@
-/* Container chính */
 .blog-container {
-    width: 90%;
     max-width: 800px;
-    background: white;
+    margin: auto;
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    margin: 20px auto;
-  }
-  
-  /* Tiêu đề chính */
-  .blog-title {
+}
+
+.blog-title {
     text-align: center;
-    font-size: 28px;
+    font-size: 26px;
     font-weight: bold;
     color: #333;
-    margin-bottom: 20px;
-  }
-  
-  /* Thanh tìm kiếm */
-  .blog-search {
+}
+
+.blog-description {
+    text-align: center;
+    color: #666;
+}
+
+.blog-search {
     display: flex;
+    justify-content: center;
     margin-bottom: 20px;
-  }
-  
-  .blog-search-input {
-    flex: 1;
+}
+
+.blog-search-input {
     padding: 10px;
-    border: 2px solid #ddd;
+    width: 70%;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.blog-search-btn {
+    padding: 10px;
+    margin-left: 10px;
+    border: none;
+    background-color: #f56a79;
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.blog-btn {
+    padding: 8px 12px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-right: 5px;
+}
+
+.blog-btn-like {
+    background: #ff6961;
+    color: white;
+}
+
+.blog-btn-comment {
+    background: #5bc0de;
+    color: white;
+}
+
+.blog-item {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    padding: 15px;
     border-radius: 8px;
-    outline: none;
-    transition: 0.3s;
-  }
-  
-  .blog-search-input:focus {
-    border-color: #007bff;
-  }
-  
-  .blog-search-btn {
-    background-color: #007bff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.blog-item-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-right: 15px;
+}
+
+.blog-item-content {
+    flex: 1;
+}
+
+.blog-form {
+    background: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.blog-form h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-align: -webkit-center;
+}
+
+.blog-input,
+.blog-textarea {
+    width: 97%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.blog-textarea {
+    height: 100px;
+    resize: none;
+}
+
+.blog-btn-create {
+    background: #ff5773;
+    color: white;
     border: none;
     padding: 10px 15px;
-    border-radius: 8px;
-    color: white;
-    margin-left: 10px;
     cursor: pointer;
-    transition: 0.3s;
-  }
-  
-  .blog-search-btn:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Form nhập bài viết */
-  .blog-form {
-    background: #fafafa;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-  }
-  
-  .blog-input,
-  .blog-textarea {
-    width: 96%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    outline: none;
-    transition: 0.3s;
-  }
-  
-  .blog-input:focus,
-  .blog-textarea:focus {
-    border-color: #007bff;
-  }
-  
-  /* Nút hành động */
-  .blog-btn {
-    width: 100%;
-    padding: 12px;
-    border: none;
-    border-radius: 8px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
-  }
+    border-radius: 5px;
+}
 
-  .blog-btn-new {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .blog-btn-create {
-    background-color: #28a745;
-    color: white;
-  }
-  
-  .blog-btn-create:hover {
-    background-color: #218838;
-  }
-  
-  .blog-btn-update {
-    background-color: #007bff;
-    color: white;
-  }
-  
-  .blog-btn-update:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Danh sách bài viết */
-  .blog-item {
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    margin-bottom: 10px;
-    transition: transform 0.2s;
-  }
-  
-  .blog-item:hover {
-    transform: translateY(-3px);
-  }
-  
-  .blog-item-title {
-    font-size: 18px;
-    font-weight: bold;
-    color: #333;
-  }
-  
-  .blog-item-content {
-    color: #555;
-    margin: 10px 0;
-  }
-  
-  /* Nút sửa & xóa */
-  .blog-item-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-  }
-  
-  .blog-btn-edit {
-    background-color: #ffc107;
-  }
-  
-  .blog-btn-delete {
-    background-color: #dc3545;
-    color: white;
-  }
-  
-  .blog-no-data {
-    text-align: center;
-    color: #888;
-  }
-  
+.blog-btn-create:hover {
+    background: #e04b65;
+}

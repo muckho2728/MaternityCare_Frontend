@@ -1,4 +1,3 @@
-import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './store/config';
 import ManageUsersPage from './pages/Admin/ManageUsersPage';
@@ -20,29 +19,29 @@ function App() {
   return (
     <AuthProvider>
       <Provider store={store}>
-      <Router>
-        <div className="app">
-          <Header />
-          <main className="main-content">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/create-fetus" element={<CreateFetus />} />
-              <Route path="/create-fetus-health" element={<CreateFetusHealth />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/management-users" element={<ManageUsersPage />} />
-              <Route path="/profile" element={<Profile />} /> 
-              <Route path="/view-fetus-health" element={<ViewFetusHealth />} /> 
-              <Route path="/community" element={<Blog />} />
-            </Routes>
-            <ToastContainer/>
-          </main>
-          <Footer />
-        </div>
-      </Router>
+        <Router>
+          <div className="app">
+            <Header />
+            <main className="main-content">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/create-fetus" element={<CreateFetus />} />
+                <Route path="/create-fetus-health" element={<CreateFetusHealth />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/management-users" element={<ManageUsersPage />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/view-fetus-health" element={<ViewFetusHealth />} />
+                <Route path="/community" element={<Blog />} />
+              </Routes>
+              <ToastContainer />
+            </main>
+            <Footer /> {/* Đảm bảo Footer nằm ngoài main-content */}
+          </div>
+        </Router>
       </Provider>
     </AuthProvider>
-  )
+  );
 }
 
 export default App

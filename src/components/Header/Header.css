@@ -1,48 +1,50 @@
 .header {
-    background-color: #ffffff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1000;
+    background-color: #1a1a1a;
+    padding: 10px 20px;
 }
 
 .header-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
 }
+
+
+/* Logo bên trái */
 
 .logo-section {
     display: flex;
     align-items: center;
+    justify-content: flex-start;
+    flex: 1;
 }
 
 .logo-link {
     display: flex;
     align-items: center;
     text-decoration: none;
-    color: inherit;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    gap: 10px;
 }
 
 .logo {
     height: 40px;
-    margin-right: 0.5rem;
 }
 
 .brand-name {
-    font-size: 1.5rem;
+    font-size: 20px;
     font-weight: bold;
-    color: #333;
 }
 
+
+/* Menu chính */
+
 .main-nav {
-    flex: 1;
-    margin: 0 2rem;
+    flex: 2;
     display: flex;
     justify-content: center;
 }
@@ -51,148 +53,75 @@
     display: flex;
     list-style: none;
     padding: 0;
-    margin: 0;
-    gap: 1rem;
 }
 
-.nav-list a {
-    text-decoration: none;
-    color: #666;
-    font-weight: 500;
-    transition: color 0.3s;
+.nav-list li {
+    margin: 0 20px;
 }
 
-.nav-list a:hover {
-    color: #333;
-}
+
+/* Khu vực bên phải */
 
 .header-actions {
+    flex: 1;
     display: flex;
+    justify-content: flex-end;
     align-items: center;
 }
 
-.login-link, .register-link {
-    margin-left: 0.5rem;
-}
+
+/* Tìm kiếm */
 
 .search-box {
     display: flex;
     align-items: center;
-    background-color: #f5f5f5;
+    background: #333;
     border-radius: 20px;
-    padding: 0.5rem 1rem;
+    padding: 5px 10px;
+    margin-right: 15px;
 }
 
 .search-box input {
+    background: transparent;
     border: none;
-    background: none;
     outline: none;
-    padding: 0;
-    width: 200px;
-    font-size: 0.9rem;
-    color: #333;
-}
-
-.search-box input::placeholder {
-    color: #999;
-}
-
-.search-button,
-.notification-button,
-.profile-button {
-    background: none;
-    border: none;
-    padding: 0.5rem;
-    cursor: pointer;
-    color: #666;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: color 0.3s;
-}
-
-.search-button:hover,
-.notification-button:hover,
-.profile-button:hover {
-    color: #333;
-}
-
-.profile-dropdown {
-    position: relative;
-}
-
-.profile-button {
-    background: none;
-    border: none;
-    cursor: pointer;
+    color: white;
     padding: 5px;
+    width: 150px;
 }
 
-.dropdown-menu {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-    z-index: 10;
-    min-width: 170px;
-}
-
-.dropdown-item {
-    font-size: 0.7rem;
-    padding: 5px 10px;
-    display: block;
-    text-decoration: none;
-    color: black;
-    cursor: pointer;
-    text-align: left;
-    width: 100%;
+.search-box button {
     background: none;
     border: none;
+    cursor: pointer;
+    color: white;
 }
 
-.dropdown-item:hover {
-    background-color: #f0f0f0;
+
+/* Nút thông báo */
+
+.notification-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-right: 15px;
 }
 
-.logout-button {
-    color: red;
-}
+
+/* Đăng nhập / Đăng ký */
 
 .auth-links {
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
+    white-space: nowrap;
 }
 
-.login-link, .register-link {
-    text-decoration: none;
-    color: #2D92BA;
+.auth-links a {
+    font-size: 16px;
 }
 
-/* Responsive Design */
-@media (max-width: 1024px) {
-    .nav-list {
-        gap: 1rem;
-    }
-
-    .search-box input {
-        width: 150px;
-    }
-}
-
-@media (max-width: 768px) {
-    .main-nav {
-        display: none;
-    }
-
-    .search-box {
-        display: none;
-    }
-
-    .header-container {
-        padding: 0.5rem 1rem;
-    }
+.auth-links a:hover {
+    text-decoration: underline;
 }
