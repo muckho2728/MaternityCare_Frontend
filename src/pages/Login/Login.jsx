@@ -117,7 +117,7 @@ className="input-field"
             />{" "}
             Tự động đăng nhập
           </label>
-          <Link to="/forget" className="forgot-password">
+          <Link to="/forget-password" className="forgot-password">
             Quên mật khẩu?
           </Link>
         </div>

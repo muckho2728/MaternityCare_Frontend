@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Layout, Menu, Input, Button, Form, Typography, Card, Row, Col, Space, message, Upload } from 'antd';
-import { UserOutlined, HeartOutlined, TeamOutlined } from '@ant-design/icons';
+import { UserOutlined, HeartOutlined, TeamOutlined,FileSearchOutlined } from '@ant-design/icons';
 import { updateUserByIdAction, changePassworbyUserIdAction, fetchUserByIdAction } from '../../../../MaternityCare_Frontend/src/store/redux/action/userAction';
 import api from '../../constants/axios';
+import {Link} from 'react-router-dom';
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -145,6 +146,13 @@ console.log(userDetailData)
                   key: '3',
                   icon: <TeamOutlined />,
                   label: 'Quản lý đội',
+                  children:[
+                    {
+                      key:'3-1',
+                      icon: <FileSearchOutlined/>,
+                      label: <Link to ="/censor">Duyệt bài</Link>
+                    }
+                  ]
                 },
               ]} />
             </Card>

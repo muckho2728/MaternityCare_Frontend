@@ -16,7 +16,7 @@ import { AuthProvider } from './constants/AuthContext'
 import ViewFetusHealth from './pages/ViewFetusHealth/ViewFetusHealth'
 import Blog from './pages/Community/Blog'
 import { ToastContainer } from 'react-toastify';
-
+import Censor from './pages/AdminCensor/Censor';
 function App() {
   return (
     <AuthProvider>
@@ -35,6 +35,8 @@ function App() {
               <Route path="/view-fetus-health" element={<ViewFetusHealth />} /> 
               <Route path="/community" element={<Blog />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/forget-password" element={<ForgetPage />} />
+              <Route path="/censor" element={<Censor />} />
             </Routes>
             <ToastContainer/>
           </main>
