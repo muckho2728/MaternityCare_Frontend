@@ -20,6 +20,8 @@ const Profile = () => {
   const [currentUser, setCurrentUser] = useState(null); // Sử dụng currentUser thay vì user
 console.log(userDetailData)
   // Lấy thông tin người dùng hiện tại
+
+  
   useEffect(() => {
     const fetchCurrentUser = async (url) => {
       const token = localStorage.getItem('token'); // Lấy token từ localStorage
