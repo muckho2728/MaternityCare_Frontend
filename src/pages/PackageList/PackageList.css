@@ -1,0 +1,37 @@
+.package-list {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.package-list h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.package-list .package-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.package-list .ant-card {
+    transition: transform 0.2s;
+}
+
+.package-list .ant-card:hover {
+    transform: scale(1.05);
+}
+
+.package-list .ant-btn {
+    margin-top: 16px; /* Khoảng cách giữa nội dung và nút Buy */
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Căn giữa theo chiều dọc */
+    align-items: center; /* Căn giữa theo chiều ngang */
+    height: 200px; /* Chiều cao cố định để căn giữa hiệu quả */
+}

@@ -1,0 +1,38 @@
+.update-package {
+    padding: 40px;
+    background-color: #ffffff; /* Màu nền trắng */
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 20px auto; /* Căn giữa trang */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.update-package:hover {
+    transform: scale(1.02); /* Hiệu ứng hover */
+}
+
+/* Giống như CreatePackage.css */
+.ant-form-item-label > label {
+    font-weight: bold;
+    color: #333;
+}
+
+.ant-input, .ant-input-textarea {
+    border-radius: 4px;
+    border: 1px solid #d9d9d9;
+}
+
+.ant-input:focus, .ant-input-textarea:focus {
+    border-color: #40a9ff;
+    box-shadow: 0 0 5px rgba(64, 169, 255, 0.5);
+}
+
+.ant-btn-primary {
+    background-color: #1890ff;
+    border-color: #1890ff;
+}
+
+.ant-btn-primary:hover {
+    background-color: #40a9ff;
+    border-color: #40a9ff;
+}
