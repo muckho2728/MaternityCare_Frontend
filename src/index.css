@@ -20,6 +20,7 @@ body,
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background: #ffdbe18f;
     /* Chiều cao tối thiểu bằng 100% viewport */
 }
 
@@ -30,7 +31,7 @@ body,
 
 .footer {
     width: 100%;
-    background-color: #f8f9fa;
+    background-color: linear-gradient(3deg, #eb72b4e8, #66abff);
     /* Màu nền tùy chỉnh */
     padding: 10px;
     text-align: center;

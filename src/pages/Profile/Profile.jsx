@@ -124,7 +124,7 @@ console.log(userDetailData)
   };
 
   return (
-    <Layout style={{ minHeight: '100vh', width: '100vw' }}>
+    <Layout >
       <Content style={{ padding: '12px', marginTop: '24px', maxWidth: '1400px', margin: '0 auto', marginLeft: '50px' }}>
         <Row gutter={24}>
           {/* Menu bên trái */}
@@ -244,7 +244,7 @@ console.log(userDetailData)
                     </Form.Item>
                   </Form>
                   <Title level={3}>Đổi mật khẩu</Title>
-                  <Form form={passwordForm} layout="vertical" style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '8px' }}>
+                  <Form form={passwordForm} layout="vertical" style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '8px' }} onFinish={handleSubmitPassword}>
                     <Row gutter={16}>
                       <Col span={12}>
                         <Form.Item label="Mật Khẩu Cũ" name="currentPassword">

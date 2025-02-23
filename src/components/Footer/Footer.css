@@ -25,7 +25,7 @@ body {
 /* Cố định footer ở dưới cùng */
 
 .footer {
-    background-color: #111;
+    background-color: linear-gradient(179deg, #ff6fbec2, #857ce2);
     color: white;
     padding: 20px 0;
     text-align: center;
