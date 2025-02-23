@@ -1,37 +1,44 @@
 .package-list {
+    margin: 40px 0; 
     padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.package-list h1 {
-    font-size: 24px;
+.package-list-header {
+    text-align: center;
     margin-bottom: 20px;
-    color: #333;
+    font-size: 2em;
+    font-weight: bold;
+    color: #EC407A; 
 }
 
-.package-list .package-card {
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+.package-list-content {
+    padding: 20px 0;
 }
 
-.package-list .ant-card {
-    transition: transform 0.2s;
+.package-card {
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
 }
 
-.package-list .ant-card:hover {
+.package-card:hover {
     transform: scale(1.05);
 }
 
-.package-list .ant-btn {
-    margin-top: 16px; /* Khoảng cách giữa nội dung và nút Buy */
+.package-price {
+    font-size: 1.5em; 
+    font-weight: bold;
+    color: #333; 
 }
 
-.card-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center; /* Căn giữa theo chiều dọc */
-    align-items: center; /* Căn giữa theo chiều ngang */
-    height: 200px; /* Chiều cao cố định để căn giữa hiệu quả */
+.package-card ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.package-card li {
+    margin: 5px 0;
+    color: #333; 
 }
