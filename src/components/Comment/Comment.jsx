@@ -1,26 +1,23 @@
 import React, { useState } from 'react';
-import api from '../../constants/axios';
 import axios from 'axios';
 
-
-const Comment = ({blogId, userId}) => {
+const Comment = ({ blogId, userId }) => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     if (newComment.trim()) {
-
-        try {
-            const response = await axios.post(`https://maternitycare.azurewebsites.net/api/blogs/${blogId}/users/${userId}/comments`, {
-              content: newComment
-            });
-            console.log(response.data);
-            setComments([{ id: Date.now(), user: response.data.user, text: newComment }, ...comments]);
-            setNewComment('');
-          } catch (error) {
-            console.log(error.response);
-          }
+      try {
+        const response = await axios.post(`https://maternitycare.azurewebsites.net/api/blogs/${blogId}/users/${userId}/comments`, {
+          content: newComment
+        });
+        console.log('Comment posted:', response.data);
+        setComments([{ id: Date.now(), user: 'Current User', text: newComment }, ...comments]);
+        setNewComment('');
+      } catch (error) {
+        console.log('Error posting comment:', error);
+      }
     }
   };
 

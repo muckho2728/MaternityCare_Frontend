@@ -35,8 +35,8 @@ const Login = () => {
     if (!formData.username.trim()) {
       newErrors.username = "Username cannot be empty";
     }
-    if (!formData.password || formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
+    if (!formData.password || formData.password.length < 4) {
+      newErrors.password = "Password must be at least 4 characters";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Trả về true nếu không có lỗi
@@ -44,15 +44,6 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-<<<<<<< HEAD
-    const newErrors = validateForm();
-    if (Object.keys(newErrors).length === 0) {
-      if(ActiveTab == "login") {
-        
-    try {
-      const response = await api.post("https://maternitycare.azurewebsites.net/api/authentications/login", formData);
-      console.log(response);
-=======
     if (!validateForm()) return; // Dừng nếu có lỗi
 
     setLoading(true);
@@ -63,7 +54,6 @@ const Login = () => {
       );
       console.log(response);
 
->>>>>>> ccf4c17918c099088f115ff79b4b8b9a4ab91061
       // Lưu thông tin người dùng vào AuthContext
       login({
         token: response.data.accessToken,
@@ -87,27 +77,24 @@ const Login = () => {
       navigate('/');
       toast.success("Đăng nhập thành công!");
     } catch (error) {
-      console.log(error.response);
-      toast.error(error || "Đăng nhập thất bại");
+      toast.error(error.response?.data?.detail || "Đăng nhập thất bại");
     } finally {
-      setErrors({});
+      setLoading(false);
     }
-  }
-  }
   };
 
 
   return (
     <div className="login-page">
       <h1>Đăng Nhập</h1>
-      <form>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           name="username"
           value={formData.username}
           onChange={handleInputChange}
           placeholder="Tên người dùng"
-          className="input-field"
+className="input-field"
         />
         {errors.username && <p className="error-message">{errors.username}</p>}
 
@@ -134,9 +121,6 @@ const Login = () => {
             Quên mật khẩu?
           </Link>
         </div>
-<<<<<<< HEAD
-        <button type="submit" className={`login-button ${ActiveTab == "login" ? "active class" : ""}`} disabled={loading} onClick={handleSubmit}>{loading ? 'Đang đăng nhập...' : 'Đăng nhập'}</button>
-=======
 
         <button
           type="submit"
@@ -146,7 +130,6 @@ const Login = () => {
           {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
         </button>
 
->>>>>>> ccf4c17918c099088f115ff79b4b8b9a4ab91061
         <div className="register">
           Chưa có tài khoản?{" "}
           <Link to="/register" className="register-link">

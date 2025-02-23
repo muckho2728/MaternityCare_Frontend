@@ -1,4 +1,3 @@
-import './LikeandCom.css';
 import { useState, useEffect } from "react";
 import { FaHeart, FaRegHeart, FaEdit, FaTrash, FaReply } from "react-icons/fa";
 
