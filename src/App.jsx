@@ -14,31 +14,35 @@ import { AuthProvider } from './constants/AuthContext'
 import ViewFetusHealth from './pages/ViewFetusHealth/ViewFetusHealth'
 import Blog from './pages/Community/Blog'
 import { ToastContainer } from 'react-toastify';
-
+//import PackageList from './pages/PackageList/PackageList'
+// import PaymentPage from './pages/PaymentPage/PaymentPage';
+//import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
+//import CreatePackage from './pages/Admin/CreatePackage';
+//import UpdatePackage from './pages/Admin/UpdatePackage';
 function App() {
   return (
     <AuthProvider>
       <Provider store={store}>
-        <Router>
-          <div className="app">
-            <Header />
-            <main className="main-content">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/create-fetus" element={<CreateFetus />} />
-                <Route path="/create-fetus-health" element={<CreateFetusHealth />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/management-users" element={<ManageUsersPage />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/view-fetus-health" element={<ViewFetusHealth />} />
-                <Route path="/community" element={<Blog />} />
-              </Routes>
-              <ToastContainer />
-            </main>
-            <Footer /> {/* Đảm bảo Footer nằm ngoài main-content */}
-          </div>
-        </Router>
+      <Router>
+        <div className="app">
+          <Header />
+          <main className="main-content">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/create-fetus" element={<CreateFetus />} />
+              <Route path="/create-fetus-health" element={<CreateFetusHealth />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/management-users" element={<ManageUsersPage />} />
+              <Route path="/profile" element={<Profile />} /> 
+              <Route path="/view-fetus-health" element={<ViewFetusHealth />} /> 
+              <Route path="/community" element={<Blog />} />
+            </Routes>
+            <ToastContainer/>
+          </main>
+          <Footer />
+        </div>
+      </Router>
       </Provider>
     </AuthProvider>
   );
