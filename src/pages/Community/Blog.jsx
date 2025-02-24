@@ -6,7 +6,7 @@ import "./Blog.css";
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([
-    // { id: 1, title: "Bài viết đầu tiên", content: "Đây là nội dung bài viết đầu tiên." },
+    // { id: 1, title: "Bài viết đầu tiên", content: "Đây là nội dung bài viết đầu timiên." },
     // { id: 2, title: "Bài viết thứ hai", content: "Nội dung của bài viết thứ hai." },
   ]);
 
@@ -39,7 +39,6 @@ const Blog = () => {
   const filteredBlogs = blogs.filter((blog) =>
     blog.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
   return (
     <div className="blog-container">
       <h1 className="blog-title">Diễn Đàn</h1>
