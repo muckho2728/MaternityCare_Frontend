@@ -152,7 +152,7 @@ const Comment = ({ blogId }) => {
         </div>
       )}
 
-      <ToastContainer closeButton position="top-right" />
+      <ToastContainer autoClose={3000} closeButton position="top-right" />
     </div>
   );
 };

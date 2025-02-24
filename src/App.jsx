@@ -17,7 +17,6 @@ import ViewFetusHealth from './pages/ViewFetusHealth/ViewFetusHealth'
 import Blog from './pages/Community/Blog'
 import { ToastContainer } from 'react-toastify';
 import Censor from './pages/AdminCensor/Censor'
-
 import PackageList from './pages/PackageList/PackageList'
 // import PaymentPage from './pages/PaymentPage/PaymentPage';
 import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
@@ -41,13 +40,13 @@ function App() {
               <Route path="/view-fetus-health" element={<ViewFetusHealth />} /> 
               <Route path="/community" element={<Blog />} />
               <Route path="/login" element={<LoginPage />} />
-              <Route path="/censor" element={<Censor />} />
-              <Route path="/forgot-password" element={<ForgetPage />} />
               <Route path="/package-list" element={<PackageList />} />
               {/* <Route path="/payment-page" element={<PaymentPage />} /> */}
               <Route path="/payment-detail" element={<PaymentDetail />} />
               <Route path="/create-package" element={<CreatePackage />} />
               <Route path="/update-package" element={<UpdatePackage />} />
+              <Route path="/forget-password" element={<ForgetPage />} />
+              <Route path="/Censor" element={<Censor />} />
             </Routes>
             <ToastContainer/>
           </main>
