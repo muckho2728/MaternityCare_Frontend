@@ -6,6 +6,8 @@ import { toast } from 'react-toastify';
 import { useAuth } from '../../constants/AuthContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserByIdAction } from '../../store/redux/action/userAction'; // Đảm bảo import đúng action
+import Button from '../../components/Button';
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -85,7 +87,7 @@ const Login = () => {
 
 
   return (
-    <div className="login-page">
+   <div className="login-page">
       <h1>Đăng Nhập</h1>
       <form onSubmit={handleSubmit}>
         <input
@@ -139,6 +141,7 @@ className="input-field"
       </form>
     </div>
   );
+  
 };
 
 export default Login;

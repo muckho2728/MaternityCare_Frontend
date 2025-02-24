@@ -1,29 +1,59 @@
-.create-fetus-health-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 2rem;
+.fetus-health-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .page-title {
     text-align: center;
-    margin-bottom: 2rem;
-    font-size: 2rem;
+    font-size: 28px;
     color: #333;
+    margin-bottom: 20px;
+}
+
+
+/* Bố cục 2 cột */
+
+.content {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+
+/* Cột trái: Hình minh họa */
+
+.left-section {
+    flex: 1;
+    text-align: center;
+}
+
+.baby-image {
+    width: 100%;
+    max-width: 250px;
+    border-radius: 10px;
+}
+
+.growth-info {
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+}
+
+
+/* Cột phải: Form nhập dữ liệu */
+
+.right-section {
+    flex: 2;
 }
 
 .health-form {
-    background: #fff;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    border: 2px solid #ff69b4;
-}
-
-.form-row {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .form-group {
@@ -32,46 +62,30 @@
 }
 
 .form-group label {
-    margin-bottom: 0.5rem;
-    color: #333;
-    font-weight: 500;
+    font-size: 16px;
+    margin-bottom: 5px;
+    font-weight: bold;
 }
 
-.form-group input {
-    width: 100%;
-    padding: 0.5rem;
+.form-group input,
+.form-group select {
+    padding: 10px;
+    font-size: 16px;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 0.9rem;
-    background-color: #f9f9f9;
-}
-
-.form-group input:focus {
-    outline: none;
-    border-color: #4CAF50;
-    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+    border-radius: 5px;
 }
 
 .submit-button {
-    width: 100%;
-    padding: 1rem;
-    background-color: #4CAF50;
-    color: white;
+    padding: 12px;
+    font-size: 18px;
+    color: #fff;
+    background: #ff5e6c;
     border: none;
     border-radius: 5px;
-    font-size: 1rem;
     cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 1rem;
+    transition: 0.3s;
 }
 
 .submit-button:hover {
-    background-color: #45a049;
-}
-
-@media (max-width: 768px) {
-    .form-row {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
+    background: #e54b5c;
 }

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './store/config';
 import ManageUsersPage from './pages/Admin/ManageUsersPage';
@@ -18,10 +17,13 @@ import Blog from './pages/Community/Blog'
 import { ToastContainer } from 'react-toastify';
 import Censor from './pages/AdminCensor/Censor'
 import PackageList from './pages/PackageList/PackageList'
+
+//import PackageList from './pages/PackageList/PackageList'
+
 // import PaymentPage from './pages/PaymentPage/PaymentPage';
-import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
-import CreatePackage from './pages/Admin/CreatePackage';
-import UpdatePackage from './pages/Admin/UpdatePackage';
+//import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
+//import CreatePackage from './pages/Admin/CreatePackage';
+//import UpdatePackage from './pages/Admin/UpdatePackage';
 function App() {
   return (
     <AuthProvider>
@@ -42,11 +44,12 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/package-list" element={<PackageList />} />
               {/* <Route path="/payment-page" element={<PaymentPage />} /> */}
-              <Route path="/payment-detail" element={<PaymentDetail />} />
-              <Route path="/create-package" element={<CreatePackage />} />
-              <Route path="/update-package" element={<UpdatePackage />} />
-              <Route path="/forget-password" element={<ForgetPage />} />
+             // <Route path="/payment-detail" element={<PaymentDetail />} />
+             // <Route path="/create-package" element={<CreatePackage />} />
+             // <Route path="/update-package" element={<UpdatePackage />} />
+              //<Route path="/forget-password" element={<ForgetPage />} />
               <Route path="/Censor" element={<Censor />} />
+
             </Routes>
             <ToastContainer/>
           </main>
@@ -55,7 +58,7 @@ function App() {
       </Router>
       </Provider>
     </AuthProvider>
-  )
+  );
 }
 
 export default App

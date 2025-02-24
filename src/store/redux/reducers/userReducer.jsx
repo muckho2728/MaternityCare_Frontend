@@ -23,7 +23,7 @@ const userReducer = createSlice({
         console.log("Setting current user:", action.payload); 
         state.currentUser = action.payload;
     },
-    updateUserLoginAction: (state, action) => {
+    updateUserLoginAction: (state) => {
         state.currentUser = {
             ...state.currentUser, 
         };

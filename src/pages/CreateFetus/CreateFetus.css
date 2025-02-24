@@ -1,161 +1,184 @@
+/* 🎨 Tổng thể */
+
 .create-fetus-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem;
+    max-width: 1100px;
+    margin: auto;
+    padding: 40px 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
+
+
+/* 📌 Breadcrumb */
+
+.breadcrumb {
+    font-size: 14px;
+    margin-bottom: 15px;
+    color: #666;
+}
+
+.breadcrumb a {
+    text-decoration: none;
+    color: #d63384;
+    font-weight: bold;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+
+/* 🎀 Tiêu đề chính */
 
 .page-title {
     text-align: center;
-    margin-bottom: 2rem;
-    font-size: 2rem;
-    color: #333;
+    font-size: 28px;
+    font-weight: bold;
+    color: #d63384;
+    margin-bottom: 20px;
 }
+
+
+/* 🏗️ Chia bố cục 2 phần */
+
+.layout {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+
+/* 📝 Các khối thông tin chuyển thành hộp vuông */
 
 .info-sections {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    margin-bottom: 3rem;
-}
-
-.info-card {
-    background: #fff;
-    padding: 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 cột */
+    gap: 20px;
 }
 
 .info-box {
-    padding: 1.5rem;
+    padding: 20px;
     border-radius: 10px;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
 }
 
-.info-box.pink {
-    background-color: #fff5f5;
-    border: 1px solid #ffebeb;
+.info-box i {
+    font-size: 28px;
+    margin-bottom: 10px;
 }
 
-.info-box.blue {
-    background-color: #f0f7ff;
-    border: 1px solid #e6f0ff;
+.pink {
+    background: #ff5c8a;
 }
 
-.info-box.purple {
-    background-color: #f5f0ff;
-    border: 1px solid #ebe6ff;
+.blue {
+    background: #4a90e2;
 }
 
-.info-box h4 {
-    margin-bottom: 0.75rem;
-    color: #333;
-    font-size: 1.1rem;
+.purple {
+    background: #7e57c2;
 }
 
-.info-box p {
-    color: #666;
-    line-height: 1.6;
-    font-size: 0.95rem;
-    margin: 0;
+
+/* 📦 Box giới thiệu */
+
+.info-card {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
+    text-align: center;
 }
+
+
+/* 📝 Form nhập thông tin */
 
 .fetus-form {
-    max-width: 500px;
-    margin: 2rem auto;
-    background: #fff;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    border: 2px solid #ff69b4;
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    transition: all 0.3s;
 }
 
+
+/* 🎯 Ô nhập liệu */
+
 .form-group {
-    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    width: 100%;
 }
 
 .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    color: #333;
-    font-weight: 500;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #555;
 }
 
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 0.75rem;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 1rem;
-    background-color: #fff;
-}
-
-.form-group input:focus,
-.form-group select:focus {
+input[type="date"] {
+    padding: 12px 15px;
+    border: 1.5px solid #e0a3b5;
+    border-radius: 10px;
+    font-size: 16px;
+    width: 90%;
+    background: rgba(255, 245, 248, 0.5);
     outline: none;
-    border-color: #4CAF50;
-    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
+    transition: all 0.3s ease;
 }
+
+input[type="date"]:focus {
+    border-color: #d63384;
+    background: white;
+    box-shadow: 0px 4px 10px rgba(214, 51, 132, 0.2);
+}
+
+
+/* 🔘 Nút lưu */
 
 .submit-button {
-    width: 100%;
-    padding: 1rem;
-    background-color: #4CAF50;
+    background: linear-gradient(135deg, #ff7eb3, #ff4d79);
     color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px;
     border: none;
-    border-radius: 5px;
-    font-size: 1rem;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
 }
 
 .submit-button:hover {
-    background-color: #45a049;
+    background: linear-gradient(135deg, #ff5c8a, #d63384);
+    box-shadow: 0px 4px 12px rgba(255, 92, 138, 0.4);
 }
 
-.icon-container {
-    position: relative;
-    display: inline-block;
-    cursor: pointer;
-}
 
-.dropdown-menu {
-    display: block;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    background-color: white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 5px;
-    overflow: hidden;
-    z-index: 1000;
-}
+/* 📱 Responsive */
 
-.dropdown-menu div {
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.dropdown-menu div:hover {
-    background-color: #f0f0f0;
-}
-
-/* Responsive Design */
-@media (min-width: 768px) {
+@media (max-width: 900px) {
+    .layout {
+        flex-direction: column;
+    }
     .info-sections {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
     }
-}
-
-@media (max-width: 768px) {
-    .create-fetus-container {
-        padding: 1rem;
-    }
-
     .fetus-form {
-        padding: 1.5rem;
-        margin: 1rem;
+        padding: 20px;
     }
 }

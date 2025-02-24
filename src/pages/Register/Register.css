@@ -1,83 +1,125 @@
+/* Chỉnh lại bố cục trang */
+
 .register-page {
-    flex-direction: column;
+    display: flex;
     justify-content: center;
     align-items: center;
-    padding: 30px; 
-    max-width: 500px; 
-    margin: auto;
-    background-color: #f9f9f9; 
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    /* padding-top: 60px; */
+    /* Tạo khoảng cách với header */
 }
 
-.register-page h1 {
-    margin-bottom: 20px; 
-    font-size: 24px; 
-    color: #333; 
+
+/* Form đăng ký */
+
+.register-container {
+    width: 430px;
+    /* Slightly wider */
+    background: white;
+    padding: 40px;
+    /* More padding for a spacious look */
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    /* gap: 15px; */
+    margin-top: 20px;
+    /* More spacing between fields */
+    margin-bottom: 20px;
 }
+
+.register-container button {
+    width: 100%;
+    background-color: #007bff;
+    /* A softer red */
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.register-container button:hover {
+    background-color: #ff4f4f;
+    /* Slightly darker on hover */
+}
+
+
+/* Tiêu đề */
+
+.register-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+
+/* Nhóm nhập liệu */
 
 .form-group {
-    width: 100%; 
-    margin-bottom: 15px; 
-    
+    text-align: left;
+    margin-bottom: 15px;
 }
 
 .form-group p {
-    margin-bottom: 5px; 
-    font-weight: bold; 
-    color: #555; 
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 5px;
 }
 
-.register-page input[type="text"],
-.register-page input[type="password"],
-.register-page input[type="date"],
-.register-page input[type="email"] {
-    width: calc(100% - 20px); 
-    padding: 10px; 
-    margin: 1px 0; 
-    border-radius: 5px;
-    border: 1px solid #ccc; 
-    background-color: #e0e0e0; 
-    transition: border-color 0.3s;
+
+/* Ô nhập */
+
+.form-control {
+    width: 95%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
 }
 
-.register-page input[type="email"] {
-    background-color: #e0e0e0; /* Màu nền giống các ô khác */
-    border: 1px solid #ccc; /* Viền giống các ô khác */
-    border-radius: 5px;
-    padding: 10px;
-    transition: border-color 0.3s;
-}
 
-.register-page input:focus {
-    border-color: #007bff; 
-}
+/* Nút đăng ký */
 
-.register-page input[type="email"]:focus {
-    border-color: #007bff; /* Màu viền khi focus giống các ô khác */
-}
-
-.register-page button {
+.btn-primary {
     width: 100%;
-    padding: 10px; 
-    margin-top: 10px;
-    background-color: #007bff; 
-    color: white; 
+    padding: 12px;
+    background-color: #ff6b6b;
+    color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
+    margin-top: 10px;
 }
 
-.register-page button:hover {
-    background-color: #0056b3; 
+.btn-primary:hover {
+    background-color: #e63946;
 }
 
-.login-reg-button {
-    margin-top: 15px; 
-    color: white; 
-    text-decoration: none; 
+
+/* Link đăng nhập */
+
+.login-link {
+    display: block;
 }
 
-.login-reg-button:hover {
-    text-decoration: underline; 
+.login-link:hover {
+    color: #495057;
+    /* Màu tối hơn khi hover */
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .register-container {
+        width: 90%;
+        /* Adapt to smaller screens */
+        padding: 20px;
+    }
 }
