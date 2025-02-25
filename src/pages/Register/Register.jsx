@@ -40,8 +40,7 @@ const Register = () => {
       setErrors(newErrors);
       setLoading(false);
     }
-  };
-
+};
   const ValidateForm = () => {
     const newErrors = {};
     if (ActiveTab === "register") {
@@ -51,20 +50,21 @@ const Register = () => {
         newErrors.email = "Email is invalid";
       }
     }
-    if (!formData.fullName) newErrors.fullName = "Full name is required";
-    if (!formData.username) newErrors.username = "User name is required";
-    if (!formData.dateOfBirth) newErrors.dateOfBirth = "Date is required";
+    if (!formData.fullName) newErrors.fullName = "Vui lòng nhập đầy đủ họ và tên";
+    if (!formData.username) newErrors.username = "Vui lòng nhập đầy đủ tên người dùng";
+    if (!formData.dateOfBirth) newErrors.dateOfBirth = "Vui lòng nhập ngày sinh";
     if (!formData.password) {
-      newErrors.password = "Password is required";
+      newErrors.password = "Vui lòng nhập mật khẩu";
     } else if (formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters long";
+      newErrors.password = "Mật khẩu phải có ít nhất 8 ký tự";
     }
     if (!formData.confirmPassword) {
-      newErrors.confirmPassword = "Confirm Password is required";
+      newErrors.confirmPassword = "Vui lòng nhập xác nhận mật khẩu";
     } else if (formData.confirmPassword !== formData.password) {
-      newErrors.confirmPassword = "Passwords do not match";
+      newErrors.confirmPassword = "Mật khẩu không trùng khớp";
     }
-    if (!formData.cccd) newErrors.cccd = "CCCD is required";
+    if (!formData.cccd) newErrors.cccd = "Vui lòng nhập số CCCD";
+
     return newErrors;
   };
 
@@ -121,5 +121,4 @@ const Register = () => {
     </div>
   );
 };
-
 export default Register;
