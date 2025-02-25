@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Login.css';
 import api from '../../constants/axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../constants/AuthContext';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchUserByIdAction } from '../../store/redux/action/userAction'; // Đảm bảo import đúng action
-import Button from '../../components/Button';
+
 
 
 const Login = () => {
@@ -17,7 +17,6 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [remember, setRemember] = useState(false);
   const [errors, setErrors] = useState({});
-  const userDetailData = useSelector((state) => state.userReducer.user);  
 
   const [formData, setFormData] = useState({
     username: "",

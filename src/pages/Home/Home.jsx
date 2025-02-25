@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import { Carousel } from 'antd';
 import './Home.css';
 import slide1 from '../../assets/Slide1.png';
