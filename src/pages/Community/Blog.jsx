@@ -1,9 +1,10 @@
-import Like from "../../components/Like/Like";
 import Comment from "../../components/Comment/Comment";
 import { useState, useEffect } from "react";
 import { Trash2, Search, Plus, Heart, Edit } from "lucide-react";
 import "./Blog.css";
 import defaultImage from "../../assets/default-blog.jpg";
+//import Like from "../../components/Like/Like";
+
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -60,10 +61,74 @@ const Blog = () => {
     setBlogs(blogs.filter(blog => blog.id !== id));
   };
 
+  const handleDeleteComment = (blogId, commentId) => {
+    setBlogs(blogs.map(blog => {
+      if (blog.id === blogId) {
+        return {
+          ...blog,
+          comments: blog.comments.filter(comment => comment.id !== commentId)
+        };
+      }
+      return blog;
+    }));
+  };
+
+  const handleLikeComment = (blogId, commentId) => {
+    setBlogs(blogs.map(blog => {
+      if (blog.id === blogId) {
+        return {
+          ...blog,
+          comments: blog.comments.map(comment => 
+            comment.id === commentId ? { ...comment, likes: comment.likes + 1 } : comment
+          )
+        };
+      }
+      return blog;
+    }));
+  };
+
+  const handleUpdateComment = (blogId, commentId) => {
+    setBlogs(blogs.map(blog => {
+      if (blog.id === blogId) {
+        return {
+          ...blog,
+          comments: blog.comments.map(comment => 
+            comment.id === commentId ? { ...comment, text: commentInputs[commentId] || comment.text } : comment
+          )
+        };
+      }
+      return blog;
+    }));
+    setEditingComment(null);
+  };
+
+  const handleLike = (blogId) => {
+    setBlogs(blogs.map(blog => 
+      blog.id === blogId ? { ...blog, likes: blog.likes + 1 } : blog
+    ));
+  };
+
+  const handleComment = (blogId) => {
+    const commentText = commentInputs[blogId];
+    if (!commentText) return;
+
+    setBlogs(blogs.map(blog => {
+      if (blog.id === blogId) {
+        return {
+          ...blog,
+          comments: [...blog.comments, { id: Date.now(), user: "Anonymous", text: commentText, likes: 0 }]
+        };
+      }
+      return blog;
+    }));
+
+    setCommentInputs({ ...commentInputs, [blogId]: "" });
+  };
+
   // Lọc bài viết theo từ khóa
-  const filteredBlogs = blogs.filter((blog) =>
-    blog.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const filteredBlogs = blogs.filter((blog) =>
+  //   blog.title.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
   return (
     <div className="blog-container">

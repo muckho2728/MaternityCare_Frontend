@@ -2,7 +2,7 @@ import { Provider } from 'react-redux';
 import { store } from './store/config';
 import ManageUsersPage from './pages/Admin/ManageUsersPage';
 import Profile from './pages/Profile/Profile';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import CreateFetus from './pages/CreateFetus/CreateFetus'
 import CreateFetusHealth from './pages/CreateFetusHealth/CreateFetusHealth'
 import Header from './components/Header/Header'
@@ -10,13 +10,18 @@ import Footer from './components/Footer/Footer'
 import Home from './pages/Home/Home'
 import Register from './pages/Register/Register'
 import LoginPage from './pages/Login/Login';
-import ForgetPage from './pages/ForgotPassword/ForgetP';
+//import ForgetPage from './pages/ForgotPassword/ForgetP';
 import { AuthProvider } from './constants/AuthContext'
 import ViewFetusHealth from './pages/ViewFetusHealth/ViewFetusHealth'
 import Blog from './pages/Community/Blog'
 import { ToastContainer } from 'react-toastify';
 import Censor from './pages/AdminCensor/Censor'
 import PackageList from './pages/PackageList/PackageList'
+//import PaymentDetail from './pages/PaymentDetail';  // Adjust the path if necessary
+import CreatePackage from './pages/Admin/CreatePackage';  // Adjust the path if necessary
+
+
+
 
 //import PackageList from './pages/PackageList/PackageList'
 
@@ -44,10 +49,10 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/package-list" element={<PackageList />} />
               {/* <Route path="/payment-page" element={<PaymentPage />} /> */}
-             // <Route path="/payment-detail" element={<PaymentDetail />} />
-             // <Route path="/create-package" element={<CreatePackage />} />
-             // <Route path="/update-package" element={<UpdatePackage />} />
-              //<Route path="/forget-password" element={<ForgetPage />} />
+            <Route path="/create-package" element={<CreatePackage />} />
+             {/* <Route path="/create-package" element={<CreatePackage />} /> */}
+             {/* <Route path="/update-package" element={<UpdatePackage />} /> */}
+              {/* <Route path="/forget-password" element={<ForgetPage />} /> */}
               <Route path="/Censor" element={<Censor />} />
 
             </Routes>
