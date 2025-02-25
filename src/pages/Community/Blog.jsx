@@ -1,3 +1,5 @@
+import Like from "../../components/Like/Like";
+import Comment from "../../components/Comment/Comment";
 import { useState, useEffect } from "react";
 import { Trash2, Search, Plus, Heart, Edit } from "lucide-react";
 import "./Blog.css";
@@ -58,56 +60,11 @@ const Blog = () => {
     setBlogs(blogs.filter(blog => blog.id !== id));
   };
 
-  const handleLike = (id) => {
-    setBlogs(blogs.map(blog => blog.id === id ? { ...blog, likes: blog.likes + 1 } : blog));
-  };
+  // Lọc bài viết theo từ khóa
+  const filteredBlogs = blogs.filter((blog) =>
+    blog.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  const handleComment = (id) => {
-    if (!commentInputs[id]) return;
-    setBlogs(blogs.map(blog =>
-      blog.id === id ? {
-        ...blog,
-        comments: [...blog.comments, { id: Date.now(), text: commentInputs[id], user: "Bạn", likes: 0 }]
-      } : blog
-    ));
-    setCommentInputs({ ...commentInputs, [id]: "" });
-  };
-  // Like bình luận
-  const handleLikeComment = (blogId, commentId) => {
-    setBlogs(blogs.map(blog =>
-      blog.id === blogId ? {
-        ...blog,
-        comments: blog.comments.map(comment =>
-          comment.id === commentId ? { ...comment, likes: comment.likes + 1 } : comment
-        )
-      } : blog
-    ));
-  };
-
-  // Xóa bình luận
-  const handleDeleteComment = (blogId, commentId) => {
-    setBlogs(blogs.map(blog =>
-      blog.id === blogId ? {
-        ...blog,
-        comments: blog.comments.filter(comment => comment.id !== commentId)
-      } : blog
-    ));
-  };
-
-  // Sửa bình luận
-  const handleUpdateComment = (blogId, commentId) => {
-    setBlogs(blogs.map(blog => 
-      blog.id === blogId 
-        ? { 
-            ...blog, 
-            comments: blog.comments.map(comment => 
-              comment.id === commentId ? { ...comment, text: commentInputs[commentId] } : comment
-            ) 
-          } 
-        : blog
-    ));
-    setEditingComment(null); // Ẩn ô chỉnh sửa
-  };
   return (
     <div className="blog-container">
       <h1 className="blog-title">Diễn Đàn Mẹ Bầu</h1>
@@ -222,6 +179,7 @@ const Blog = () => {
                 />
               </div>
             </div>
+            <Comment/>
           </div>
         ))
       ) : (
