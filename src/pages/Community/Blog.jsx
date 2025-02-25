@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Trash2, Search, Plus, Heart, MessageCircle, Edit } from "lucide-react";
+import { Trash2, Search, Plus, Heart, Edit } from "lucide-react";
 import "./Blog.css";
 import defaultImage from "../../assets/default-blog.jpg";
 
@@ -145,6 +145,7 @@ const Blog = () => {
           <input type="text" placeholder="Tiêu đề bài viết" value={newBlog.title} onChange={(e) => setNewBlog({ ...newBlog, title: e.target.value })} className="blog-input" />
           <textarea placeholder="Nội dung bài viết" value={newBlog.content} onChange={(e) => setNewBlog({ ...newBlog, content: e.target.value })} className="blog-textarea" />
           <button onClick={editingBlog ? handleUpdate : handleCreate} className="blog-btn-create">{editingBlog ? "Cập nhật" : "Đăng bài"}</button>
+        
         </div>
       )}
 
@@ -166,9 +167,9 @@ const Blog = () => {
                 <button className="blog-btn blog-btn-delete" onClick={() => handleDelete(blog.id)}> 
                   <Trash2 size={16} /> 
                 </button>
-                <button className="blog-btn blog-btn-comment">
+                {/* <button className="blog-btn blog-btn-comment">
                   <MessageCircle size={16} /> Bình luận
-                </button>
+                </button> */}
                 <button className="blog-btn" onClick={() => handleEdit(blog)}> 
                   <Edit size={16} /> Chỉnh sửa 
                 </button>

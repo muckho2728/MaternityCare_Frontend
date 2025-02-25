@@ -37,8 +37,8 @@ const Login = () => {
     if (!formData.username.trim()) {
       newErrors.username = "Username cannot be empty";
     }
-    if (!formData.password || formData.password.length < 8) {
-      newErrors.password = "Password must be at least 8 characters";
+    if (!formData.password || formData.password.length < 4) {
+      newErrors.password = "Password must be at least 4 characters";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Trả về true nếu không có lỗi
