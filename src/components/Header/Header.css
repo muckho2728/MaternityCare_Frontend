@@ -31,7 +31,8 @@
     /* Tím than */
     font-size: 22px;
     font-weight: bold;
-    gap: 10px;
+    /* gap: 10px; */
+    margin-left: 15px
 }
 
 .logo {
@@ -83,7 +84,7 @@
 .header-actions {
     display: flex;
     align-items: center;
-    gap: 15px;
+    /* gap: 15px; */
 }
 
 

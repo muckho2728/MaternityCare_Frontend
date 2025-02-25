@@ -4,7 +4,7 @@
 /* headerheader */
 
 .header {
-    background: linear-gradient(3deg, #eb72b4e8, #66abff);
+    background: #314431;
     padding: 15px 0;
     position: sticky;
     top: 0;
@@ -17,9 +17,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    max-width: 1200px;
+    /* max-width: 1200px; */
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 0px;
+    width: 98%;
 }
 
 .logo-section {
@@ -43,8 +44,8 @@
 .main-nav .nav-list {
     display: flex;
     list-style: none;
-    padding: 0;
-    margin: 0;
+    /* padding: 0; */
+    margin: -10px;
 }
 
 .main-nav .nav-list li {
@@ -66,6 +67,7 @@
 .header-actions {
     display: flex;
     align-items: center;
+    margin-right: 0.5%;
 }
 
 .search-box {
@@ -73,9 +75,9 @@
     align-items: center;
     border: 1px solid white;
     border-radius: 20px;
-    padding: 5px 10px;
+    padding: 5px 0px;
     background: rgba(255, 255, 255, 0.1);
-    margin-right: 15px;
+    margin-right: 10px;
 }
 
 .search-box input {
@@ -139,6 +141,7 @@
 
 .auth-links {
     font-size: 16px;
+    display: flex;
 }
 
 .auth-links a {
@@ -171,7 +174,7 @@
 /* footerfooter */
 
 .footer {
-    background: linear-gradient(180deg, #eb72b4e8, #66abff);
+    background: #314431;
     color: white;
     padding: 40px 0;
     font-size: 16px;
