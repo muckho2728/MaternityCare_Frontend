@@ -228,3 +228,13 @@
     margin-top: 20px;
     font-size: 14px;
 }
+
+/* components.css hoặc tệp CSS chính của bạn */
+body[data-theme='light'] {
+    background-color: #fcf8ec; /* Màu nền cho chế độ sáng */
+}
+
+body[data-theme='dark'] {
+    background-color: #333; /* Màu nền cho chế độ tối */
+    color: #fff; /* Màu chữ cho chế độ tối */
+}

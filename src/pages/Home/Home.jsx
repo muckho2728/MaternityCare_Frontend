@@ -4,6 +4,10 @@ import slide1 from '../../assets/Slide1.png';
 import slide2 from '../../assets/Slide2.jpg';
 import slide3 from '../../assets/Slide3.jpg';
 import slide4 from '../../assets/Slide4.jpg';
+import pregnancy from '../../assets/pregnancy.png';
+import booking from '../../assets/booking.jpg';
+import packageImg from '../../assets/package.webp';
+import communityImg from '../../assets/community.png';
 import { useNavigate } from 'react-router-dom'; // Import điều hướng
 
 const Home = () => {
@@ -33,22 +37,22 @@ const Home = () => {
                     {/* Thêm các ô điều hướng */}
                     <div className="feature-container">
                         <div className="feature-card" onClick={() => navigate('/pregnancy-tracking')}>
-                            <img src="https://via.placeholder.com/150" alt="Theo dõi thai kỳ" />
+                            <img src={pregnancy} alt="Theo dõi thai kỳ" />
                             <h3>Theo dõi thai kỳ</h3>
                             <p>Cập nhật sự phát triển của bé theo từng tuần.</p>
                         </div>
                         <div className="feature-card" onClick={() => navigate('/booking')}>
-                            <img src="https://via.placeholder.com/150" alt="Đặt lịch khám" />
+                            <img src={booking} alt="Đặt lịch khám" />
                             <h3>Đặt lịch khám</h3>
-                            <p>Đặt lịch hẹn với bác sĩ sản khoa.</p>
+                            <p>Đặt lịch hẹn với bác sĩ.</p>
                         </div>
                         <div className="feature-card" onClick={() => navigate('/services')}>
-                            <img src="https://via.placeholder.com/150" alt="Dịch vụ chăm sóc" />
-                            <h3>Dịch vụ chăm sóc</h3>
+                            <img src={packageImg} alt="Dịch vụ chăm sóc" />
+                            <h3>Dịch vụ</h3>
                             <p>Các dịch vụ hỗ trợ sức khỏe mẹ và bé.</p>
                         </div>
                         <div className="feature-card" onClick={() => navigate('/community')}>
-                            <img src="https://via.placeholder.com/150" alt="Diễn đàn mẹ bầu" />
+                            <img src={communityImg} alt="Diễn đàn mẹ bầu" />
                             <h3>Diễn đàn mẹ bầu</h3>
                             <p>Kết nối và chia sẻ với các mẹ bầu khác.</p>
                         </div>
