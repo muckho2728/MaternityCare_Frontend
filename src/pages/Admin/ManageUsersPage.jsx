@@ -4,6 +4,7 @@ import { Button, Col, Radio, Drawer, Row, Modal, Form, Input, Table, Select, not
 import { EyeOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import styles from '../../assets/ManageUsersPage.module.scss';
 import { fetchUsersAction, updateUserByIdAction, fetchUserByIdAction, activateUserAction } from '../../store/redux/action/userAction';
+import { fetchPackagesAction } from '../../store/redux/action/packageAction';
 const { confirm } = Modal;
 const { Option } = Select;
 
@@ -21,8 +22,8 @@ const ManageUsersPage = () => {
   const userDetailData = useSelector(state => state.userReducer.user);
 
   useEffect(() => {
-    dispatch(fetchUsersAction());
-  }, [dispatch]);
+    fetchPackagesAction()
+  }, []);
 
   const handleSearch = (value) => {
     setSearchValue(value.toLowerCase());

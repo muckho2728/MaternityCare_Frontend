@@ -78,28 +78,38 @@ const Profile = () => {
 
   const handleSubmit = async (values) => {
     const formData = new FormData();
-    formData.append('FullName', values.fullName);
-    formData.append('DateOfBirth', values.dateOfBirth);
-    formData.append('Avatar', null);
+    formData.append('fullName', values.fullName);
+    formData.append('dateOfBirth', values.dateOfBirth);
+    // console.log(previewAvatar?.file?.originFileObj)
 
-    if (previewAvatar) {
-      const response = await fetch(previewAvatar);
-      const blob = await response.blob();
+    // if (previewAvatar) {
+    //   const response = await fetch(previewAvatar);
+    //   const blob = await response.blob();
 
-      // Lấy tên gốc từ URL nếu có
-      const fileName = previewAvatar.split('/').pop() || 'avatar.png';
 
-      formData.append('avatar', blob, fileName);
+    //   const fileName = previewAvatar.split('/').pop() || 'avatar.png';
+
+    // }
+    // if(previewAvatar){
+    //   formData.append('avatar',previewAvatar.file.originFileObj);
+    // }
+    try {
+      const res = await updateUserAPI(userDetailData.id, formData);
+      message.success('Cập nhật thông tin thành công!');
+      dispatch(fetchUserByIdAction(userDetailData.id));
+    } catch (error) {
+      message.error('Cập nhật thông tin thất bại: ' + (error.message || 'Lỗi không xác định'));
     }
 
-    dispatch(updateUserByIdAction(userDetailData.id, formData))
-      .then(() => {
-        message.success('Cập nhật thông tin thành công!');
-        dispatch(fetchUserByIdAction(userDetailData.id));
-      })
-      .catch((error) => {
-        message.error('Cập nhật thông tin thất bại: ' + (error.message || 'Lỗi không xác định'));
-      });
+    // updateUserByIdAction(userDetailData.id, formData)
+    // dispatch()
+    //   .then(() => {
+    //     message.success('Cập nhật thông tin thành công!');
+    //     dispatch(fetchUserByIdAction(userDetailData.id));
+    //   })
+    //   .catch((error) => {
+    //     message.error('Cập nhật thông tin thất bại: ' + (error.message || 'Lỗi không xác định'));
+    //   });
   };
 
   const handleSubmitPassword = (values) => {

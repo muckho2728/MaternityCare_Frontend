@@ -1,4 +1,4 @@
-import { activeUserAPI, getAllUserAPI, getUserByIdAPI, updateUserAPI, changePasswordByUserIdAPI, getCurrentUserAPI } from '../../../apis/userAPI';
+import { activeUserAPI, getAllUserAPI, getUserByIdAPI, updateUserAPI, changePasswordByUserIdAPI, getCurrentUserAPI, getPackagesAPI } from '../../../apis/userAPI';
 import { setListUser, setUser, setCurrentUser } from '../reducers/userReducer';
 
 export const fetchUsersAction = () => {
@@ -67,6 +67,17 @@ export const activateUserAction = (id) => {
     }
   };
 };
+
+export const fetchPackages = ()=>{
+  return async (dispatch) => {
+    try {
+      const res = await getPackagesAPI();
+      dispatch(setListUser(res.data));
+    } catch (error) {
+      console.error("Failed to fetch users:", error.response ? error.response.data : error.message);
+    }
+  };
+}
 
 export const changePassworbyUserIdAction = (id, data) => {
   return async (dispatch) => {

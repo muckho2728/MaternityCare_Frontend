@@ -18,8 +18,7 @@ import Blog from './pages/Community/Blog'
 import { ToastContainer } from 'react-toastify';
 import Censor from './pages/AdminCensor/Censor'
 import PackageList from './pages/PackageList/PackageList'
-//import PaymentDetail from './pages/PaymentDetail';  // Adjust the path if necessary
-import CreatePackage from './pages/Admin/CreatePackage';  // Adjust the path if necessary
+import CreatePackage from './pages/Admin/CreatePackage';  
 import { ThemeProvider } from './constants/ThemeContext';
 import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
 import PaymentPage from './pages/PaymentPage/PaymentPage';
