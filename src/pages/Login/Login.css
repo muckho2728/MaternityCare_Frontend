@@ -3,50 +3,40 @@
 .login-page {
     display: flex;
     justify-content: center;
-    /* align-items: center; */
+    align-items: center;
     height: 100vh;
     background-color: #f8f9fa;
-    /* Nền nhẹ nhàng hơn */
 }
-
 
 /* Hộp chứa login */
-
 .login-container {
-    width: 430px;
+    width: 400px;
     background: #ffffff;
-    padding: 30px;
+    padding: 40px;
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    height: 320px;
-    margin: 70px;
+    text-align: left;
 }
 
-
 /* Tiêu đề */
-
 .login-container h1 {
-    font-size: 28px;
-    margin-bottom: 20px;
+    font-size: 26px;
+    margin-bottom: 10px;
+    font-weight: bold;
     color: #333;
 }
 
-
 /* Ô input */
-
 .input-field {
-    width: 95%;
+    width: 100%;
     padding: 12px;
-    margin: 10px 0;
+    margin: 10px -10px;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 16px;
 }
 
-
 /* Nút đăng nhập */
-
 .login-button {
     width: 100%;
     padding: 12px;
@@ -64,12 +54,11 @@
     background-color: #0056b3;
 }
 
-
 /* Đăng ký */
-
 .register {
     margin-top: 15px;
     font-size: 14px;
+    text-align: center;
 }
 
 .register-link {
@@ -80,4 +69,72 @@
 
 .register-link:hover {
     text-decoration: underline;
+}
+
+/* Các tùy chọn nhớ mật khẩu và quên mật khẩu */
+.options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.forgot-password {
+    color: red;
+    text-decoration: none;
+}
+
+.forgot-password:hover {
+    text-decoration: underline;
+}
+
+/* Đăng nhập bằng mạng xã hội */
+.social-login {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.social-login button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    margin: 0 10px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.social-login button img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Chỉnh layout giống ảnh */
+.login-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 80%;
+    max-width: 900px;
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.image-section {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-section img {
+    max-width: 100%;
+    height: auto;
 }

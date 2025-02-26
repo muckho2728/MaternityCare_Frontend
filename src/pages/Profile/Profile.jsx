@@ -140,7 +140,7 @@ console.log(userDetailData)
                 {
                   key: '2',
                   icon: <HeartOutlined />,
-                  label: 'Thông tin sức khỏe thai nhi',
+                  label: <Link to ="/view-fetus-health">Xem thông tin sức khỏe</Link>,
                 },
                 {
                   key: '3',
