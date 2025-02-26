@@ -8,7 +8,7 @@ import pregnancy from '../../assets/pregnancy.png';
 import booking from '../../assets/booking.jpg';
 import packageImg from '../../assets/package.webp';
 import communityImg from '../../assets/community.png';
-import { useNavigate } from 'react-router-dom'; // Import điều hướng
+import { useNavigate } from 'react-router-dom'; 
 
 const Home = () => {
     const navigate = useNavigate(); // Hook để điều hướng
@@ -46,7 +46,7 @@ const Home = () => {
                             <h3>Đặt lịch khám</h3>
                             <p>Đặt lịch hẹn với bác sĩ.</p>
                         </div>
-                        <div className="feature-card" onClick={() => navigate('/services')}>
+                        <div className="feature-card" onClick={() => navigate('/package-list')}>
                             <img src={packageImg} alt="Dịch vụ chăm sóc" />
                             <h3>Dịch vụ</h3>
                             <p>Các dịch vụ hỗ trợ sức khỏe mẹ và bé.</p>

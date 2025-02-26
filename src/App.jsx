@@ -21,6 +21,8 @@ import PackageList from './pages/PackageList/PackageList'
 //import PaymentDetail from './pages/PaymentDetail';  // Adjust the path if necessary
 import CreatePackage from './pages/Admin/CreatePackage';  // Adjust the path if necessary
 import { ThemeProvider } from './constants/ThemeContext';
+import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
+import PaymentPage from './pages/PaymentPage/PaymentPage';
 
 
 
@@ -33,48 +35,49 @@ import { ThemeProvider } from './constants/ThemeContext';
 
 
 function Layout() {
-const location = useLocation()
-const isLoginRegister = location.pathname === '/login' || location.pathname === '/register';
+  const location = useLocation()
+  const isLoginRegister = location.pathname === '/login' || location.pathname === '/register';
 
   return (
-        <div className="app">
-          {!isLoginRegister && <Header />}
-          <main className="main-content">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/create-fetus" element={<CreateFetus />} />
-              <Route path="/create-fetus-health" element={<CreateFetusHealth />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/management-users" element={<ManageUsersPage />} />
-              <Route path="/profile" element={<Profile />} /> 
-              <Route path="/view-fetus-health" element={<ViewFetusHealth />} /> 
-              <Route path="/community" element={<Blog />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/package-list" element={<PackageList />} />
-              {/* <Route path="/payment-page" element={<PaymentPage />} /> */}
-            <Route path="/create-package" element={<CreatePackage />} />
-             {/* <Route path="/create-package" element={<CreatePackage />} /> */}
-             {/* <Route path="/update-package" element={<UpdatePackage />} /> */}
-              {/* <Route path="/forget-password" element={<ForgetPage />} /> */}
-              <Route path="/Censor" element={<Censor />} />
-            </Routes>
-            <ToastContainer/>
-          </main>
-          {!isLoginRegister && <Footer />}
-        </div>
+    <div className="app">
+      {!isLoginRegister && <Header />}
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/create-fetus" element={<CreateFetus />} />
+          <Route path="/create-fetus-health" element={<CreateFetusHealth />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/management-users" element={<ManageUsersPage />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/view-fetus-health" element={<ViewFetusHealth />} />
+          <Route path="/community" element={<Blog />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/package-list" element={<PackageList />} />
+          <Route path="/create-package" element={<CreatePackage />} />
+          {/* <Route path="/create-package" element={<CreatePackage />} /> */}
+          {/* <Route path="/update-package" element={<UpdatePackage />} /> */}
+          {/* <Route path="/forget-password" element={<ForgetPage />} /> */}
+          <Route path="/payment-detail" element={<PaymentDetail />} />
+          <Route path="/payment-page" element={<PaymentPage />} />
+          <Route path="/Censor" element={<Censor />} />
+        </Routes>
+        <ToastContainer />
+      </main>
+      {!isLoginRegister && <Footer />}
+    </div>
   );
 }
 
 function App() {
   return (
     <ThemeProvider>
-    <AuthProvider>
-      <Provider store={store}>
-        <Router>
-          <Layout />
-        </Router>
-      </Provider>
-    </AuthProvider>
+      <AuthProvider>
+        <Provider store={store}>
+          <Router>
+            <Layout />
+          </Router>
+        </Provider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }

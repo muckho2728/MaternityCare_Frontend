@@ -19,10 +19,10 @@ const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const [currentUser, setCurrentUser] = useState(null); // Sử dụng currentUser thay vì user
-console.log(userDetailData)
+  console.log(userDetailData)
   // Lấy thông tin người dùng hiện tại
 
-  
+
   useEffect(() => {
     const fetchCurrentUser = async (url) => {
       const token = localStorage.getItem('token'); // Lấy token từ localStorage
@@ -78,8 +78,9 @@ console.log(userDetailData)
 
   const handleSubmit = async (values) => {
     const formData = new FormData();
-    formData.append('fullName', values.fullName);
-    formData.append('dateOfBirth', values.dateOfBirth);
+    formData.append('FullName', values.fullName);
+    formData.append('DateOfBirth', values.dateOfBirth);
+    formData.append('Avatar', null);
 
     if (previewAvatar) {
       const response = await fetch(previewAvatar);
@@ -150,7 +151,17 @@ console.log(userDetailData)
                     {
                       key: '3-1',
                       icon: <FileSearchOutlined />,
-                      label: <Link to ="/Censor">Duyệt bài</Link>,
+                      label: <Link to="/Censor">Duyệt bài</Link>,
+                    },
+                    {
+                      key: '3-22',
+                      icon: <FileSearchOutlined />,
+                      label: <Link to="/Censor">Thông tin & Sức khỏe thai nhi</Link>,
+                    },
+                    {
+                      key: '3-3',
+                      icon: <FileSearchOutlined />,
+                      label: <Link to="/management-users">Quản lí người dùng</Link>,
                     },
                   ],
                 },
@@ -195,14 +206,14 @@ console.log(userDetailData)
                 <Col span={16}>
                   <Title level={3}>Thông tin cá nhân</Title>
                   <Form
-                     form={profileForm}
-                     layout="vertical"
-                     style={{
-                       backgroundColor: '#f9f9f9',
-                       padding: '20px',
-                       borderRadius: '8px',
-                     }}
-                     onFinish={handleSubmit}
+                    form={profileForm}
+                    layout="vertical"
+                    style={{
+                      backgroundColor: '#f9f9f9',
+                      padding: '20px',
+                      borderRadius: '8px',
+                    }}
+                    onFinish={handleSubmit}
                   >
                     <Row gutter={16}>
                       <Col span={12}>
