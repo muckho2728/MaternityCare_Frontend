@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
 //import logo from '../../assets/MaternityCare.png';
 import { useAuth } from '../../constants/AuthContext';
-import { useTheme } from '../../constants/ThemeContext';
 
 const Header = () => {
     const { user, logout } = useAuth();
@@ -12,7 +11,6 @@ const Header = () => {
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
 
-    const { theme, toggleTheme } = useTheme();
 
     const handleLogout = () => {
         logout();
@@ -36,6 +34,16 @@ const Header = () => {
         };
     }, []);
 
+    // const showSidebar = () => {
+    //     const sidebar = document.querySelector('.sidebar');
+    //     sidebar.style.display = 'flex';
+    // };
+
+    // const hideSidebar = () => {
+    //     const sidebar = document.querySelector('.sidebar');
+    //     sidebar.style.display = 'none';
+    // };
+
     return (
         <header className="header">
             <div className="header-container">
@@ -53,7 +61,7 @@ const Header = () => {
                         <li><Link to="/view-package">Dịch Vụ</Link></li>
                         <li><Link to="/booking">Đặt Lịch</Link></li>
                     </ul>
-                    <ul className='sidebar'>
+                    {/* <ul className='sidebar'>
                         <li onClick={hideSidebar}><a href="#"><svg xmlns='../../assets/X.svg' height={26} viewBox='0 96 960 960' width={26}></svg></a></li>
                         <li><a href="#"></a><Link to="/">Trang Chủ</Link></li>
                         <li><a href="#"></a><Link to="/community">Diễn Đàn</Link></li>
@@ -63,7 +71,7 @@ const Header = () => {
                         <li><a href="#"></a><Link to="/login" className="login-link">Đăng nhập</Link> </li>
                         <li><a href="#"></a><Link to="/register" className="register-link">Đăng Ký</Link></li>
                         <li onClick={showSidebar}><a href="#"><svg xmlns='../../assets/menu.svg' height={26} viewBox='0 96 960 960' width={26}></svg></a></li>
-                    </ul>
+                    </ul> */}
 
                 </nav>
 
