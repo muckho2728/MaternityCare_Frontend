@@ -25,11 +25,22 @@ body {
 /* Cố định footer ở dưới cùng */
 
 .footer {
-    background-color: linear-gradient(8deg, #eb72b4e8, #66abff);
     color: white;
     padding: 20px 0;
     text-align: center;
     width: 100%;
     position: relative;
     bottom: 0;
+}
+
+@media (min-width: 728px) {
+    .footer {
+        margin-top: 60px;
+    }
+}
+
+@media (min-width: 728px) {
+    .footer {
+        contain-intrinsic-height: auto 1688px;
+    }
 }

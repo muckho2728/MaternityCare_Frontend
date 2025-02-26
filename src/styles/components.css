@@ -5,7 +5,7 @@
 
 .header {
     background: #314431;
-    padding: 15px 0;
+    /* padding: 15px 0; */
     position: sticky;
     top: 0;
     width: 100%;
@@ -15,12 +15,11 @@
 
 .header-container {
     display: flex;
-    align-items: center;
+    flex-wrap: wrap;
     justify-content: space-between;
-    /* max-width: 1200px; */
-    margin: 0 auto;
-    padding: 0 0px;
-    width: 98%;
+    max-width: 1200px;
+    /* margin: 0 auto;
+    padding: 20px; */
 }
 
 .logo-section {
@@ -45,7 +44,7 @@
     display: flex;
     list-style: none;
     /* padding: 0; */
-    margin: -10px;
+    margin: 0px;
 }
 
 .main-nav .nav-list li {
@@ -61,13 +60,13 @@
 }
 
 .main-nav .nav-list li a:hover {
-    color: var(--primary-color);
+    color: green;
 }
 
 .header-actions {
     display: flex;
     align-items: center;
-    margin-right: 0.5%;
+    margin-right: -0.5%;
 }
 
 .search-box {
@@ -229,12 +228,23 @@
     font-size: 14px;
 }
 
+
 /* components.css hoặc tệp CSS chính của bạn */
+
 body[data-theme='light'] {
-    background-color: #fcf8ec; /* Màu nền cho chế độ sáng */
+    background-color: #fcf8ec;
+    /* Màu nền cho chế độ sáng */
 }
 
 body[data-theme='dark'] {
-    background-color: #333; /* Màu nền cho chế độ tối */
-    color: #fff; /* Màu chữ cho chế độ tối */
+    background-color: #333;
+    /* Màu nền cho chế độ tối */
+    color: #fff;
+    /* Màu chữ cho chế độ tối */
+}
+
+@media (min-width: 728px) {
+    .header {
+        contain-intrinsic-height: auto 1688px;
+    }
 }

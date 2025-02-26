@@ -1,12 +1,11 @@
 /* Tổng thể Header */
 
 .header {
-    background-color: #fff;
     color: #333;
     padding: 10px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -19,10 +18,10 @@
 }
 
 .header-container {
-    display: flex;
+    /* display: flex; */
     align-items: center;
-    justify-content: space-between;
-    max-width: 1200px;
+    /* justify-content: space-between;
+    max-width: 1200px; */
     margin: 0 auto;
 }
 
@@ -43,7 +42,7 @@
     font-size: 22px;
     font-weight: bold;
     /* gap: 10px; */
-    margin-left: 15px
+    margin-left: -10.5%
 }
 
 .logo {
@@ -85,20 +84,20 @@
 }
 
 .nav-list a:hover {
-    background-color: #d03d84;
+    background-color: #fffeaf;
     color: white;
 }
 
 
 /* Khu vực bên phải */
 
-.header-actions {
+
+/* .header-actions {
     display: flex;
     align-items: center;
     /* gap: 15px; */
-}
 
-
+*/
 /* Ô tìm kiếm */
 
 .search-box {
@@ -123,7 +122,7 @@
     background: none;
     border: none;
     cursor: pointer;
-    color: #ff66a3;
+    color: #ffffff;
 }
 
 
@@ -143,7 +142,7 @@
 }
 
 .notification-button:hover {
-    color: #ff66a3;
+    color: #f6ef8b;
 }
 
 .notification-badge {
@@ -173,7 +172,7 @@
 }
 
 .profile-button:hover {
-    color: #ff66a3;
+    color: #f6ef8b;
 }
 
 
@@ -201,7 +200,7 @@
 }
 
 .dropdown-item:hover {
-    background: #ff99cc;
+    background: #2f7119;
     color: white;
 }
 

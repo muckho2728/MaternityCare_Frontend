@@ -35,7 +35,7 @@ const Home = () => {
                     </div>
 
                     <div className="feature-container">
-                        <div className="feature-card" onClick={() => navigate('/pregnancy-tracking')}>
+                        <div className="feature-card" onClick={() => navigate('/create-fetus')}>
                             <img src="https://via.placeholder.com/150" alt="Theo dõi thai kỳ" />
                             <h3>Theo dõi thai kỳ</h3>
                             <p>Cập nhật sự phát triển của bé theo từng tuần.</p>
@@ -45,7 +45,7 @@ const Home = () => {
                             <h3>Đặt lịch khám</h3>
                             <p>Đặt lịch hẹn với bác sĩ.</p>
                         </div>
-                        <div className="feature-card" onClick={() => navigate('/services')}>
+                        <div className="feature-card" onClick={() => navigate('/view-package')}>
                             <img src="https://via.placeholder.com/150" alt="Dịch vụ chăm sóc" />
                             <h3>Dịch vụ chăm sóc</h3>
                             <p>Các dịch vụ hỗ trợ sức khỏe mẹ và bé.</p>

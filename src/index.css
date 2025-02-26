@@ -17,7 +17,7 @@ body,
 }
 
 .app {
-    display: flex;
+    /* display: flex; */
     flex-direction: column;
     min-height: 100vh;
     background: #fcf8ec;
@@ -27,12 +27,4 @@ body,
 .main-content {
     flex: 1;
     /* Tự động mở rộng để đẩy footer xuống */
-}
-
-.footer {
-    width: 100%;
-    background-color: linear-gradient(3deg, #eb72b4e8, #66abff);
-    /* Màu nền tùy chỉnh */
-    padding: 10px;
-    text-align: center;
 }
