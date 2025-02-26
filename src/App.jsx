@@ -21,6 +21,8 @@ import PackageList from './pages/PackageList/PackageList'
 //import PaymentDetail from './pages/PaymentDetail';  // Adjust the path if necessary
 import CreatePackage from './pages/Admin/CreatePackage';  // Adjust the path if necessary
 import { ThemeProvider } from './constants/ThemeContext';
+import Pregnancy from './pages/Pregnancy/Pregnancy';
+import { FetusProvider } from './constants/FetusContext'
 
 
 
@@ -57,6 +59,7 @@ const isLoginRegister = location.pathname === '/login' || location.pathname === 
              {/* <Route path="/update-package" element={<UpdatePackage />} /> */}
               {/* <Route path="/forget-password" element={<ForgetPage />} /> */}
               <Route path="/Censor" element={<Censor />} />
+              <Route path="/pregnancy" element={<Pregnancy />} />
             </Routes>
             <ToastContainer/>
           </main>
@@ -70,9 +73,11 @@ function App() {
     <ThemeProvider>
     <AuthProvider>
       <Provider store={store}>
+      <FetusProvider>
         <Router>
           <Layout />
         </Router>
+        </FetusProvider>
       </Provider>
     </AuthProvider>
     </ThemeProvider>

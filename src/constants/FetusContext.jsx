@@ -1,15 +1,11 @@
 import React, { createContext, useState } from 'react';
 
-export const CreateFetusContext = createContext();
-export const CreateFetusHealthContext = createContext();
+export const FetusContext = createContext();
 
-export const FetusProvider = ({ items }) => {
-    const [fetusData, setFetusData] = useState({
-        conceptionDate: '',
-    });
-
+export const FetusProvider = ({ children }) => {
+    const [fetusData, setFetusData] = useState(null);
     const [healthData, setHealthData] = useState({
-        weeks: '', // Thêm trường weeks để lưu trữ thông tin tuần
+        weeks: '', 
         headCircumference: '',
         amnioticFluidLevel: '',
         crownRumpLength: '',
@@ -21,10 +17,8 @@ export const FetusProvider = ({ items }) => {
     });
 
     return (
-        <CreateFetusContext.Provider value={{ fetusData, setFetusData }}>
-            <CreateFetusHealthContext.Provider value={{ healthData, setHealthData }}>
-                <Menu items={items} />
-            </CreateFetusHealthContext.Provider>
-        </CreateFetusContext.Provider>
+        <FetusContext.Provider value={{ fetusData, healthData }}>
+            {children}
+        </FetusContext.Provider>
     );
 };

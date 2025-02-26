@@ -1,10 +1,32 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import './ViewFetusHealth.css';
-import { CreateFetusContext, CreateFetusHealthContext } from '../../constants/FetusContext'; 
+import { FetusContext } from "../../constants/FetusContext";
+import api from '../../constants/axios';
 
 const ViewFetusHealth = () => {
-    const { fetusData } = useContext(CreateFetusContext); 
-    const { healthData } = useContext(CreateFetusHealthContext); 
+    const { fetusData } = useContext(FetusContext);
+    const [healthData, setHealthData] = useState(null);
+    
+    useEffect(() => {
+        const fetchData = async () => {
+            if (!fetusData) return;
+
+            const fetusId = fetusData.id;
+            try {
+                const response = await api.get(`https://maternitycare.azurewebsites.net/api/fetuses/${fetusId}/fetus-healths`);
+                setHealthData(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchData();
+    }, [fetusData]);
+
+    if (!fetusData || !healthData) {
+        return <div>Không có dữ liệu thai nhi hoặc sức khỏe.
+        </div>;
+    }
 
     return (
         <div className='view-fetus-health'>

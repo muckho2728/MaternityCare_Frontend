@@ -1,4 +1,4 @@
-import { activeUserAPI, getAllUserAPI, getUserByIdAPI, updateUserAPI, changePasswordByUserIdAPI, getCurrentUserAPI } from '../../../apis/userAPI';
+import { activeUserAPI, getAllUserAPI, getUserByIdAPI, updateUserAPI, changePasswordByUserIdAPI, getCurrentUserAPI } from '../../../config/userAPI';
 import { setListUser, setUser, setCurrentUser } from '../reducers/userReducer';
 
 export const fetchUsersAction = () => {
