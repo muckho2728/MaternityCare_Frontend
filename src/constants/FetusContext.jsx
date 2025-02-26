@@ -17,7 +17,7 @@ export const FetusProvider = ({ children }) => {
     });
 
     return (
-        <FetusContext.Provider value={{ fetusData, healthData }}>
+        <FetusContext.Provider value={{ fetusData, setFetusData, healthData, setHealthData }}>
             {children}
         </FetusContext.Provider>
     );

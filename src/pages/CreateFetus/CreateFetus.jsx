@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CreateFetus.css';
-import axios from '../../constants/axios';
 import { useAuth } from '../../constants/AuthContext';
 import { toast } from 'react-toastify';
 import api from '../../config/api';
