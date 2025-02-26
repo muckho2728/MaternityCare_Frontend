@@ -197,7 +197,7 @@ const Blog = () => {
                 </button>
               </div>
 
-              {/* Bình luận */}
+              
               <div className="blog-comments">
                 {blog.comments.map(comment => (
                   
@@ -231,7 +231,10 @@ const Blog = () => {
                       </button>
                     </div>
   
-                ))}
+                )
+              )
+              
+            }
 
                 {/* Ô nhập bình luận */}
                 <input
