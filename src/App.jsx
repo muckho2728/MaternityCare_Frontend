@@ -1,8 +1,9 @@
+import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './store/config';
 import ManageUsersPage from './pages/Admin/ManageUsersPage';
 import Profile from './pages/Profile/Profile';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import CreateFetus from './pages/CreateFetus/CreateFetus'
 import CreateFetusHealth from './pages/CreateFetusHealth/CreateFetusHealth'
 import Header from './components/Header/Header'
@@ -19,23 +20,25 @@ import Censor from './pages/AdminCensor/Censor'
 import PackageList from './pages/PackageList/PackageList'
 //import PaymentDetail from './pages/PaymentDetail';  // Adjust the path if necessary
 import CreatePackage from './pages/Admin/CreatePackage';  // Adjust the path if necessary
-
+import { ThemeProvider } from './constants/ThemeContext';
 
 
 
 //import PackageList from './pages/PackageList/PackageList'
 
-// import PaymentPage from './pages/PaymentPage/PaymentPage';
+//import PaymentPage from './pages/PaymentPage/PaymentPage';
 //import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
 //import CreatePackage from './pages/Admin/CreatePackage';
 //import UpdatePackage from './pages/Admin/UpdatePackage';
-function App() {
+
+
+function Layout() {
+const location = useLocation()
+const isLoginRegister = location.pathname === '/login' || location.pathname === '/register';
+
   return (
-    <AuthProvider>
-      <Provider store={store}>
-      <Router>
         <div className="app">
-          <Header />
+          {!isLoginRegister && <Header />}
           <main className="main-content">
             <Routes>
               <Route path="/" element={<Home />} />
@@ -54,15 +57,25 @@ function App() {
              {/* <Route path="/update-package" element={<UpdatePackage />} /> */}
               {/* <Route path="/forget-password" element={<ForgetPage />} /> */}
               <Route path="/Censor" element={<Censor />} />
-
             </Routes>
             <ToastContainer/>
           </main>
-          <Footer />
+          {!isLoginRegister && <Footer />}
         </div>
-      </Router>
+  );
+}
+
+function App() {
+  return (
+    <ThemeProvider>
+    <AuthProvider>
+      <Provider store={store}>
+        <Router>
+          <Layout />
+        </Router>
       </Provider>
     </AuthProvider>
+    </ThemeProvider>
   );
 }
 

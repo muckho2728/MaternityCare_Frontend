@@ -1,22 +1,18 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { FaSun, FaMoon } from "react-icons/fa"; // Import icon
 import './Header.css';
 import logo from '../../assets/MaternityCare.png';
 import { useAuth } from '../../constants/AuthContext';
+import { useTheme } from '../../constants/ThemeContext';
 
 const Header = () => {
     const { user, logout } = useAuth();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [notifications] = useState(3); // Giả sử có 3 thông báo
-    const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        document.body.setAttribute("data-theme", theme);
-        localStorage.setItem("theme", theme);
-    }, [theme]);
+    const { theme, toggleTheme } = useTheme();
 
     const handleLogout = () => {
         logout();
@@ -27,11 +23,6 @@ const Header = () => {
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
     };
-
-    const toggleTheme = () => {
-        setTheme((prev) => (prev === "light" ? "dark" : "light"));
-    };
-
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -46,7 +37,10 @@ const Header = () => {
     }, []);
 
     return (
-        <header className="header">
+        <header className={`header header-${theme}`}>
+            <button className="toggle-theme" onClick={toggleTheme}>
+                {theme === 'light' ? '🌙' : '☀️'}
+            </button>
             <div className="header-container">
                 <div className="logo-section">
                     <Link to="/" className="logo-link">
@@ -98,12 +92,6 @@ const Header = () => {
                                 <div className="dropdown-menu">
                                     <Link to="/profile" className="dropdown-item">Hồ sơ người dùng</Link>
                                     <Link to="/user-profile" className="dropdown-item">Hồ sơ sức khỏe</Link>
-                                    
-                                    {/* 🌞 / 🌙 Chế độ sáng/tối */}
-                                    <button className="dropdown-item" onClick={toggleTheme}>
-                                        {theme === "light" ? <FaMoon /> : <FaSun />} {theme === "light" ? "Chế độ tối" : "Chế độ sáng"}
-                                    </button>
-
                                     {/* 🔴 Đăng xuất */}
                                     <button className="dropdown-item logout-button" onClick={handleLogout}>
                                         Đăng xuất
