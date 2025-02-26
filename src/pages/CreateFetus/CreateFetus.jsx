@@ -4,6 +4,7 @@ import './CreateFetus.css';
 import axios from '../../constants/axios';
 import { useAuth } from '../../constants/AuthContext';
 import { toast } from 'react-toastify';
+import api from '../../config/api';
 
 const CreateFetus = () => {
     const navigate = useNavigate();
@@ -22,9 +23,6 @@ const CreateFetus = () => {
     });
 
     const userId = localStorage.getItem('userId');
-    console.log(userId);
-    const token = localStorage.getItem('token');
-    console.log(token);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -37,18 +35,19 @@ const CreateFetus = () => {
 
         setIsSubmitting(true); // Bắt đầu gửi request
         try {
-            // const response = await axios.post(`/api/users/${userId}fetuses`, fetusData, {
+            // // const response = await axios.post(`/api/users/${userId}fetuses`, fetusData, {
+            // //     headers: {
+            // //         Authorization: `Bearer ${token}`
+            // //     }
+            // // });
+            // const responseData = await axios.post(`https://maternitycare.azurewebsites.net/api/users/${userId}/fetuses`, fetusData,{
             //     headers: {
             //         Authorization: `Bearer ${token}`
             //     }
-            // });
-            const responseData = await axios.post(`https://maternitycare.azurewebsites.net/api/users/${userId}fetuses`, fetusData,{
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
-            )
-            console.log('Form submitted:', responseData);
+            // }
+            // )
+            const response = api.post(`users/${userId}/fetuses`,fetusData);
+            console.log('Form submitted:', response);
             toast.success("Thông tin thai kỳ đã được lưu thành công!");
             navigate('/create-fetus-health');
         } catch (error) {

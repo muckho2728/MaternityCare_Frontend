@@ -91,7 +91,7 @@ const Header = () => {
                             {isDropdownOpen && (
                                 <div className="dropdown-menu">
                                     <Link to="/profile" className="dropdown-item">Hồ sơ người dùng</Link>
-                                    <Link to="/user-profile" className="dropdown-item">Hồ sơ sức khỏe</Link>
+                                    <Link to="/view-fetus-health" className="dropdown-item">Hồ sơ sức khỏe</Link>
                                     {/* 🔴 Đăng xuất */}
                                     <button className="dropdown-item logout-button" onClick={handleLogout}>
                                         Đăng xuất
