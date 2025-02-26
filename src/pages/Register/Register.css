@@ -1,0 +1,125 @@
+/* Chỉnh lại bố cục trang */
+
+.register-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    /* padding-top: 60px; */
+    /* Tạo khoảng cách với header */
+}
+
+
+/* Form đăng ký */
+
+.register-container {
+    width: 430px;
+    /* Slightly wider */
+    background: white;
+    padding: 40px;
+    /* More padding for a spacious look */
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    /* gap: 15px; */
+    margin-top: 20px;
+    /* More spacing between fields */
+    margin-bottom: 20px;
+}
+
+.register-container button {
+    width: 100%;
+    background-color: #007bff;
+    /* A softer red */
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.register-container button:hover {
+    background-color: #ff4f4f;
+    /* Slightly darker on hover */
+}
+
+
+/* Tiêu đề */
+
+.register-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+
+/* Nhóm nhập liệu */
+
+.form-group {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.form-group p {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 5px;
+}
+
+
+/* Ô nhập */
+
+.form-control {
+    width: 95%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+
+/* Nút đăng ký */
+
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background-color: #ff6b6b;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #e63946;
+}
+
+
+/* Link đăng nhập */
+
+.login-link {
+    display: block;
+}
+
+.login-link:hover {
+    color: #495057;
+    /* Màu tối hơn khi hover */
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .register-container {
+        width: 90%;
+        /* Adapt to smaller screens */
+        padding: 20px;
+    }
+}

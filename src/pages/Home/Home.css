@@ -1,0 +1,126 @@
+/* Định dạng tổng thể cho trang */
+
+.home {
+    background-color: #f8f9fa;
+    /* Màu nền sáng giống web mẫu */
+    font-family: 'Poppins', sans-serif;
+    /* Font chữ gần giống Colorlib Courses */
+}
+
+
+/* Căn chỉnh nội dung chính */
+
+.main-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    /* padding: 50px 0; */
+    background: #fcf8ec;
+}
+
+
+/* --- PHẦN SLIDE --- */
+
+.slide-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Hiệu ứng đổ bóng nhẹ */
+    border-radius: 10px;
+    overflow: hidden;
+    /* Giúp bo tròn góc */
+}
+
+.slide-container img {
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: cover;
+    /* Giữ hình ảnh luôn đẹp */
+}
+
+
+/* --- PHẦN GIỚI THIỆU --- */
+
+.introduction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.introduction h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+
+.introduction-text {
+    max-width: 800px;
+    line-height: 1.6;
+    font-size: 16px;
+    color: #555;
+}
+
+
+/* Hiệu ứng hover cho các đoạn text */
+
+.introduction-text p:hover {
+    color: #ff4d6d;
+    transition: 0.3s;
+}
+
+
+/* Container chứa các ô chức năng */
+
+.feature-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+    /* Đảm bảo không bị tràn khi màn hình nhỏ */
+}
+
+
+/* Card điều hướng */
+
+.feature-card {
+    width: 220px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 20px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.feature-card img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.feature-card h3 {
+    font-size: 18px;
+    color: #333;
+    margin: 10px 0;
+}
+
+.feature-card p {
+    font-size: 14px;
+    color: #777;
+}
+
+
+/* Hiệu ứng hover */
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}

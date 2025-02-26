@@ -1,0 +1,32 @@
+/* (Header, Footer, layout chính) */
+
+
+/* styles/layout.css */
+
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.section {
+    padding: 60px 0;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #fff;
+    background: var(--primary-color);
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #e65b54;
+}

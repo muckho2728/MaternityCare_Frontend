@@ -1,0 +1,184 @@
+/* 🎨 Tổng thể */
+
+.create-fetus-container {
+    max-width: 1100px;
+    margin: auto;
+    padding: 40px 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+
+/* 📌 Breadcrumb */
+
+.breadcrumb {
+    font-size: 14px;
+    margin-bottom: 15px;
+    color: #666;
+}
+
+.breadcrumb a {
+    text-decoration: none;
+    color: #d63384;
+    font-weight: bold;
+}
+
+.breadcrumb a:hover {
+    text-decoration: underline;
+}
+
+
+/* 🎀 Tiêu đề chính */
+
+.page-title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: bold;
+    color: #d63384;
+    margin-bottom: 20px;
+}
+
+
+/* 🏗️ Chia bố cục 2 phần */
+
+.layout {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+
+/* 📝 Các khối thông tin chuyển thành hộp vuông */
+
+.info-sections {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* 2 cột */
+    gap: 20px;
+}
+
+.info-box {
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+.info-box i {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+.pink {
+    background: #ff5c8a;
+}
+
+.blue {
+    background: #4a90e2;
+}
+
+.purple {
+    background: #7e57c2;
+}
+
+
+/* 📦 Box giới thiệu */
+
+.info-card {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+
+/* 📝 Form nhập thông tin */
+
+.fetus-form {
+    padding: 25px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    transition: all 0.3s;
+}
+
+
+/* 🎯 Ô nhập liệu */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    width: 100%;
+}
+
+.form-group label {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+input[type="date"] {
+    padding: 12px 15px;
+    border: 1.5px solid #e0a3b5;
+    border-radius: 10px;
+    font-size: 16px;
+    width: 90%;
+    background: rgba(255, 245, 248, 0.5);
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+input[type="date"]:focus {
+    border-color: #d63384;
+    background: white;
+    box-shadow: 0px 4px 10px rgba(214, 51, 132, 0.2);
+}
+
+
+/* 🔘 Nút lưu */
+
+.submit-button {
+    background: linear-gradient(135deg, #ff7eb3, #ff4d79);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+}
+
+.submit-button:hover {
+    background: linear-gradient(135deg, #ff5c8a, #d63384);
+    box-shadow: 0px 4px 12px rgba(255, 92, 138, 0.4);
+}
+
+
+/* 📱 Responsive */
+
+@media (max-width: 900px) {
+    .layout {
+        flex-direction: column;
+    }
+    .info-sections {
+        grid-template-columns: 1fr;
+    }
+    .fetus-form {
+        padding: 20px;
+    }
+}

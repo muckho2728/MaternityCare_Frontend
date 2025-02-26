@@ -1,0 +1,35 @@
+/* .footer {
+    background-color: #f8f9fa;
+    padding: 20px;
+    text-align: center;
+} */
+
+
+/* Đảm bảo trang web luôn có đủ chiều cao */
+
+html,
+body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Container chính chiếm hết chiều cao còn lại */
+
+.blog-container {
+    flex: 1;
+}
+
+
+/* Cố định footer ở dưới cùng */
+
+.footer {
+    background-color: linear-gradient(8deg, #eb72b4e8, #66abff);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+    width: 100%;
+    position: relative;
+    bottom: 0;
+}

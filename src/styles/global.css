@@ -1,0 +1,26 @@
+/* (reset CSS, font, màu sắc chung) */
+
+
+/* styles/global.css */
+
+:root {
+    --primary-color: #ff6f61;
+    /* Màu chính (đỏ cam, giống Colorlib) */
+    --secondary-color: #333;
+    /* Màu tối */
+    --light-color: #f8f9fa;
+    /* Màu nền sáng */
+    --dark-color: #212529;
+    /* Màu nền tối */
+    --text-color: #555;
+    /* Màu chữ chính */
+    --font-primary: "Poppins", sans-serif;
+}
+
+body {
+    font-family: var(--font-primary);
+    color: var(--text-color);
+    background-color: var(--light-color);
+    margin: 0;
+    padding: 0;
+}

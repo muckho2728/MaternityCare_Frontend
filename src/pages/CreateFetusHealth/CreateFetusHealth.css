@@ -1,0 +1,91 @@
+.fetus-health-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.page-title {
+    text-align: center;
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+
+/* Bố cục 2 cột */
+
+.content {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+
+/* Cột trái: Hình minh họa */
+
+.left-section {
+    flex: 1;
+    text-align: center;
+}
+
+.baby-image {
+    width: 100%;
+    max-width: 250px;
+    border-radius: 10px;
+}
+
+.growth-info {
+    font-size: 14px;
+    color: #666;
+    margin-top: 10px;
+}
+
+
+/* Cột phải: Form nhập dữ liệu */
+
+.right-section {
+    flex: 2;
+}
+
+.health-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 16px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.submit-button {
+    padding: 12px;
+    font-size: 18px;
+    color: #fff;
+    background: #ff5e6c;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.submit-button:hover {
+    background: #e54b5c;
+}

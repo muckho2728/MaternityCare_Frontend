@@ -1,62 +1,54 @@
-import axios from "axios"
-const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjZhMGM0MzRmLWI0YjgtNDM0Mi1hOTkxLWIzNDNmMmIwZWUzZCIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IkFkbWluIiwiZXhwIjoxNzM5NDY4MDg4LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MjMxIiwiYXVkIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzIzMSJ9.ajnCjcFJupzAuC9WUsR0ecsECvAmiAkJdXAKiiRJhTo';
+import axios from "axios";
 
-export const getAllUserAPI = () => {
-
-
-return axios({
-    method: 'GET',
-    url: `https://maternitycare.azurewebsites.net/api/users`,
+// Tạo instance Axios để quản lý API calls
+const apiClient = axios.create({
+    baseURL: "https://maternitycare.azurewebsites.net/api",
     headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token') || token}`
-    }
-})
-}
-
-export const getUserByIdAPI =(id) => {
-return axios({
-    method: 'GET',
-    url: `https://maternitycare.azurewebsites.net/api/users/${id}`,
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token') || token}`
-    }
-})
-} 
-
-export const updateUserAPI = (id, data) => {
-return axios({
-    method: 'PUT',
-    url: `https://maternitycare.azurewebsites.net/api/users/${id}`,
-    headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token') || token}`
+        "Content-Type": "application/json",
     },
-    data: data
-})
-}
+});
 
-
-
-export const  activeUserAPI = (id) => {
-return axios({
-    method: 'PUT',
-    url: `https://maternitycare.azurewebsites.net/api/users/${id}/activation`,
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token') || token}`
+// Thêm token vào headers trước mỗi request
+apiClient.interceptors.request.use((config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
     }
-})
-}
+    return config;
+}, (error) => {
+    return Promise.reject(error);
+});
 
-export const changePasswordByUserIdAPI = (id, data) => {
-return axios({
-    method: 'PUT',
-    url: `https://maternitycare.azurewebsites.net/api/users/${id}/password`,
-    headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token') || token}`
-    },
-    data: data
-})
-}
+// Xử lý lỗi chung cho tất cả API calls
+const handleRequest = async (apiCall) => {
+    
+    try {
+        console.log("apiCall",apiCall);
+        const response = await apiCall;
+        console.log("response",response);
+        return response.data;
+    } catch (error) {
+        console.error("API Error:", error.response?.data || error.message);
+        throw error.response?.data || error.message;
+    }
+};
+
+// 🟢 Lấy danh sách tất cả user
+export const getAllUserAPI = () => handleRequest(apiClient.get("/users"));
+
+
+export const getCurrentUserAPI = () => handleRequest(apiClient.get("/users/current"));
+
+// 🔍 Lấy thông tin user theo ID
+export const getUserByIdAPI = (id) => handleRequest(apiClient.get(`/users/${id}`));
+
+
+// 📝 Cập nhật thông tin user
+export const updateUserAPI = (id, data) => handleRequest(apiClient.put(`/users/${id}`, data));
+
+// ✅ Kích hoạt user
+export const activeUserAPI = (id) => handleRequest(apiClient.put(`/users/${id}/activation`));
+
+// 🔑 Đổi mật khẩu user
+export const changePasswordByUserIdAPI = (id, data) => handleRequest(apiClient.put(`/users/${id}/password`, data));
+

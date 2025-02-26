@@ -1,0 +1,44 @@
+.create-package {
+    padding: 40px;
+    background-color: #ffffff; /* Màu nền trắng để nổi bật hơn */
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 20px auto; /* Căn giữa trang và tạo khoảng cách phía trên */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e6e6e6; /* Viền nhẹ */
+    transition: transform 0.3s; /* Hiệu ứng chuyển động khi hover */
+}
+
+.create-package:hover {
+    transform: scale(1.02); /* Phóng to nhẹ khi hover */
+}
+
+.ant-form-item-label > label {
+    font-weight: bold; /* Làm cho label đậm hơn */
+    color: #333; /* Màu sắc cho label */
+}
+
+.ant-input, .ant-input-textarea {
+    border-radius: 4px; /* Bo tròn góc cho input */
+    border: 1px solid #d9d9d9; /* Viền nhẹ cho input */
+    transition: border-color 0.3s; /* Hiệu ứng chuyển động khi focus */
+}
+
+.ant-input:focus, .ant-input-textarea:focus {
+    border-color: #40a9ff; /* Màu viền khi focus */
+    box-shadow: 0 0 5px rgba(64, 169, 255, 0.5); /* Hiệu ứng đổ bóng khi focus */
+}
+
+.ant-btn-primary {
+    background-color: #1890ff; /* Màu nền cho nút */
+    border-color: #1890ff; /* Viền cho nút */
+}
+
+.ant-btn-primary:hover {
+    background-color: #40a9ff; /* Màu nền khi hover */
+    border-color: #40a9ff; /* Viền khi hover */
+}
+
+.ant-typography {
+    font-family: 'Arial', sans-serif; /* Font chữ cho trang */
+}
