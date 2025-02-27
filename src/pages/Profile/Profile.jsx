@@ -85,7 +85,6 @@ console.log(userDetailData)
       const response = await fetch(previewAvatar);
       const blob = await response.blob();
 
-      // Lấy tên gốc từ URL nếu có
       const fileName = previewAvatar.split('/').pop() || 'avatar.png';
 
       formData.append('avatar', blob, fileName);
@@ -128,7 +127,6 @@ console.log(userDetailData)
     <Layout >
       <Content style={{ padding: '12px', marginTop: '24px', maxWidth: '1400px', margin: '0 auto', marginLeft: '50px' }}>
         <Row gutter={24}>
-          {/* Menu bên trái */}
           <Col span={6}>
             <Card style={{ borderRadius: '8px', backgroundColor: '#f9f9f9', padding: '10px' }}>
               <Menu mode="vertical" defaultSelectedKeys={['1']} style={{ border: 'none' }} items={[
@@ -145,12 +143,29 @@ console.log(userDetailData)
                 {
                   key: '3',
                   icon: <TeamOutlined />,
-                  label: 'Quản lý đội',
+                  label: 'Quản lý',
                   children: [
                     {
                       key: '3-1',
                       icon: <FileSearchOutlined />,
-                      label: <Link to ="/Censor">Duyệt bài</Link>,
+                      label: <Link to ="/Censor">Quản lý người dùng</Link>,
+                    },
+                    {
+                      key: '3-2',
+                      icon: <FileSearchOutlined />,
+                      label: <Link to ="/Censor">Quản lý thông tin thai kỳ</Link>,
+                    },
+                    {
+                      key: '3-3',
+                      icon: <FileSearchOutlined />,
+                      label: 'Quản lý bài viết',
+                      children: [
+                        {
+                          key: '3-3-1',
+                          icon: <FileSearchOutlined />,
+                          label: <Link to ="/Censor">Duyệt bài viết</Link>,
+                        }
+                      ]
                     },
                   ],
                 },
