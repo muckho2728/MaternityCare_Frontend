@@ -1,16 +1,18 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
-//import logo from '../../assets/MaternityCare.png';
+import logo from '../../assets/MaternityCare.png';
 import { useAuth } from '../../constants/AuthContext';
+import { useTheme } from '../../constants/ThemeContext';
 
-const Header = () => {
+const Header = ({ healthData }) => {
     const { user, logout } = useAuth();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [notifications] = useState(3); // Giả sử có 3 thông báo
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
 
+    const { theme, toggleTheme } = useTheme();
 
     const handleLogout = () => {
         logout();
@@ -34,22 +36,23 @@ const Header = () => {
         };
     }, []);
 
-    // const showSidebar = () => {
-    //     const sidebar = document.querySelector('.sidebar');
-    //     sidebar.style.display = 'flex';
-    // };
-
-    // const hideSidebar = () => {
-    //     const sidebar = document.querySelector('.sidebar');
-    //     sidebar.style.display = 'none';
-    // };
+    const handleHealthClick = () => {
+        if (healthData) { 
+            navigate('/pregnancy');
+        }else{
+            navigate('/create-fetus');
+        }
+    };
 
     return (
-        <header className="header">
+        <header className={`header header-${theme}`}>
+            <button className="toggle-theme" onClick={toggleTheme}>
+                {theme === 'light' ? '🌙' : '☀️'}
+            </button>
             <div className="header-container">
-                <div className="logo-section"  onClick={() => navigate('/')}>
-                    <Link to="/src/assets/Vector.png" className="logo-link">
-                        <img src="/src/assets/Vector.png" alt="Baby Logo" className="logo" />
+                <div className="logo-section">
+                    <Link to="/" className="logo-link">
+                        <img src={logo} alt="Baby Logo" className="logo" />
                         <span className="brand-name">Maternity Care</span>
                     </Link>
                 </div>
@@ -61,32 +64,7 @@ const Header = () => {
                         <li><Link to="/view-package">Dịch Vụ</Link></li>
                         <li><Link to="/booking">Đặt Lịch</Link></li>
                     </ul>
-                    {/* <ul className='sidebar'>
-                        <li onClick={hideSidebar}><a href="#"><svg xmlns='../../assets/X.svg' height={26} viewBox='0 96 960 960' width={26}></svg></a></li>
-                        <li><a href="#"></a><Link to="/">Trang Chủ</Link></li>
-                        <li><a href="#"></a><Link to="/community">Diễn Đàn</Link></li>
-                        <li><a href="#"></a><Link to="/create-fetus">Theo Dõi Thai Kỳ</Link></li>
-                        <li><a href="#"></a><Link to="/view-package">Dịch Vụ</Link></li>
-                        <li><a href="#"></a><Link to="/booking">Đặt Lịch</Link></li>
-                        <li><a href="#"></a><Link to="/login" className="login-link">Đăng nhập</Link> </li>
-                        <li><a href="#"></a><Link to="/register" className="register-link">Đăng Ký</Link></li>
-                        <li onClick={showSidebar}><a href="#"><svg xmlns='../../assets/menu.svg' height={26} viewBox='0 96 960 960' width={26}></svg></a></li>
-                    </ul> */}
-
                 </nav>
-
-                <script>
-                    {`
-                    function showSiderbar() {
-                        const sidebar = document.querySelector('.sidebar');
-                        sidebar.style.display = 'flex';
-                    }
-                    function hideSiderbar() {
-                        const sidebar = document.querySelector('.sidebar');
-                        sidebar.style.display = 'none';
-                    }
-                    `}
-                </script>
 
                 <div className="header-actions">
                     <div className="search-box">
@@ -131,7 +109,7 @@ const Header = () => {
                         </div>
                     ) : (
                         <div className="auth-links">
-                            <Link to="/login" className="login-link">Đăng nhập</Link> 
+                            <Link to="/login" className="login-link">Đăng nhập</Link> /
                             <Link to="/register" className="register-link">Đăng Ký</Link>
                         </div>
                     )}
