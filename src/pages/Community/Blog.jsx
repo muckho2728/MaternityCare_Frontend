@@ -4,8 +4,7 @@ import { Trash2, Search, Plus, Heart, Edit } from "lucide-react";
 import "./Blog.css";
 import defaultImage from "../../assets/default-blog.jpg";
 //import Like from "../../components/Like/Like";
-
-
+import api from '../../constants/axios';
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
   const [tags, setTags] = useState([]);
@@ -29,9 +28,8 @@ const Blog = () => {
       .then((res) => res.json())
       .then((data) => setBlogs(data))
       .catch((err) => console.error("Error fetching blogs:", err));
-  }, []);
-
-  // Lọc bài viết theo tag và tìm kiếm
+    }, []);
+      // Lọc bài viết theo tag và tìm kiếm
   const filteredBlogs = blogs.filter((blog) => 
     (selectedTag ? blog.tagId === selectedTag : true) &&
     (blog.title.toLowerCase().includes(searchTerm.toLowerCase()) || 

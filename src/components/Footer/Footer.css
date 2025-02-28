@@ -33,11 +33,11 @@ body {
     bottom: 0;
 }
 
-@media (min-width: 728px) {
+/* @media (min-width: 728px) {
     .footer {
         margin-top: 60px;
     }
-}
+} */
 
 @media (min-width: 728px) {
     .footer {
