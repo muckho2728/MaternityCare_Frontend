@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Layout, Menu, Input, Button, Form, Typography, Card, Row, Col, Space, message, Upload } from 'antd';
-import { UserOutlined, HeartOutlined, TeamOutlined, FileSearchOutlined } from '@ant-design/icons';
+import { UserOutlined, HeartOutlined, TeamOutlined, FileSearchOutlined, EditOutlined, CameraOutlined } from '@ant-design/icons';
 import { updateUserByIdAction, changePassworbyUserIdAction, fetchUserByIdAction } from '../../../../MaternityCare_Frontend/src/store/redux/action/userAction';
 import api from '../../constants/axios';
 import { Link } from 'react-router-dom';
@@ -16,16 +16,16 @@ const Profile = () => {
   const userLogin = useSelector((state) => state.userReducer.currentUser);
   const userDetailData = useSelector((state) => state.userReducer.user);
   const [previewAvatar, setPreviewAvatar] = useState(null);
+  const [avatarFile, setAvatarFile] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [temp, setTemp] = useState("");
 
-  const [currentUser, setCurrentUser] = useState(null); // Sử dụng currentUser thay vì user
-console.log(userDetailData)
-  // Lấy thông tin người dùng hiện tại
+  const [currentUser, setCurrentUser] = useState(null);
+  console.log(userDetailData)
 
-  
   useEffect(() => {
     const fetchCurrentUser = async (url) => {
-      const token = localStorage.getItem('token'); // Lấy token từ localStorage
+      const token = localStorage.getItem('token');
       if (!token) {
         console.error('No token found');
         return;
@@ -34,11 +34,11 @@ console.log(userDetailData)
       try {
         const response = await api.get(url, {
           headers: {
-            Authorization: `Bearer ${token}`, // Thêm token vào header
+            Authorization: `Bearer ${token}`,
           },
         });
         console.log('Current user data:', response.data);
-        setCurrentUser(response.data); // Cập nhật currentUser thay vì user
+        setCurrentUser(response.data);
       } catch (error) {
         console.error('Failed to fetch current user:', error.response ? error.response.data : error.message);
         throw error;
@@ -46,20 +46,18 @@ console.log(userDetailData)
     };
 
     fetchCurrentUser('https://maternitycare.azurewebsites.net/api/authentications/current-user');
-  }, []); // Không phụ thuộc vào user
+  }, []);
 
   if (userLogin) {
     console.log('userDetailData:', userDetailData);
   }
-  // Gọi API để lấy thông tin chi tiết người dùng khi currentUser thay đổi
+
   useEffect(() => {
     if (currentUser && currentUser.id) {
       dispatch(fetchUserByIdAction(currentUser.id));
     }
-
   }, [currentUser, dispatch]);
 
-  // Cập nhật form khi userDetailData thay đổi
   useEffect(() => {
     if (userDetailData) {
       profileForm.setFieldsValue({
@@ -73,6 +71,11 @@ console.log(userDetailData)
         status: userDetailData?.status,
         cccd: userDetailData?.cccd,
       });
+      
+      // Set the avatar from user data
+      if (userDetailData.avatar) {
+        setPreviewAvatar(userDetailData.avatar);
+      }
     }
   }, [userDetailData, profileForm]);
 
@@ -81,13 +84,9 @@ console.log(userDetailData)
     formData.append('fullName', values.fullName);
     formData.append('dateOfBirth', values.dateOfBirth);
 
-    if (previewAvatar) {
-      const response = await fetch(previewAvatar);
-      const blob = await response.blob();
-
-      const fileName = previewAvatar.split('/').pop() || 'avatar.png';
-
-      formData.append('avatar', blob, fileName);
+    // Handle the avatar upload
+    if (avatarFile) {
+      formData.append('avatar', avatarFile);
     }
 
     dispatch(updateUserByIdAction(userDetailData.id, formData))
@@ -98,6 +97,7 @@ console.log(userDetailData)
       .catch((error) => {
         message.error('Cập nhật thông tin thất bại: ' + (error.message || 'Lỗi không xác định'));
       });
+    setIsEditing(false);
   };
 
   const handleSubmitPassword = (values) => {
@@ -116,11 +116,24 @@ console.log(userDetailData)
     dispatch(changePassworbyUserIdAction(userDetailData.id, userDetails))
       .then(() => {
         message.success('Đổi mật khẩu thành công!');
-        dispatch(fetchUserByIdAction(userDetailData.id));
+        passwordForm.resetFields();
       })
       .catch((error) => {
         message.error('Đổi mật khẩu thất bại: ' + (error.message || 'Lỗi không xác định'));
       });
+  };
+
+  const handleAvatarChange = (info) => {
+    const file = info.file;
+    setAvatarFile(file);
+    
+    // Preview the image
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setPreviewAvatar(e.target.result);
+    };
+    reader.readAsDataURL(file);
+    return false;
   };
 
   return (
@@ -138,7 +151,7 @@ console.log(userDetailData)
                 {
                   key: '2',
                   icon: <HeartOutlined />,
-                  label: <Link to ="/view-fetus-health">Xem thông tin sức khỏe</Link>,
+                  label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link>,
                 },
                 {
                   key: '3',
@@ -148,12 +161,12 @@ console.log(userDetailData)
                     {
                       key: '3-1',
                       icon: <FileSearchOutlined />,
-                      label: <Link to ="/Censor">Quản lý người dùng</Link>,
+                      label: <Link to="/Censor">Quản lý người dùng</Link>,
                     },
                     {
                       key: '3-2',
                       icon: <FileSearchOutlined />,
-                      label: <Link to ="/Censor">Quản lý thông tin thai kỳ</Link>,
+                      label: <Link to="/Censor">Quản lý thông tin thai kỳ</Link>,
                     },
                     {
                       key: '3-3',
@@ -163,7 +176,7 @@ console.log(userDetailData)
                         {
                           key: '3-3-1',
                           icon: <FileSearchOutlined />,
-                          label: <Link to ="/Censor">Duyệt bài viết</Link>,
+                          label: <Link to="/Censor">Duyệt bài viết</Link>,
                         }
                       ]
                     },
@@ -179,30 +192,44 @@ console.log(userDetailData)
               <Row gutter={24}>
                 <Col span={8} style={{ textAlign: 'center' }}>
                   <Title level={3}>Ảnh đại diện</Title>
-                  <Upload
-                    name="avatar"
-                    listType="picture-card"
-                    showUploadList={false}
-                    beforeUpload={(file) => {
-                      const reader = new FileReader();
-                      reader.onload = (e) => setPreviewAvatar(e.target.result);
-                      reader.readAsDataURL(file);
-                      profileForm.setFieldsValue({ avatar: [file] });
-                      return false;
-                    }}
-                  >
+                  <div style={{ position: 'relative', margin: '0 auto', width: '150px', height: '150px' }}>
                     <img
-                      src={previewAvatar || userDetailData.avatar}
+                      src={previewAvatar || 'https://via.placeholder.com/150?text=Avatar'}
                       alt="avatar"
                       style={{
-                        width: '100%',
+                        width: '150px',
+                        height: '150px',
                         borderRadius: '50%',
                         objectFit: 'cover',
+                        border: '2px solid #1890ff',
                       }}
                     />
-                  </Upload>
-                  <Title level={4}>{userLogin?.fullName}</Title>
-                  <p>{userLogin?.email}</p>
+                    {isEditing && (
+                      <Upload
+                        name="avatar"
+                        showUploadList={false}
+                        beforeUpload={(file) => {
+                          handleAvatarChange({ file });
+                          return false;
+                        }}
+                      >
+                        <Button 
+                          icon={<CameraOutlined />} 
+                          style={{ 
+                            position: 'absolute',
+                            bottom: '0',
+                            right: '0',
+                            borderRadius: '50%',
+                            backgroundColor: '#1890ff',
+                            color: 'white',
+                            border: 'none'
+                          }}
+                        />
+                      </Upload>
+                    )}
+                  </div>
+                  <Title level={4}>{userDetailData?.fullName || userLogin?.fullName}</Title>
+                  <p>{userDetailData?.email || userLogin?.email}</p>
                   <p>{userLogin?.phone}</p>
                   <p>{userLogin?.address}</p>
                 </Col>
@@ -210,14 +237,14 @@ console.log(userDetailData)
                 <Col span={16}>
                   <Title level={3}>Thông tin cá nhân</Title>
                   <Form
-                     form={profileForm}
-                     layout="vertical"
-                     style={{
-                       backgroundColor: '#f9f9f9',
-                       padding: '20px',
-                       borderRadius: '8px',
-                     }}
-                     onFinish={handleSubmit}
+                    form={profileForm}
+                    layout="vertical"
+                    style={{
+                      backgroundColor: '#f9f9f9',
+                      padding: '20px',
+                      borderRadius: '8px',
+                    }}
+                    onFinish={handleSubmit}
                   >
                     <Row gutter={16}>
                       <Col span={12}>
@@ -255,13 +282,23 @@ console.log(userDetailData)
                     <Form.Item>
                       <Space style={{ display: 'flex', justifyContent: 'center' }}>
                         {!isEditing ? (
-                          <Button type="primary" onClick={() => setIsEditing(true)} style={{ width: '100%' }}>
+                          <Button type="primary" icon={<EditOutlined />} onClick={() => setIsEditing(true)} style={{ width: '100%' }}>
                             Chỉnh sửa
                           </Button>
                         ) : (
-                          <Button type="primary" htmlType="submit" style={{ width: '100%' }}>
-                            Lưu
-                          </Button>
+                          <>
+                            <Button type="primary" onClick={() => profileForm.submit()} style={{ width: '48%' }}>
+                              Lưu
+                            </Button>
+                            <Button onClick={() => {
+                              setIsEditing(false);
+                              setPreviewAvatar(userDetailData.avatar);
+                              setAvatarFile(null);
+                              profileForm.resetFields();
+                            }} style={{ width: '48%' }}>
+                              Hủy
+                            </Button>
+                          </>
                         )}
                       </Space>
                     </Form.Item>
@@ -270,17 +307,44 @@ console.log(userDetailData)
                   <Form form={passwordForm} layout="vertical" style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '8px' }} onFinish={handleSubmitPassword}>
                     <Row gutter={16}>
                       <Col span={12}>
-                        <Form.Item label="Mật Khẩu Cũ" name="currentPassword">
+                        <Form.Item 
+                          label="Mật Khẩu Cũ" 
+                          name="currentPassword"
+                          rules={[
+                            { required: true, message: 'Vui lòng nhập mật khẩu cũ!' }
+                          ]}
+                        >
                           <Input.Password />
                         </Form.Item>
                       </Col>
                       <Col span={12}>
-                        <Form.Item label="Mật Khẩu Mới" name="newPassword">
+                        <Form.Item 
+                          label="Mật Khẩu Mới" 
+                          name="newPassword"
+                          rules={[
+                            { required: true, message: 'Vui lòng nhập mật khẩu mới!' },
+                            { min: 6, message: 'Mật khẩu phải có ít nhất 6 ký tự!' }
+                          ]}
+                        >
                           <Input.Password />
                         </Form.Item>
                       </Col>
                       <Col span={12}>
-                        <Form.Item label="Nhập Lại Mật Khẩu" name="confirmPassword">
+                        <Form.Item 
+                          label="Nhập Lại Mật Khẩu" 
+                          name="confirmPassword"
+                          rules={[
+                            { required: true, message: 'Vui lòng xác nhận mật khẩu mới!' },
+                            ({ getFieldValue }) => ({
+                              validator(_, value) {
+                                if (!value || getFieldValue('newPassword') === value) {
+                                  return Promise.resolve();
+                                }
+                                return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));
+                              },
+                            }),
+                          ]}
+                        >
                           <Input.Password />
                         </Form.Item>
                       </Col>
