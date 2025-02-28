@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Button, Col, Radio, Drawer, Row, Modal, Form, Input, Table, Select, notification, Upload, Space } from 'antd';
 import { EyeOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import styles from '../../assets/ManageUsersPage.module.scss';
 import { fetchUsersAction, updateUserByIdAction, fetchUserByIdAction, activateUserAction } from '../../store/redux/action/userAction';
+import { useDispatch, useSelector } from 'react-redux';
+
 const { confirm } = Modal;
 const { Option } = Select;
 
@@ -14,11 +15,12 @@ const ManageUsersPage = () => {
   const [form] = Form.useForm();
   const [filterRole, setFilterRole] = useState('all');
   const [searchValue, setSearchValue] = useState('');
-  const [previewAvatar, setPreviewAvatar] = useState(null);
+  const [previewAvatar, setPreviewAvatar] = useState('https://via.placeholder.com/150?text=Avatar'); // Avatar mặc định
+  const [avatarFile, setAvatarFile] = useState(null);
 
   const dispatch = useDispatch();
-  const usersData = useSelector(state => state.userReducer.listUser);
-  const userDetailData = useSelector(state => state.userReducer.user);
+  const usersData = useSelector((state) => state.userReducer.listUser);
+  const userDetailData = useSelector((state) => state.userReducer.user);
 
   useEffect(() => {
     dispatch(fetchUsersAction());
@@ -28,20 +30,55 @@ const ManageUsersPage = () => {
     setSearchValue(value.toLowerCase());
   };
 
-  const filteredUsersData = Array.isArray(usersData) ? usersData.filter(user => {
-    const userRole = user.role?.name?.toLowerCase() || '';
-    const matchesRole = filterRole === 'all' || userRole === filterRole;
-    const matchesSearch = !searchValue ||
-      (user.fullName && user.fullName.toLowerCase().includes(searchValue)) ||
-      (user.email && user.email.toLowerCase().includes(searchValue)) ||
-      (user.address && user.address.toLowerCase().includes(searchValue));
-    return matchesRole && matchesSearch;
-  }) : [];
+  const filteredUsersData = Array.isArray(usersData)
+    ? usersData.filter((user) => {
+        const userRole = user.role?.name?.toLowerCase() || '';
+        const matchesRole = filterRole === 'all' || userRole === filterRole;
+        const matchesSearch =
+          !searchValue ||
+          (user.fullName && user.fullName.toLowerCase().includes(searchValue)) ||
+          (user.email && user.email.toLowerCase().includes(searchValue)) ||
+          (user.address && user.address.toLowerCase().includes(searchValue));
+        return matchesRole && matchesSearch;
+      })
+    : [];
 
   const showDrawer = (title, user = null) => {
     setDrawerTitle(title);
     setSelectedUser(user);
     setOpen(true);
+    if (user?.id) {
+      dispatch(fetchUserByIdAction(user.id));
+    }
+  };
+
+  useEffect(() => {
+    if (userDetailData) {
+      form.setFieldsValue({
+        fullName: userDetailData.fullName || '',
+        email: userDetailData.email || '',
+        roleId: userDetailData.role?.name || '',
+        dateOfBirth: userDetailData.dateOfBirth || '',
+        avatar: userDetailData.avatar || '',
+        experience: userDetailData.experience || 0,
+        isActive: userDetailData.isActive ? 'true' : 'false',
+        subscription: userDetailData.subscription || '',
+      });
+
+      if (userDetailData.avatar) {
+        setPreviewAvatar(userDetailData.avatar);
+      } else {
+        setPreviewAvatar('https://via.placeholder.com/150?text=Avatar'); // Đặt lại avatar mặc định nếu không có avatar
+      }
+    }
+  }, [userDetailData, form]);
+
+  const closeDrawer = () => {
+    setOpen(false);
+    setSelectedUser(null);
+    setPreviewAvatar('https://via.placeholder.com/150?text=Avatar'); // Đặt lại avatar mặc định khi đóng drawer
+    setAvatarFile(null);
+    form.resetFields();
   };
 
   const handleSubmit = async (values) => {
@@ -51,20 +88,17 @@ const ManageUsersPage = () => {
       if (!userId) {
         throw new Error('User ID is undefined');
       }
-      
+
       const formData = new FormData();
       formData.append('fullName', values.fullName);
       formData.append('dateOfBirth', values.dateOfBirth);
 
-      if (previewAvatar) {
-        const response = await fetch(previewAvatar);
-        const blob = await response.blob();
-        const fileName = previewAvatar.split('/').pop() || 'avatar.png';
-        formData.append('avatar', blob, fileName);
+      if (avatarFile) {
+        formData.append('avatar', avatarFile);
       }
 
       await dispatch(updateUserByIdAction(userId, formData));
-      
+
       notification.success({
         message: 'Success',
         description: 'User information updated successfully',
@@ -80,41 +114,20 @@ const ManageUsersPage = () => {
     }
   };
 
-  useEffect(() => {
-    if (selectedUser) {
-      form.setFieldsValue({
-        id: userDetailData.id,
-        fullName: userDetailData.fullName || '',
-        username: userDetailData.username || '',
-        dateOfBirth: userDetailData.dateOfBirth || '',
-        email: userDetailData.email || '',
-        roleId: userDetailData.role?.name || '',
-        avatar: userDetailData.avatar || '',
-        experience: userDetailData.experience || 0,
-        isActive: userDetailData.isActive ? 'true' : 'false',
-        subscription: userDetailData.subscription || '',
-      });
-    }
-  }, [userDetailData, selectedUser, form]);
+  const handleAvatarChange = (info) => {
+    const file = info.file;
+    setAvatarFile(file);
 
-  const closeDrawer = () => {
-    setOpen(false);
-    setSelectedUser(null);
-    setPreviewAvatar(null);
-    form.resetFields();
-  };
-
-  const handleView = async (id) => {
-    try {
-      dispatch(fetchUserByIdAction(id));
-      showDrawer('View User', { userId: id });
-    } catch (error) {
-      console.error('Failed to fetch user details:', error);
-    }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      setPreviewAvatar(e.target.result);
+    };
+    reader.readAsDataURL(file);
+    return false;
   };
 
   const handleToggleStatus = (id) => {
-    const user = usersData.find(user => user.id === id);
+    const user = usersData.find((user) => user.id === id);
     if (user) {
       confirm({
         title: `Are you sure you want to ${user.isActive ? 'deactivate' : 'activate'} this user?`,
@@ -141,21 +154,26 @@ const ManageUsersPage = () => {
   const columns = [
     { title: 'Name', dataIndex: 'fullName', key: 'fullName' },
     { title: 'Email', dataIndex: 'email', key: 'email' },
-    { title: 'Role', dataIndex: 'role', key: 'role', render: role => role.name || 'Unknown' },
+    { title: 'Role', dataIndex: 'role', key: 'role', render: (role) => role.name || 'Unknown' },
     { title: 'Birthday', dataIndex: 'dateOfBirth', key: 'dateOfBirth' },
-    { 
-      title: 'Status', 
-      dataIndex: 'isActive', 
-      key: 'status', 
-      render: isActive => (isActive ? 'Active' : 'Inactive') 
+    {
+      title: 'Status',
+      dataIndex: 'isActive',
+      key: 'status',
+      render: (isActive) => (isActive ? 'Active' : 'Inactive'),
     },
     {
       title: 'Actions',
       key: 'actions',
       render: (text, record) => (
         <span>
-          <Button type="link" icon={<EyeOutlined />} onClick={() => handleView(record.id)}>View</Button>
-          <Button disabled={record.isActive} type="link" icon={<UserSwitchOutlined />} onClick={() => handleToggleStatus(record.id)}>
+          <Button type="link" icon={<EyeOutlined />} onClick={() => showDrawer('View User', record)}>View</Button>
+          <Button
+            disabled={record.isActive}
+            type="link"
+            icon={<UserSwitchOutlined />}
+            onClick={() => handleToggleStatus(record.id)}
+          >
             {record.isActive ? 'Deactivate' : 'Activate'}
           </Button>
         </span>
@@ -174,95 +192,66 @@ const ManageUsersPage = () => {
           />
         </Col>
       </Row>
-      <Radio.Group 
-        onChange={(e) => setFilterRole(e.target.value)} 
+      <Radio.Group
+        onChange={(e) => setFilterRole(e.target.value)}
         value={filterRole}
-        style={{ marginBottom: 16 }}>
+        style={{ marginBottom: 16 }}
+      >
         <Radio.Button value="all">All</Radio.Button>
-        <Radio.Button value="manager">Manager</Radio.Button>
-        <Radio.Button value="member">Member</Radio.Button>
-        <Radio.Button value="staff">Staff</Radio.Button>
       </Radio.Group>
-      <Table 
-        dataSource={filteredUsersData} 
-        columns={columns} 
-        rowKey="id" 
-      />
+      <Table dataSource={filteredUsersData} columns={columns} rowKey="id" />
       <Drawer
         title={drawerTitle}
         width={640}
         onClose={closeDrawer}
         visible={open}
-        afterVisibleChange={(visible) => {
-          if (!visible) {
-            form.resetFields();
-          }
-        }}
-        // extra={
-        //   <Space>
-        //     <Button onClick={closeDrawer}>Cancel</Button>
-        //     <Button type="primary" onClick={form.submit}>
-        //       Save
-        //     </Button>
-        //   </Space>
-        // }
       >
         <Form onFinish={handleSubmit} layout="vertical" form={form}>
           <Form.Item name="fullName" label="Full Name">
-            <Input placeholder="Please enter the full name" disabled />
+            <Input disabled />
           </Form.Item>
           <Form.Item name="email" label="Email">
-            <Input placeholder="Please enter the email" disabled />
+            <Input disabled />
           </Form.Item>
           <Form.Item name="roleId" label="Role">
-            <Select placeholder="Please select the role" disabled>
-              <Option value="manager">Manager</Option>
-              <Option value="staff">Staff</Option>
-              <Option value="member">Member</Option>
-            </Select>
+            <Input disabled />
           </Form.Item>
           <Form.Item name="dateOfBirth" label="Date of Birth">
-            <Input type="date" placeholder="Please enter the date of birth" disabled />
-          </Form.Item>
-          <Form.Item name="username" label="Username">
-            <Input placeholder="Please enter the username" disabled />
+            <Input type="date" disabled />
           </Form.Item>
           <Form.Item name="avatar" label="Avatar">
-            <Upload
-              name="avatar"
-              listType="picture-card"
-              showUploadList={false}
-              beforeUpload={(file) => {
-                const reader = new FileReader();
-                reader.onload = (e) => setPreviewAvatar(e.target.result);
-                reader.readAsDataURL(file);
-
-                form.setFieldsValue({ avatar: [file] });
-                return false; // Ngăn chặn upload tự động
-              }}
-            >
-              <img 
-                src={previewAvatar || userDetailData.avatar} 
-                alt="avatar" 
-                style={{ 
-                  width: '100%', 
-                  borderRadius: '50%',  
-                  objectFit: 'cover'    
-                }} 
+            <div style={{ position: 'relative', width: '150px', height: '150px', marginBottom: '16px' }}>
+              <img
+                src={previewAvatar}
+                alt="Avatar"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: '50%',
+                  objectFit: 'cover',
+                  border: '2px solid #1890ff',
+                }}
               />
-            </Upload>
-          </Form.Item>
-          <Form.Item name="experience" label="Experience">
-            <Input type="number" placeholder="Please enter the experience" disabled />
-          </Form.Item>
-          <Form.Item name="isActive" label="Status">
-            <Select placeholder="Please select the status" disabled>
-              <Option value="true">Active</Option>
-              <Option value="false">Inactive</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item name="subscription" label="Subscription">
-            <Input disabled />
+              <Upload
+                name="avatar"
+                showUploadList={false}
+                beforeUpload={handleAvatarChange}
+                style={{ position: 'absolute', bottom: 0, right: 0 }}
+              >
+                {/* <Button
+                  icon={<CameraOutlined />}
+                  style={{
+                    position: 'absolute',
+                    bottom: '0',
+                    right: '0',
+                    borderRadius: '50%',
+                    backgroundColor: '#1890ff',
+                    color: 'white',
+                    border: 'none',
+                  }}
+                /> */}
+              </Upload>
+            </div>
           </Form.Item>
         </Form>
       </Drawer>
