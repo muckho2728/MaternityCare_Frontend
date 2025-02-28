@@ -5,7 +5,8 @@ export const fetchUsersAction = () => {
   return async (dispatch) => {
     try {
       const res = await getAllUserAPI();
-      dispatch(setListUser(res.data));
+      console.log(res)
+      dispatch(setListUser(res));
     } catch (error) {
       console.error("Failed to fetch users:", error.response ? error.response.data : error.message);
     }
