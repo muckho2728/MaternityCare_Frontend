@@ -132,7 +132,7 @@ const Header = () => {
                     ) : (
                         <div className="auth-links">
                             <Link to="/login" className="login-link">Đăng nhập</Link> 
-                            <Link to="/register" className="register-link">Đăng Ký</Link>
+                            <Link to="/register" className="register-link">/Đăng Ký</Link>
                         </div>
                     )}
                 </div>
