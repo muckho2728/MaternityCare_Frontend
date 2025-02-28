@@ -3,8 +3,9 @@ import { Card, Typography, Row, Col, Layout, Menu, Input, Button, Form, Space, m
 import { UserOutlined, HeartOutlined, TeamOutlined, FileSearchOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { FetusContext } from '../../constants/FetusContext';
-import api from '../../constants/axios';
+import api from '../../config/api';
 import './ViewFetusHealth.css';
+import { useForm } from 'antd/es/form/Form';
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -12,27 +13,22 @@ const { Title } = Typography;
 const ViewFetusHealth = () => {
     const { fetusData, setFetusData, healthData, setHealthData } = useContext(FetusContext);
     const [isEditing, setIsEditing] = useState(false);
-    const [form] = Form.useForm();
+    const [form] = useForm();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const response = await api.get(`https://maternitycare.azurewebsites.net/api/users/${localStorage.getItem('userId')}/fetuses`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                const response = await api.get(`users/${localStorage.getItem('userId')}/fetuses`);
+                console.log(response.data);
                 
                 const fetusID = response.data[0].id;
-                const responseHealth = await api.get(`https://maternitycare.azurewebsites.net/api/fetuses/${fetusID}/fetus-healths`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                });
+                
+                const responseHealth = await api.get(`fetuses/${fetusID}/fetus-healths`);
                 
                 setFetusData(response.data[0]);
                 setHealthData(responseHealth.data[0]);
+                form.setFieldValue('conceptionDate', response.data[0].conceptionDate);
                 form.setFieldsValue(responseHealth.data[0]);
             } catch (error) {
                 console.error(error);
@@ -46,9 +42,7 @@ const ViewFetusHealth = () => {
             const values = await form.validateFields();
             const token = localStorage.getItem('token');
             
-            await api.post(`https://maternitycare.azurewebsites.net/api/fetuses/${fetusData.id}/fetus-healths`, values, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            await api.put(`users/${localStorage.getItem('userId')}/fetuses/${fetusData.id}`, values,);
             
             message.success('Cập nhật thông tin thành công!');
             setHealthData(values);
@@ -118,6 +112,7 @@ const ViewFetusHealth = () => {
                             <Title level={2} style={{ textAlign: 'center' }}>Thông tin sức khỏe thai nhi</Title>
                             <Form form={form} layout="vertical">
                                 <Row gutter={16}>
+                                    <Col span={12}><Form.Item label="Ngày thụ thai" value={fetusData.conceptionDate} name="conceptionDate"><Input disabled={!isEditing} /></Form.Item></Col>
                                     <Col span={12}><Form.Item label="Tuần thai" name="week"><Input disabled={!isEditing} /></Form.Item></Col>
                                     <Col span={12}><Form.Item label="Chu vi đầu (cm)" name="headCircumference"><Input disabled={!isEditing} /></Form.Item></Col>
                                     <Col span={12}><Form.Item label="Mức nước ối" name="amnioticFluidLevel"><Input disabled={!isEditing} /></Form.Item></Col>

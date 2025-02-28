@@ -1,0 +1,30 @@
+.pregnancy-container {
+    text-align: center; 
+}
+
+.rectangle-box {
+    padding: 20px; 
+    background-color: #f0f0f0; 
+    border-radius: 10px; 
+}
+
+.circle-box {
+    width: 100px; 
+    height: 100px; 
+    background-color: #4CAF50; 
+    color: white; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    margin: 0 auto; 
+}
+.info-section {
+    text-align: left; 
+}
+.ovulation-image {
+    width: 600px;
+    margin: 10px 0; 
+    border-radius: 10px; 
+  }
+  
