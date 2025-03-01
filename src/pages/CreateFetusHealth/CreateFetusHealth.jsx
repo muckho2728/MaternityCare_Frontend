@@ -109,7 +109,7 @@ const CreateFetusHealth = () => {
                             value={healthData.week}
                             onChange={handleChange}
                             required
-                            min="1"
+                            min="2"
                             max="41"
                         />
                     </div>
