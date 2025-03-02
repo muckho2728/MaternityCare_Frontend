@@ -23,6 +23,8 @@ import CreatePackage from './pages/Admin/CreatePackage';  // Adjust the path if 
 import { ThemeProvider } from './constants/ThemeContext';
 import Pregnancy from './pages/Pregnancy/Pregnancy';
 import { FetusProvider } from './constants/FetusContext'
+import ViewSlot from './pages/ViewSlot/ViewSlot';
+
 
 
 
@@ -35,51 +37,52 @@ import { FetusProvider } from './constants/FetusContext'
 
 
 function Layout() {
-const location = useLocation()
-const isLoginRegister = location.pathname === '/login' || location.pathname === '/register';
+  const location = useLocation()
+  const isLoginRegister = location.pathname === '/login' || location.pathname === '/register';
 
   return (
-        <div className="app">
-          {!isLoginRegister && <Header />}
-          <main className="main-content">
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/create-fetus" element={<CreateFetus />} />
-              <Route path="/create-fetus-health" element={<CreateFetusHealth />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/management-users" element={<ManageUsersPage />} />
-              <Route path="/profile" element={<Profile />} /> 
-              <Route path="/view-fetus-health" element={<ViewFetusHealth />} /> 
-              <Route path="/community" element={<Blog />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/package-list" element={<PackageList />} />
-              {/* <Route path="/payment-page" element={<PaymentPage />} /> */}
-            <Route path="/create-package" element={<CreatePackage />} />
-             {/* <Route path="/create-package" element={<CreatePackage />} /> */}
-             {/* <Route path="/update-package" element={<UpdatePackage />} /> */}
-              {/* <Route path="/forget-password" element={<ForgetPage />} /> */}
-              <Route path="/Censor" element={<Censor />} />
-              <Route path="/pregnancy" element={<Pregnancy />} />
-            </Routes>
-            <ToastContainer/>
-          </main>
-          {!isLoginRegister && <Footer />}
-        </div>
+    <div className="app">
+      {!isLoginRegister && <Header />}
+      <main className="main-content">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/create-fetus" element={<CreateFetus />} />
+          <Route path="/create-fetus-health" element={<CreateFetusHealth />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/management-users" element={<ManageUsersPage />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/view-fetus-health" element={<ViewFetusHealth />} />
+          <Route path="/community" element={<Blog />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/package-list" element={<PackageList />} />
+          {/* <Route path="/payment-page" element={<PaymentPage />} /> */}
+          <Route path="/create-package" element={<CreatePackage />} />
+          {/* <Route path="/create-package" element={<CreatePackage />} /> */}
+          {/* <Route path="/update-package" element={<UpdatePackage />} /> */}
+          {/* <Route path="/forget-password" element={<ForgetPage />} /> */}
+          <Route path="/Censor" element={<Censor />} />
+          <Route path="/booking" element={<ViewSlot />} />
+          <Route path="/pregnancy" element={<Pregnancy />} />
+        </Routes>
+        <ToastContainer />
+      </main>
+      {!isLoginRegister && <Footer />}
+    </div>
   );
 }
 
 function App() {
   return (
     <ThemeProvider>
-    <AuthProvider>
-      <Provider store={store}>
-      <FetusProvider>
-        <Router>
-          <Layout />
-        </Router>
-        </FetusProvider>
-      </Provider>
-    </AuthProvider>
+      <AuthProvider>
+        <Provider store={store}>
+          <FetusProvider>
+            <Router>
+              <Layout />
+            </Router>
+          </FetusProvider>
+        </Provider>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
