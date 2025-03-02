@@ -23,6 +23,8 @@ import CreatePackage from './pages/Admin/CreatePackage';  // Adjust the path if 
 import { ThemeProvider } from './constants/ThemeContext';
 import Pregnancy from './pages/Pregnancy/Pregnancy';
 import { FetusProvider } from './constants/FetusContext'
+import AdminLayout from './components/layout/AdminLayout';
+import ManagePackagePage from './pages/Admin/manage-package/ManagePackagePage';
 import ViewSlot from './pages/ViewSlot/ViewSlot';
 
 
@@ -61,7 +63,15 @@ function Layout() {
           {/* <Route path="/update-package" element={<UpdatePackage />} /> */}
           {/* <Route path="/forget-password" element={<ForgetPage />} /> */}
           <Route path="/Censor" element={<Censor />} />
-          <Route path="/booking" element={<ViewSlot />} />
+          <Route path="/admin" element={<AdminLayout />}
+            children={
+              [
+                <>
+                  <Route path='manage-user' element={<ManageUsersPage />} />
+                  <Route path='manage-packages' element={<ManagePackagePage />} />
+                </>
+              ]
+            } />
           <Route path="/pregnancy" element={<Pregnancy />} />
         </Routes>
         <ToastContainer />

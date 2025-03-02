@@ -1,10 +1,12 @@
 import { notification } from 'antd';
-import axios from 'axios';
+import api from '../../../config/api';
+
 
 export const fetchPackagesAction = () => async (dispatch) => {
   dispatch({ type: 'FETCH_PACKAGES_REQUEST' });
   try {
-    const response = await axios.get('/api/packages'); 
+    const response = await api.get("packages") 
+    console.log(response)
     dispatch({ type: 'FETCH_PACKAGES_SUCCESS', payload: response.data });
   } catch (error) {
     notification.error({

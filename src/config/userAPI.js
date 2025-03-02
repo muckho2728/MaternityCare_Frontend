@@ -1,25 +1,23 @@
 import axios from "axios";
+import api from "./api";
 
-// Tạo instance Axios để quản lý API calls
-const apiClient = axios.create({
-    baseURL: "https://maternitycare.azurewebsites.net/api",
-    headers: {
-        "Content-Type": "application/json",
-    },
-});
+// const apiClient = axios.create({
+//     baseURL: "https://maternitycare.azurewebsites.net/api",
+//     headers: {
+//         "Content-Type": "application/json",
+//     },
+// });
 
-// Thêm token vào headers trước mỗi request
-apiClient.interceptors.request.use((config) => {
-    const token = localStorage.getItem("token");
-    if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-}, (error) => {
-    return Promise.reject(error);
-});
+// apiClient.interceptors.request.use((config) => {
+//     const token = localStorage.getItem("token");
+//     if (token) {
+//         config.headers.Authorization = `Bearer ${token}`;
+//     }
+//     return config;
+// }, (error) => {
+//     return Promise.reject(error);
+// });
 
-// Xử lý lỗi chung cho tất cả API calls
 const handleRequest = async (apiCall) => {
     
     try {
@@ -34,21 +32,21 @@ const handleRequest = async (apiCall) => {
 };
 
 // 🟢 Lấy danh sách tất cả user
-export const getAllUserAPI = () => handleRequest(apiClient.get("/users"));
+export const getAllUserAPI = () => handleRequest(api.get("/users"));
 
 
-export const getCurrentUserAPI = () => handleRequest(apiClient.get("/users/current"));
+export const getCurrentUserAPI = () => handleRequest(api.get("/users/current"));
 
 // 🔍 Lấy thông tin user theo ID
-export const getUserByIdAPI = (id) => handleRequest(apiClient.get(`/users/${id}`));
+export const getUserByIdAPI = (id) => handleRequest(api.get(`/users/${id}`));
 
 
 // 📝 Cập nhật thông tin user
-export const updateUserAPI = (id, data) => handleRequest(apiClient.put(`/users/${id}`, data));
+export const updateUserAPI = (id, data) => handleRequest(api.put(`/users/${id}`, data));
 
 // ✅ Kích hoạt user
-export const activeUserAPI = (id) => handleRequest(apiClient.put(`/users/${id}/activation`));
+export const activeUserAPI = (id) => handleRequest(api.put(`/users/${id}/activation`));
 
 // 🔑 Đổi mật khẩu user
-export const changePasswordByUserIdAPI = (id, data) => handleRequest(apiClient.put(`/users/${id}/password`, data));
+export const changePasswordByUserIdAPI = (id, data) => handleRequest(api.put(`/users/${id}/password`, data));
 
