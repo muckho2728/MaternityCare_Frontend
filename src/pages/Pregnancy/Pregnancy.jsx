@@ -1,40 +1,75 @@
-import React from 'react'
-import './Pregnancy.css'
-import img1 from '../../assets/2-1.png'
-import img2 from '../../assets/2-2.png'
+import React from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import './Pregnancy.css';
+import img1 from '../../assets/2-1.png';
+import img2 from '../../assets/2-2.png';
+import { Button } from 'antd';
+import { useNavigate } from 'react-router-dom';
 
+const data = [
+  { name: 'Chu vi đầu', standard: 0, user: 0 },
+  { name: 'Chiều dài đầu mông', standard: 0, user: 0 },
+  { name: 'Đường kính lưỡng đỉnh', standard: 0, user: 0 },
+  { name: 'Chiều dài xương đùi', standard: 0, user: 0 },
+  { name: 'Chu vi bụng', standard: 0, user: 0 },
+  { name: 'Đường kính túi thai', standard: 0, user: 0 },
+];
 
 const Pregnancy = () => {
   const calculateDueDate = (conceptionDate) => {
     const date = new Date(conceptionDate);
     date.setMonth(date.getMonth() + 9);
     date.setDate(date.getDate() + 10);
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    return `${day}/${month}/${year}`;
+    return `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`;
   };
 
-  // const calculateWeeks = (conceptionDate, dueDate) => {
-  //   const date = new Date(conceptionDate);
-  //   const due = new Date(dueDate);
-  //   const weekNumber = Math.floor((due - date) / (1000 * 60 * 60 * 24 * 7));
-  //   const dayOfWeek = due.toLocaleString('default', { weekday: 'long' });
-  //   return { weekNumber, dayOfWeek };
-  // };
+  const navigate = useNavigate();
 
-  const dueDate = calculateDueDate('2025-02-28')
-  // const { weekNumber, dayOfWeek } = calculateWeeks('2025-02-28', dueDate);
+  const handleButtonClick = () => {
+    navigate('/Pregnancyw3');
+  };
+
+  const dueDate = calculateDueDate('2025-02-28');
 
   return (
     <div className='pregnancy-container'>
-            <h1 className="text-2xl font-bold mb-4 text-center">Theo Dõi Thai Kỳ</h1>   
-            <h2>Ngày dự sinh: {dueDate}</h2>
-            <div className='rectangle-box'>
-                <div className='circle-box'>
-                    <h3>2 tuần mang thai</h3>
-                </div>
-            </div>
+      <h1 className='text-2xl font-bold mb-4 text-center'>Theo Dõi Thai Kỳ</h1>
+      <h2>Ngày dự sinh: {dueDate}</h2>
+      
+      <div className='rectangle-box'>
+        <Button style={{backgroundColor: '#4CAF50', color: 'white', float: 'right', marginRight: '-20px', marginTop: '50px'}} onClick={handleButtonClick}>3</Button>
+        <div className='circle-box'>
+          <h3>2 tuần mang thai</h3>
+        </div>
+      </div>
+      
+      <div className='chart-container'>
+        <h3>Biểu đồ tăng trưởng</h3>
+        <ResponsiveContainer width='96%' height={300}>
+          <LineChart data={data}>
+            <CartesianGrid strokeDasharray='3 3' />
+            <XAxis dataKey='name' />
+            <YAxis domain={[0, 100]} />
+            <Tooltip />
+            <Legend />
+            <Line type='monotone' dataKey='standard' stroke='#ff0000' name='Dữ liệu chuẩn' />
+            <Line type='monotone' dataKey='user' stroke='#0000ff' name='Dữ liệu người dùng' />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+      <div className='weight-table'>
+        <div className='weight-box'>
+          <div className='weight-section'>
+            <h4>Trọng lượng thai người dùng</h4>
+            <p className='weight-value'> 0 g</p>
+          </div>
+          <div className='divider'></div>
+          <div className='weight-section'>
+            <h4>Trọng lượng thai tiêu chuẩn</h4>
+            <p className='weight-value'> 0 g</p>
+          </div>
+        </div>
+      </div>
             <div className="info-section">
               <h3>Điểm nổi bật trong tuần này</h3>
               <p>Bạn có mang thai trong tuần này không?</p>
