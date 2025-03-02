@@ -18,37 +18,61 @@ const ViewFetusHealth = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                const userId = localStorage.getItem('userId');
                 const token = localStorage.getItem('token');
-                const response = await api.get(`users/${localStorage.getItem('userId')}/fetuses`);
-                console.log(response.data);
+
+                // Fetch danh sách thai nhi
+                const response = await api.get(`users/${userId}/fetuses`);
                 
+                if (response.data.length === 0) {
+                    message.error("Không có dữ liệu thai nhi!");
+                    return;
+                }
+
                 const fetusID = response.data[0].id;
-                
+                localStorage.setItem('fetusId', fetusID); // Lưu vào localStorage
+
+                // Fetch thông tin sức khỏe thai nhi
                 const responseHealth = await api.get(`fetuses/${fetusID}/fetus-healths`);
-                
+
                 setFetusData(response.data[0]);
                 setHealthData(responseHealth.data[0]);
-                form.setFieldValue('conceptionDate', response.data[0].conceptionDate);
-                form.setFieldsValue(responseHealth.data[0]);
+                form.setFieldsValue({
+                    conceptionDate: response.data[0].conceptionDate,
+                    ...responseHealth.data[0]
+                });
             } catch (error) {
-                console.error(error);
+                console.error("Lỗi khi tải dữ liệu:", error);
+                message.error("Không thể tải dữ liệu, vui lòng thử lại!");
             }
         };
+
         fetchData();
     }, [form, setFetusData, setHealthData]);
 
     const handleSave = async () => {
         try {
             const values = await form.validateFields();
-            const token = localStorage.getItem('token');
-            
-            await api.put(`users/${localStorage.getItem('userId')}/fetuses/${fetusData.id}`, values,);
-            
+            const userId = localStorage.getItem('userId');
+
+            if (!fetusData || !healthData) {
+                message.error("Không có dữ liệu để cập nhật!");
+                return;
+            }
+
+            console.log("Updating fetus health for:", fetusData.id, "Week:", healthData.week);
+
+            // Cập nhật thông tin thai nhi
+            await api.put(`users/${userId}/fetuses/${fetusData.id}`, values);
+
+            // Cập nhật thông tin sức khỏe thai nhi
+            await api.put(`fetuses/${fetusData.id}/fetus-healths/${healthData.week}`, values);
+
             message.success('Cập nhật thông tin thành công!');
             setHealthData(values);
             setIsEditing(false);
         } catch (error) {
-            console.error('Validation failed:', error);
+            console.error('Lỗi khi cập nhật:', error);
             message.error('Cập nhật thất bại, vui lòng thử lại!');
         }
     };
@@ -61,7 +85,6 @@ const ViewFetusHealth = () => {
         <Layout>
             <Content style={{ padding: '12px', marginTop: '24px', maxWidth: '1400px', margin: '0 auto' }}>
                 <Row gutter={24}>
-
                     <Col span={6}>
                         <Card style={{ borderRadius: '8px', backgroundColor: '#f9f9f9', padding: '10px' }}>
                             <Menu mode="vertical" defaultSelectedKeys={['2']} style={{ border: 'none' }} items={[
@@ -80,30 +103,30 @@ const ViewFetusHealth = () => {
                                     icon: <TeamOutlined />,
                                     label: 'Quản lý',
                                     children: [
-                                      {
-                                        key: '3-1',
-                                        icon: <FileSearchOutlined />,
-                                        label: <Link to ="/Censor">Quản lý người dùng</Link>,
-                                      },
-                                      {
-                                        key: '3-2',
-                                        icon: <FileSearchOutlined />,
-                                        label: <Link to ="/Censor">Quản lý thông tin thai kỳ</Link>,
-                                      },
-                                      {
-                                        key: '3-3',
-                                        icon: <FileSearchOutlined />,
-                                        label: 'Quản lý bài viết',
-                                        children: [
-                                          {
-                                            key: '3-3-1',
+                                        {
+                                            key: '3-1',
                                             icon: <FileSearchOutlined />,
-                                            label: <Link to ="/Censor">Duyệt bài viết</Link>,
-                                          }
-                                        ]
-                                      },
+                                            label: <Link to="/Censor">Quản lý người dùng</Link>,
+                                        },
+                                        {
+                                            key: '3-2',
+                                            icon: <FileSearchOutlined />,
+                                            label: <Link to="/Censor">Quản lý thông tin thai kỳ</Link>,
+                                        },
+                                        {
+                                            key: '3-3',
+                                            icon: <FileSearchOutlined />,
+                                            label: 'Quản lý bài viết',
+                                            children: [
+                                                {
+                                                    key: '3-3-1',
+                                                    icon: <FileSearchOutlined />,
+                                                    label: <Link to="/Censor">Duyệt bài viết</Link>,
+                                                }
+                                            ]
+                                        },
                                     ],
-                                  },
+                                },
                             ]} />
                         </Card>
                     </Col>
@@ -112,25 +135,25 @@ const ViewFetusHealth = () => {
                             <Title level={2} style={{ textAlign: 'center' }}>Thông tin sức khỏe thai nhi</Title>
                             <Form form={form} layout="vertical">
                                 <Row gutter={16}>
-                                    <Col span={12}><Form.Item label="Ngày thụ thai" value={fetusData.conceptionDate} name="conceptionDate"><Input disabled={!isEditing} /></Form.Item></Col>
+                                    <Col span={12}><Form.Item label="Ngày thụ thai" name="conceptionDate"><Input disabled={!isEditing} /></Form.Item></Col>
                                     <Col span={12}><Form.Item label="Tuần thai" name="week"><Input disabled={!isEditing} /></Form.Item></Col>
-                                    <Col span={12}><Form.Item label="Chu vi đầu (cm)" name="headCircumference"><Input disabled={!isEditing} /></Form.Item></Col>
+                                    <Col span={12}><Form.Item label="Chu vi đầu (mm)" name="headCircumference"><Input disabled={!isEditing} /></Form.Item></Col>
                                     <Col span={12}><Form.Item label="Mức nước ối" name="amnioticFluidLevel"><Input disabled={!isEditing} /></Form.Item></Col>
-                                    <Col span={12}><Form.Item label="Chiều dài đầu mông (cm)" name="crownRumpLength"><Input disabled={!isEditing} /></Form.Item></Col>
-                                    <Col span={12}><Form.Item label="Đường kính lưỡng đỉnh (cm)" name="biparietalDiameter"><Input disabled={!isEditing} /></Form.Item></Col>
-                                    <Col span={12}><Form.Item label="Chiều dài xương đùi (cm)" name="femurLength"><Input disabled={!isEditing} /></Form.Item></Col>
+                                    <Col span={12}><Form.Item label="Chiều dài đầu mông (mm)" name="crownRumpLength"><Input disabled={!isEditing} /></Form.Item></Col>
+                                    <Col span={12}><Form.Item label="Đường kính lưỡng đỉnh (mm)" name="biparietalDiameter"><Input disabled={!isEditing} /></Form.Item></Col>
+                                    <Col span={12}><Form.Item label="Chiều dài xương đùi (mm)" name="femurLength"><Input disabled={!isEditing} /></Form.Item></Col>
                                     <Col span={12}><Form.Item label="Trọng lượng thai (kg)" name="estimatedFetalWeight"><Input disabled={!isEditing} /></Form.Item></Col>
-                                    <Col span={12}><Form.Item label="Chu vi bụng (cm)" name="abdominalCircumference"><Input disabled={!isEditing} /></Form.Item></Col>
-                                    <Col span={12}><Form.Item label="Đường kính tự thai (cm)" name="gestationalSacDiameter"><Input disabled={!isEditing} /></Form.Item></Col>
+                                    <Col span={12}><Form.Item label="Chu vi bụng (mm)" name="abdominalCircumference"><Input disabled={!isEditing} /></Form.Item></Col>
+                                    <Col span={12}><Form.Item label="Đường kính túi thai (mm)" name="gestationalSacDiameter"><Input disabled={!isEditing} /></Form.Item></Col>
                                 </Row>
                                 <Form.Item>
-                                    <Space style={{display: 'flex', justifyContent: 'center'}}>
+                                    <Space style={{ display: 'flex', justifyContent: 'center' }}>
                                         {!isEditing ? (
                                             <Button type="primary" onClick={() => setIsEditing(true)}>Chỉnh sửa</Button>
                                         ) : (
                                             <>
                                                 <Button type="primary" onClick={handleSave}>Lưu</Button>
-                                                <Button type="primary" onClick={() => setIsEditing(false)}>Hủy</Button>
+                                                <Button onClick={() => setIsEditing(false)}>Hủy</Button>
                                             </>
                                         )}
                                     </Space>

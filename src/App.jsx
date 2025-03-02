@@ -18,22 +18,15 @@ import Blog from './pages/Community/Blog'
 import { ToastContainer } from 'react-toastify';
 import Censor from './pages/AdminCensor/Censor'
 import PackageList from './pages/PackageList/PackageList'
-//import PaymentDetail from './pages/PaymentDetail';  // Adjust the path if necessary
-import CreatePackage from './pages/Admin/CreatePackage';  // Adjust the path if necessary
+//import PaymentDetail from './pages/PaymentDetail';  
+import CreatePackage from './pages/Admin/CreatePackage';  
 import { ThemeProvider } from './constants/ThemeContext';
 import Pregnancy from './pages/Pregnancy/Pregnancy';
 import { FetusProvider } from './constants/FetusContext'
 import AdminLayout from './components/layout/AdminLayout';
 import ManagePackagePage from './pages/Admin/manage-package/ManagePackagePage';
-
-
-
-//import PackageList from './pages/PackageList/PackageList'
-
-//import PaymentPage from './pages/PaymentPage/PaymentPage';
-//import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
-//import CreatePackage from './pages/Admin/CreatePackage';
-//import UpdatePackage from './pages/Admin/UpdatePackage';
+import ManageFetusHealth from './pages/Admin/ManageFetusHealth/ManageFetusHealth';
+import Pregnancyw3 from './pages/Pregnancy/Pregnancyw3';
 
 
 function Layout() {
@@ -67,10 +60,12 @@ function Layout() {
                 <>
                   <Route path='manage-user' element={<ManageUsersPage />} />
                   <Route path='manage-packages' element={<ManagePackagePage />} />
+                  <Route path='manage-fetus-health' element={<ManageFetusHealth />} />
                 </>
               ]
             } />
           <Route path="/pregnancy" element={<Pregnancy />} />
+          <Route path="/pregnancyw3" element={<Pregnancyw3 />} />
         </Routes>
         <ToastContainer />
       </main>
