@@ -25,8 +25,23 @@ import Pregnancy from './pages/Pregnancy/Pregnancy';
 import { FetusProvider } from './constants/FetusContext'
 import AdminLayout from './components/layout/AdminLayout';
 import ManagePackagePage from './pages/Admin/manage-package/ManagePackagePage';
+
+import ViewSlot from './pages/ViewSlot/ViewSlot';
+import CreateSlot from './pages/AdminCreateSlot/CreateSlot';
+
+
+
+
+//import PackageList from './pages/PackageList/PackageList'
+
+//import PaymentPage from './pages/PaymentPage/PaymentPage';
+//import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
+//import CreatePackage from './pages/Admin/CreatePackage';
+//import UpdatePackage from './pages/Admin/UpdatePackage';
+
 import ManageFetusHealth from './pages/Admin/ManageFetusHealth/ManageFetusHealth';
 import Pregnancyw3 from './pages/Pregnancy/Pregnancyw3';
+
 
 
 function Layout() {
@@ -54,6 +69,7 @@ function Layout() {
           {/* <Route path="/update-package" element={<UpdatePackage />} /> */}
           {/* <Route path="/forget-password" element={<ForgetPage />} /> */}
           <Route path="/Censor" element={<Censor />} />
+          <Route path="/booking" element={<ViewSlot />} />
           <Route path="/admin" element={<AdminLayout />}
             children={
               [
@@ -65,7 +81,11 @@ function Layout() {
               ]
             } />
           <Route path="/pregnancy" element={<Pregnancy />} />
+
+          <Route path="/createslot" element={<CreateSlot />} />
+
           <Route path="/pregnancyw3" element={<Pregnancyw3 />} />
+
         </Routes>
         <ToastContainer />
       </main>
