@@ -153,35 +153,6 @@ const Profile = () => {
                   icon: <HeartOutlined />,
                   label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link>,
                 },
-                {
-                  key: '3',
-                  icon: <TeamOutlined />,
-                  label: 'Quản lý',
-                  children: [
-                    {
-                      key: '3-1',
-                      icon: <FileSearchOutlined />,
-                      label: <Link to="/Censor">Quản lý người dùng</Link>,
-                    },
-                    {
-                      key: '3-2',
-                      icon: <FileSearchOutlined />,
-                      label: <Link to="/Censor">Quản lý thông tin thai kỳ</Link>,
-                    },
-                    {
-                      key: '3-3',
-                      icon: <FileSearchOutlined />,
-                      label: 'Quản lý bài viết',
-                      children: [
-                        {
-                          key: '3-3-1',
-                          icon: <FileSearchOutlined />,
-                          label: <Link to="/Censor">Duyệt bài viết</Link>,
-                        }
-                      ]
-                    },
-                  ],
-                },
               ]} />
             </Card>
           </Col>

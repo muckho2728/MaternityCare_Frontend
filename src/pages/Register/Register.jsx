@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Register.css';
 import api from '../../constants/axios';
 import { toast } from 'react-toastify';
-import registBanner from '../../assets/regisbanner.png';
+import registBanner from '../../assets/registachnen.png';
 import logo from '../../assets/MaternityCare.png';
 
 const Register = () => {
