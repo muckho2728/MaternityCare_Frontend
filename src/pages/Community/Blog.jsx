@@ -28,6 +28,14 @@ const Blog = () => {
       .catch((err) => console.error("Error fetching blogs:", err));
   }, []);
 
+
+  // Lọc bài viết theo tag và tìm kiếm
+  const filteredBlogs = blogs.filter((blog) =>
+    (selectedTag ? blog.tagId === selectedTag : true) &&
+    (blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      blog.content.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
+
   const handleImageUpload = (e, isEditing = false) => {
     const file = e.target.files[0];
     if (file) {
@@ -43,6 +51,7 @@ const Blog = () => {
       reader.readAsDataURL(file);
     }
   };
+
 
   const handleCreate = () => {
     if (!newBlog.title.trim() || !newBlog.content.trim()) return;
@@ -69,6 +78,77 @@ const Blog = () => {
   const handleSaveEdit = () => {
     setBlogs(blogs.map((b) => (b.id === editingBlog.id ? editingBlog : b)));
     setEditingBlog(null);
+
+    setNewBlog({ title: "", content: "", image: "" });
+  };
+
+  const handleDelete = (id) => {
+    setBlogs(blogs.filter(blog => blog.id !== id));
+  };
+
+  const handleDeleteComment = (blogId, commentId) => {
+    setBlogs(blogs.map(blog => {
+      if (blog.id === blogId) {
+        return {
+          ...blog,
+          comments: blog.comments.filter(comment => comment.id !== commentId)
+        };
+      }
+      return blog;
+    }));
+  };
+
+  const handleLikeComment = (blogId, commentId) => {
+    setBlogs(blogs.map(blog => {
+      if (blog.id === blogId) {
+        return {
+          ...blog,
+          comments: blog.comments.map(comment =>
+            comment.id === commentId ? { ...comment, likes: comment.likes + 1 } : comment
+          )
+        };
+      }
+      return blog;
+    }));
+  };
+
+  const handleUpdateComment = (blogId, commentId) => {
+    setBlogs(blogs.map(blog => {
+      if (blog.id === blogId) {
+        return {
+          ...blog,
+          comments: blog.comments.map(comment =>
+            comment.id === commentId ? { ...comment, text: commentInputs[commentId] || comment.text } : comment
+          )
+        };
+      }
+      return blog;
+    }));
+    setEditingComment(null);
+  };
+
+  const handleLike = (blogId) => {
+    setBlogs(blogs.map(blog =>
+      blog.id === blogId ? { ...blog, likes: blog.likes + 1 } : blog
+    ));
+  };
+
+  const handleComment = (blogId) => {
+    const commentText = commentInputs[blogId];
+    if (!commentText) return;
+
+    setBlogs(blogs.map(blog => {
+      if (blog.id === blogId) {
+        return {
+          ...blog,
+          comments: [...blog.comments, { id: Date.now(), user: "Anonymous", text: commentText, likes: 0 }]
+        };
+      }
+      return blog;
+    }));
+
+    setCommentInputs({ ...commentInputs, [blogId]: "" });
+
   };
 
   return (
@@ -111,6 +191,7 @@ const Blog = () => {
 
       {isCreating && (
         <div className="blog-form">
+
           <h2>Đăng bài viết</h2>
           <input
             type="text"
@@ -135,14 +216,77 @@ const Blog = () => {
           <button onClick={handleCreate} className="blog-btn-create">
             Đăng bài
           </button>
+
         </div>
       )}
 
       {blogs.length > 0 ? (
         blogs.map((blog) => (
           <div key={blog.id} className="blog-item">
-            {editingBlog?.id === blog.id ? (
-              <div className="blog-edit-form">
+
+            <img src={blog.image || defaultImage} alt="Blog" className="blog-item-image" />
+            <div className="blog-item-content">
+              <h3>{blog.title}</h3>
+              <p>{blog.content}</p>
+              <small>Tag: {tags.find(tag => tag.id === blog.tagId)?.name || "Không có"}</small>
+
+              {/* Các nút hành động */}
+              <div className="blog-item-actions">
+                <button className="blog-btn blog-btn-like" onClick={() => handleLike(blog.id)}>
+                  <Heart size={16} /> {blog.likes}
+                </button>
+                <button className="blog-btn blog-btn-delete" onClick={() => handleDelete(blog.id)}>
+                  <Trash2 size={16} />
+                </button>
+                {/* <button className="blog-btn blog-btn-comment">
+                  <MessageCircle size={16} /> Bình luận
+                </button> */}
+                <button className="blog-btn" onClick={() => handleEdit(blog)}>
+                  <Edit size={16} /> Chỉnh sửa
+                </button>
+              </div>
+
+
+              <div className="blog-comments">
+                {blog.comments.map(comment => (
+
+                  <div key={comment.id} className="blog-comment">
+                    <strong>{comment.user}</strong>:
+                    {editingComment?.id === comment.id ? (
+                      <input
+                        type="text"
+                        value={commentInputs[comment.id] || comment.text}
+                        onChange={(e) => setCommentInputs({ ...commentInputs, [comment.id]: e.target.value })}
+                        className="blog-input"
+                      />
+                    ) : (
+                      <span> {comment.text} </span>
+                    )}
+
+                    <button className="comment-like" onClick={() => handleLikeComment(blog.id, comment.id)}>
+                      <Heart size={14} /> {comment.likes}
+                    </button>
+
+                    {editingComment?.id === comment.id ? (
+                      <button className="comment-save" onClick={() => handleUpdateComment(blog.id, comment.id)}>Lưu</button>
+                    ) : (
+                      <button className="comment-edit" onClick={() => setEditingComment(comment)}>
+                        <Edit size={14} />
+                      </button>
+                    )}
+
+                    <button className="comment-delete" onClick={() => handleDeleteComment(blog.id, comment.id)}>
+                      <Trash2 size={14} />
+                    </button>
+                  </div>
+
+                )
+                )
+
+                }
+
+                {/* Ô nhập bình luận */}
+
                 <input
                   type="text"
                   value={editingBlog.title}
@@ -163,6 +307,7 @@ const Blog = () => {
                   <Save size={16} /> Lưu
                 </button>
               </div>
+
             ) : (
               <>
                 <img src={blog.image || defaultImage} alt="Blog" className="blog-item-image" />
@@ -181,7 +326,7 @@ const Blog = () => {
                       <Trash2 size={16} />
                     </button>
                   </div>
-                  <Comment blogId={blog.id} />
+                  <Comment/>
                 </div>
               </>
             )}

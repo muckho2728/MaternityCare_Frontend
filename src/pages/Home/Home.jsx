@@ -5,13 +5,13 @@ import slide2 from '../../assets/Slide2.jpg';
 import slide3 from '../../assets/Slide3.jpg';
 import slide4 from '../../assets/Slide4.jpg';
 import pregnancy from '../../assets/pregnancy.png';
-import booking from '../../assets/booking.png';
+import booking from '../../assets/booking.jpg';
 import packageImg from '../../assets/package.png';
 import communityImg from '../../assets/community.png';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
     return (
         <div className="home">
@@ -20,16 +20,16 @@ const Home = () => {
                     <div className="slide-container">
                         <Carousel autoplay>
                             <div>
-                                <img src={slide1} alt="Slide 1" style={{width: '100%', height: 'auto', maxHeight: '400px'}} />
+                                <img src={slide1} alt="Slide 1" style={{ width: '100%', height: 'auto', maxHeight: '400px' }} />
                             </div>
                             <div>
-                                <img src={slide2} alt="Slide 2" style={{width: '100%', height: 'auto', maxHeight: '400px'}} />
+                                <img src={slide2} alt="Slide 2" style={{ width: '100%', height: 'auto', maxHeight: '400px' }} />
                             </div>
                             <div>
-                                <img src={slide3} alt="Slide 3" style={{width: '100%', height: 'auto', maxHeight: '400px'}} />
+                                <img src={slide3} alt="Slide 3" style={{ width: '100%', height: 'auto', maxHeight: '400px' }} />
                             </div>
                             <div>
-                                <img src={slide4} alt="Slide 4" style={{width: '100%', height: 'auto', maxHeight: '400px'}} />
+                                <img src={slide4} alt="Slide 4" style={{ width: '100%', height: 'auto', maxHeight: '400px' }} />
                             </div>
                         </Carousel>
                     </div>
@@ -72,10 +72,10 @@ const Home = () => {
                             <li>💖 <strong>Dịch vụ chăm sóc:</strong> Các dịch vụ giúp mẹ bầu thư giãn và chăm sốc sức khỏe tốt nhất.</li>
                             <li>👩‍👩‍👦 <strong>Diễn đàn mẹ bầu:</strong> Kết nối với hàng ngàn mẹ bầu khác để cùng chia sẻ và học hỏi.</li>
                         </ul>
-                            <p>
-                                Chúng tôi mong muốn trở thành người đồng hành đáng tin cậy của mẹ bầu trong suốt hành trình mang thai.
-                                Hãy cùng Maternity Care trải nghiệm một thai kỳ an toàn và hạnh phúc! 🌸
-                            </p>
+                        <p>
+                            Chúng tôi mong muốn trở thành người đồng hành đáng tin cậy của mẹ bầu trong suốt hành trình mang thai.
+                            Hãy cùng Maternity Care trải nghiệm một thai kỳ an toàn và hạnh phúc! 🌸
+                        </p>
                     </div>
                 </section>
             </main>
