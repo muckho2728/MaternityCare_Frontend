@@ -33,10 +33,14 @@ const AdminLayout = () => {
   const location = useLocation();
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout
+      style={{
+        minHeight: '100vh',
+      }}
+    >
       <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
         <div className="demo-logo-vertical" />
-        <Menu theme="dark" defaultSelectedKeys={[location.pathname]} mode="inline" items={items} />
+        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }} />

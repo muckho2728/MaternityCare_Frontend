@@ -1,20 +1,20 @@
 import { Card, Col, Row, Button } from 'antd';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 import './PackageList.css';
-import { useEffect, useState } from 'react';  
+import { useEffect, useState } from 'react';
 import api from '../../config/api';
 
 
 const PackageList = () => {
   const navigate = useNavigate(); // Khởi tạo useNavigate
   const [packages, setPackages] = useState([]);
-  
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await api.get("packages");
         console.log(response.data);
-        
+
         // Map through the response data and convert feature string to an array
         const updatedPackages = response.data.map(pkg => ({
           ...pkg,
@@ -43,7 +43,10 @@ const PackageList = () => {
           {packages?.map(pkg => (
             <Col span={8} key={pkg.id}>
               <Card title={pkg.type} bordered={true} className="package-card">
+                <p className="package-type">Loại gói: {pkg.type}</p>
                 <p className="package-price">Giá: {pkg.price}</p>
+                <p className="package-duration">Thời hạn: {pkg.duration}</p>
+                <p className="package-features">Tính năng: {pkg.features}</p>
                 <ul>
                   {pkg.features.map((feature, index) => (
                     <li key={index}>{feature.trim()}</li> // Trim whitespace from features
