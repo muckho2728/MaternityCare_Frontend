@@ -234,7 +234,7 @@ const Blog = () => {
               
             }
 
-                {/* Ô nhập bình luận */}
+                {/* Ô nhập bình luận
                 <input
                   type="text"
                   placeholder="Viết bình luận..."
@@ -242,7 +242,7 @@ const Blog = () => {
                   value={commentInputs[blog.id] || ""}
                   onChange={(e) => setCommentInputs({ ...commentInputs, [blog.id]: e.target.value })}
                   onKeyDown={(e) => e.key === "Enter" && handleComment(blog.id)}
-                />
+                /> */}
               </div>
             </div>
             <Comment/>

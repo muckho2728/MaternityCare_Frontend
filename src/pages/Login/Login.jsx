@@ -7,7 +7,7 @@ import { useAuth } from '../../constants/AuthContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserByIdAction } from '../../store/redux/action/userAction'; // Đảm bảo import đúng action
 import Button from '../../components/Button';
-import loginBanner from '../../assets/loginbanner.png';
+import loginBanner from '../../assets/logintachnen.png';
 import logo from '../../assets/MaternityCare.png';
 
 const Login = () => {

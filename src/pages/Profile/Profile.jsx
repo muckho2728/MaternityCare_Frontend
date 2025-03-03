@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Layout, Menu, Input, Button, Form, Typography, Card, Row, Col, Space, message, Upload } from 'antd';
 import { UserOutlined, HeartOutlined, TeamOutlined, FileSearchOutlined, EditOutlined, CameraOutlined } from '@ant-design/icons';
-import { updateUserByIdAction, changePassworbyUserIdAction, fetchUserByIdAction } from '../../../../MaternityCare_Frontend/src/store/redux/action/userAction';
+import { updateUserByIdAction, changePassworbyUserIdAction, fetchUserByIdAction } from
+  '../../store/redux/action/userAction';
 import api from '../../constants/axios';
 import { Link } from 'react-router-dom';
 
@@ -71,7 +72,7 @@ const Profile = () => {
         status: userDetailData?.status,
         cccd: userDetailData?.cccd,
       });
-      
+
       // Set the avatar from user data
       if (userDetailData.avatar) {
         setPreviewAvatar(userDetailData.avatar);
@@ -126,7 +127,7 @@ const Profile = () => {
   const handleAvatarChange = (info) => {
     const file = info.file;
     setAvatarFile(file);
-    
+
     // Preview the image
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -213,9 +214,9 @@ const Profile = () => {
                           return false;
                         }}
                       >
-                        <Button 
-                          icon={<CameraOutlined />} 
-                          style={{ 
+                        <Button
+                          icon={<CameraOutlined />}
+                          style={{
                             position: 'absolute',
                             bottom: '0',
                             right: '0',
@@ -307,8 +308,8 @@ const Profile = () => {
                   <Form form={passwordForm} layout="vertical" style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '8px' }} onFinish={handleSubmitPassword}>
                     <Row gutter={16}>
                       <Col span={12}>
-                        <Form.Item 
-                          label="Mật Khẩu Cũ" 
+                        <Form.Item
+                          label="Mật Khẩu Cũ"
                           name="currentPassword"
                           rules={[
                             { required: true, message: 'Vui lòng nhập mật khẩu cũ!' }
@@ -318,8 +319,8 @@ const Profile = () => {
                         </Form.Item>
                       </Col>
                       <Col span={12}>
-                        <Form.Item 
-                          label="Mật Khẩu Mới" 
+                        <Form.Item
+                          label="Mật Khẩu Mới"
                           name="newPassword"
                           rules={[
                             { required: true, message: 'Vui lòng nhập mật khẩu mới!' },
@@ -330,8 +331,8 @@ const Profile = () => {
                         </Form.Item>
                       </Col>
                       <Col span={12}>
-                        <Form.Item 
-                          label="Nhập Lại Mật Khẩu" 
+                        <Form.Item
+                          label="Nhập Lại Mật Khẩu"
                           name="confirmPassword"
                           rules={[
                             { required: true, message: 'Vui lòng xác nhận mật khẩu mới!' },
