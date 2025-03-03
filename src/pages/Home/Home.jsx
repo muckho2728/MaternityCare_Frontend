@@ -5,7 +5,7 @@ import slide2 from '../../assets/Slide2.jpg';
 import slide3 from '../../assets/Slide3.jpg';
 import slide4 from '../../assets/Slide4.jpg';
 import pregnancy from '../../assets/pregnancy.png';
-import booking from '../../assets/booking.png';
+import booking from '../../assets/booking.jpg';
 import packageImg from '../../assets/package.png';
 import communityImg from '../../assets/community.png';
 import { useNavigate } from 'react-router-dom';

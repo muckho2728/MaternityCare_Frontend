@@ -26,6 +26,7 @@ import { FetusProvider } from './constants/FetusContext'
 import AdminLayout from './components/layout/AdminLayout';
 import ManagePackagePage from './pages/Admin/manage-package/ManagePackagePage';
 import ViewSlot from './pages/ViewSlot/ViewSlot';
+import CreateSlot from './pages/AdminCreateSlot/CreateSlot';
 
 
 
@@ -63,6 +64,7 @@ function Layout() {
           {/* <Route path="/update-package" element={<UpdatePackage />} /> */}
           {/* <Route path="/forget-password" element={<ForgetPage />} /> */}
           <Route path="/Censor" element={<Censor />} />
+          <Route path="/booking" element={<ViewSlot />} />
           <Route path="/admin" element={<AdminLayout />}
             children={
               [
@@ -73,6 +75,7 @@ function Layout() {
               ]
             } />
           <Route path="/pregnancy" element={<Pregnancy />} />
+          <Route path="/createslot" element={<CreateSlot />} />
         </Routes>
         <ToastContainer />
       </main>

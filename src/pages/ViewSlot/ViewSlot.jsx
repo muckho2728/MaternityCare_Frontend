@@ -12,12 +12,14 @@ const ViewSlot = () => {
     const [doctors, setDoctors] = useState([]);
     const [pageNumber, setPageNumber] = useState(1);
     const [currentUser, setCurrentUser] = useState(null);
-    const pageSize = 5;
+    const pageSize = 3;
     const [userId, setUserId] = useState("");
+    const [availableDates, setAvailableDates] = useState([]);
+    const [timeSlots, setTimeSlots] = useState([]);
 
 
     useEffect(() => {
-        const fetchDoctors = async (url) => {
+        const fetchDoctors = async () => {
 
             const token = localStorage.getItem('token');
             if (!token) {
@@ -52,6 +54,42 @@ const ViewSlot = () => {
         );
     });
 
+    const handleDoctorClick = (doctor) => {
+        console.log("Selected Doctor:", doctor.id, doctor.fullName);
+        setSelectedDoctor(doctor);
+        generateAvailableDates();
+        setSelectedDate(null);
+        setTimeSlots([]);
+    };
+
+    const generateAvailableDates = () => {
+        const dates = [];
+        const today = new Date();
+        for (let i = 0; i < 7; i++) {
+            const newDate = new Date();
+            newDate.setDate(today.getDate() + i);
+            dates.push(newDate);
+        }
+        setAvailableDates(dates);
+    };
+
+    const handleDateClick = (date) => {
+        setSelectedDate(date);
+        generateTimeSlots(date);
+    };
+
+    const generateTimeSlots = (date) => {
+        const day = date.getDay();
+        const slots = [];
+        let startHour = 7;
+        let endHour = day === 0 ? 12 : 16.5;
+        while (startHour < endHour) {
+            slots.push(`${startHour}:00 - ${startHour + 1.5}:30`);
+            startHour += 1.5;
+        }
+        setTimeSlots(slots);
+    };
+
     return (
         <div>
             <h1>Book Your Appointment</h1>
@@ -76,7 +114,7 @@ const ViewSlot = () => {
 
             <div>
                 {filteredDoctors.map((doctor, index) => (
-                    <div key={doctor.doctorId || index} onClick={() => console.log('Doctor ID:', doctor, 'Name:', doctor.fullName)}>
+                    <div key={doctor.doctorId || index} onClick={() => handleDoctorClick(doctor)}>
                         <img src={doctor.avatar} alt={doctor.fullName} style={{ width: '100px', borderRadius: '50%' }} />
                         <h3>{doctor.fullName}</h3>
                         <p>Email: {doctor.email}</p>
@@ -85,6 +123,27 @@ const ViewSlot = () => {
                         <p>Experience: {doctor.yearsOfExperience} years</p>
                     </div>
                 ))}
+                {selectedDoctor && (
+                    <div>
+                        <h2>Available Dates</h2>
+                        {availableDates.map((date, index) => (
+                            <button key={index} onClick={() => handleDateClick(date)}>
+                                {date.toDateString()}
+                            </button>
+                        ))}
+                    </div>
+                )}
+
+                {selectedDate && (
+                    <div>
+                        <h2>Available Time Slots</h2>
+                        {timeSlots.map((slot, index) => (
+                            <button key={index} onClick={() => setSelectedSlot(slot)}>
+                                {slot}
+                            </button>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     );
