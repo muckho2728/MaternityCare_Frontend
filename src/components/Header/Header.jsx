@@ -59,7 +59,7 @@ const Header = () => {
                     <ul className="nav-list">
                         <li><Link to="/community">Diễn Đàn</Link></li>
                         <li><Link to="/create-fetus">Theo Dõi Thai Kỳ</Link></li>
-                        <li><Link to="/view-package">Dịch Vụ</Link></li>
+                        <li><Link to="/package-list">Dịch Vụ</Link></li>
                         <li><Link to="/booking">Đặt Lịch</Link></li>
                     </ul>
                     {/* <ul className='sidebar'>
