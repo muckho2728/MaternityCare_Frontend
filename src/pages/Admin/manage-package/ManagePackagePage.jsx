@@ -6,8 +6,7 @@ import { useForm } from 'antd/es/form/Form';
 
 export default function ManagePackagePage() {
     const [packages, setPackages] = useState([]);
-    const [isOpenModal, setIsOpenModal] = useState();
-    const [isUpdate, setIsUpdate] = useState(false);
+    const [isOpenModal, setIsOpenModal] = useState(false);
     const [form] = useForm();
 
     const fetchData = async () => {
@@ -33,15 +32,26 @@ export default function ManagePackagePage() {
         if (values.id) {
             await api.put(`packages/${values.id}`, values);
         } else {
-            await api.post("packages", values)
+            await api.post("packages", values);
         }
-        form.resetFields(); // Reset form sau khi tạo'
+        form.resetFields(); // Reset form sau khi tạo
         fetchData();
         handleCloseModal();
     };
+
     const handleSubmit = () => {
         form.submit();
-    }
+    };
+
+    const handleDelete = async (id) => {
+        try {
+            await api.delete(`packages/${id}`); // Gọi API xóa package
+            fetchData(); // Cập nhật lại danh sách package sau khi xóa
+        } catch (error) {
+            console.error("Error deleting package:", error);
+        }
+    };
+
     useEffect(() => {
         fetchData();
     }, []);
@@ -80,65 +90,80 @@ export default function ManagePackagePage() {
             key: 'action',
             render: (_, record) => (
                 <Space>
-                    <Button type="primary" onClick={() => {
-                        const newRecord = {...record}
-                        console.log(record)
-                        form.setFieldsValue(newRecord)
-                        handleOpenModal();
-                    }} >Cập nhật</Button>
-                    <Button danger type="primary">Xóa</Button>
+                    <Button
+                        type="primary"
+                        onClick={() => {
+                            const newRecord = { ...record };
+                            console.log(record);
+                            form.setFieldsValue(newRecord);
+                            handleOpenModal();
+                        }}
+                    >
+                        Cập nhật
+                    </Button>
+                    <Button
+                        danger
+                        type="primary"
+                        onClick={() => {
+                            Modal.confirm({
+                                title: 'Xác nhận xóa',
+                                content: 'Bạn có chắc chắn muốn xóa gói này?',
+                                onOk: () => handleDelete(record.id), // Gọi hàm xóa nếu người dùng xác nhận
+                            });
+                        }}
+                    >
+                        Xóa
+                    </Button>
                 </Space>
             ),
         },
     ];
 
     function handleCloseModal() {
-        setIsOpenModal(false)
+        setIsOpenModal(false);
     }
 
     function handleOpenModal() {
-        setIsOpenModal(true)
+        setIsOpenModal(true);
     }
 
     return (
         <div>
-            <Button onClick={handleOpenModal} type="primary">Add new  </Button>
-            <Modal title="Add new package" open={isOpenModal} onCancel={handleCloseModal} onOk={handleSubmit} >
-
-                <Form form={form} onFinish={handleOnFinish} >
-                    <Form.Item name={"id"}  hidden >
-                    <Input placeholder="Enter package type" />
-                    </Form.Item>
-                    <Form.Item
-                        name="type"
-                        label="Package Type"
-                        rules={[{ required: true, message: 'Please input the package type!' }]}
-                    >
+            <Button onClick={handleOpenModal} type="primary">Thêm gói mới</Button>
+            <Modal title="Thêm gói mới" open={isOpenModal} onCancel={handleCloseModal} onOk={handleSubmit}>
+                <Form form={form} onFinish={handleOnFinish}>
+                    <Form.Item name={"id"} hidden>
                         <Input placeholder="Enter package type" />
                     </Form.Item>
                     <Form.Item
-                        name="feature"
-                        label="Package feature"
-                        rules={[{ required: true, message: 'Please input the package feature!' }]}
+                        name="type"
+                        label="Loại gói"
+                        rules={[{ required: true, message: 'Vui lòng nhập loại gói!' }]}
                     >
-                        <TextArea placeholder="Enter package feature" />
+                        <Input placeholder="Nhập loại gói" />
+                    </Form.Item>
+                    <Form.Item
+                        name="feature"
+                        label="Tính năng"
+                        rules={[{ required: true, message: 'Vui lòng nhập tính năng!' }]}
+                    >
+                        <TextArea placeholder="Nhập tính năng" />
                     </Form.Item>
                     <Form.Item
                         name="price"
-                        label="Package price"
-                        rules={[{ required: true, message: 'Please input the package price!' }]}
+                        label="Giá"
+                        rules={[{ required: true, message: 'Vui lòng nhập giá!' }]}
                     >
-                        <InputNumber placeholder="Enter package price" />
+                        <InputNumber placeholder="Nhập giá" />
                     </Form.Item>
                     <Form.Item
                         name="duration"
-                        label="Package duration"
-                        rules={[{ required: true, message: 'Please input the package duration!' }]}
+                        label="Thời hạn"
+                        rules={[{ required: true, message: 'Vui lòng nhập thời hạn!' }]}
                     >
-                        <InputNumber placeholder="Enter package duration" />
+                        <InputNumber placeholder="Nhập thời hạn" />
                     </Form.Item>
                 </Form>
-
             </Modal>
             <h2>Danh sách gói</h2>
             <Table columns={columns} dataSource={packages} rowKey="id" pagination={{ pageSize: 5 }} />
