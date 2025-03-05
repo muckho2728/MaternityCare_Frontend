@@ -88,7 +88,7 @@ const Login = () => {
     <div className="login-page">
       <div className="login-container">
       <Link to="/" className="logo-link">
-                        <img src={logo} alt="Baby Logo" className="logo" style={{display: 'flex', marginLeft: 'auto', marginRight: 'auto'}}/>
+                        <img src="/src/assets/Vector.png" alt="Baby Logo" className="logo" style={{display: 'flex', marginLeft: 'auto', marginRight: 'auto'}}/>
                     </Link>
         <h1>Đăng Nhập</h1>
         <form className="login-form" onSubmit={handleSubmit}>
@@ -142,9 +142,9 @@ const Login = () => {
           </div>
         </form>
       </div>
-      <div className="login-banner">
+      {/* <div className="login-banner">
         <img src={loginBanner} alt="Login Banner" />
-      </div>
+      </div> */}
     </div>
   );
   

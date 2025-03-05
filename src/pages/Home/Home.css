@@ -73,6 +73,55 @@
     transition: 0.3s;
 }
 
+/* --- PHẦN GIỚI THIỆU VỚI HÌNH ẢNH VÀ HIỆU ỨNG --- */
+.introduction-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    padding: 60px 20px;
+    max-width: 1100px;
+    margin: auto;
+}
+
+.introduction-image {
+    width: 50%;
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.introduction-image img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.introduction-content {
+    width: 50%;
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.introduction-content h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.introduction-content p {
+    font-size: 16px;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Kích hoạt hiệu ứng khi cuộn vào vùng nhìn thấy */
+.reveal {
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+}
 
 /* Container chứa các ô chức năng */
 
@@ -91,35 +140,52 @@
 .feature-card {
     width: 220px;
     background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    padding: 20px;
-    transition: 0.3s;
+    padding: 24px;
+    transition: all 0.3s ease-in-out;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
 .feature-card img {
     width: 100%;
-    border-radius: 8px;
-    margin-bottom: 10px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease-in-out;
 }
 
 .feature-card h3 {
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: 600;
     color: #333;
-    margin: 10px 0;
+    margin: 12px 0;
+    transition: color 0.3s;
 }
 
 .feature-card p {
     font-size: 14px;
-    color: #777;
+    color: #666;
+    transition: color 0.3s;
 }
 
 
 /* Hiệu ứng hover */
 
 .feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
+}
+.feature-card:hover img {
+    transform: scale(1.05);
+}
+
+.feature-card:hover h3 {
+    color: #ff4d6d;
+}
+
+.feature-card:hover p {
+    color: #444;
 }
