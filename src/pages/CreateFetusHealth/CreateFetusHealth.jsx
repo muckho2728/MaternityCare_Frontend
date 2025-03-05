@@ -137,9 +137,9 @@ const CreateFetusHealth = () => {
                             required
                         >
                             <option value={0}>Chọn mức độ</option>
-                            <option value={1}>Bình thường</option>
-                            <option value={2}>Thấp</option>
-                            <option value={3}>Cao</option>
+                            <option value={1}>Bình thường(1)</option>
+                            <option value={2}>Thấp(2)</option>
+                            <option value={3}>Cao(3)</option>
                         </select>
                     </div>
                     <div className="form-group">
