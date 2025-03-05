@@ -8,6 +8,8 @@
     background-color: #f8f9fa;
     /* padding-top: 60px; */
     /* Tạo khoảng cách với header */
+    background: url(../../assets/brg-login-res.jpg);
+    background-size: cover;
 }
 
 
@@ -16,7 +18,7 @@
 .register-container {
     width: 430px;
     /* Slightly wider */
-    background: white;
+    background: transparent;
     padding: 40px;
     /* More padding for a spacious look */
     border-radius: 12px;
@@ -28,6 +30,7 @@
     margin-top: 20px;
     /* More spacing between fields */
     margin-bottom: 20px;
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
 }
 
 .register-container button {
@@ -44,7 +47,7 @@
 }
 
 .register-container button:hover {
-    background-color: #ff4f4f;
+    background-color: #0d48ea;
     /* Slightly darker on hover */
 }
 
@@ -60,7 +63,9 @@
 
 
 /* Nhóm nhập liệu */
-
+.form-group input{
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
+}
 .form-group {
     text-align: left;
     margin-bottom: 15px;
@@ -89,7 +94,7 @@
 .btn-primary {
     width: 100%;
     padding: 12px;
-    background-color: #ff6b6b;
+    background-color: #1139ff;
     color: white;
     border: none;
     border-radius: 6px;
@@ -100,7 +105,7 @@
 }
 
 .btn-primary:hover {
-    background-color: #e63946;
+    background-color: #1b2df7;
 }
 
 /* Link đăng nhập */

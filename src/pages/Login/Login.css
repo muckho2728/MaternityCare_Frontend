@@ -6,16 +6,19 @@
     align-items: center;
     height: 100vh;
     background-color: #f8f9fa;
+    background: url(../../assets/brg-login-res.jpg);
+    background-size: cover;
 }
 
 /* Hộp chứa login */
 .login-container {
     width: 400px;
-    background: #ffffff;
+    background: transparent;
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     text-align: left;
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
 }
 
 /* Tiêu đề */
@@ -24,6 +27,8 @@
     margin-bottom: 10px;
     font-weight: bold;
     color: #333;
+    text-align: center;
+
 }
 
 /* Ô input */
@@ -34,6 +39,9 @@
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 16px;
+    background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
+    font-weight: bold;
+
 }
 
 /* Nút đăng nhập */
@@ -59,6 +67,8 @@
     margin-top: 15px;
     font-size: 14px;
     text-align: center;
+        font-weight: bold;
+
 }
 
 .register-link {
@@ -78,6 +88,8 @@
     align-items: center;
     font-size: 14px;
     margin-top: 10px;
+    font-weight: bold;
+
 }
 
 .forgot-password {
