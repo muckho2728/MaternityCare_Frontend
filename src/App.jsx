@@ -1,4 +1,3 @@
-import React from 'react';
 import { Provider } from 'react-redux';
 import { store } from './store/config';
 import ManageUsersPage from './pages/Admin/ManageUsersPage';
@@ -18,29 +17,16 @@ import Blog from './pages/Community/Blog'
 import { ToastContainer } from 'react-toastify';
 import Censor from './pages/AdminCensor/Censor'
 import PackageList from './pages/PackageList/PackageList'
-//import PaymentDetail from './pages/PaymentDetail';  
 import CreatePackage from './pages/Admin/CreatePackage';  
 import { ThemeProvider } from './constants/ThemeContext';
-import Pregnancy from './pages/Pregnancy/Pregnancy';
 import { FetusProvider } from './constants/FetusContext'
 import AdminLayout from './components/layout/AdminLayout';
 import ManagePackagePage from './pages/Admin/manage-package/ManagePackagePage';
-
 import ViewSlot from './pages/ViewSlot/ViewSlot';
 import CreateSlot from './pages/AdminCreateSlot/CreateSlot';
-
-
-
-
-//import PackageList from './pages/PackageList/PackageList'
-
-//import PaymentPage from './pages/PaymentPage/PaymentPage';
-//import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
-//import CreatePackage from './pages/Admin/CreatePackage';
-//import UpdatePackage from './pages/Admin/UpdatePackage';
-
 import ManageFetusHealth from './pages/Admin/ManageFetusHealth/ManageFetusHealth';
-import Pregnancyw3 from './pages/Pregnancy/Pregnancyw3';
+import PregnancyWeek from './pages/Pregnancy/PregnancyWeek';
+
 
 
 
@@ -63,11 +49,7 @@ function Layout() {
           <Route path="/community" element={<Blog />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/package-list" element={<PackageList />} />
-          {/* <Route path="/payment-page" element={<PaymentPage />} /> */}
           <Route path="/create-package" element={<CreatePackage />} />
-          {/* <Route path="/create-package" element={<CreatePackage />} /> */}
-          {/* <Route path="/update-package" element={<UpdatePackage />} /> */}
-          {/* <Route path="/forget-password" element={<ForgetPage />} /> */}
           <Route path="/Censor" element={<Censor />} />
           <Route path="/booking" element={<ViewSlot />} />
           <Route path="/admin" element={<AdminLayout />}
@@ -80,11 +62,8 @@ function Layout() {
                 </>
               ]
             } />
-          <Route path="/pregnancy" element={<Pregnancy />} />
-
+            <Route path="/pregnancy/:week" element={<PregnancyWeek />} />
           <Route path="/createslot" element={<CreateSlot />} />
-
-          <Route path="/pregnancyw3" element={<Pregnancyw3 />} />
 
         </Routes>
         <ToastContainer />

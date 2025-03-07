@@ -24,7 +24,9 @@
     margin: 0 auto; 
 }
 .info-section {
-    text-align: left; 
+    text-align: center; 
+    margin: 0 auto; 
+    width: 80%;
 }
 .ovulation-image {
     width: 700px;
