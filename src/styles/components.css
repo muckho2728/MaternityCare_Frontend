@@ -38,6 +38,8 @@
     font-weight: bold;
     color: #ffea99;
     text-transform: uppercase;
+    display: inline-block;
+    white-space: nowrap;
 }
 
 .main-nav .nav-list {

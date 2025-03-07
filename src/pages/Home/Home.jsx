@@ -9,6 +9,10 @@ import booking from '../../assets/booking.jpg';
 import packageImg from '../../assets/package.png';
 import communityImg from '../../assets/community.png';
 import { useNavigate } from 'react-router-dom';
+import intro1 from '../../assets/intro1.jpg';
+import intro2 from '../../assets/intro2.jpg';
+import intro3 from '../../assets/intro3.jpg';
+import intro4 from '../../assets/intro4.jpg';
 
 const Home = () => {
     const navigate = useNavigate();
@@ -56,26 +60,39 @@ const Home = () => {
                             <p>Kết nối và chia sẻ với các mẹ bầu khác.</p>
                         </div>
                     </div>
-                    <div className="introduction-text">
-                        <h2>GIỢI THIỆU VỀ MATERNITY CARE</h2>
-                        <p>
-                            <strong>Maternity Care</strong> là nền tảng hỗ trợ theo dõi thai kỳ và chăm sóc sức khỏe mẹ bầu toàn diện.
-                            Chúng tôi giúp mẹ bầu dễ dàng nắm bắt thông tin quan trọng trong suốt thai kỳ, cung cấp lời khuyên khoa học
-                            từ chuyên gia, và kết nối với cộng đồng mẹ bầu để chia sẻ kinh nghiệm.
-                        </p>
-                        <p>
-                            Tại <strong>Maternity Care</strong>, bạn có thể:
-                        </p>
-                        <ul>
-                            <li>🍼 <strong>Theo dõi thai kỳ:</strong> Cập nhật thông tin phát triển của beb qua từng tuần.</li>
-                            <li>📅 <strong>Đặt lịch khám:</strong> Liên hệ bác sĩ sản khoa và đặt lịch trực tuyến nhanh chóng.</li>
-                            <li>💖 <strong>Dịch vụ chăm sóc:</strong> Các dịch vụ giúp mẹ bầu thư giãn và chăm sốc sức khỏe tốt nhất.</li>
-                            <li>👩‍👩‍👦 <strong>Diễn đàn mẹ bầu:</strong> Kết nối với hàng ngàn mẹ bầu khác để cùng chia sẻ và học hỏi.</li>
-                        </ul>
-                        <p>
-                            Chúng tôi mong muốn trở thành người đồng hành đáng tin cậy của mẹ bầu trong suốt hành trình mang thai.
-                            Hãy cùng Maternity Care trải nghiệm một thai kỳ an toàn và hạnh phúc! 🌸
-                        </p>
+                    
+                    <div className="introduction-form" >
+                        <div className="introduction-gallery">
+                            <div className="introduction-gallery1">
+                                <img className="introduction-img1" src={intro1} alt="Giới thiệu 1" />
+                                <img className="introduction-img2" src={intro2} alt="Giới thiệu 2" />
+                            </div>
+                            <div className="introduction-gallery1">
+                                <img className="introduction-img3" src={intro3} alt="Giới thiệu 3" />
+                                <img className="introduction-img4" src={intro4} alt="Giới thiệu 4" />
+                            </div>
+                        </div>
+                        <div className="introduction-text">
+                            <h2>GIỢI THIỆU VỀ MATERNITY CARE</h2>
+                            <p>
+                                <strong>Maternity Care</strong> là nền tảng hỗ trợ theo dõi thai kỳ và chăm sóc sức khỏe mẹ bầu toàn diện.
+                                Chúng tôi giúp mẹ bầu dễ dàng nắm bắt thông tin quan trọng trong suốt thai kỳ, cung cấp lời khuyên khoa học
+                                từ chuyên gia, và kết nối với cộng đồng mẹ bầu để chia sẻ kinh nghiệm.
+                            </p>
+                            <p>
+                                Tại <strong>Maternity Care</strong>, bạn có thể:
+                            </p>
+                            <ul>
+                                <li>🍼 <strong>Theo dõi thai kỳ:</strong> Cập nhật thông tin phát triển của beb qua từng tuần.</li>
+                                <li>📅 <strong>Đặt lịch khám:</strong> Liên hệ bác sĩ sản khoa và đặt lịch trực tuyến nhanh chóng.</li>
+                                <li>💖 <strong>Dịch vụ chăm sóc:</strong> Các dịch vụ giúp mẹ bầu thư giãn và chăm sốc sức khỏe tốt nhất.</li>
+                                <li>👩‍👩‍👦 <strong>Diễn đàn mẹ bầu:</strong> Kết nối với hàng ngàn mẹ bầu khác để cùng chia sẻ và học hỏi.</li>
+                            </ul>
+                            <p>
+                                Chúng tôi mong muốn trở thành người đồng hành đáng tin cậy của mẹ bầu trong suốt hành trình mang thai.
+                                Hãy cùng Maternity Care trải nghiệm một thai kỳ an toàn và hạnh phúc! 🌸
+                            </p>
+                        </div>
                     </div>
                 </section>
             </main>
