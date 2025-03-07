@@ -26,6 +26,8 @@ import ViewSlot from './pages/ViewSlot/ViewSlot';
 import CreateSlot from './pages/AdminCreateSlot/CreateSlot';
 import ManageFetusHealth from './pages/Admin/ManageFetusHealth/ManageFetusHealth';
 import PregnancyWeek from './pages/Pregnancy/PregnancyWeek';
+import ManageDoctor from './pages/Admin/ManageDoctor/Doctor'
+
 
 
 
@@ -59,6 +61,7 @@ function Layout() {
                   <Route path='manage-user' element={<ManageUsersPage />} />
                   <Route path='manage-packages' element={<ManagePackagePage />} />
                   <Route path='manage-fetus-health' element={<ManageFetusHealth />} />
+                  <Route path='manage-doctor' element={<ManageDoctor />} />
                 </>
               ]
             } />
