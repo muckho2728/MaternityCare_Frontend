@@ -39,7 +39,7 @@ const Home = () => {
                     </div>
 
                     <div className="feature-container">
-                        <div className="feature-card" onClick={() => navigate('/pregnancy')}>
+                        <div className="feature-card" onClick={() => navigate('/pregnancy/2')}>
                             <img src={pregnancy} alt="Theo dõi thai kỳ" />
                             <h3>Theo dõi thai kỳ</h3>
                             <p>Cập nhật sự phát triển của bé theo từng tuần.</p>
