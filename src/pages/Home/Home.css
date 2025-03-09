@@ -62,7 +62,9 @@
     max-width: 800px;
     line-height: 1.6;
     font-size: 16px;
-    color: #555;
+    color: #498548;
+    margin-right: 10px;
+    width: 62%;
 }
 
 
@@ -73,6 +75,212 @@
     transition: 0.3s;
 }
 
+/* --- PHẦN GIỚI THIỆU VỚI HÌNH ẢNH VÀ HIỆU ỨNG --- */
+.introduction-section {
+    background-color: #E8F5FB; /* Màu nền xanh nhạt */
+    padding: 60px 20px;
+    border-radius: 20px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    animation: fadeInUp 1s ease-out;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    max-width: 1200px;
+    margin: auto;
+  }
+
+  .introduction-section h2 {
+    font-size: 32px;
+    font-weight: bold;
+    color: #123456;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .introduction-section p {
+    font-size: 18px;
+    color: #444;
+    text-align: center;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    max-width: 700px;
+  }
+  
+  .introduction-list {
+    list-style: none;
+    padding: 0;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .introduction-list li {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    margin-bottom: 12px;
+    padding: 12px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .introduction-list li span {
+    font-weight: bold;
+    color: #0073e6;
+    margin-right: 10px;
+  }
+  
+  /* Hiệu ứng hover */
+  .introduction-list li:hover {
+    transform: translateY(-5px);
+    background: #f0f9ff;
+  }
+  
+  /* Hình ảnh minh họa */
+  .image-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    justify-content: center;
+    max-width: 900px;
+    margin-bottom: 20px;
+  }
+  
+  .image-gallery img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .image-gallery img:hover {
+    transform: scale(1.05);
+  }
+  
+  
+  /* Hình ảnh minh họa */
+  .introduction-image {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+.introduction-image img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.introduction-content {
+    /* width: 50%;
+    opacity: 0;
+    transform: translateX(50px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out; */
+    max-width: 50%;
+}
+
+.introduction-content h2 {
+    font-size: 40px;
+    font-weight: bold;
+    color: #123456;
+    margin-bottom: 20px;
+}
+
+.introduction-content p {
+    font-size: 18px;
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    max-width: 500px;
+}
+
+.introduction-gallery {
+    /* display: flex; */
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+.introduction-gallery1 {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  
+  .introduction-gallery img {
+    width: 45%;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .introduction-gallery img:hover {
+    transform: scale(1.05);
+  }
+  
+  .introduction-form {
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 20px;
+    margin-bottom: 50px;
+
+    
+  }
+
+img.introduction-img1 {
+  flex-direction: row-reverse;
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  border-radius: 0% 30% 0% 30%;
+  display: inline-block;
+  margin-top: 49px;
+}
+img.introduction-img2 {
+  flex-direction: row-reverse;
+  width: 180px;
+  height: 180px;
+  overflow: hidden;
+  border-radius: 30% 0% 30% 0%;
+  display: inline-block;
+  margin-top: 68px;
+}
+img.introduction-img3 {
+  flex-direction: row-reverse;
+  width: 170px;
+  height: 170px;
+  overflow: hidden;
+  border-radius: 30% 0% 30% 0%;
+  display: inline-block;
+  margin-left: 30px;
+}
+img.introduction-img4 {
+  flex-direction: row-reverse;
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  border-radius: 0% 30% 0% 30%;
+  display: inline-block;
+  margin-right: 30px;
+}
+
+
+
+
+/* Kích hoạt hiệu ứng khi cuộn vào vùng nhìn thấy */
+.reveal {
+    opacity: 1 !important;
+    transform: translateX(0) !important;
+}
 
 /* Container chứa các ô chức năng */
 
@@ -91,35 +299,78 @@
 .feature-card {
     width: 220px;
     background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    padding: 20px;
-    transition: 0.3s;
+    padding: 24px;
+    transition: all 0.3s ease-in-out;
     cursor: pointer;
+    position: relative;
+    overflow: hidden;
 }
 
 .feature-card img {
     width: 100%;
-    border-radius: 8px;
-    margin-bottom: 10px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    transition: transform 0.3s ease-in-out;
 }
 
 .feature-card h3 {
-    font-size: 18px;
+    font-size: 20px;
+    font-weight: 600;
     color: #333;
-    margin: 10px 0;
+    margin: 12px 0;
+    transition: color 0.3s;
 }
 
 .feature-card p {
     font-size: 14px;
-    color: #777;
+    color: #666;
+    transition: color 0.3s;
 }
 
 
 /* Hiệu ứng hover */
 
 .feature-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px);
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.15);
 }
+.feature-card:hover img {
+    transform: scale(1.05);
+}
+
+.feature-card:hover h3 {
+    color: #ff4d6d;
+}
+
+.feature-card:hover p {
+    color: #444;
+}
+/* Hiệu ứng xuất hiện khi cuộn */
+@keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .introduction-section {
+      grid-template-columns: 1fr;
+      text-align: center;
+    }
+    
+    .introduction-content {
+      text-align: center;
+    }
+  
+    .image-gallery img {
+      width: 100%;
+    }
+  }

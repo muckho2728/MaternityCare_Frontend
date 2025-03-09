@@ -28,12 +28,14 @@ const Blog = () => {
       .then((res) => res.json())
       .then((data) => setBlogs(data))
       .catch((err) => console.error("Error fetching blogs:", err));
+
   }, []);
   // Lọc bài viết theo tag và tìm kiếm
   const filteredBlogs = blogs.filter((blog) =>
+
     (selectedTag ? blog.tagId === selectedTag : true) &&
-    (blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      blog.content.toLowerCase().includes(searchTerm.toLowerCase()))
+    (blog.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+     blog.content.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
   const handleCreate = () => {
@@ -76,7 +78,7 @@ const Blog = () => {
       if (blog.id === blogId) {
         return {
           ...blog,
-          comments: blog.comments.map(comment =>
+          comments: blog.comments.map(comment => 
             comment.id === commentId ? { ...comment, likes: comment.likes + 1 } : comment
           )
         };
@@ -90,7 +92,7 @@ const Blog = () => {
       if (blog.id === blogId) {
         return {
           ...blog,
-          comments: blog.comments.map(comment =>
+          comments: blog.comments.map(comment => 
             comment.id === commentId ? { ...comment, text: commentInputs[commentId] || comment.text } : comment
           )
         };
@@ -101,7 +103,7 @@ const Blog = () => {
   };
 
   const handleLike = (blogId) => {
-    setBlogs(blogs.map(blog =>
+    setBlogs(blogs.map(blog => 
       blog.id === blogId ? { ...blog, likes: blog.likes + 1 } : blog
     ));
   };
@@ -181,60 +183,64 @@ const Blog = () => {
 
               {/* Các nút hành động */}
               <div className="blog-item-actions">
-                <button className="blog-btn blog-btn-like" onClick={() => handleLike(blog.id)}>
-                  <Heart size={16} /> {blog.likes}
+                <button className="blog-btn blog-btn-like" onClick={() => handleLike(blog.id)}> 
+                  <Heart size={16} /> {blog.likes} 
                 </button>
-                <button className="blog-btn blog-btn-delete" onClick={() => handleDelete(blog.id)}>
-                  <Trash2 size={16} />
+                <button className="blog-btn blog-btn-delete" onClick={() => handleDelete(blog.id)}> 
+                  <Trash2 size={16} /> 
                 </button>
                 {/* <button className="blog-btn blog-btn-comment">
                   <MessageCircle size={16} /> Bình luận
                 </button> */}
-                <button className="blog-btn" onClick={() => handleEdit(blog)}>
-                  <Edit size={16} /> Chỉnh sửa
+                <button className="blog-btn" onClick={() => handleEdit(blog)}> 
+                  <Edit size={16} /> Chỉnh sửa 
                 </button>
               </div>
 
-
+              
               <div className="blog-comments">
                 {blog.comments.map(comment => (
-
-                  <div key={comment.id} className="blog-comment">
-                    <strong>{comment.user}</strong>:
-                    {editingComment?.id === comment.id ? (
-                      <input
-                        type="text"
-                        value={commentInputs[comment.id] || comment.text}
-                        onChange={(e) => setCommentInputs({ ...commentInputs, [comment.id]: e.target.value })}
-                        className="blog-input"
-                      />
-                    ) : (
-                      <span> {comment.text} </span>
-                    )}
-
-                    <button className="comment-like" onClick={() => handleLikeComment(blog.id, comment.id)}>
-                      <Heart size={14} /> {comment.likes}
-                    </button>
-
-                    {editingComment?.id === comment.id ? (
-                      <button className="comment-save" onClick={() => handleUpdateComment(blog.id, comment.id)}>Lưu</button>
-                    ) : (
-                      <button className="comment-edit" onClick={() => setEditingComment(comment)}>
-                        <Edit size={14} />
+                  
+                    <div key={comment.id} className="blog-comment">
+                      <strong>{comment.user}</strong>:  
+                      {editingComment?.id === comment.id ? (
+                        <input 
+                          type="text" 
+                          value={commentInputs[comment.id] || comment.text} 
+                          onChange={(e) => setCommentInputs({ ...commentInputs, [comment.id]: e.target.value })} 
+                          className="blog-input"
+                        />
+                      ) : (
+                        <span> {comment.text} </span>
+                      )}
+                      
+                      <button className="comment-like" onClick={() => handleLikeComment(blog.id, comment.id)}> 
+                        <Heart size={14} /> {comment.likes} 
                       </button>
-                    )}
-
-                    <button className="comment-delete" onClick={() => handleDeleteComment(blog.id, comment.id)}>
-                      <Trash2 size={14} />
-                    </button>
-                  </div>
-
+                      
+                      {editingComment?.id === comment.id ? (
+                        <button className="comment-save" onClick={() => handleUpdateComment(blog.id, comment.id)}>Lưu</button>
+                      ) : (
+                        <button className="comment-edit" onClick={() => setEditingComment(comment)}> 
+                          <Edit size={14} /> 
+                        </button>
+                      )}
+                      
+                      <button className="comment-delete" onClick={() => handleDeleteComment(blog.id, comment.id)}> 
+                        <Trash2 size={14} /> 
+                      </button>
+                    </div>
+  
                 )
-                )
+              )
+              
+            }
+
 
                 }
 
                 {/* Ô nhập bình luận */}
+
                 <input
                   type="text"
                   placeholder="Viết bình luận..."
@@ -242,10 +248,13 @@ const Blog = () => {
                   value={commentInputs[blog.id] || ""}
                   onChange={(e) => setCommentInputs({ ...commentInputs, [blog.id]: e.target.value })}
                   onKeyDown={(e) => e.key === "Enter" && handleComment(blog.id)}
+
                 />
               </div>
             </div>
             <Comment />
+
+
           </div>
         ))
       ) : (

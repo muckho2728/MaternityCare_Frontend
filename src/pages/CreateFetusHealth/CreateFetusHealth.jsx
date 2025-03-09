@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CreateFetusHealth.css";
 import axios from "../../constants/axios";
@@ -88,7 +88,7 @@ const CreateFetusHealth = () => {
     
             console.log("Response từ server:", response);
             toast.success("Thông tin sức khỏe thai nhi đã được lưu!");
-            navigate("/pregnancy");
+            navigate("/pregnancy/:week");
         } catch (error) {
             console.error("Lỗi khi gửi request:", error.response?.data || error.message);
             toast.error("Lỗi khi lưu thông tin sức khỏe. Vui lòng thử lại.");
@@ -110,7 +110,7 @@ const CreateFetusHealth = () => {
                             onChange={handleChange}
                             required
                             min="2"
-                            max="41"
+                            max="40"
                         />
                     </div>
                     <div className="form-group">
@@ -137,9 +137,9 @@ const CreateFetusHealth = () => {
                             required
                         >
                             <option value={0}>Chọn mức độ</option>
-                            <option value={1}>Bình thường</option>
-                            <option value={2}>Thấp</option>
-                            <option value={3}>Cao</option>
+                            <option value={1}>Bình thường(1)</option>
+                            <option value={2}>Thấp(2)</option>
+                            <option value={3}>Cao(3)</option>
                         </select>
                     </div>
                     <div className="form-group">

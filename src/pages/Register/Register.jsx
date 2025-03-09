@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Register.css';
 import api from '../../constants/axios';
 import { toast } from 'react-toastify';
-import registBanner from '../../assets/regisbanner.png';
+import registBanner from '../../assets/registachnen.png';
 import logo from '../../assets/MaternityCare.png';
 
 const Register = () => {
@@ -80,12 +80,12 @@ const Register = () => {
 
   return (
     <div className="register-page">
-      <div className="register-image">
+      {/* <div className="register-image">
         <img src={registBanner} alt="Register" />
-      </div>
+      </div> */}
       <div className="register-container">
       <Link to="/" className="logo-link">
-                        <img src={logo} alt="Baby Logo" className="logo" style={{display: 'flex', marginLeft: 'auto', marginRight: 'auto'}}/>
+                        <img src="/src/assets/Vector.png" alt="Baby Logo" className="logo" style={{display: 'flex', marginLeft: 'auto', marginRight: 'auto'}}/>
                     </Link>
         <h1 className="register-title">Đăng ký</h1>
         <div className="form-group">

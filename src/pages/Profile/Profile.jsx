@@ -181,11 +181,6 @@ const Profile = () => {
                         }
                       ]
                     },
-                    {
-                      key: '3-4',
-                      icon: <FileSearchOutlined />,
-                      label: <Link to="/createslot">Quản lí slots của bác sĩ</Link>
-                    },
                   ],
                 },
               ]} />

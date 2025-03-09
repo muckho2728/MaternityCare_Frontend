@@ -3,6 +3,8 @@ import {
   DesktopOutlined,
   PieChartOutlined,
   HeartOutlined,
+  TeamOutlined,
+  
 } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { Link, Outlet, useLocation } from 'react-router-dom';
@@ -21,7 +23,8 @@ function getItem(label, key, icon, children) {
 const items = [
   getItem('User', 'manage-user', <PieChartOutlined />),
   getItem('Packages', 'manage-packages', <DesktopOutlined />),
-  getItem('Fetus Health', 'manage-fetus-health', <HeartOutlined />), // Thêm mục Fetus Health
+  getItem('Fetus Health', 'manage-fetus-health', <HeartOutlined />), 
+  getItem('Doctor', 'manage-doctor', <TeamOutlined />), 
 ];
 
 const AdminLayout = () => {
@@ -33,10 +36,14 @@ const AdminLayout = () => {
   const location = useLocation();
 
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout
+      style={{
+        minHeight: '100vh',
+      }}
+    >
       <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
         <div className="demo-logo-vertical" />
-        <Menu theme="dark" defaultSelectedKeys={[location.pathname]} mode="inline" items={items} />
+        <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }} />
@@ -46,6 +53,7 @@ const AdminLayout = () => {
             {location.pathname.includes('manage-user') && <Breadcrumb.Item>Manage Users</Breadcrumb.Item>}
             {location.pathname.includes('manage-packages') && <Breadcrumb.Item>Manage Packages</Breadcrumb.Item>}
             {location.pathname.includes('fetus-health') && <Breadcrumb.Item>Fetus Health</Breadcrumb.Item>}
+            {location.pathname.includes('manage-doctor') && <Breadcrumb.Item>Manage Doctor</Breadcrumb.Item>}
           </Breadcrumb>
           <div
             style={{

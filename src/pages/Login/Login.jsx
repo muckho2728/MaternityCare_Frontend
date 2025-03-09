@@ -7,7 +7,7 @@ import { useAuth } from '../../constants/AuthContext';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUserByIdAction } from '../../store/redux/action/userAction'; // Đảm bảo import đúng action
 import Button from '../../components/Button';
-import loginBanner from '../../assets/loginbanner.png';
+import loginBanner from '../../assets/logintachnen.png';
 import logo from '../../assets/MaternityCare.png';
 
 const Login = () => {
@@ -88,9 +88,11 @@ const Login = () => {
   return (
     <div className="login-page">
       <div className="login-container">
-        <Link to="/" className="logo-link">
-          <img src={logo} alt="Baby Logo" className="logo" style={{ display: 'flex', marginLeft: 'auto', marginRight: 'auto' }} />
-        </Link>
+
+      <Link to="/" className="logo-link">
+                        <img src="/src/assets/Vector.png" alt="Baby Logo" className="logo" style={{display: 'flex', marginLeft: 'auto', marginRight: 'auto'}}/>
+                    </Link>
+
         <h1>Đăng Nhập</h1>
         <form className="login-form" onSubmit={handleSubmit}>
           <input
@@ -143,9 +145,9 @@ const Login = () => {
           </div>
         </form>
       </div>
-      <div className="login-banner">
+      {/* <div className="login-banner">
         <img src={loginBanner} alt="Login Banner" />
-      </div>
+      </div> */}
     </div>
   );
 

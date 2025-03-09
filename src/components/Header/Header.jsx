@@ -59,21 +59,9 @@ const Header = () => {
                     <ul className="nav-list">
                         <li><Link to="/community">Diễn Đàn</Link></li>
                         <li><Link to="/create-fetus">Đăng ký thông tin thai nhi</Link></li>
-                        <li><Link to="/view-package">Dịch Vụ</Link></li>
+                        <li><Link to="/package-list">Dịch Vụ</Link></li>
                         <li><Link to="/booking">Đặt Lịch</Link></li>
                     </ul>
-                    {/* <ul className='sidebar'>
-                        <li onClick={hideSidebar}><a href="#"><svg xmlns='../../assets/X.svg' height={26} viewBox='0 96 960 960' width={26}></svg></a></li>
-                        <li><a href="#"></a><Link to="/">Trang Chủ</Link></li>
-                        <li><a href="#"></a><Link to="/community">Diễn Đàn</Link></li>
-                        <li><a href="#"></a><Link to="/create-fetus">Theo Dõi Thai Kỳ</Link></li>
-                        <li><a href="#"></a><Link to="/view-package">Dịch Vụ</Link></li>
-                        <li><a href="#"></a><Link to="/booking">Đặt Lịch</Link></li>
-                        <li><a href="#"></a><Link to="/login" className="login-link">Đăng nhập</Link> </li>
-                        <li><a href="#"></a><Link to="/register" className="register-link">Đăng Ký</Link></li>
-                        <li onClick={showSidebar}><a href="#"><svg xmlns='../../assets/menu.svg' height={26} viewBox='0 96 960 960' width={26}></svg></a></li>
-                    </ul> */}
-
                 </nav>
 
                 <script>
