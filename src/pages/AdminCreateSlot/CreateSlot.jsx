@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaPlus, FaTrash, FaSearch, FaFilter } from "react-icons/fa";
 import { format } from "date-fns";
+import api from '../../constants/axios';
 
 const DoctorSlotManagement = () => {
     const [slots, setSlots] = useState([]);
@@ -15,14 +16,36 @@ const DoctorSlotManagement = () => {
         startTime: "",
         endTime: ""
     });
+    useEffect(() => {
+        const fetchCurrentUser = async (url) => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.log("no token found!");
+                return;
+            }
+            const fetchDoctors = async (url) => {
+                const doctorId = localStorage.getItem('id');
+                if (!doctorId) {
+                    console.log('no Doctor found!');
+                    return;
+                }
+            }
+            fetchDoctors('https://maternitycare.azurewebsites.net/api/doctors?PageNumber=1&PageSize=100');
+            try {
+                const response = await api.post("https://maternitycare.azurewebsites.net/api/doctors/1094ec20-65a1-463b-fc15-08dd56f6b269/slots", {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                    doctorId: formData.doctorId
+                });
+                setSlots(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchCurrentUser('https://maternitycare.azurewebsites.net/api/authentications/current-user');
 
-    const ITEMS_PER_PAGE = 5;
-
-    const mockDoctors = [
-        { id: "D001", name: "Dr. John Smith" },
-        { id: "D002", name: "Dr. Sarah Johnson" },
-        { id: "D003", name: "Dr. Michael Brown" }
-    ];
+    });
 
     const validateSlot = () => {
         const now = new Date();
