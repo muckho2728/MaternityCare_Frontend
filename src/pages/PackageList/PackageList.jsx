@@ -1,9 +1,8 @@
 import { Card, Col, Row, Button } from 'antd';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom'; 
 import './PackageList.css';
 import { useEffect, useState } from 'react';
 import api from '../../config/api';
-
 
 const PackageList = () => {
   const navigate = useNavigate(); // Khởi tạo useNavigate
@@ -12,13 +11,12 @@ const PackageList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await api.get("packages");
+        const response = await api.get("packages/active-packages");
         console.log(response.data);
 
-        // Map through the response data and convert feature string to an array
         const updatedPackages = response.data.map(pkg => ({
           ...pkg,
-          features: pkg.feature.split(';') // Split the feature string into an array
+          features: pkg.feature.split(';') 
         }));
 
         setPackages(updatedPackages);
@@ -29,8 +27,11 @@ const PackageList = () => {
     fetchData();
   }, []);
 
-  const handleBuyClick = () => {
-    navigate('/payment-detail');
+  const handleBuyClick = (id) => {
+    console.log('id: ', id);
+    
+    //navigate('/payment-detail', { state: { selectedPackage: pkg } }); // Chuyển hướng và truyền thông tin gói
+    navigate(`/payment-detail/${id}`)
   };
 
   return (
@@ -43,16 +44,15 @@ const PackageList = () => {
           {packages?.map(pkg => (
             <Col span={8} key={pkg.id}>
               <Card title={pkg.type} bordered={true} className="package-card">
-                <p className="package-type">Loại gói: {pkg.type}</p>
                 <p className="package-price">Giá: {pkg.price}</p>
                 <p className="package-duration">Thời hạn: {pkg.duration}</p>
-                <p className="package-features">Tính năng: {pkg.features}</p>
+                <p className="package-features">Tính năng: </p>
                 <ul>
-                  {pkg.features.map((feature, index) => (
-                    <li key={index}>{feature.trim()}</li> // Trim whitespace from features
+                  {pkg.features.map((feature) => (
+                    <li key={feature.id}>{feature.trim()}</li> 
                   ))}
                 </ul>
-                <Button type="primary" onClick={handleBuyClick}>Mua</Button>
+                <Button type="primary" onClick={() => handleBuyClick(pkg.id)}>Mua</Button>
               </Card>
             </Col>
           ))}

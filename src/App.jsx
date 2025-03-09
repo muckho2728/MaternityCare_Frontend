@@ -41,6 +41,11 @@ import CreateSlot from './pages/AdminCreateSlot/CreateSlot';
 
 import ManageFetusHealth from './pages/Admin/ManageFetusHealth/ManageFetusHealth';
 import Pregnancyw3 from './pages/Pregnancy/Pregnancyw3';
+import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
+import TransactionManagementPage from './pages/Admin/TransactionManagementPage/TransactionManagementPage';
+import TransactionDetailPage from './pages/Admin/TransactionDetailPage/TransactionDetailPage';
+import PaymentPage from './pages/PaymentPage/PaymentPage';
+
 
 
 
@@ -68,6 +73,10 @@ function Layout() {
           {/* <Route path="/create-package" element={<CreatePackage />} /> */}
           {/* <Route path="/update-package" element={<UpdatePackage />} /> */}
           {/* <Route path="/forget-password" element={<ForgetPage />} /> */}
+          <Route path="/payment-detail/:packageId" element={<PaymentDetail />} />
+          <Route path="/payment-page/:packageId" element={<PaymentPage />} />
+          <Route path="/transaction-management-page" element={<TransactionManagementPage />} />
+          <Route path="/transaction-detail-page" element={<TransactionDetailPage />} />
           <Route path="/Censor" element={<Censor />} />
           <Route path="/booking" element={<ViewSlot />} />
           <Route path="/admin" element={<AdminLayout />}
