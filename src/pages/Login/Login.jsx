@@ -18,7 +18,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [remember, setRemember] = useState(false);
   const [errors, setErrors] = useState({});
-  const userDetailData = useSelector((state) => state.userReducer.user);  
+  const userDetailData = useSelector((state) => state.userReducer.user);
 
   const [formData, setFormData] = useState({
     username: "",
@@ -62,6 +62,7 @@ const Login = () => {
         token: response.data.accessToken,
         username: formData.username,
       });
+      // console.log(data);
 
       // Lấy thông tin người dùng hiện tại và dispatch action
       const userResponse = await api.get(
@@ -70,7 +71,7 @@ const Login = () => {
           headers: {
             Authorization: `Bearer ${response.data.accessToken}`,
           },
-        }    
+        }
       );
       dispatch(fetchUserByIdAction(userResponse.data.id)); // Dispatch action để lưu thông tin người dùng vào Redux
 
@@ -87,9 +88,9 @@ const Login = () => {
   return (
     <div className="login-page">
       <div className="login-container">
-      <Link to="/" className="logo-link">
-                        <img src={logo} alt="Baby Logo" className="logo" style={{display: 'flex', marginLeft: 'auto', marginRight: 'auto'}}/>
-                    </Link>
+        <Link to="/" className="logo-link">
+          <img src={logo} alt="Baby Logo" className="logo" style={{ display: 'flex', marginLeft: 'auto', marginRight: 'auto' }} />
+        </Link>
         <h1>Đăng Nhập</h1>
         <form className="login-form" onSubmit={handleSubmit}>
           <input
@@ -101,7 +102,7 @@ const Login = () => {
             className="input-field"
           />
           {errors.username && <p className="error-message">{errors.username}</p>}
-  
+
           <input
             type="password"
             name="password"
@@ -111,7 +112,7 @@ const Login = () => {
             className="input-field"
           />
           {errors.password && <p className="error-message">{errors.password}</p>}
-  
+
           <div className="options">
             <label>
               <input
@@ -125,7 +126,7 @@ const Login = () => {
               Quên mật khẩu?
             </Link>
           </div>
-  
+
           <button
             type="submit"
             className={`login-button ${loading ? "loading" : ""}`}
@@ -133,7 +134,7 @@ const Login = () => {
           >
             {loading ? 'Đang đăng nhập...' : 'Đăng nhập'}
           </button>
-  
+
           <div className="register">
             Chưa có tài khoản?{" "}
             <Link to="/register" className="register-link">
@@ -147,7 +148,7 @@ const Login = () => {
       </div>
     </div>
   );
-  
+
 };
 
 export default Login;

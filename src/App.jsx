@@ -19,7 +19,7 @@ import { ToastContainer } from 'react-toastify';
 import Censor from './pages/AdminCensor/Censor'
 import PackageList from './pages/PackageList/PackageList'
 //import PaymentDetail from './pages/PaymentDetail';  
-import CreatePackage from './pages/Admin/CreatePackage';  
+import CreatePackage from './pages/Admin/CreatePackage';
 import { ThemeProvider } from './constants/ThemeContext';
 import Pregnancy from './pages/Pregnancy/Pregnancy';
 import { FetusProvider } from './constants/FetusContext'
@@ -28,6 +28,7 @@ import ManagePackagePage from './pages/Admin/manage-package/ManagePackagePage';
 
 import ViewSlot from './pages/ViewSlot/ViewSlot';
 import CreateSlot from './pages/AdminCreateSlot/CreateSlot';
+import Forgot from './pages/ForgotPassword/ForgetP';
 
 
 
@@ -85,6 +86,7 @@ function Layout() {
           <Route path="/createslot" element={<CreateSlot />} />
 
           <Route path="/pregnancyw3" element={<Pregnancyw3 />} />
+          <Route path="/forget" element={<Forgot />} />
 
         </Routes>
         <ToastContainer />
