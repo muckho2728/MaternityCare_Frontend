@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import api from '../../constants/axios';
+import moment from 'moment';
+import 'moment/locale/vi';
 
 const ViewSlot = () => {
     const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedSlot, setSelectedSlot] = useState(null);
-    const [showModal, setShowModal] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [specialtyFilter, setSpecialtyFilter] = useState("all");
     const [doctors, setDoctors] = useState([]);
     const [pageNumber, setPageNumber] = useState(1);
-    const [currentUser, setCurrentUser] = useState(null);
-    const pageSize = 3;
-    const [userId, setUserId] = useState("");
+    const pageSize = 100;
     const [availableDates, setAvailableDates] = useState([]);
     const [timeSlots, setTimeSlots] = useState([]);
+    const [specialties, setSpecialties] = useState([]);
 
 
     useEffect(() => {
@@ -28,12 +28,13 @@ const ViewSlot = () => {
             }
 
             try {
-                const response = await api.get(`https://maternitycare.azurewebsites.net/api/doctors?PageNumber=${pageNumber}&PageSize=${pageSize}`, {
+                const response = await api.get(`https://maternitycare.azurewebsites.net/api/doctors/active-doctors?PageNumber=${pageNumber}&PageSize=${pageSize}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
                 });
                 setDoctors(response.data);
+                extractSpecialties(response.data);
             } catch (error) {
                 console.error("Error fetching doctors:", error.response?.data || error.message);
                 toast.error("Error fetching doctors: " + (error.response?.data?.message || error.message));
@@ -42,6 +43,11 @@ const ViewSlot = () => {
 
         fetchDoctors();
     }, [pageNumber]);
+
+    const extractSpecialties = (doctorsList) => {
+        const uniqueSpecialties = [...new Set(doctorsList.map(doctor => doctor.specialization))];
+        setSpecialties(uniqueSpecialties);
+    };
 
     const handlePageChange = (newPage) => {
         setPageNumber(newPage);
@@ -55,8 +61,8 @@ const ViewSlot = () => {
     });
 
     const handleDoctorClick = (doctor) => {
-        console.log("Selected Doctor:", doctor.id, doctor.fullName);
         setSelectedDoctor(doctor);
+        console.log("doctor ID:", doctor.id, ", doctor name:", doctor.fullName);
         generateAvailableDates();
         setSelectedDate(null);
         setTimeSlots([]);
@@ -92,10 +98,10 @@ const ViewSlot = () => {
 
     return (
         <div>
-            <h1>Book Your Appointment</h1>
+            <h1>Chọn bác sĩ</h1>
             <input
                 type="text"
-                placeholder="Search doctors..."
+                placeholder="Tìm kiếm bác sĩ"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -103,47 +109,48 @@ const ViewSlot = () => {
                 value={specialtyFilter}
                 onChange={(e) => setSpecialtyFilter(e.target.value)}
             >
-                <option value="all">All Specialties</option>
-                <option value="Teeth">Teeth</option>
-                <option value="Cardiology">Cardiology</option>
-                <option value="Pediatrics">Pediatrics</option>
+                <option value="all">Toàn bộ</option>
+                {specialties.map((specialty, index) => (
+                    <option key={index} value={specialty}>{specialty}</option>
+                ))}
             </select>
 
-            <button onClick={() => handlePageChange(pageNumber - 1)} disabled={pageNumber === 1}>Previous</button>
-            <button onClick={() => handlePageChange(pageNumber + 1)}>Next</button>
+            <button onClick={() => handlePageChange(pageNumber - 1)} disabled={pageNumber === 1}>Trước</button>
+            <button onClick={() => handlePageChange(pageNumber + 1)}>Sau</button>
 
             <div>
-                {filteredDoctors.map((doctor, index) => (
-                    <div key={doctor.doctorId || index} onClick={() => handleDoctorClick(doctor)}>
-                        <img src={doctor.avatar} alt={doctor.fullName} style={{ width: '100px', borderRadius: '50%' }} />
-                        <h3>{doctor.fullName}</h3>
-                        <p>Email: {doctor.email}</p>
-                        <p>Phone: {doctor.phoneNumber}</p>
-                        <p>Specialization: {doctor.specialization}</p>
-                        <p>Experience: {doctor.yearsOfExperience} years</p>
+                {filteredDoctors.map((doctor) => (
+                    <div key={doctor.id}>
+                        <div onClick={() => handleDoctorClick(doctor)}>
+                            <img src={doctor.avatar} alt={doctor.fullName} style={{ width: '100px', borderRadius: '50%' }} />
+                            <h3>{doctor.fullName}</h3>
+                            <p>Email: {doctor.email}</p>
+                            <p>Số điện thoại: {doctor.phoneNumber}</p>
+                            <p>Chuyên môn: {doctor.specialization}</p>
+                            <p>Kinh nghiệm: {doctor.yearsOfExperience} years</p>
+                        </div>
+                        {selectedDoctor?.id === doctor.id && (
+                            <div>
+                                <h2>Chọn ngày</h2>
+                                {availableDates.map((date, index) => (
+                                    <button key={index} onClick={() => handleDateClick(date)}>
+                                        {moment(date).format('dddd, DD/MM/YYYY')}
+                                    </button>
+                                ))}
+                                {selectedDate && (
+                                    <div>
+                                        <h2>Chọn giờ</h2>
+                                        {timeSlots.map((slot, index) => (
+                                            <button key={index} onClick={() => setSelectedSlot(slot)}>
+                                                {slot}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
                 ))}
-                {selectedDoctor && (
-                    <div>
-                        <h2>Available Dates</h2>
-                        {availableDates.map((date, index) => (
-                            <button key={index} onClick={() => handleDateClick(date)}>
-                                {date.toDateString()}
-                            </button>
-                        ))}
-                    </div>
-                )}
-
-                {selectedDate && (
-                    <div>
-                        <h2>Available Time Slots</h2>
-                        {timeSlots.map((slot, index) => (
-                            <button key={index} onClick={() => setSelectedSlot(slot)}>
-                                {slot}
-                            </button>
-                        ))}
-                    </div>
-                )}
             </div>
         </div>
     );

@@ -28,9 +28,11 @@ const Blog = () => {
       .then((res) => res.json())
       .then((data) => setBlogs(data))
       .catch((err) => console.error("Error fetching blogs:", err));
-    }, []);
-      // Lọc bài viết theo tag và tìm kiếm
-  const filteredBlogs = blogs.filter((blog) => 
+
+  }, []);
+  // Lọc bài viết theo tag và tìm kiếm
+  const filteredBlogs = blogs.filter((blog) =>
+
     (selectedTag ? blog.tagId === selectedTag : true) &&
     (blog.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
      blog.content.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -165,7 +167,7 @@ const Blog = () => {
           <input type="text" placeholder="Tiêu đề bài viết" value={newBlog.title} onChange={(e) => setNewBlog({ ...newBlog, title: e.target.value })} className="blog-input" />
           <textarea placeholder="Nội dung bài viết" value={newBlog.content} onChange={(e) => setNewBlog({ ...newBlog, content: e.target.value })} className="blog-textarea" />
           <button onClick={editingBlog ? handleUpdate : handleCreate} className="blog-btn-create">{editingBlog ? "Cập nhật" : "Đăng bài"}</button>
-        
+
         </div>
       )}
 
@@ -234,7 +236,11 @@ const Blog = () => {
               
             }
 
-                {/* Ô nhập bình luận
+
+                }
+
+                {/* Ô nhập bình luận */}
+
                 <input
                   type="text"
                   placeholder="Viết bình luận..."
@@ -242,10 +248,13 @@ const Blog = () => {
                   value={commentInputs[blog.id] || ""}
                   onChange={(e) => setCommentInputs({ ...commentInputs, [blog.id]: e.target.value })}
                   onKeyDown={(e) => e.key === "Enter" && handleComment(blog.id)}
-                /> */}
+
+                />
               </div>
             </div>
-            <Comment/>
+            <Comment />
+
+
           </div>
         ))
       ) : (
