@@ -6,6 +6,8 @@ import { updateUserByIdAction, changePassworbyUserIdAction, fetchUserByIdAction 
   '../../store/redux/action/userAction';
 import api from '../../constants/axios';
 import { Link } from 'react-router-dom';
+import './Profile.css';
+
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -143,7 +145,7 @@ const Profile = () => {
         <Row gutter={24}>
           <Col span={6}>
             <Card style={{ borderRadius: '8px', backgroundColor: '#f9f9f9', padding: '10px' }}>
-              <Menu mode="vertical" defaultSelectedKeys={['1']} style={{ border: 'none' }} items={[
+              <Menu mode="vertical" defaultSelectedKeys={['1']} style={{ border: 'none', backgroundColor: 'transparent' }} items={[
                 {
                   key: '1',
                   icon: <UserOutlined />,

@@ -17,15 +17,21 @@ import Blog from './pages/Community/Blog'
 import { ToastContainer } from 'react-toastify';
 import Censor from './pages/AdminCensor/Censor'
 import PackageList from './pages/PackageList/PackageList'
+
 import CreatePackage from './pages/Admin/CreatePackage';  
+
 import { ThemeProvider } from './constants/ThemeContext';
 import { FetusProvider } from './constants/FetusContext'
 import AdminLayout from './components/layout/AdminLayout';
 import ManagePackagePage from './pages/Admin/manage-package/ManagePackagePage';
 import ViewSlot from './pages/ViewSlot/ViewSlot';
 import CreateSlot from './pages/AdminCreateSlot/CreateSlot';
+
+import Forgot from './pages/ForgotPassword/ForgetP';
+
 import ManageFetusHealth from './pages/Admin/ManageFetusHealth/ManageFetusHealth';
 import Pregnancyw3 from './pages/Pregnancy/Pregnancyw3';
+
 
 
 
@@ -67,6 +73,10 @@ function Layout() {
             } />
             <Route path="/pregnancy/:week" element={<PregnancyWeek />} />
           <Route path="/createslot" element={<CreateSlot />} />
+
+
+          <Route path="/pregnancyw3" element={<Pregnancyw3 />} />
+          <Route path="/forget" element={<Forgot />} />
 
         </Routes>
         <ToastContainer />

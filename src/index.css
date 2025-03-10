@@ -20,7 +20,7 @@ body,
     /* display: flex; */
     flex-direction: column;
     min-height: 100vh;
-    background: #fcf8ec;
+    background: #f2fffa8f;
     /* Chiều cao tối thiểu bằng 100% viewport */
 }
 
