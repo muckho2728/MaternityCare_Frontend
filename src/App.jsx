@@ -18,7 +18,7 @@ import { ToastContainer } from 'react-toastify';
 import Censor from './pages/AdminCensor/Censor'
 import PackageList from './pages/PackageList/PackageList'
 
-import CreatePackage from './pages/Admin/CreatePackage';  
+import CreatePackage from './pages/Admin/CreatePackage';
 
 import { ThemeProvider } from './constants/ThemeContext';
 import { FetusProvider } from './constants/FetusContext'
@@ -30,7 +30,9 @@ import CreateSlot from './pages/AdminCreateSlot/CreateSlot';
 import Forgot from './pages/ForgotPassword/ForgetP';
 
 import ManageFetusHealth from './pages/Admin/ManageFetusHealth/ManageFetusHealth';
-import Pregnancyw3 from './pages/Pregnancy/Pregnancyw3';
+import Pregnancyw3 from './pages/Pregnancy/PregnancyWeek';
+import PregnancyWeek from './pages/Pregnancy/PregnancyWeek';
+import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
 
 
 
@@ -55,6 +57,7 @@ function Layout() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/package-list" element={<PackageList />} />
           <Route path="/create-package" element={<CreatePackage />} />
+          <Route path="/payment-detail/:packageId" element={<PaymentDetail />} />
           {/* <Route path="/create-package" element={<CreatePackage />} /> */}
           {/* <Route path="/update-package" element={<UpdatePackage />} /> */}
           {/* <Route path="/forget-password" element={<ForgetPage />} /> */}
@@ -67,15 +70,15 @@ function Layout() {
                   <Route path='manage-user' element={<ManageUsersPage />} />
                   <Route path='manage-packages' element={<ManagePackagePage />} />
                   <Route path='manage-fetus-health' element={<ManageFetusHealth />} />
-                  <Route path='manage-doctor' element={<ManageDoctor />} />
+                  {/* <Route path='manage-doctor' element={<ManageDoctor />} /> */}
                 </>
               ]
             } />
-            <Route path="/pregnancy/:week" element={<PregnancyWeek />} />
+          <Route path="/pregnancy" element={<PregnancyWeek />} />
           <Route path="/createslot" element={<CreateSlot />} />
 
 
-          <Route path="/pregnancyw3" element={<Pregnancyw3 />} />
+          {/* <Route path="/pregnancyw3" element={<Pregnancyw3 />} /> */}
           <Route path="/forget" element={<Forgot />} />
 
         </Routes>
