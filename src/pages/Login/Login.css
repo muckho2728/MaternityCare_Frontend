@@ -19,6 +19,7 @@
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     text-align: left;
     background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5));
+    color: hsl(354deg 100% 50%);
 }
 
 /* Tiêu đề */
@@ -89,6 +90,8 @@
     font-size: 14px;
     margin-top: 10px;
     font-weight: bold;
+    color: #005454;
+
 
 }
 
