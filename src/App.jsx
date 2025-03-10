@@ -30,10 +30,7 @@ import CreateSlot from './pages/AdminCreateSlot/CreateSlot';
 import Forgot from './pages/ForgotPassword/ForgetP';
 
 import ManageFetusHealth from './pages/Admin/ManageFetusHealth/ManageFetusHealth';
-import PregnancyWeek from './pages/Pregnancy/PregnancyWeek';
-import ManageDoctor from './pages/Admin/ManageDoctor/Doctor'
-
-
+import Pregnancyw3 from './pages/Pregnancy/Pregnancyw3';
 
 
 
@@ -58,6 +55,9 @@ function Layout() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/package-list" element={<PackageList />} />
           <Route path="/create-package" element={<CreatePackage />} />
+          {/* <Route path="/create-package" element={<CreatePackage />} /> */}
+          {/* <Route path="/update-package" element={<UpdatePackage />} /> */}
+          {/* <Route path="/forget-password" element={<ForgetPage />} /> */}
           <Route path="/Censor" element={<Censor />} />
           <Route path="/booking" element={<ViewSlot />} />
           <Route path="/admin" element={<AdminLayout />}
