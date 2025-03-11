@@ -31,6 +31,11 @@ import Forgot from './pages/ForgotPassword/ForgetP';
 
 import ManageFetusHealth from './pages/Admin/ManageFetusHealth/ManageFetusHealth';
 import Pregnancyw3 from './pages/Pregnancy/PregnancyWeek';
+<<<<<<< HEAD
+=======
+import PregnancyWeek from './pages/Pregnancy/PregnancyWeek';
+import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
+>>>>>>> fd24dd81fa952f78d03e7eee7f8a1e35cd614cbc
 
 
 
@@ -55,6 +60,7 @@ function Layout() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/package-list" element={<PackageList />} />
           <Route path="/create-package" element={<CreatePackage />} />
+          <Route path="/payment-detail/:packageId" element={<PaymentDetail />} />
           {/* <Route path="/create-package" element={<CreatePackage />} /> */}
           {/* <Route path="/update-package" element={<UpdatePackage />} /> */}
           {/* <Route path="/forget-password" element={<ForgetPage />} /> */}
@@ -71,11 +77,15 @@ function Layout() {
                 </>
               ]
             } />
+<<<<<<< HEAD
           {/* <Route path="/pregnancy/:week" element={<PregnancyWeek />} /> */}
+=======
+          <Route path="/pregnancy" element={<PregnancyWeek />} />
+>>>>>>> fd24dd81fa952f78d03e7eee7f8a1e35cd614cbc
           <Route path="/createslot" element={<CreateSlot />} />
 
 
-          <Route path="/pregnancyw3" element={<Pregnancyw3 />} />
+          {/* <Route path="/pregnancyw3" element={<Pregnancyw3 />} /> */}
           <Route path="/forget" element={<Forgot />} />
 
         </Routes>
