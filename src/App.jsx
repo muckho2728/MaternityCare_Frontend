@@ -18,7 +18,7 @@ import { ToastContainer } from 'react-toastify';
 import Censor from './pages/AdminCensor/Censor'
 import PackageList from './pages/PackageList/PackageList'
 
-import CreatePackage from './pages/Admin/CreatePackage';  
+import CreatePackage from './pages/Admin/CreatePackage';
 
 import { ThemeProvider } from './constants/ThemeContext';
 import { FetusProvider } from './constants/FetusContext'
@@ -30,7 +30,7 @@ import CreateSlot from './pages/AdminCreateSlot/CreateSlot';
 import Forgot from './pages/ForgotPassword/ForgetP';
 
 import ManageFetusHealth from './pages/Admin/ManageFetusHealth/ManageFetusHealth';
-import Pregnancyw3 from './pages/Pregnancy/Pregnancyw3';
+import Pregnancyw3 from './pages/Pregnancy/PregnancyWeek';
 
 
 
@@ -67,11 +67,11 @@ function Layout() {
                   <Route path='manage-user' element={<ManageUsersPage />} />
                   <Route path='manage-packages' element={<ManagePackagePage />} />
                   <Route path='manage-fetus-health' element={<ManageFetusHealth />} />
-                  <Route path='manage-doctor' element={<ManageDoctor />} />
+                  {/* <Route path='manage-doctor' element={<ManageDoctor />} /> */}
                 </>
               ]
             } />
-            <Route path="/pregnancy/:week" element={<PregnancyWeek />} />
+          {/* <Route path="/pregnancy/:week" element={<PregnancyWeek />} /> */}
           <Route path="/createslot" element={<CreateSlot />} />
 
 

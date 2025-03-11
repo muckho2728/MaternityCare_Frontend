@@ -183,6 +183,11 @@ const Profile = () => {
                         }
                       ]
                     },
+                    {
+                      key: '3-4',
+                      icon: <FileSearchOutlined />,
+                      label: <Link to="/createslot">Tạo slot bác sĩ</Link>
+                    },
                   ],
                 },
               ]} />
