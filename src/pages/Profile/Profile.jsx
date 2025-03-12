@@ -156,6 +156,43 @@ const Profile = () => {
                   icon: <HeartOutlined />,
                   label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link>,
                 },
+<<<<<<< HEAD
+=======
+                {
+                  key: '3',
+                  icon: <TeamOutlined />,
+                  label: 'Quản lý',
+                  children: [
+                    {
+                      key: '3-1',
+                      icon: <FileSearchOutlined />,
+                      label: <Link to="/Censor">Quản lý người dùng</Link>,
+                    },
+                    {
+                      key: '3-2',
+                      icon: <FileSearchOutlined />,
+                      label: <Link to="/Censor">Quản lý thông tin thai kỳ</Link>,
+                    },
+                    {
+                      key: '3-3',
+                      icon: <FileSearchOutlined />,
+                      label: 'Quản lý bài viết',
+                      children: [
+                        {
+                          key: '3-3-1',
+                          icon: <FileSearchOutlined />,
+                          label: <Link to="/Censor">Duyệt bài viết</Link>,
+                        }
+                      ]
+                    },
+                    {
+                      key: '3-4',
+                      icon: <FileSearchOutlined />,
+                      label: <Link to="/createslot">Tạo slot bác sĩ</Link>
+                    },
+                  ],
+                },
+>>>>>>> 168c6ea5cd26c746824cc5b2bab800dfd815b311
               ]} />
             </Card>
           </Col>

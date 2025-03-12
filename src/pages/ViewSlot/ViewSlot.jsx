@@ -3,24 +3,19 @@ import { toast } from "react-toastify";
 import api from '../../constants/axios';
 import moment from 'moment';
 import 'moment/locale/vi';
+import { Modal, Form, Input, Button, Card, Space } from "antd";
 
 const ViewSlot = () => {
-    const [selectedDoctor, setSelectedDoctor] = useState(null);
-    const [selectedDate, setSelectedDate] = useState(null);
-    const [selectedSlot, setSelectedSlot] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
     const [specialtyFilter, setSpecialtyFilter] = useState("all");
     const [doctors, setDoctors] = useState([]);
     const [pageNumber, setPageNumber] = useState(1);
     const pageSize = 100;
-    const [availableDates, setAvailableDates] = useState([]);
-    const [timeSlots, setTimeSlots] = useState([]);
     const [specialties, setSpecialties] = useState([]);
-
-
+    const [selectedDoctorId, setSelectedDoctorId] = useState(null);
+    const [slots, setSlots] = useState([]);
     useEffect(() => {
         const fetchDoctors = async () => {
-
             const token = localStorage.getItem('token');
             if (!token) {
                 console.error('No token found');
@@ -44,6 +39,29 @@ const ViewSlot = () => {
         fetchDoctors();
     }, [pageNumber]);
 
+    const fetchSlots = async (selectedDoctorId) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No token found');
+            return;
+        }
+
+        try {
+            const response = await api.get(`https://maternitycare.azurewebsites.net/api/doctors/${selectedDoctorId}/slots?Date=2025-03-12&PageNumber=1&PageSize=10`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setSlots(response.data);
+        } catch (error) {
+            console.error("Error fetching slots:", error);
+            toast.error("Error fetching slots: " + (error.response?.data?.message || error.message));
+        }
+    };
+
+
+
+
     const extractSpecialties = (doctorsList) => {
         const uniqueSpecialties = [...new Set(doctorsList.map(doctor => doctor.specialization))];
         setSpecialties(uniqueSpecialties);
@@ -53,48 +71,10 @@ const ViewSlot = () => {
         setPageNumber(newPage);
     };
 
-    const filteredDoctors = doctors.filter(doctor => {
-        return (
-            doctor.fullName.toLowerCase().includes(searchTerm.toLowerCase()) &&
-            (specialtyFilter === "all" || doctor.specialization === specialtyFilter)
-        );
-    });
-
-    const handleDoctorClick = (doctor) => {
-        setSelectedDoctor(doctor);
-        console.log("doctor ID:", doctor.id, ", doctor name:", doctor.fullName);
-        generateAvailableDates();
-        setSelectedDate(null);
-        setTimeSlots([]);
-    };
-
-    const generateAvailableDates = () => {
-        const dates = [];
-        const today = new Date();
-        for (let i = 0; i < 7; i++) {
-            const newDate = new Date();
-            newDate.setDate(today.getDate() + i);
-            dates.push(newDate);
-        }
-        setAvailableDates(dates);
-    };
-
-    const handleDateClick = (date) => {
-        setSelectedDate(date);
-        generateTimeSlots(date);
-    };
-
-    const generateTimeSlots = (date) => {
-        const day = date.getDay();
-        const slots = [];
-        let startHour = 7;
-        let endHour = day === 0 ? 12 : 16.5;
-        while (startHour < endHour) {
-            slots.push(`${startHour}:00 - ${startHour + 1.5}:30`);
-            startHour += 1.5;
-        }
-        setTimeSlots(slots);
-    };
+    const filteredDoctors = doctors.filter(doctor =>
+        doctor.fullName.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        (specialtyFilter === "all" || doctor.specialization === specialtyFilter)
+    );
 
     return (
         <div>
@@ -105,10 +85,7 @@ const ViewSlot = () => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <select
-                value={specialtyFilter}
-                onChange={(e) => setSpecialtyFilter(e.target.value)}
-            >
+            <select value={specialtyFilter} onChange={(e) => setSpecialtyFilter(e.target.value)}>
                 <option value="all">Toàn bộ</option>
                 {specialties.map((specialty, index) => (
                     <option key={index} value={specialty}>{specialty}</option>
@@ -121,34 +98,30 @@ const ViewSlot = () => {
             <div>
                 {filteredDoctors.map((doctor) => (
                     <div key={doctor.id}>
-                        <div onClick={() => handleDoctorClick(doctor)}>
-                            <img src={doctor.avatar} alt={doctor.fullName} style={{ width: '100px', borderRadius: '50%' }} />
-                            <h3>{doctor.fullName}</h3>
-                            <p>Email: {doctor.email}</p>
-                            <p>Số điện thoại: {doctor.phoneNumber}</p>
-                            <p>Chuyên môn: {doctor.specialization}</p>
-                            <p>Kinh nghiệm: {doctor.yearsOfExperience} years</p>
-                        </div>
-                        {selectedDoctor?.id === doctor.id && (
-                            <div>
-                                <h2>Chọn ngày</h2>
-                                {availableDates.map((date, index) => (
-                                    <button key={index} onClick={() => handleDateClick(date)}>
-                                        {moment(date).format('dddd, DD/MM/YYYY')}
-                                    </button>
-                                ))}
-                                {selectedDate && (
-                                    <div>
-                                        <h2>Chọn giờ</h2>
-                                        {timeSlots.map((slot, index) => (
-                                            <button key={index} onClick={() => setSelectedSlot(slot)}>
-                                                {slot}
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
+                        <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #ddd', padding: '10px', marginBottom: '10px', borderRadius: '5px' }}
+                            onClick={() => { setSelectedDoctorId(doctor.id); fetchSlots(doctor.id); }}>
+                            <img src={doctor.avatar} alt={doctor.fullName} style={{ width: '100px', borderRadius: '50%', marginRight: '20px' }} />
+                            <div style={{ flexGrow: 1 }}>
+                                <h3>{doctor.fullName}</h3>
+                                <p>Email: {doctor.email}</p>
+                                <p>Số điện thoại: {doctor.phoneNumber}</p>
+                                <p>Chuyên môn: {doctor.specialization}</p>
+                                <p>Kinh nghiệm: {doctor.yearsOfExperience} years</p>
                             </div>
-                        )}
+                        </div>
+
+                        {selectedDoctorId === doctor.id && slots.map(slot => (
+                            <Space direction="vertical" style={{ marginLeft: "10px" }}>
+                                <Card>
+                                    <div key={slot.id} style={{ marginTop: '10px', padding: '5px', border: '1px solid #ccc' }}>
+                                        <p>Ngày: {slot.date}</p>
+                                        <p>Giờ bắt đầu: {slot.startTime}</p>
+                                        <p>Giờ kết thúc: {slot.endTime}</p>
+                                        <Button color="cyan" variant="solid" > Đặt Lịch</Button>
+                                    </div>
+                                </Card>
+                            </Space>
+                        ))}
                     </div>
                 ))}
             </div>

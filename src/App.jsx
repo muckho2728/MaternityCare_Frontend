@@ -74,7 +74,12 @@ function Layout() {
                 </>
               ]
             } />
+<<<<<<< HEAD
           <Route path="/pregnancy/:week" element={<PregnancyWeek />} />
+=======
+          {/* <Route path="/pregnancy/:week" element={<PregnancyWeek />} /> */}
+          <Route path="/pregnancy" element={<PregnancyWeek />} />
+>>>>>>> 168c6ea5cd26c746824cc5b2bab800dfd815b311
           <Route path="/createslot" element={<CreateSlot />} />
           <Route path="/forget" element={<Forgot />} />
         </Routes>

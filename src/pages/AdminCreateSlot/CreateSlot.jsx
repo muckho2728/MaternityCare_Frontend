@@ -1,282 +1,203 @@
 import React, { useState, useEffect } from "react";
-import { FaPlus, FaTrash, FaSearch, FaFilter } from "react-icons/fa";
-import { format } from "date-fns";
+import { toast } from "react-toastify";
 import api from '../../constants/axios';
+import moment from 'moment';
+import 'moment/locale/vi';
+import { Modal, Form, Input, Button } from "antd";
 
-const DoctorSlotManagement = () => {
-    const [slots, setSlots] = useState([]);
-    const [showModal, setShowModal] = useState(false);
+const ViewSlot = () => {
     const [searchTerm, setSearchTerm] = useState("");
-    const [currentPage, setCurrentPage] = useState(1);
-    const [errorMessage, setErrorMessage] = useState("");
-    const [successMessage, setSuccessMessage] = useState("");
-    const [formData, setFormData] = useState({
-        doctorId: "",
-        date: "",
-        startTime: "",
-        endTime: ""
-    });
+    const [specialtyFilter, setSpecialtyFilter] = useState("all");
+    const [doctors, setDoctors] = useState([]);
+    const [pageNumber, setPageNumber] = useState(1);
+    const pageSize = 100;
+    const [specialties, setSpecialties] = useState([]);
+    const [selectedDoctorId, setSelectedDoctorId] = useState(null);
+    const [slots, setSlots] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [form] = Form.useForm();
+
     useEffect(() => {
-        const fetchCurrentUser = async (url) => {
+        const fetchDoctors = async () => {
             const token = localStorage.getItem('token');
             if (!token) {
-                console.log("no token found!");
+                console.error('No token found');
                 return;
             }
-            const fetchDoctors = async (url) => {
-                const doctorId = localStorage.getItem('id');
-                if (!doctorId) {
-                    console.log('no Doctor found!');
-                    return;
-                }
-            }
-            fetchDoctors('https://maternitycare.azurewebsites.net/api/doctors?PageNumber=1&PageSize=100');
+
             try {
-                const response = await api.post("https://maternitycare.azurewebsites.net/api/doctors/1094ec20-65a1-463b-fc15-08dd56f6b269/slots", {
+                const response = await api.get(`https://maternitycare.azurewebsites.net/api/doctors?PageNumber=${pageNumber}&PageSize=${pageSize}`, {
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
-                    doctorId: formData.doctorId
                 });
-                setSlots(response.data);
+                setDoctors(response.data);
+                extractSpecialties(response.data);
             } catch (error) {
-                console.log(error);
+                console.error("Error fetching doctors:", error.response?.data || error.message);
+                toast.error("Error fetching doctors: " + (error.response?.data?.message || error.message));
             }
-        }
-        fetchCurrentUser('https://maternitycare.azurewebsites.net/api/authentications/current-user');
+        };
 
-    });
+        fetchDoctors();
+    }, [pageNumber]);
 
-    const validateSlot = () => {
-        const now = new Date();
-        const selectedDate = new Date(formData.date);
-        const startTime = new Date(`${formData.date} ${formData.startTime}`);
-        const endTime = new Date(`${formData.date} ${formData.endTime}`);
-
-        if (selectedDate < now.setHours(0, 0, 0, 0)) {
-            setErrorMessage("Cannot create slots in the past");
-            return false;
+    const fetchSlots = async (selectedDoctorId) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No token found');
+            return;
         }
 
-        if (startTime >= endTime) {
-            setErrorMessage("End time must be after start time");
-            return false;
+        try {
+            const response = await api.get(`https://maternitycare.azurewebsites.net/api/doctors/${selectedDoctorId}/slots?Date=2025-03-12&PageNumber=1&PageSize=10`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setSlots(response.data);
+        } catch (error) {
+            console.error("Error fetching slots:", error);
+            toast.error("Error fetching slots: " + (error.response?.data?.message || error.message));
+        }
+    };
+
+    const handleCreateSlot = async (values) => {
+        const { date, startTime, endTime } = values;
+        if (!selectedDoctorId || !date || !startTime || !endTime) {
+            toast.error("Vui lòng nhập đầy đủ thông tin");
+            return;
         }
 
-        const hasOverlap = slots.some(slot => {
-            const existingStart = new Date(`${slot.date} ${slot.startTime}`);
-            const existingEnd = new Date(`${slot.date} ${slot.endTime}`);
-            return (
-                slot.doctorId === formData.doctorId &&
-                slot.date === formData.date &&
-                ((startTime >= existingStart && startTime < existingEnd) ||
-                    (endTime > existingStart && endTime <= existingEnd))
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No token found');
+            return;
+        }
+        try {
+            await api.post(
+                `https://maternitycare.azurewebsites.net/api/doctors/${selectedDoctorId}/slots`,
+                {
+                    date: date,
+                    startTime: startTime,
+                    endTime: endTime
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                }
             );
-        });
-
-        if (hasOverlap) {
-            setErrorMessage("Time slot overlaps with existing slot");
-            return false;
-        }
-
-        return true;
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (validateSlot()) {
-            const newSlot = {
-                id: Date.now().toString(),
-                ...formData
-            };
-            setSlots([...slots, newSlot]);
-            setShowModal(false);
-            setFormData({ doctorId: "", date: "", startTime: "", endTime: "" });
-            setSuccessMessage("Slot created successfully");
-            setTimeout(() => setSuccessMessage(""), 3000);
+            toast.success("Slot created successfully");
+            setIsModalOpen(false);
+            form.resetFields();
+            fetchSlots(selectedDoctorId);
+        } catch (error) {
+            console.error("Error creating slot:", error);
+            toast.error("Error creating slot: " + (error.response?.data?.message || error.message));
         }
     };
 
-    const handleDelete = (slotId) => {
-        if (window.confirm("Are you sure you want to delete this slot?")) {
-            setSlots(slots.filter(slot => slot.id !== slotId));
-            setSuccessMessage("Slot deleted successfully");
-            setTimeout(() => setSuccessMessage(""), 3000);
+    const handleDeleteSlot = async (doctorId, slotId) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No token found');
+            return;
+        }
+        try {
+            await api.delete(`https://maternitycare.azurewebsites.net/api/doctors/${doctorId}/slots/${slotId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            });
+            fetchSlots(doctorId);
+        } catch (error) {
+            console.log(error);
         }
     };
 
-    const filteredSlots = slots.filter(slot => {
-        return (
-            slot.doctorId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            slot.date.includes(searchTerm)
-        );
-    });
+    const extractSpecialties = (doctorsList) => {
+        const uniqueSpecialties = [...new Set(doctorsList.map(doctor => doctor.specialization))];
+        setSpecialties(uniqueSpecialties);
+    };
 
-    const totalPages = Math.ceil(filteredSlots.length / ITEMS_PER_PAGE);
-    const paginatedSlots = filteredSlots.slice(
-        (currentPage - 1) * ITEMS_PER_PAGE,
-        currentPage * ITEMS_PER_PAGE
+    const handlePageChange = (newPage) => {
+        setPageNumber(newPage);
+    };
+
+    const filteredDoctors = doctors.filter(doctor =>
+        doctor.fullName.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        (specialtyFilter === "all" || doctor.specialization === specialtyFilter)
     );
 
     return (
-        <div className="min-h-screen bg-gray-100 p-4">
-            <div className="max-w-7xl mx-auto">
-                <div className="bg-white rounded-lg shadow-lg p-6">
-                    <div className="flex justify-between items-center mb-6">
-                        <h1 className="text-2xl font-bold text-gray-800">Doctor Slot Management</h1>
-                        <button
-                            onClick={() => setShowModal(true)}
-                            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2"
-                        >
-                            <FaPlus /> Add New Slot
-                        </button>
-                    </div>
+        <div>
+            <h1>Chọn bác sĩ</h1>
+            <input
+                type="text"
+                placeholder="Tìm kiếm bác sĩ"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <select value={specialtyFilter} onChange={(e) => setSpecialtyFilter(e.target.value)}>
+                <option value="all">Toàn bộ</option>
+                {specialties.map((specialty, index) => (
+                    <option key={index} value={specialty}>{specialty}</option>
+                ))}
+            </select>
 
-                    <div className="mb-4 flex gap-4">
-                        <div className="flex-1 relative">
-                            <FaSearch className="absolute left-3 top-3 text-gray-400" />
-                            <input
-                                type="text"
-                                placeholder="Search slots..."
-                                className="w-full pl-10 pr-4 py-2 border rounded-lg"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                            />
+            <button onClick={() => handlePageChange(pageNumber - 1)} disabled={pageNumber === 1}>Trước</button>
+            <button onClick={() => handlePageChange(pageNumber + 1)}>Sau</button>
+
+            <div>
+                {filteredDoctors.map((doctor) => (
+                    <div key={doctor.id}>
+                        <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #ddd', padding: '10px', marginBottom: '10px', borderRadius: '5px' }}
+                            onClick={() => { setSelectedDoctorId(doctor.id); fetchSlots(doctor.id); }}>
+                            <img src={doctor.avatar} alt={doctor.fullName} style={{ width: '100px', borderRadius: '50%', marginRight: '20px' }} />
+                            <div style={{ flexGrow: 1 }}>
+                                <h3>{doctor.fullName}</h3>
+                                <p>Email: {doctor.email}</p>
+                                <p>Số điện thoại: {doctor.phoneNumber}</p>
+                                <p>Chuyên môn: {doctor.specialization}</p>
+                                <p>Kinh nghiệm: {doctor.yearsOfExperience} years</p>
+                            </div>
+                            <div>
+                                <button onClick={() => { setSelectedDoctorId(doctor.id); setIsModalOpen(true); }} style={{ marginRight: '10px' }}>Tạo Slot</button>
+                            </div>
                         </div>
+
+                        {selectedDoctorId === doctor.id && slots.map(slot => (
+                            <div key={slot.id} style={{ marginTop: '10px', padding: '5px', border: '1px solid #ccc' }}>
+                                <p>Ngày: {slot.date}</p>
+                                <p>Giờ bắt đầu: {slot.startTime}</p>
+                                <p>Giờ kết thúc: {slot.endTime}</p>
+                                <button onClick={() => handleDeleteSlot(doctor.id, slot.id)}>Xóa Slot</button>
+                            </div>
+                        ))}
                     </div>
-
-                    {successMessage && (
-                        <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-lg">
-                            {successMessage}
-                        </div>
-                    )}
-
-                    <div className="overflow-x-auto">
-                        <table className="w-full">
-                            <thead>
-                                <tr className="bg-gray-50">
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Doctor</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start Time</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End Time</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
-                                {paginatedSlots.map((slot) => (
-                                    <tr key={slot.id}>
-                                        <td className="px-6 py-4 whitespace-nowrap">{slot.doctorId}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap">{slot.date}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap">{slot.startTime}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap">{slot.endTime}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <button
-                                                onClick={() => handleDelete(slot.id)}
-                                                className="text-red-600 hover:text-red-800"
-                                            >
-                                                <FaTrash />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-
-                    {totalPages > 1 && (
-                        <div className="mt-4 flex justify-center gap-2">
-                            {[...Array(totalPages)].map((_, i) => (
-                                <button
-                                    key={i}
-                                    onClick={() => setCurrentPage(i + 1)}
-                                    className={`px-3 py-1 rounded ${currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                                >
-                                    {i + 1}
-                                </button>
-                            ))}
-                        </div>
-                    )}
-                </div>
+                ))}
             </div>
-
-            {showModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-white p-6 rounded-lg w-full max-w-md">
-                        <h2 className="text-xl font-bold mb-4">Create New Slot</h2>
-                        {errorMessage && (
-                            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg">
-                                {errorMessage}
-                            </div>
-                        )}
-                        <form onSubmit={handleSubmit}>
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Doctor</label>
-                                <select
-                                    required
-                                    className="w-full p-2 border rounded-lg"
-                                    value={formData.doctorId}
-                                    onChange={(e) => setFormData({ ...formData, doctorId: e.target.value })}
-                                >
-                                    <option value="">Select Doctor</option>
-                                    {mockDoctors.map(doctor => (
-                                        <option key={doctor.id} value={doctor.id}>{doctor.name}</option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
-                                <input
-                                    type="date"
-                                    required
-                                    className="w-full p-2 border rounded-lg"
-                                    value={formData.date}
-                                    onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Start Time</label>
-                                <input
-                                    type="time"
-                                    required
-                                    className="w-full p-2 border rounded-lg"
-                                    value={formData.startTime}
-                                    onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
-                                />
-                            </div>
-                            <div className="mb-4">
-                                <label className="block text-sm font-medium text-gray-700 mb-1">End Time</label>
-                                <input
-                                    type="time"
-                                    required
-                                    className="w-full p-2 border rounded-lg"
-                                    value={formData.endTime}
-                                    onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
-                                />
-                            </div>
-                            <div className="flex justify-end gap-2">
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        setShowModal(false);
-                                        setErrorMessage("");
-                                    }}
-                                    className="px-4 py-2 bg-gray-200 rounded-lg"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    type="submit"
-                                    className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                                >
-                                    Create Slot
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
+            <Modal title="Tạo Slot" open={isModalOpen} onCancel={() => setIsModalOpen(false)} footer={null}>
+                <Form form={form} onFinish={handleCreateSlot}>
+                    <Form.Item name="date" label="Ngày" rules={[{ required: true, message: 'Vui lòng nhập ngày' }]}>
+                        <Input type="text" />
+                    </Form.Item>
+                    <Form.Item name="startTime" label="Giờ bắt đầu" rules={[{ required: true, message: 'Vui lòng nhập giờ bắt đầu' }]}>
+                        <Input type="text" />
+                    </Form.Item>
+                    <Form.Item name="endTime" label="Giờ kết thúc" rules={[{ required: true, message: 'Vui lòng nhập giờ kết thúc' }]}>
+                        <Input type="text" />
+                    </Form.Item>
+                    <Form.Item>
+                        <Button onClick={() => setIsModalOpen(false)}>Quay lại</Button>
+                        <Button type="primary" htmlType="submit" style={{ marginLeft: '10px' }}>Xác nhận</Button>
+                    </Form.Item>
+                </Form>
+            </Modal>
         </div>
     );
 };
 
-export default DoctorSlotManagement;
+export default ViewSlot;
