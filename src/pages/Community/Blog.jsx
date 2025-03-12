@@ -222,14 +222,7 @@ const Blog = () => {
                   </div>
 
                 )
-                )
-
-                
-
-
-
-
-                {/* Ô nhập bình luận */}
+                )}
 
                 <input
                   type="text"
