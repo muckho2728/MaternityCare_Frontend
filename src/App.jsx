@@ -74,6 +74,7 @@ function Layout() {
                 </>
               ]
             } />
+          {/* <Route path="/pregnancy/:week" element={<PregnancyWeek />} /> */}
           <Route path="/pregnancy" element={<PregnancyWeek />} />
           <Route path="/createslot" element={<CreateSlot />} />
 
