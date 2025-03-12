@@ -1,10 +1,9 @@
-import Comment from "../../components/Comment/Comment";
 import { useState, useEffect } from "react";
 import { Trash2, Search, Plus, Heart, Edit } from "lucide-react";
 import "./Blog.css";
 import defaultImage from "../../assets/default-blog.jpg";
 //import Like from "../../components/Like/Like";
-import api from '../../constants/axios';
+// import api from '../../constants/axios';
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
   const [tags, setTags] = useState([]);
@@ -17,17 +16,7 @@ const Blog = () => {
   const [commentInputs, setCommentInputs] = useState({});
 
   useEffect(() => {
-    // Fetch danh sách tags
-    fetch("https://maternitycare.azurewebsites.net/api/tags")
-      .then((res) => res.json())
-      .then((data) => setTags(data))
-      .catch((err) => console.error("Error fetching tags:", err));
-
-    // Fetch danh sách bài viết
-    fetch("https://maternitycare.azurewebsites.net/api/blogs")
-      .then((res) => res.json())
-      .then((data) => setBlogs(data))
-      .catch((err) => console.error("Error fetching blogs:", err));
+    ;
 
   }, []);
   // Lọc bài viết theo tag và tìm kiếm
@@ -40,6 +29,7 @@ const Blog = () => {
 
   const handleCreate = () => {
     if (!newBlog.title || !newBlog.content) return;
+    
     setBlogs([...blogs, { ...newBlog, id: Date.now() }]);
     setNewBlog({ title: "", content: "", image: "", likes: 0, comments: [] });
     setIsCreating(false);
@@ -232,14 +222,7 @@ const Blog = () => {
                   </div>
 
                 )
-                )
-
-                }
-
-
-
-
-                {/* Ô nhập bình luận */}
+                )}
 
                 <input
                   type="text"
@@ -252,7 +235,7 @@ const Blog = () => {
                 />
               </div>
             </div>
-            <Comment />
+            
 
 
           </div>

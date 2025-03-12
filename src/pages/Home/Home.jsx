@@ -13,9 +13,19 @@ import intro1 from '../../assets/intro1.jpg';
 import intro2 from '../../assets/intro2.jpg';
 import intro3 from '../../assets/intro3.jpg';
 import intro4 from '../../assets/intro4.jpg';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
 const Home = () => {
     const navigate = useNavigate();
+    const [currentWeek, setCurrentWeek] = useState(2);
+
+    useEffect(() => {
+        const storedWeek = localStorage.getItem('currentWeek');
+        if (storedWeek) {
+            setCurrentWeek(parseInt(storedWeek, 10));
+        }
+    }, []);
 
     return (
         <div className="home">
@@ -39,7 +49,7 @@ const Home = () => {
                     </div>
 
                     <div className="feature-container">
-                        <div className="feature-card" onClick={() => navigate('/pregnancy/2')}>
+                        <div className="feature-card" onClick={() => navigate(`/pregnancy/${currentWeek}`)}>
                             <img src={pregnancy} alt="Theo dõi thai kỳ" />
                             <h3>Theo dõi thai kỳ</h3>
                             <p>Cập nhật sự phát triển của bé theo từng tuần.</p>

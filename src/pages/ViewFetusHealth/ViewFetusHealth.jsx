@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Card, Typography, Row, Col, Layout, Menu, Input, Button, Form, Space, message } from 'antd';
-import { UserOutlined, HeartOutlined, TeamOutlined, FileSearchOutlined } from '@ant-design/icons';
+import { UserOutlined, HeartOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { FetusContext } from '../../constants/FetusContext';
 import api from '../../config/api';
@@ -19,34 +19,44 @@ const ViewFetusHealth = () => {
         const fetchData = async () => {
             try {
                 const userId = localStorage.getItem('userId');
-                const token = localStorage.getItem('token');
-
-                // Fetch danh sách thai nhi
                 const response = await api.get(`users/${userId}/fetuses`);
-                
+                console.log(response)
                 if (response.data.length === 0) {
                     message.error("Không có dữ liệu thai nhi!");
                     return;
                 }
-
-                const fetusID = response.data[0].id;
-                localStorage.setItem('fetusId', fetusID); // Lưu vào localStorage
-
-                // Fetch thông tin sức khỏe thai nhi
+                
+                let fetusID = localStorage.getItem('fetusId') || response.data[response.data.length - 1].id;
+                localStorage.setItem('fetusId', fetusID);
+                
+                if(fetusID !== response.data[response.data.length - 1].id) {
+                    localStorage.setItem('fetusId', response.data[response.data.length - 1].id);
+                }
+                
                 const responseHealth = await api.get(`fetuses/${fetusID}/fetus-healths`);
+                
+                if (responseHealth.data.length === 0) {
+                    message.error("Không có dữ liệu sức khỏe thai nhi!");
+                }
+                if (responseHealth.data.length === 0) {
+                    message.error("Không có dữ liệu sức khỏe thai nhi!");
+                    return;
+                }
 
-                setFetusData(response.data[0]);
-                setHealthData(responseHealth.data[0]);
+                const latestHealthData = responseHealth.data[responseHealth.data.length - 1];
+                setFetusData(response.data[response.data.length - 1]);
+                setHealthData(latestHealthData);
+                localStorage.setItem('currentWeek', latestHealthData.week);
+                
                 form.setFieldsValue({
-                    conceptionDate: response.data[0].conceptionDate,
-                    ...responseHealth.data[0]
+                    conceptionDate: response.data[response.data.length - 1].conceptionDate,
+                    ...latestHealthData
                 });
             } catch (error) {
                 console.error("Lỗi khi tải dữ liệu:", error);
                 message.error("Không thể tải dữ liệu, vui lòng thử lại!");
             }
         };
-
         fetchData();
     }, [form, setFetusData, setHealthData]);
 
@@ -54,20 +64,25 @@ const ViewFetusHealth = () => {
         try {
             const values = await form.validateFields();
             const userId = localStorage.getItem('userId');
-
             if (!fetusData || !healthData) {
                 message.error("Không có dữ liệu để cập nhật!");
                 return;
             }
-
-            console.log("Updating fetus health for:", fetusData.id, "Week:", healthData.week);
-
-            // Cập nhật thông tin thai nhi
-            await api.put(`users/${userId}/fetuses/${fetusData.id}`, values);
-
-            // Cập nhật thông tin sức khỏe thai nhi
-            await api.put(`fetuses/${fetusData.id}/fetus-healths/${healthData.week}`, values);
-
+            await api.put(`users/${userId}/fetuses/${fetusData.id}`, {
+                conceptionDate: values.conceptionDate
+            });
+            console.log(fetusData);
+            
+            await api.put(`fetuses/${fetusData.id}/fetus-healths/${healthData.week}`, {
+                headCircumference: values.headCircumference,
+                amnioticFluidLevel: values.amnioticFluidLevel,
+                crownRumpLength: values.crownRumpLength,
+                biparietalDiameter: values.biparietalDiameter,  
+                femurLength: values.femurLength,
+                estimatedFetalWeight: values.estimatedFetalWeight,
+                abdominalCircumference: values.abdominalCircumference,
+                gestationalSacDiameter: values.gestationalSacDiameter
+            });
             message.success('Cập nhật thông tin thành công!');
             setHealthData(values);
             setIsEditing(false);
@@ -113,7 +128,7 @@ const ViewFetusHealth = () => {
                                     <Col span={12}><Form.Item label="Chiều dài đầu mông (mm)" name="crownRumpLength"><Input disabled={!isEditing} /></Form.Item></Col>
                                     <Col span={12}><Form.Item label="Đường kính lưỡng đỉnh (mm)" name="biparietalDiameter"><Input disabled={!isEditing} /></Form.Item></Col>
                                     <Col span={12}><Form.Item label="Chiều dài xương đùi (mm)" name="femurLength"><Input disabled={!isEditing} /></Form.Item></Col>
-                                    <Col span={12}><Form.Item label="Trọng lượng thai (kg)" name="estimatedFetalWeight"><Input disabled={!isEditing} /></Form.Item></Col>
+                                    <Col span={12}><Form.Item label="Trọng lượng thai (g)" name="estimatedFetalWeight"><Input disabled={!isEditing} /></Form.Item></Col>
                                     <Col span={12}><Form.Item label="Chu vi bụng (mm)" name="abdominalCircumference"><Input disabled={!isEditing} /></Form.Item></Col>
                                     <Col span={12}><Form.Item label="Đường kính túi thai (mm)" name="gestationalSacDiameter"><Input disabled={!isEditing} /></Form.Item></Col>
                                 </Row>

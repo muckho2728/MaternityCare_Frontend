@@ -1,5 +1,4 @@
 
-
 const pregnancyData = {
     2: {
       title: "2 tuần mang thai",
@@ -55,7 +54,7 @@ const pregnancyData = {
         "Biết những gì cần tránh",
         "Khi bạn đang cố gắng thụ thai và mới mang thai, bạn sẽ muốn tránh xa thuốc lá , cần sa , ma túy bất hợp pháp, rượu và quá nhiều caffeine.",
       ],
-      images: ["../../assets/2-1.png", "../../assets/2-2.png"],
+      
     },
     3: {
       title: "3 tuần mang thai",
@@ -105,7 +104,7 @@ const pregnancyData = {
         "Hãy đảm bảo công việc và nhà của bạn được an toàn",
         "Một số công việc có thể gây nguy hiểm cho bạn và em bé của bạn. Nếu bạn thường xuyên tiếp xúc với hóa chất, tiếng ồn lớn hoặc bức xạ tại nơi làm việc, hoặc nếu bạn phải đứng liên tục hoặc nâng vật nặng, hãy trao đổi với bác sĩ về cách giữ an toàn khi làm việc trong thời kỳ mang thai . Ngoài ra, hãy nhớ rằng một số thứ trong nhà bạn có thể gây nguy hiểm cho em bé đang phát triển của bạn. Chì (trong nước uống từ đường ống cũ), thủy ngân (trong một số loại cá ), một số loại thuốc trừ sâu và phân bón, và chất độn chuồng mèo có chứa phân đều có khả năng gây hại.",
       ],
-      images: ["../../assets/3-1.png", "../../assets/3-2.png"],
+      
     },
     4: {
         title: "4 tuần mang thai",

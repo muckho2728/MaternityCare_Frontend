@@ -17,33 +17,33 @@ import Blog from './pages/Community/Blog'
 import { ToastContainer } from 'react-toastify';
 import Censor from './pages/AdminCensor/Censor'
 import PackageList from './pages/PackageList/PackageList'
-
 import CreatePackage from './pages/Admin/CreatePackage';
-
 import { ThemeProvider } from './constants/ThemeContext';
 import { FetusProvider } from './constants/FetusContext'
 import AdminLayout from './components/layout/AdminLayout';
 import ManagePackagePage from './pages/Admin/manage-package/ManagePackagePage';
 import ViewSlot from './pages/ViewSlot/ViewSlot';
 import CreateSlot from './pages/AdminCreateSlot/CreateSlot';
-
 import Forgot from './pages/ForgotPassword/ForgetP';
-
 import ManageFetusHealth from './pages/Admin/ManageFetusHealth/ManageFetusHealth';
-import Pregnancyw3 from './pages/Pregnancy/PregnancyWeek';
-import PregnancyWeek from './pages/Pregnancy/PregnancyWeek';
 import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
+import PregnancyWeek from './pages/Pregnancy/PregnancyWeek';
+import ManageDoctor from './pages/Admin/ManageDoctor/Doctor';
+
+
 
 
 
 
 function Layout() {
   const location = useLocation()
+  const isAdmin = location.pathname.startsWith('/admin');
   const isLoginRegister = location.pathname === '/login' || location.pathname === '/register';
+  
 
   return (
     <div className="app">
-      {!isLoginRegister && <Header />}
+      {!isLoginRegister && !isAdmin&& <Header />}
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -70,22 +70,19 @@ function Layout() {
                   <Route path='manage-user' element={<ManageUsersPage />} />
                   <Route path='manage-packages' element={<ManagePackagePage />} />
                   <Route path='manage-fetus-health' element={<ManageFetusHealth />} />
-                  {/* <Route path='manage-doctor' element={<ManageDoctor />} /> */}
+                  <Route path='manage-doctor' element={<ManageDoctor />} />
                 </>
               ]
             } />
-          {/* <Route path="/pregnancy/:week" element={<PregnancyWeek />} /> */}
+
+          <Route path="/pregnancy/:week" element={<PregnancyWeek />} />
           <Route path="/pregnancy" element={<PregnancyWeek />} />
           <Route path="/createslot" element={<CreateSlot />} />
-
-
-          {/* <Route path="/pregnancyw3" element={<Pregnancyw3 />} /> */}
           <Route path="/forget" element={<Forgot />} />
-
         </Routes>
         <ToastContainer />
       </main>
-      {!isLoginRegister && <Footer />}
+      {!isLoginRegister && !isAdmin && <Footer />}
     </div>
   );
 }
