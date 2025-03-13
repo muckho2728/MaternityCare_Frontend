@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import api from '../../constants/axios';
-import moment from 'moment';
-import 'moment/locale/vi';
-import { Modal, Form, Input, Button, Card, Space } from "antd";
+import { Modal, Button, Card, Space } from "antd";
+import "./ViewSlot.css";
 
 const ViewSlot = () => {
     const [searchTerm, setSearchTerm] = useState("");
@@ -12,8 +11,10 @@ const ViewSlot = () => {
     const [pageNumber, setPageNumber] = useState(1);
     const pageSize = 100;
     const [specialties, setSpecialties] = useState([]);
-    const [selectedDoctorId, setSelectedDoctorId] = useState(null);
+    const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [slots, setSlots] = useState([]);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     useEffect(() => {
         const fetchDoctors = async () => {
             const token = localStorage.getItem('token');
@@ -39,7 +40,7 @@ const ViewSlot = () => {
         fetchDoctors();
     }, [pageNumber]);
 
-    const fetchSlots = async (selectedDoctorId) => {
+    const fetchSlots = async (doctor) => {
         const token = localStorage.getItem('token');
         if (!token) {
             console.error('No token found');
@@ -47,20 +48,19 @@ const ViewSlot = () => {
         }
 
         try {
-            const response = await api.get(`https://maternitycare.azurewebsites.net/api/doctors/${selectedDoctorId}/slots?Date=2025-03-12&PageNumber=1&PageSize=10`, {
+            const response = await api.get(`https://maternitycare.azurewebsites.net/api/doctors/${doctor.id}/slots?Date=2025-03-12&PageNumber=1&PageSize=10`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
             setSlots(response.data);
+            setSelectedDoctor(doctor);
+            setIsModalOpen(true); // Mở modal khi có dữ liệu
         } catch (error) {
             console.error("Error fetching slots:", error);
             toast.error("Error fetching slots: " + (error.response?.data?.message || error.message));
         }
     };
-
-
-
 
     const extractSpecialties = (doctorsList) => {
         const uniqueSpecialties = [...new Set(doctorsList.map(doctor => doctor.specialization))];
@@ -77,56 +77,60 @@ const ViewSlot = () => {
     );
 
     return (
-        <div>
-            <h1>Chọn bác sĩ</h1>
-            <input
-                type="text"
-                placeholder="Tìm kiếm bác sĩ"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <select value={specialtyFilter} onChange={(e) => setSpecialtyFilter(e.target.value)}>
-                <option value="all">Toàn bộ</option>
-                {specialties.map((specialty, index) => (
-                    <option key={index} value={specialty}>{specialty}</option>
-                ))}
-            </select>
+        <div className="view-slot-container">
+            <h1 className="view-slot-header">Chọn bác sĩ</h1>
 
-            <button onClick={() => handlePageChange(pageNumber - 1)} disabled={pageNumber === 1}>Trước</button>
-            <button onClick={() => handlePageChange(pageNumber + 1)}>Sau</button>
+            <div className="search-bar">
+                <input
+                    type="text"
+                    placeholder="Tìm kiếm bác sĩ"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <select value={specialtyFilter} onChange={(e) => setSpecialtyFilter(e.target.value)}>
+                    <option value="all">Toàn bộ</option>
+                    {specialties.map((specialty, index) => (
+                        <option key={index} value={specialty}>{specialty}</option>
+                    ))}
+                </select>
+            </div>
 
-            <div>
+            <div className="pagination">
+                <button onClick={() => handlePageChange(pageNumber - 1)} disabled={pageNumber === 1}>Trước</button>
+                <button onClick={() => handlePageChange(pageNumber + 1)}>Sau</button>
+            </div>
+
+            <div className="doctor-list">
                 {filteredDoctors.map((doctor) => (
-                    <div key={doctor.id}>
-                        <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #ddd', padding: '10px', marginBottom: '10px', borderRadius: '5px' }}
-                            onClick={() => { setSelectedDoctorId(doctor.id); fetchSlots(doctor.id); }}>
-                            <img src={doctor.avatar} alt={doctor.fullName} style={{ width: '100px', borderRadius: '50%', marginRight: '20px' }} />
-                            <div style={{ flexGrow: 1 }}>
-                                <h3>{doctor.fullName}</h3>
-                                <p>Email: {doctor.email}</p>
-                                <p>Số điện thoại: {doctor.phoneNumber}</p>
-                                <p>Chuyên môn: {doctor.specialization}</p>
-                                <p>Kinh nghiệm: {doctor.yearsOfExperience} years</p>
-                            </div>
-                        </div>
-
-                        {selectedDoctorId === doctor.id && slots.map(slot => (
-                            <Space direction="vertical" style={{ marginLeft: "10px" }}>
-                                <Card>
-                                    <div key={slot.id} style={{ marginTop: '10px', padding: '5px', border: '1px solid #ccc' }}>
-                                        <p>Ngày: {slot.date}</p>
-                                        <p>Giờ bắt đầu: {slot.startTime}</p>
-                                        <p>Giờ kết thúc: {slot.endTime}</p>
-                                        <Button color="cyan" variant="solid" > Đặt Lịch</Button>
-                                    </div>
-                                </Card>
-                            </Space>
-                        ))}
+                    <div key={doctor.id} className="doctor-card" onClick={() => fetchSlots(doctor)}>
+                        <img src={doctor.avatar} alt={doctor.fullName} />
+                        <h3>{doctor.fullName}</h3>
+                        <p>Chuyên môn: {doctor.specialization}</p>
                     </div>
                 ))}
             </div>
+
+            {/* Popup Modal */}
+            <Modal
+                title={selectedDoctor ? `Lịch khám của ${selectedDoctor.fullName}` : "Lịch khám"}
+                open={isModalOpen}
+                onCancel={() => setIsModalOpen(false)}
+                footer={null}
+            >
+                <div className="slot-container">
+                    {slots.length > 0 ? slots.map(slot => (
+                        <Card className="slot-card" key={slot.id}>
+                            <p>Ngày: {slot.date}</p>
+                            <p>Giờ bắt đầu: {slot.startTime}</p>
+                            <p>Giờ kết thúc: {slot.endTime}</p>
+                            <Button className="book-btn">Đặt lịch hẹn</Button>
+                        </Card>
+                    )) : <p>Không có lịch hẹn nào</p>}
+                </div>
+            </Modal>
         </div>
     );
 };
 
 export default ViewSlot;
+
