@@ -3,8 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Register.css';
 import api from '../../constants/axios';
 import { toast } from 'react-toastify';
-import registBanner from '../../assets/registachnen.png';
-import logo from '../../assets/MaternityCare.png';
+// import registBanner from '../../assets/registachnen.png';
+// import logo from '../../assets/MaternityCare.png';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -124,7 +124,10 @@ const Register = () => {
           {errors.confirmPassword && <span className="invalid-feedback">{errors.confirmPassword}</span>}
         </div>
         <button type="submit" className="btn btn-primary" onClick={handleRegister}>{loading ? 'Đang đăng ký...' : 'Đăng ký'}</button>
-        <Link to="/login" className="login-link">Đã có tài khoản? Đăng nhập ngay</Link>
+        <div className="login-link-container">
+          <p>Đã có tài khoản?</p>
+          <Link to="/login" className="login-link"> Đăng nhập ngay</Link>
+        </div>
       </div>
     </div>
   );

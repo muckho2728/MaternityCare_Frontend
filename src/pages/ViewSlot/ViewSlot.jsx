@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import api from '../../constants/axios';
-import { Modal, Button, Card, Space } from "antd";
+import { Modal, Button, Card } from "antd";
 import "./ViewSlot.css";
 
 const ViewSlot = () => {

@@ -43,7 +43,7 @@ function Layout() {
 
   return (
     <div className="app">
-      {!isLoginRegister && !isAdmin&& <Header />}
+      {!isLoginRegister && !isAdmin && <Header />}
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
