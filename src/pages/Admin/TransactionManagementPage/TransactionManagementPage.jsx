@@ -14,45 +14,36 @@ const TransactionManagementPage = () => {
     pageSize: 10,
     total: 0,
   });
+
   const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user && user.role === 'Admin') {
-      fetchData();
-    } else {
-      alert('Bạn không có quyền truy cập trang này.');
-      navigate('/');
-    }
-  }, [user, pagination.current, pagination.pageSize]);
+    fetchData();
+  }, [pagination.current, pagination.pageSize]);
 
   const fetchData = async () => {
-    setLoading(true);
     try {
-      const response = await api.get("transactions", {
-        params: {
-          PageNumber: pagination.current,
-          PageSize: pagination.pageSize,
-        },
-      });
+      const response = await api.get("transactions");
       console.log("API Response:", response.data);
 
-      setTransactions(response.data.items);
-      setPagination({
-        ...pagination,
-        total: response.data.total,
-      });
+      // Xử lý dữ liệu trả về nếu cần
+      const updatedTransactions = response.data.map(transaction => ({
+        ...transaction,
+        // Ví dụ: Chuyển đổi định dạng ngày tháng
+        createdAt: new Date(transaction.createdAt).toLocaleString(),
+      }));
+
+      setTransactions(updatedTransactions);
     } catch (error) {
-      console.error('Error fetching transactions:', error); 
+      console.error('Error fetching transactions:', error);
       if (error.response && error.response.status === 403) {
         alert('Bạn không có quyền truy cập trang này.');
         navigate('/');
       }
-    } finally {
-      setLoading(false);
     }
   };
-
+  
   const handleTableChange = (pagination) => {
     setPagination(pagination);
   };
@@ -64,52 +55,50 @@ const TransactionManagementPage = () => {
       key: 'id',
     },
     {
-      title: 'Người dùng',
-      dataIndex: 'userName',
-      key: 'userName',
-    },
-    {
-      title: 'Gói',
-      dataIndex: 'packageName',
-      key: 'packageName',
+      title: 'Mô tả',
+      dataIndex: 'description',
+      key: 'description',
+      render: (text) => text || 'Không có mô tả', // Hiển thị mô tả, nếu không có thì hiển thị "Không có mô tả"
     },
     {
       title: 'Số tiền',
       dataIndex: 'amount',
       key: 'amount',
-      render: (text) => `${text} VND`,
-    },
-    {
-      title: 'Phương thức thanh toán',
-      dataIndex: 'paymentMethod',
-      key: 'paymentMethod',
+      render: (text) => `${text} VND`, // Định dạng số tiền thành VND
     },
     {
       title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
+      render: (text) => {
+        // Tùy chỉnh hiển thị trạng thái (ví dụ: thêm màu sắc hoặc icon)
+        switch (text) {
+          case 'success':
+            return <span style={{ color: 'green' }}>Thành công</span>;
+          case 'pending':
+            return <span style={{ color: 'orange' }}>Đang chờ</span>;
+          case 'failed':
+            return <span style={{ color: 'red' }}>Thất bại</span>;
+          default:
+            return <span>{text}</span>;
+        }
+      },
     },
     {
       title: 'Ngày tạo',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (text) => new Date(text).toLocaleString(),
+      render: (text) => new Date(text).toLocaleString(), // Định dạng ngày tháng
     },
     {
-      title: 'Hành động',
-      key: 'action',
-      render: (_, record) => (
-        <Space>
-          <Button type="primary" onClick={() => handleViewDetails(record)}>Xem chi tiết</Button>
-        </Space>
-      ),
+      title: 'ID đăng ký',
+      dataIndex: 'subscriptionId',
+      key: 'subscriptionId',
+      render: (text) => text || 'Không có', // Hiển thị subscriptionId, nếu không có thì hiển thị "Không có"
     },
   ];
 
-  const handleViewDetails = (record) => {
-    console.log('Xem chi tiết giao dịch:', record); 
-    navigate(`/transaction-detail/${record.id}`); 
-  };
+
 
   return (
     <div className="transaction-management">

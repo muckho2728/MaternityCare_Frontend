@@ -4,6 +4,7 @@ import {
   PieChartOutlined,
   HeartOutlined,
   TeamOutlined,
+  TransactionOutlined,
   
 } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
@@ -25,6 +26,7 @@ const items = [
   getItem('Packages', 'manage-packages', <DesktopOutlined />),
   getItem('Fetus Health', 'manage-fetus-health', <HeartOutlined />), 
   getItem('Doctor', 'manage-doctor', <TeamOutlined />), 
+  getItem('Transaction', 'manage-transaction', <TransactionOutlined />), 
 ];
 
 const AdminLayout = () => {
@@ -54,6 +56,7 @@ const AdminLayout = () => {
             {location.pathname.includes('manage-packages') && <Breadcrumb.Item>Manage Packages</Breadcrumb.Item>}
             {location.pathname.includes('fetus-health') && <Breadcrumb.Item>Fetus Health</Breadcrumb.Item>}
             {location.pathname.includes('manage-doctor') && <Breadcrumb.Item>Manage Doctor</Breadcrumb.Item>}
+            {location.pathname.includes('manage-transaction') && <Breadcrumb.Item>Manage Transaction</Breadcrumb.Item>}
           </Breadcrumb>
           <div
             style={{
