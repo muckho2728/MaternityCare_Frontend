@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./CreateFetusHealth.css";
 import axios from "../../constants/axios";
 import { toast } from "react-toastify";
+import api from "../../config/api";
 
 const CreateFetusHealth = () => {
     const navigate = useNavigate();
@@ -11,7 +12,7 @@ const CreateFetusHealth = () => {
 
     const [fetusHealthId, setFetusHealthId] = useState(null);
     const [healthData, setHealthData] = useState({
-        week:+6,
+        week:2,
         headCircumference: 0,
         amnioticFluidLevel: 0,
         crownRumpLength: 0,
@@ -31,7 +32,8 @@ const CreateFetusHealth = () => {
                 );
 
                 if (response.data.length > 0) {
-                    setFetusHealthId(response.data[0].id);
+                    console.log(response);
+                    setFetusHealthId(localStorage.getItem('fetusId'));
                 }
             } catch (error) {
                 console.error("Lỗi khi lấy thông tin:", error);
@@ -43,7 +45,7 @@ const CreateFetusHealth = () => {
 
     const sanitizeHealthData = (data) => {
         return Object.keys(data).reduce((acc, key) => {
-            acc[key] = data[key] === "Không có dữ liệu" ? 0 : data[key];
+            acc[key] = data[key] === "Không có dữ liệu" || data[key] === 0 ? null : data[key];
             return acc;
         }, {});
     };
@@ -74,21 +76,20 @@ const CreateFetusHealth = () => {
             return;
         }
     
-        const cleanedData = sanitizeHealthData(healthData); // Xử lý dữ liệu trước khi gửi
+        const cleanedData = sanitizeHealthData(healthData); 
     
         console.log("Dữ liệu sạch gửi đi:", cleanedData);
     
         try {
-            console.log("Data being sent:", cleanedData); // Log the data before sending
-            const response = await axios.post(
-                `https://maternitycare.azurewebsites.net/api/fetuses/${fetusHealthId}/fetus-healths`,
-                cleanedData,
-                { headers: { Authorization: `Bearer ${token}` } }
+            console.log("Data being sent:", cleanedData); 
+            const response = await api.post(
+                `fetuses/${fetusHealthId}/fetus-healths`,
+                cleanedData
             );
     
             console.log("Response từ server:", response);
             toast.success("Thông tin sức khỏe thai nhi đã được lưu!");
-            navigate("/pregnancy/:week");
+            navigate(`/pregnancy/${healthData.week}`);
         } catch (error) {
             console.error("Lỗi khi gửi request:", error.response?.data || error.message);
             toast.error("Lỗi khi lưu thông tin sức khỏe. Vui lòng thử lại.");
@@ -143,7 +144,7 @@ const CreateFetusHealth = () => {
                         </select>
                     </div>
                     <div className="form-group">
-                        <label> Chiều dài đầu mông (Crown Rump Length) (cm)</label>
+                        <label> Chiều dài đầu mông (Crown Rump Length) (mm)</label>
                         <input
                             type="number"
                             name="crownRumpLength"

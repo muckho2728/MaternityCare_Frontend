@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import './Pregnancy.css';
-
 import { Button } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../config/api';
 import pregnancyData from './pregnancyData';
+
 
 const data = [
   { name: 'Chu vi đầu', standard: 0, user: 0, key: 'headCircumference' },
@@ -45,18 +45,17 @@ const PregnancyWeek = () => {
         const response = await api.get(`fetuses/${localStorage.getItem('fetusId')}/fetus-healths/${week}`);
         const standardData = response.data.standardFetusHealth;
         const userData = response.data.fetusHealth ? response.data.fetusHealth : null;
-        console.log(standardData);
-        console.log(userData);
-        // Convert API response into the chart format
-        setWeight(standardData.estimatedFetalWeight);
-        setUserWeight(userData?.estimatedFetalWeight);
-        const updatedData = data.map(item => ({ 
+  
+        setWeight(standardData.estimatedFetalWeight || 0);
+        setUserWeight(userData?.estimatedFetalWeight || 0);
+  
+        const updatedData = data.map(item => ({
           name: item.name,
-          standard:  parseRange(standardData[item.key]) , 
-          user: userData ? userData[item.key] : 0, 
+          standard: standardData[item.key] ? parseRange(standardData[item.key]) : 0, 
+          user: userData && userData[item.key] ? userData[item.key] : 0, 
           key: item.key
         }));
-        console.log(updatedData)
+  
         setChartData(updatedData);
       } catch (error) {
         console.log("Lỗi khi lấy dữ liệu:", error);
@@ -67,10 +66,9 @@ const PregnancyWeek = () => {
   }, [week]);
   
   const parseRange = (range) => {
-    console.log(range)
-    if (!range) return 0;  // Handle null or undefined cases
+    if (!range || range === null) return 0; 
     const parts = range.split('-').map(Number);
-    return parts.length === 2 ? (parts[0] + parts[1]) / 2 : parts[0]; // Return average or single value
+    return parts.length === 2 ? (parts[0] + parts[1]) / 2 : parts[0]; 
   };
   
 
@@ -154,14 +152,10 @@ const PregnancyWeek = () => {
         {weekData.checklist.map((text, index) => (
           <p key={index}>{text}</p>
         ))}
-
+        
         <h3>Danh sách kiểm tra thai kỳ ở tuần này</h3>
         {weekData.descriptions.map((text, index) => (
           <p key={index}>{text}</p>
-        ))}
-
-        {weekData.images.map((img, index) => (
-          <img key={index} src={img} alt={`Week ${week}`} className="ovulation-image" />
         ))}
       </div>
     </div>
