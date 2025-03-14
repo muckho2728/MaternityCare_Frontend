@@ -33,6 +33,7 @@ import TransactionManagementPage from './pages/Admin/TransactionManagementPage/T
 
 function Layout() {
   const location = useLocation();
+  const isAdmin = location.pathname.startsWith('/admin');
   const isLoginRegister = location.pathname === '/login' || location.pathname === '/register';
 
   return (
