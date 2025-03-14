@@ -17,7 +17,7 @@ export default function ManagePackagePage() {
             // Map through the response data and convert feature string to an array
             const updatedPackages = response.data.map(pkg => ({
                 ...pkg,
-                features: pkg.feature.split(';').map(feature => feature.trim()) // Convert feature string to array
+                features: pkg.feature.split('\n').map(feature => feature.trim()) // Convert feature string to array
             }));
 
             setPackages(updatedPackages);

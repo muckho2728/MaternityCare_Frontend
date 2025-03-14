@@ -15,7 +15,7 @@ const PaymentDetail = () => {
     try {
       const response = await api.get(`packages/${packageId}`);
       console.log("Package Data:", response.data);
-      setPkg(response.data); // Lưu dữ liệu vào state
+      setPkg(response.data); 
     } catch (error) {
       console.error('Error fetching package data:', error);
     } finally {
@@ -42,7 +42,6 @@ const PaymentDetail = () => {
       // Kiểm tra kết quả từ API
       if (response.data) {
         console.log(response.data)
-        message.success('Đăng ký gói thành công!');
         // navigate(response.data);
         window.location.href=response.data;
       } else {
