@@ -1,0 +1,143 @@
+/* Gradient background cho trang */
+.profile-page {
+    background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Style cho card chính */
+.profile-main-card {
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    background: white;
+    border: none;
+    padding: 24px;
+}
+
+.profile-main-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Style cho tiêu đề */
+.profile-title {
+    font-size: 2em;
+    font-weight: bold;
+    color: #EC407A;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.profile-subtitle {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #333;
+    margin: 15px 0;
+}
+
+/* Style cho avatar */
+.profile-avatar-container {
+    position: relative;
+    margin: 0 auto;
+    width: 150px;
+    height: 150px;
+}
+
+.profile-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #1890ff;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-avatar-upload {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #1890ff;
+    border: none;
+    border-radius: 50%;
+    padding: 8px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.profile-avatar-upload:hover {
+    background: #096dd9;
+}
+
+/* Style cho form */
+.profile-form {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-input {
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.profile-input:focus {
+    border-color: #1890ff;
+    box-shadow: 0 0 5px rgba(24, 144, 255, 0.5);
+}
+
+/* Style cho nút */
+.profile-button {
+    background: #EC407A;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+}
+
+.profile-button:hover {
+    background: #D81B60;
+    transform: scale(1.05);
+}
+
+/* Style cho bảng lịch sử thanh toán */
+.profile-table {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.profile-table th {
+    background: #1890ff;
+    color: white;
+    font-weight: bold;
+}
+
+.profile-table td {
+    background: #f9f9f9;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .profile-title {
+        font-size: 1.5em;
+    }
+
+    .profile-subtitle {
+        font-size: 1.2em;
+    }
+
+    .profile-main-card {
+        margin-bottom: 20px;
+    }
+
+    .profile-button {
+        font-size: 0.9em;
+    }
+}

@@ -6,6 +6,7 @@ import {
   CalendarOutlined,
   FileSearchOutlined,
   ReadOutlined,
+  TransactionOutlined,
 } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { Link, Outlet, useLocation } from 'react-router-dom';
@@ -58,7 +59,12 @@ const AdminLayout = () => {
           key: '/admin/review-blogs',
           label: <Link to="/admin/review-blogs">Duyệt bài viết</Link>,
         },
-      ]
+      ],
+    },
+    {
+      key: 'transaction',
+      icon: <TransactionOutlined />,
+      label: <Link to="/admin/manage-transaction">Quản lý giao dịch</Link>,
     },
   ];
 

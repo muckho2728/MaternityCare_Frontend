@@ -29,7 +29,7 @@ const CreatePackage = () => {
           label="Description"
           rules={[{ required: true, message: 'Please input the description!' }]}
         >
-          <Input.TextArea placeholder="Enter package description" rows={4} />
+          <Input placeholder="Enter package description" rows={4} />
         </Form.Item>
         <Form.Item
           name="price"

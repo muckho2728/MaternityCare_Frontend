@@ -14,7 +14,6 @@ import { AuthProvider } from './constants/AuthContext';
 import ViewFetusHealth from './pages/ViewFetusHealth/ViewFetusHealth';
 import Blog from './pages/Community/Blog';
 import { ToastContainer } from 'react-toastify';
-import CreateBlog from './pages/Community/CreateBlog';
 import Censor from './pages/AdminCensor/Censor';
 import PackageList from './pages/PackageList/PackageList';
 import CreatePackage from './pages/Admin/CreatePackage';
@@ -28,8 +27,8 @@ import Forgot from './pages/ForgotPassword/ForgetP';
 import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
 import PregnancyWeek from './pages/Pregnancy/PregnancyWeek';
 import ManageDoctor from './pages/Admin/ManageDoctor/Doctor';
-import ViewBlogUser from './pages/Community/ViewBlogUser';
-import UpdateBlog from './pages/Community/UpdateBlog';
+import PaymentSuccessPage from './pages/PaymentPage/PaymentSuccessPage';
+import PaymentFailurePage from './pages/PaymentPage/PaymentFailurePage';
 
 function Layout() {
   const location = useLocation();
@@ -56,11 +55,10 @@ function Layout() {
           <Route path="/censor" element={<Censor />} />
           <Route path="/booking" element={<ViewSlot />} />
           <Route path="/pregnancy/:week" element={<PregnancyWeek />} />
-          <Route path="/pregnancy" element={<PregnancyWeek />} />
+          <Route path="/payment-success" element={<PaymentSuccessPage/>}/>
+          <Route path="/payment-failure" element={<PaymentFailurePage/>}/>
+          <Route path="/Censor" element={<Censor />} />
           <Route path="/forget" element={<Forgot />} />
-          <Route path="/create-blog" element={<CreateBlog />} />
-          <Route path="/view-blog-user" element={<ViewBlogUser />} />
-          <Route path="/update-blog/:blogId" element={<UpdateBlog />} />
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="manage-user" element={<ManageUsersPage />} />

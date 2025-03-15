@@ -1,33 +1,35 @@
 import React, { useState } from 'react';
 import { Card, Button, Typography, message } from 'antd';
-import api from '../../config/api'; 
-import { useNavigate } from 'react-router-dom'; 
+import api from '../../config/api';
+import { useNavigate } from 'react-router-dom';
+import { Header } from 'antd/es/layout/layout';
 
 const { Title, Text } = Typography;
 
 const PaymentPage = ({ pkg }) => {
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handlePayment = async () => {
     setLoading(true);
     try {
-      // Gọi API thanh toán
       const response = await api.post('payments', {
         packageId: pkg.id,
         amount: pkg.price,
       });
 
       // Xử lý kết quả thanh toán
-      if (response.data.success) {
+      if (response.data.vnp_TransactionStatus === '00') {
         message.success('Thanh toán thành công!');
-        navigate('/payment-success'); // Sử dụng navigate thay vì history.push
+        navigate('/payment-success');
       } else {
         message.error('Thanh toán thất bại. Vui lòng thử lại.');
+        navigate('/payment-failure');
       }
     } catch (error) {
       console.error('Error processing payment:', error);
       message.error('Có lỗi xảy ra khi thanh toán. Vui lòng thử lại.');
+      navigate('/payment-failure');
     } finally {
       setLoading(false);
     }
