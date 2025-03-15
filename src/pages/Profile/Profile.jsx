@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Layout, Menu, Input, Button, Form, Typography, Card, Row, Col, Space, message, Upload } from 'antd';
-import { UserOutlined, HeartOutlined, TeamOutlined, FileSearchOutlined, EditOutlined, CameraOutlined } from '@ant-design/icons';
+import { UserOutlined, HeartOutlined, EditOutlined, CameraOutlined } from '@ant-design/icons';
 import { updateUserByIdAction, changePassworbyUserIdAction, fetchUserByIdAction } from
   '../../store/redux/action/userAction';
 import api from '../../constants/axios';
@@ -21,10 +21,9 @@ const Profile = () => {
   const [previewAvatar, setPreviewAvatar] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [temp, setTemp] = useState("");
+  // const [temp, setTemp] = useState("");
 
   const [currentUser, setCurrentUser] = useState(null);
-  console.log(userDetailData)
 
   useEffect(() => {
     const fetchCurrentUser = async (url) => {

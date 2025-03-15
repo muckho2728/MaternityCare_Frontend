@@ -2,48 +2,43 @@ import { Provider } from 'react-redux';
 import { store } from './store/config';
 import ManageUsersPage from './pages/Admin/ManageUsersPage';
 import Profile from './pages/Profile/Profile';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
-import CreateFetus from './pages/CreateFetus/CreateFetus'
-import CreateFetusHealth from './pages/CreateFetusHealth/CreateFetusHealth'
-import Header from './components/Header/Header'
-import Footer from './components/Footer/Footer'
-import Home from './pages/Home/Home'
-import Register from './pages/Register/Register'
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import CreateFetus from './pages/CreateFetus/CreateFetus';
+import CreateFetusHealth from './pages/CreateFetusHealth/CreateFetusHealth';
+import Header from './components/Header/Header';
+import Footer from './components/Footer/Footer';
+import Home from './pages/Home/Home';
+import Register from './pages/Register/Register';
 import LoginPage from './pages/Login/Login';
-//import ForgetPage from './pages/ForgotPassword/ForgetP';
-import { AuthProvider } from './constants/AuthContext'
-import ViewFetusHealth from './pages/ViewFetusHealth/ViewFetusHealth'
-import Blog from './pages/Community/Blog'
+import { AuthProvider } from './constants/AuthContext';
+import ViewFetusHealth from './pages/ViewFetusHealth/ViewFetusHealth';
+import Blog from './pages/Community/Blog';
 import { ToastContainer } from 'react-toastify';
-import Censor from './pages/AdminCensor/Censor'
-import PackageList from './pages/PackageList/PackageList'
+import CreateBlog from './pages/Community/CreateBlog';
+import Censor from './pages/AdminCensor/Censor';
+import PackageList from './pages/PackageList/PackageList';
 import CreatePackage from './pages/Admin/CreatePackage';
 import { ThemeProvider } from './constants/ThemeContext';
-import { FetusProvider } from './constants/FetusContext'
+import { FetusProvider } from './constants/FetusContext';
 import AdminLayout from './components/layout/AdminLayout';
 import ManagePackagePage from './pages/Admin/manage-package/ManagePackagePage';
 import ViewSlot from './pages/ViewSlot/ViewSlot';
 import CreateSlot from './pages/AdminCreateSlot/CreateSlot';
 import Forgot from './pages/ForgotPassword/ForgetP';
-import ManageFetusHealth from './pages/Admin/ManageFetusHealth/ManageFetusHealth';
 import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
 import PregnancyWeek from './pages/Pregnancy/PregnancyWeek';
 import ManageDoctor from './pages/Admin/ManageDoctor/Doctor';
-
-
-
-
-
+import ViewBlogUser from './pages/Community/ViewBlogUser';
+import UpdateBlog from './pages/Community/UpdateBlog';
 
 function Layout() {
-  const location = useLocation()
+  const location = useLocation();
   const isAdmin = location.pathname.startsWith('/admin');
   const isLoginRegister = location.pathname === '/login' || location.pathname === '/register';
-  
 
   return (
     <div className="app">
-      {!isLoginRegister && !isAdmin&& <Header />}
+      {!isLoginRegister && !isAdmin && <Header />}
       <main className="main-content">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -58,27 +53,21 @@ function Layout() {
           <Route path="/package-list" element={<PackageList />} />
           <Route path="/create-package" element={<CreatePackage />} />
           <Route path="/payment-detail/:packageId" element={<PaymentDetail />} />
-          {/* <Route path="/create-package" element={<CreatePackage />} /> */}
-          {/* <Route path="/update-package" element={<UpdatePackage />} /> */}
-          {/* <Route path="/forget-password" element={<ForgetPage />} /> */}
-          <Route path="/Censor" element={<Censor />} />
+          <Route path="/censor" element={<Censor />} />
           <Route path="/booking" element={<ViewSlot />} />
-          <Route path="/admin" element={<AdminLayout />}
-            children={
-              [
-                <>
-                  <Route path='manage-user' element={<ManageUsersPage />} />
-                  <Route path='manage-packages' element={<ManagePackagePage />} />
-                  <Route path='manage-fetus-health' element={<ManageFetusHealth />} />
-                  <Route path='manage-doctor' element={<ManageDoctor />} />
-                </>
-              ]
-            } />
-
           <Route path="/pregnancy/:week" element={<PregnancyWeek />} />
           <Route path="/pregnancy" element={<PregnancyWeek />} />
-          <Route path="/createslot" element={<CreateSlot />} />
           <Route path="/forget" element={<Forgot />} />
+          <Route path="/create-blog" element={<CreateBlog />} />
+          <Route path="/view-blog-user" element={<ViewBlogUser />} />
+          <Route path="/update-blog/:blogId" element={<UpdateBlog />} />
+          {/* Admin Routes */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route path="manage-user" element={<ManageUsersPage />} />
+            <Route path="manage-packages" element={<ManagePackagePage />} />
+            <Route path="manage-doctor" element={<ManageDoctor />} />
+            <Route path="create-doctor-slot" element={<CreateSlot />} />
+          </Route>
         </Routes>
         <ToastContainer />
       </main>
@@ -103,4 +92,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
