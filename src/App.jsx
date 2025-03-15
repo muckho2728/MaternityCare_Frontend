@@ -28,8 +28,11 @@ import Forgot from './pages/ForgotPassword/ForgetP';
 import ManageFetusHealth from './pages/Admin/ManageFetusHealth/ManageFetusHealth';
 import PregnancyWeek from './pages/Pregnancy/PregnancyWeek';
 import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
+import PaymentSuccessPage from './pages/PaymentPage/PaymentSuccessPage';
+import PaymentFailurePage from './pages/PaymentPage/PaymentFailurePage';
 import TransactionManagementPage from './pages/Admin/TransactionManagementPage/TransactionManagementPage';
 import Doctor from './pages/Admin/ManageDoctor/Doctor';
+
 
 
 
@@ -57,6 +60,8 @@ function Layout() {
           <Route path="/package-list" element={<PackageList />} />
           <Route path="/create-package" element={<CreatePackage />} />
           <Route path="/payment-detail/:packageId" element={<PaymentDetail />} />
+          <Route path="/payment-success" element={<PaymentSuccessPage/>}/>
+          <Route path="/payment-failure" element={<PaymentFailurePage/>}/>
           <Route path="/Censor" element={<Censor />} />
           <Route path="/booking" element={<ViewSlot />} />
           <Route path="/admin" element={<AdminLayout />}

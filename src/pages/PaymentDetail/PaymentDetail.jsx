@@ -85,7 +85,6 @@ const PaymentDetail = () => {
             <Title level={4}>Tóm Tắt Thanh Toán</Title>
             <div className="summary-section">
               <p><Text strong>Tạm tính:</Text> {pkg.price} VND</p>
-              <p><Text strong>Ưu đãi (nếu có):</Text> Sẽ được áp dụng ở bước thanh toán.</p>
             </div>
             {/* Nút "Thanh Toán" với sự kiện onClick */}
             <Button type="primary" block onClick={handlePaymentClick}>

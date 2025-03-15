@@ -1,14 +1,17 @@
 .package-list {
-    margin: 0px 0; 
+    margin: 0;
     padding: 20px;
+
+    min-height: 100vh;
 }
 
 .package-list-header {
     text-align: center;
-    margin-bottom: 20px;
-    font-size: 2em;
+    margin-bottom: 40px;
+    font-size: 2.5em;
     font-weight: bold;
-    color: #EC407A; 
+    color: #EC407A;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .package-list-content {
@@ -17,19 +20,39 @@
 
 .package-card {
     text-align: center;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    background: white;
+    border: none;
+    animation: fadeInUp 0.5s ease-out;
 }
 
 .package-card:hover {
-    transform: scale(1.05);
+    transform: translateY(-10px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
+
 .package-price {
-    font-size: 1.5em; 
+    font-size: 1.25em;
     font-weight: bold;
-    color: #333; 
+    color: #333;
+    margin: 15px 0;
+}
+
+.package-duration {
+    font-size: 1.25em;
+    color: #333;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.package-features {
+    font-size: 1.25em;
+    color: #333;
+    font-weight: bold;
+    margin: 15px 0;
 }
 
 .package-card ul {
@@ -39,16 +62,85 @@
 }
 
 .package-card li {
-    margin: 5px 0;
-    color: #333; 
+    margin: 10px 0;
+    color: #555;
+    font-size: 1em;
+    padding: 8px;
+    background: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.package-container{
-    height: 100px;
+.package-container {
+    height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
- .package-features-container{
+
+.package-features-container {
     height: fit-content;
-    li{
-        height: 70px;
+    margin: 20px 0;
+}
+
+.package-features-container li {
+    height: auto;
+    padding: 10px;
+    margin: 8px 0;
+}
+
+.package-card button {
+    background: #EC407A;
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    margin-top: 20px;
+}
+
+.package-card button:hover {
+    background: #D81B60;
+    transform: scale(1.05);
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
- }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .package-list-header {
+        font-size: 2em;
+    }
+
+    .package-card {
+        margin-bottom: 20px;
+    }
+
+    .package-price {
+        font-size: 1.5em;
+    }
+
+    .package-duration {
+        font-size: 1em;
+    }
+
+    .package-features {
+        font-size: 1em;
+    }
+
+    .package-card button {
+        font-size: 0.9em;
+    }
+}

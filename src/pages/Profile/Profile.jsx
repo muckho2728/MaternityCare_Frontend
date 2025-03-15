@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Layout, Menu, Input, Button, Form, Typography, Card, Row, Col, Space, message, Upload } from 'antd';
-import { UserOutlined, HeartOutlined, TeamOutlined, FileSearchOutlined, EditOutlined, CameraOutlined } from '@ant-design/icons';
-import { updateUserByIdAction, changePassworbyUserIdAction, fetchUserByIdAction } from
-  '../../store/redux/action/userAction';
-import api from '../../constants/axios';
+import { Layout, Menu, Input, Button, Form, Typography, Card, Row, Col, Space, message, Upload, Table } from 'antd';
+import { UserOutlined, HeartOutlined, EditOutlined, CameraOutlined } from '@ant-design/icons';
+import { updateUserByIdAction, changePassworbyUserIdAction, fetchUserByIdAction } from '../../store/redux/action/userAction';
+import api from '../../config/api';
 import { Link } from 'react-router-dom';
-import './Profile.css';
-
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -21,45 +18,90 @@ const Profile = () => {
   const [previewAvatar, setPreviewAvatar] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [temp, setTemp] = useState("");
-
   const [currentUser, setCurrentUser] = useState(null);
-  console.log(userDetailData)
+  const [userPackage, setUserPackage] = useState(null);
+  const [subscriptionDetails, setSubscriptionDetails] = useState(null);
+  const [paymentHistory, setPaymentHistory] = useState([]);
+  const userId = localStorage.getItem('userId');
+  const token = localStorage.getItem('token');
+
+  const fetchPaymentHistory = async () => {
+    try {
+      const response = await api.get(`/users/${userId}/transactions`);
+      setPaymentHistory(response.data);
+    } catch (error) {
+      console.error('Failed to fetch payment history:', error);
+    }
+  };
+
+  const fetchUserPackage = async () => {
+    try {
+      const response = await api.get(`/authentications/current-user`, {
+        headers: { Authorization: `Bearer ${token}` }, 
+      });
+      const subscription = response.data.subscription;
+
+      setUserPackage({
+        name: subscription,
+      });
+    } catch (error) {
+      console.error('Failed to fetch user package:', error);
+    }
+  };
+
+  const fetchSubscriptionDetails = async () => {
+    try {
+      const response = await api.get(`/users/${userId}/subscriptions`, {
+        headers: { Authorization: `Bearer ${token}` }, 
+      });
+      setSubscriptionDetails(response.data);
+    } catch (error) {
+      console.error('Failed to fetch subscription details:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (userId && token) {
+      fetchUserPackage();
+      fetchPaymentHistory();
+    }
+  }, []);
 
   useEffect(() => {
     const fetchCurrentUser = async (url) => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        console.error('No token found');
-        return;
-      }
+      if (!token) return;
 
       try {
         const response = await api.get(url, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
-        console.log('Current user data:', response.data);
-        setCurrentUser(response.data);
+        setCurrentUser(response.data); // Thiết lập currentUser
       } catch (error) {
-        console.error('Failed to fetch current user:', error.response ? error.response.data : error.message);
-        throw error;
+        console.error('Failed to fetch current user:', error);
       }
     };
 
     fetchCurrentUser('https://maternitycare.azurewebsites.net/api/authentications/current-user');
   }, []);
 
-  if (userLogin) {
-    console.log('userDetailData:', userDetailData);
-  }
-
   useEffect(() => {
     if (currentUser && currentUser.id) {
       dispatch(fetchUserByIdAction(currentUser.id));
+      fetchSubscriptionDetails(currentUser.id);
+      fetchPaymentHistory(currentUser.id);
     }
   }, [currentUser, dispatch]);
+
+
+
+  // const fetchPaymentHistory = async (userId) => {
+  //   try {
+  //     const response = await api.get(`/api/users/${userId}/transactions`);
+  //     setPaymentHistory(response.data);
+  //   } catch (error) {
+  //     console.error('Failed to fetch payment history:', error);
+  //   }
+  // };
 
   useEffect(() => {
     if (userDetailData) {
@@ -74,8 +116,6 @@ const Profile = () => {
         status: userDetailData?.status,
         cccd: userDetailData?.cccd,
       });
-
-      // Set the avatar from user data
       if (userDetailData.avatar) {
         setPreviewAvatar(userDetailData.avatar);
       }
@@ -86,8 +126,6 @@ const Profile = () => {
     const formData = new FormData();
     formData.append('fullName', values.fullName);
     formData.append('dateOfBirth', values.dateOfBirth);
-
-    // Handle the avatar upload
     if (avatarFile) {
       formData.append('avatar', avatarFile);
     }
@@ -111,9 +149,9 @@ const Profile = () => {
     }
 
     const userDetails = {
-      currentPassword: currentPassword,
-      newPassword: newPassword,
-      confirmPassword: confirmPassword,
+      currentPassword,
+      newPassword,
+      confirmPassword,
     };
 
     dispatch(changePassworbyUserIdAction(userDetailData.id, userDetails))
@@ -129,8 +167,6 @@ const Profile = () => {
   const handleAvatarChange = (info) => {
     const file = info.file;
     setAvatarFile(file);
-
-    // Preview the image
     const reader = new FileReader();
     reader.onload = (e) => {
       setPreviewAvatar(e.target.result);
@@ -139,33 +175,47 @@ const Profile = () => {
     return false;
   };
 
+  const paymentHistoryColumns = [
+    { title: 'Id', dataIndex: 'id', key: 'id' },
+    { title: 'Số tiền', dataIndex: 'amount', key: 'amount' },
+    { title: 'Mô tả', dataIndex: 'description', key: 'description' },
+    { title: 'Ngày', dataIndex: 'createdAt', key: 'createdAt' },
+    { title: 'Trạng thái', dataIndex: 'status', key: 'status' },
+    { title: 'Id đăng kí', dataIndex: 'subscriptionId', key: 'subscriptionId' },
+  ];
+
   return (
-    <Layout >
-      <Content style={{ padding: '12px', marginTop: '24px', maxWidth: '1400px', margin: '0 auto', marginLeft: '50px' }}>
+    <Layout style={{ backgroundColor: '#f0f2f5' }}>
+      <Content style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
         <Row gutter={24}>
           <Col span={6}>
-            <Card style={{ borderRadius: '8px', backgroundColor: '#f9f9f9', padding: '10px' }}>
+            <Card
+              style={{
+                borderRadius: '10px',
+                backgroundColor: '#ffffff',
+                padding: '10px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+              }}
+            >
               <Menu mode="vertical" defaultSelectedKeys={['1']} style={{ border: 'none', backgroundColor: 'transparent' }} items={[
-                {
-                  key: '1',
-                  icon: <UserOutlined />,
-                  label: 'Thông tin người dùng',
-                },
-                {
-                  key: '2',
-                  icon: <HeartOutlined />,
-                  label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link>,
-                },
+                { key: '1', icon: <UserOutlined />, label: 'Thông tin người dùng' },
+                { key: '2', icon: <HeartOutlined />, label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link> },
               ]} />
             </Card>
           </Col>
 
-          {/* Thông tin người dùng */}
           <Col span={18}>
-            <Card style={{ borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', padding: 24 }}>
+            <Card
+              style={{
+                borderRadius: '10px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                padding: '24px',
+                backgroundColor: '#ffffff'
+              }}
+            >
               <Row gutter={24}>
                 <Col span={8} style={{ textAlign: 'center' }}>
-                  <Title level={3}>Ảnh đại diện</Title>
+                  <Title level={3} style={{ color: '#EC407A' }}>Ảnh đại diện</Title>
                   <div style={{ position: 'relative', margin: '0 auto', width: '150px', height: '150px' }}>
                     <img
                       src={previewAvatar || 'https://via.placeholder.com/150?text=Avatar'}
@@ -175,7 +225,7 @@ const Profile = () => {
                         height: '150px',
                         borderRadius: '50%',
                         objectFit: 'cover',
-                        border: '2px solid #1890ff',
+                        border: '1px solid #EC407A',
                       }}
                     />
                     {isEditing && (
@@ -196,7 +246,7 @@ const Profile = () => {
                             borderRadius: '50%',
                             backgroundColor: '#1890ff',
                             color: 'white',
-                            border: 'none'
+                            border: 'none',
                           }}
                         />
                       </Upload>
@@ -209,7 +259,7 @@ const Profile = () => {
                 </Col>
 
                 <Col span={16}>
-                  <Title level={3}>Thông tin cá nhân</Title>
+                  <Title level={3} style={{ color: '#EC407A' }}>Thông tin cá nhân</Title>
                   <Form
                     form={profileForm}
                     layout="vertical"
@@ -217,37 +267,37 @@ const Profile = () => {
                       backgroundColor: '#f9f9f9',
                       padding: '20px',
                       borderRadius: '8px',
+                      boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
                     }}
                     onFinish={handleSubmit}
                   >
                     <Row gutter={16}>
-                      <Col span={12}>
+                      <Col xs={24} sm={12}>
                         <Form.Item label="Họ và Tên" name="fullName">
                           <Input disabled={!isEditing} />
                         </Form.Item>
                       </Col>
-                      <Col span={12}>
+                      <Col xs={24} sm={12}>
                         <Form.Item label="Email" name="email">
                           <Input disabled />
                         </Form.Item>
                       </Col>
-                      <Col span={12}>
+                      <Col xs={24} sm={12}>
                         <Form.Item label="Tên đăng nhập" name="username">
                           <Input disabled />
                         </Form.Item>
                       </Col>
-
-                      <Col span={12}>
+                      <Col xs={24} sm={12}>
                         <Form.Item label="Căn cước công dân" name="cccd">
                           <Input disabled />
                         </Form.Item>
                       </Col>
-                      <Col span={12}>
+                      <Col xs={24} sm={12}>
                         <Form.Item label="Ngày Sinh" name="dateOfBirth">
                           <Input type="date" disabled={!isEditing} />
                         </Form.Item>
                       </Col>
-                      <Col span={12}>
+                      <Col xs={24} sm={12}>
                         <Form.Item label="Vai Trò" name="roleId">
                           <Input disabled />
                         </Form.Item>
@@ -277,21 +327,44 @@ const Profile = () => {
                       </Space>
                     </Form.Item>
                   </Form>
-                  <Title level={3}>Đổi mật khẩu</Title>
-                  <Form form={passwordForm} layout="vertical" style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '8px' }} onFinish={handleSubmitPassword}>
+                  {/* Thông tin gói */}
+                  <Title level={3} style={{ color: '#EC407A' }}>Thông tin gói</Title>
+                  <Card
+                    style={{
+                      marginBottom: '24px',
+                      backgroundColor: '#f9f9f9',
+                      padding: '20px',
+                      borderRadius: '8px',
+                      boxShadow: '0 2px 10px rgba(0,0,0,0.2)'
+                    }}
+                  >
+                    <p><strong>Gói hiện tại:</strong> {userPackage ? userPackage.name : 'Free'}</p>
+                    <p><strong>Ngày bắt đầu:</strong> {subscriptionDetails?.[0]?.startDate || 'Không có'}</p>
+                    <p><strong>Ngày hết hạn:</strong> {subscriptionDetails?.[0]?.endDate || 'Không có'}</p>
+                  </Card>
+                  {/*lich su thanh toan */}
+                  <Title level={3} style={{ color: '#EC407A' }}>Lịch sử thanh toán</Title>
+                  <Table
+                    columns={paymentHistoryColumns}
+                    dataSource={paymentHistory}
+                    rowKey="id"
+                    pagination={false}
+                    style={{ backgroundColor: '#EC407A', borderRadius: '8px' }}
+                  />
+
+                  <Title level={3} style={{ color: '#EC407A' }}>Đổi mật khẩu</Title>
+                  <Form form={passwordForm} layout="vertical" style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.2)' }} onFinish={handleSubmitPassword}>
                     <Row gutter={16}>
-                      <Col span={12}>
+                      <Col xs={24} sm={12}>
                         <Form.Item
                           label="Mật Khẩu Cũ"
                           name="currentPassword"
-                          rules={[
-                            { required: true, message: 'Vui lòng nhập mật khẩu cũ!' }
-                          ]}
+                          rules={[{ required: true, message: 'Vui lòng nhập mật khẩu cũ!' }]}
                         >
                           <Input.Password />
                         </Form.Item>
                       </Col>
-                      <Col span={12}>
+                      <Col xs={24} sm={12}>
                         <Form.Item
                           label="Mật Khẩu Mới"
                           name="newPassword"
@@ -303,7 +376,7 @@ const Profile = () => {
                           <Input.Password />
                         </Form.Item>
                       </Col>
-                      <Col span={12}>
+                      <Col xs={24} sm={12}>
                         <Form.Item
                           label="Nhập Lại Mật Khẩu"
                           name="confirmPassword"
