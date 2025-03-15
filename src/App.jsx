@@ -33,6 +33,7 @@ import TransactionManagementPage from './pages/Admin/TransactionManagementPage/T
 import ViewBlogUser from './pages/Community/ViewBlogUser';
 import CreateBlog from './pages/Community/CreateBlog';
 import UpdateBlog from './pages/Community/UpdateBlog';
+import ManagePregnancy from './pages/ViewFetusHealth/ManagePregnancy';
 
 function Layout() {
   const location = useLocation();
@@ -66,6 +67,7 @@ function Layout() {
           <Route path="/create-blog" element={<CreateBlog />} />
           <Route path="/update-blog/:id" element={<UpdateBlog />} />
           <Route path="/view-blog-user" element={<ViewBlogUser />} />
+          <Route path="/manage-pregnancy" element={<ManagePregnancy />} />
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="manage-user" element={<ManageUsersPage />} />

@@ -8,6 +8,7 @@ const UpdateBlog = () => {
     const { blogId } = useParams();
     const navigate = useNavigate();
     const userId = localStorage.getItem('userId');
+    
 
     const [blog, setBlog] = useState({
         title: "",
@@ -24,13 +25,19 @@ const UpdateBlog = () => {
     }, []);
 
     const fetchBlog = async () => {
+        if (!blogId) {
+            console.error("Blog ID không hợp lệ!");
+            return;
+        }
+    
         try {
-            const response = await api.get(`users/${userId}/blogs/${blogId}`);
+            console.log("Fetching blog with ID:", blogId);
+            const response = await api.get(`/api/blogs/${blogId}`);
             setBlog({
                 title: response.data.title,
                 content: response.data.content,
-                tagId: response.data.tag.id,
-                image: response.data.image,
+                tagId: response.data.tag?.id || "",
+                image: response.data.image || null,
             });
         } catch (error) {
             console.error("Error fetching blog:", error);
@@ -55,8 +62,8 @@ const UpdateBlog = () => {
             if (blog.image instanceof File) {
                 formData.append("image", blog.image);
             }
-
-            await api.put(`users/${userId}/blogs/${blogId}`, formData);
+    
+            await api.put(`/api/users/${userId}/blogs/${blogId}`, formData);
             toast.success("Cập nhật bài viết thành công!");
             setTimeout(() => navigate("/view-blogs"), 2000);
         } catch (error) {
@@ -64,7 +71,6 @@ const UpdateBlog = () => {
             toast.error("Cập nhật thất bại!");
         }
     };
-
     return (
         <div>
             <h1>Cập nhật bài viết</h1>

@@ -111,7 +111,7 @@ const Header = () => {
                                 <div className="dropdown-menu">
                                     <Link to="/profile" className="dropdown-item">Hồ sơ người dùng</Link>
                                     <Link to="/view-fetus-health" className="dropdown-item">Hồ sơ sức khỏe</Link>
-                                    {/* 🔴 Đăng xuất */}
+                                    <Link to="/manage-pregnancy" className="dropdown-item">Quản lý thông tin thai </Link>
                                     <button className="dropdown-item logout-button" onClick={handleLogout}>
                                         Đăng xuất
                                     </button>
