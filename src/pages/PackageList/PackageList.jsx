@@ -45,8 +45,8 @@ const PackageList = () => {
             <Col span={8} key={pkg.id}>
               <Card title={pkg.type} bordered={true} className="package-card">
                 <div className="package-container">
-                  <p className="package-price">Giá: {pkg.price}</p>
-                  <p className="package-duration">Thời hạn: {pkg.duration}</p>
+                  <p className="package-price">Giá: {pkg.price === 0 ? 'Miễn phí' : `${pkg.price} VND`}</p>
+                  <p className="package-duration">Thời hạn: {pkg.duration} tuần</p>
                   <p className="package-features">Tính năng: </p>
                 </div>
                 <ul className="package-features-container">
@@ -54,7 +54,9 @@ const PackageList = () => {
                     <li key={feature.id}>{feature.trim()}</li>
                   ))}
                 </ul>
-                <Button type="primary" onClick={() => handleBuyClick(pkg.id)}>Mua</Button>
+                {pkg.price !== 0 && ( 
+                  <Button type="primary" onClick={() => handleBuyClick(pkg.id)}>Mua</Button>
+                )}
               </Card>
             </Col>
           ))}

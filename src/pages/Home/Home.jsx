@@ -15,17 +15,37 @@ import intro3 from '../../assets/intro3.jpg';
 import intro4 from '../../assets/intro4.jpg';
 import { useState } from 'react';
 import { useEffect } from 'react';
+import api from '../../config/api';
 
 const Home = () => {
     const navigate = useNavigate();
     const [currentWeek, setCurrentWeek] = useState(2);
+    const [currentPackage, setCurrentPackage] = useState("free");
 
     useEffect(() => {
-        const storedWeek = localStorage.getItem('currentWeek');
-        if (storedWeek) {
-            setCurrentWeek(parseInt(storedWeek, 10));
-        }
+        const fetchCurrentUser = async () => {
+            try {
+                const storedWeek = localStorage.getItem('currentWeek');
+                if (storedWeek) {
+                    setCurrentWeek(parseInt(storedWeek, 10));
+                }
+
+                const response = await api.get(`/authentications/current-user`);
+                setCurrentPackage(response.data);
+            } catch (error) {
+                console.error("error fetching current user: ", error);
+            }
+        };
+        fetchCurrentUser();
     }, []);
+
+    const handleNavigattion = (path) => {
+        if(currentPackage === "free" && path !== "/booking") {
+            alert("Vui lòng nâng cấp gói để sử dụng tính năng này!");
+            return;
+        }
+        navigate(path);
+    }
 
     return (
         <div className="home">
@@ -70,7 +90,7 @@ const Home = () => {
                             <p>Kết nối và chia sẻ với các mẹ bầu khác.</p>
                         </div>
                     </div>
-                    
+
                     <div className="introduction-form" >
                         <div className="introduction-gallery">
                             <div className="introduction-gallery1">

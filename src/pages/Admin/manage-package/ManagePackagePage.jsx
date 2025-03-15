@@ -72,6 +72,7 @@ export default function ManagePackagePage() {
             title: 'Thời hạn',
             dataIndex: 'duration',
             key: 'duration',
+            render: (text) => `${text} VND`
         },
         {
             title: 'Tính năng',
