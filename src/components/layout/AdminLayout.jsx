@@ -49,7 +49,7 @@ const AdminLayout = () => {
     {
       key: 'blog',
       icon: <ReadOutlined />,
-      label: 'Bài viết',
+      label: 'Blog',
       children: [
         {
           key: '/admin/manage-blogs',
@@ -64,7 +64,7 @@ const AdminLayout = () => {
     {
       key: 'transaction',
       icon: <TransactionOutlined />,
-      label: <Link to="/admin/manage-transaction">Quản lý giao dịch</Link>,
+      label: <Link to="/admin/manage-transaction">Transaction</Link>,
     },
   ];
 
@@ -88,6 +88,7 @@ const AdminLayout = () => {
             {location.pathname.includes('manage-packages') && <Breadcrumb.Item>Manage Packages</Breadcrumb.Item>}
             {location.pathname.includes('manage-doctor') && <Breadcrumb.Item>Manage Doctor</Breadcrumb.Item>}
             {location.pathname.includes('create-doctor-slot') && <Breadcrumb.Item>Tạo Slot Doctor</Breadcrumb.Item>}
+            {location.pathname.includes('manage-transaction') && <Breadcrumb.Item>Manage Transaction</Breadcrumb.Item>}
           </Breadcrumb>
           <div
             style={{

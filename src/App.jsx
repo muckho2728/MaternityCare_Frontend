@@ -29,6 +29,10 @@ import PregnancyWeek from './pages/Pregnancy/PregnancyWeek';
 import ManageDoctor from './pages/Admin/ManageDoctor/Doctor';
 import PaymentSuccessPage from './pages/PaymentPage/PaymentSuccessPage';
 import PaymentFailurePage from './pages/PaymentPage/PaymentFailurePage';
+import TransactionManagementPage from './pages/Admin/TransactionManagementPage/TransactionManagementPage';
+import ViewBlogUser from './pages/Community/ViewBlogUser';
+import CreateBlog from './pages/Community/CreateBlog';
+import UpdateBlog from './pages/Community/UpdateBlog';
 
 function Layout() {
   const location = useLocation();
@@ -59,12 +63,16 @@ function Layout() {
           <Route path="/payment-failure" element={<PaymentFailurePage/>}/>
           <Route path="/Censor" element={<Censor />} />
           <Route path="/forget" element={<Forgot />} />
+          <Route path="/create-blog" element={<CreateBlog />} />
+          <Route path="/update-blog/:id" element={<UpdateBlog />} />
+          <Route path="/view-blog-user" element={<ViewBlogUser />} />
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="manage-user" element={<ManageUsersPage />} />
             <Route path="manage-packages" element={<ManagePackagePage />} />
             <Route path="manage-doctor" element={<ManageDoctor />} />
             <Route path="create-doctor-slot" element={<CreateSlot />} />
+            <Route path="manage-transaction" element={<TransactionManagementPage />} />
           </Route>
         </Routes>
         <ToastContainer />
