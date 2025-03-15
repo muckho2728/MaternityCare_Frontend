@@ -17,7 +17,7 @@ const Profile = () => {
   const userDetailData = useSelector((state) => state.userReducer.user);
   const [previewAvatar, setPreviewAvatar] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false)
   const [currentUser, setCurrentUser] = useState(null);
   const [userPackage, setUserPackage] = useState(null);
   const [subscriptionDetails, setSubscriptionDetails] = useState(null);
