@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Layout, Menu, Input, Button, Form, Typography, Card, Row, Col, Space, message, Upload, Table } from 'antd';
-import { UserOutlined, HeartOutlined, EditOutlined, CameraOutlined } from '@ant-design/icons';
+import { UserOutlined, HeartOutlined, EditOutlined, CameraOutlined, MessageOutlined } from '@ant-design/icons';
 import { updateUserByIdAction, changePassworbyUserIdAction, fetchUserByIdAction } from '../../store/redux/action/userAction';
 import api from '../../config/api';
 import { Link } from 'react-router-dom';
@@ -200,6 +200,7 @@ const Profile = () => {
               <Menu mode="vertical" defaultSelectedKeys={['1']} style={{ border: 'none', backgroundColor: 'transparent' }} items={[
                 { key: '1', icon: <UserOutlined />, label: 'Thông tin người dùng' },
                 { key: '2', icon: <HeartOutlined />, label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link> },
+                { key: '3', icon: <MessageOutlined />, label: <Link to="/manage-pregnancy">Quản lý thông tin thai kỳ</Link> },
               ]} />
             </Card>
           </Col>

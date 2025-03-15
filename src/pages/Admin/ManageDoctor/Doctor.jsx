@@ -17,8 +17,8 @@ const Doctor = () => {
 
     const fetchDoctors = async () => {
         try {
-            const res = await api.get("doctors/active-doctors");
-            setDoctors(res.data);
+            const response = await api.get("doctors/active-doctors");
+            setDoctors(response.data);
         } catch (error) {
             message.error("Lỗi khi tải danh sách bác sĩ!");
         }
@@ -140,12 +140,12 @@ const Doctor = () => {
                         <Upload 
                             listType="picture"
                             beforeUpload={(newFile) => {
-                                setFile(newFile); // Set the new file
+                                setFile(newFile);
                                 form.setFieldsValue({ avatar: newFile });
-                                return false; // Prevent automatic upload
+                                return false; 
                             }}
                             onRemove={() => {
-                                setFile(null); // Clear the file state on remove
+                                setFile(null); 
                                 form.setFieldsValue({ avatar: null });
                             }}>
                             <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
