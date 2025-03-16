@@ -19,8 +19,8 @@ body,
 .app {
     /* display: flex; */
     flex-direction: column;
-    min-height: 100vh;
-    background: #f2fffa8f;
+    /* min-height: 100vh; */
+    background: #f3fff8;
     /* Chiều cao tối thiểu bằng 100% viewport */
 }
 

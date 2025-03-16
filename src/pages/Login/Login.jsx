@@ -5,10 +5,7 @@ import api from '../../constants/axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../constants/AuthContext';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserByIdAction } from '../../store/redux/action/userAction'; // Đảm bảo import đúng action
-import Button from '../../components/Button';
-import loginBanner from '../../assets/logintachnen.png';
-import logo from '../../assets/MaternityCare.png';
+import { fetchUserByIdAction } from '../../store/redux/action/userAction'; 
 
 const Login = () => {
   const navigate = useNavigate();
@@ -62,7 +59,12 @@ const Login = () => {
         token: response.data.accessToken,
         username: formData.username,
       });
-      // console.log(data);
+
+      if (formData.username === 'Admin' || formData.username === 'admin') {
+        navigate('/admin');
+        toast.success("Đăng nhập Admin thành công!");
+        return;
+      }
 
       // Lấy thông tin người dùng hiện tại và dispatch action
       const userResponse = await api.get(
@@ -75,9 +77,14 @@ const Login = () => {
       );
       dispatch(fetchUserByIdAction(userResponse.data.id)); // Dispatch action để lưu thông tin người dùng vào Redux
 
-      // Chuyển hướng về trang chủ sau khi đăng nhập
-      navigate('/');
-      toast.success("Đăng nhập thành công!");
+      // Check user role and redirect accordingly
+      if (userResponse.data.role === 'admin') {
+        navigate('/admin');
+        toast.success("Đăng nhập Admin thành công!");
+      } else {
+        navigate('/');
+        toast.success("Đăng nhập thành công!");
+      }
     } catch (error) {
       toast.error(error.response?.data?.detail || "Đăng nhập thất bại");
     } finally {

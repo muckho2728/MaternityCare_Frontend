@@ -3,6 +3,7 @@ import api from '../../config/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import './Blog.css';
 
 const CreateBlog = () => {
     const [newBlog, setNewBlog] = useState({
@@ -65,9 +66,9 @@ const CreateBlog = () => {
         }
     }
     return (
-        <div>
+        <div className="blog-form-container">
             <h1>Tạo Bài Viết Mới</h1>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {error && <p>{error}</p>}
             <form onSubmit={handleSubmit}>
                 <input type="text" name="title" placeholder="Tiêu Đề" value={newBlog.title} onChange={handleChange} required />
                 <textarea name="content" placeholder="Nội Dung" value={newBlog.content} onChange={handleChange} required />
@@ -78,7 +79,7 @@ const CreateBlog = () => {
                         <option key={tag.id} value={tag.id}>{tag.name}</option>
                     ))}
                 </select>
-                <button type="submit" disabled={loading}>{loading ? 'Đang Tạo' : 'Tạo Bài Viết'}</button>
+                <button type="submit" disabled={loading}>{loading ? "Đang Tạo..." : "Tạo Bài Viết"}</button>
             </form>
             <ToastContainer />
         </div>
