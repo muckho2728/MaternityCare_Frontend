@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Search, MessageCircle, Heart } from "lucide-react";
 import "./Blog.css";
-import defaultImage from "../../assets/default-blog.jpg";
 import api from "../../config/api";
 import { Link } from "react-router-dom";
 const Blog = () => {
@@ -92,21 +91,16 @@ const Blog = () => {
     {filteredBlogs.length > 0 ? (
     filteredBlogs.map((blog) => (
         <div className="body-blog" key={blog.id}>
-            <img src={blog.image || defaultImage} alt={blog.title} className="blog-image"/>
+            {blog.image && <img src={blog.image} alt={blog.title} className="blog-image" />}
             <div className="blog-content">
                 <h2 className="blog-title">{blog.title}</h2>
-
-                {/* Hiển thị danh sách tag của bài viết */}
                 <div className="blog-tags">
-                    {blog.tags && blog.tags.length > 0 ? (
-                        blog.tags.map((tag) => (
-                            <span key={tag.id} className="blog-tag">{tag.name}</span>
-                        ))
+                    {blog.tag ? (
+                        <span className="blog-tag">{blog.tag.name}</span>
                     ) : (
                         <span className="blog-tag no-tag">Chưa có tag</span>
                     )}
                 </div>
-
                 <p className="blog-summary">
                     {blog.content.length > 150 ? `${blog.content.substring(0, 150)}...` : blog.content}
                 </p>
