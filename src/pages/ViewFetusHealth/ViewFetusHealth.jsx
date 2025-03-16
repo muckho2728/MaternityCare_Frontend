@@ -1,10 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { Card, Typography, Row, Col, Layout, Menu, Input, Button, Form, Space, message } from 'antd';
-import { UserOutlined, HeartOutlined } from '@ant-design/icons';
+import { UserOutlined, HeartOutlined, MessageOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { FetusContext } from '../../constants/FetusContext';
 import api from '../../config/api';
-import './ViewFetusHealth.css';
 import { useForm } from 'antd/es/form/Form';
 
 const { Content } = Layout;
@@ -35,9 +34,6 @@ const ViewFetusHealth = () => {
                 
                 const responseHealth = await api.get(`fetuses/${fetusID}/fetus-healths`);
                 
-                if (responseHealth.data.length === 0) {
-                    message.error("Không có dữ liệu sức khỏe thai nhi!");
-                }
                 if (responseHealth.data.length === 0) {
                     message.error("Không có dữ liệu sức khỏe thai nhi!");
                     return;
@@ -112,6 +108,11 @@ const ViewFetusHealth = () => {
                                     key: '2',
                                     icon: <HeartOutlined />,
                                     label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link>,
+                                },
+                                {
+                                    key: '3',
+                                    icon: <MessageOutlined />,
+                                    label: <Link to="/manage-pregnancy">Quản lý thông tin thai kỳ</Link>,
                                 },
                             ]} />
                         </Card>

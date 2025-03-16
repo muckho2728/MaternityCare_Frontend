@@ -15,7 +15,7 @@ const PaymentDetail = () => {
     try {
       const response = await api.get(`packages/${packageId}`);
       console.log("Package Data:", response.data);
-      setPkg(response.data); // Lưu dữ liệu vào state
+      setPkg(response.data); 
     } catch (error) {
       console.error('Error fetching package data:', error);
     } finally {
@@ -42,7 +42,6 @@ const PaymentDetail = () => {
       // Kiểm tra kết quả từ API
       if (response.data) {
         console.log(response.data)
-        message.success('Đăng ký gói thành công!');
         // navigate(response.data);
         window.location.href=response.data;
       } else {
@@ -86,7 +85,6 @@ const PaymentDetail = () => {
             <Title level={4}>Tóm Tắt Thanh Toán</Title>
             <div className="summary-section">
               <p><Text strong>Tạm tính:</Text> {pkg.price} VND</p>
-              <p><Text strong>Ưu đãi (nếu có):</Text> Sẽ được áp dụng ở bước thanh toán.</p>
             </div>
             {/* Nút "Thanh Toán" với sự kiện onClick */}
             <Button type="primary" block onClick={handlePaymentClick}>

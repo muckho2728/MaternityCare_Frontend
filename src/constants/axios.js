@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseUrl = 'https://maternitycare.azurewebsites.net/swagger';
+const baseUrl = 'https://maternitycare.azurewebsites.net';
 
 const config = {
     baseURL: baseUrl,
