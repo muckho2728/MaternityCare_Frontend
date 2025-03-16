@@ -6,6 +6,57 @@ import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../config/api';
 import pregnancyData from './pregnancyData';
 
+// 🖼 Import tất cả ảnh từ assets
+
+import week2 from "../../assets/2.png";
+import week3 from "../../assets/3.png";
+import week4 from "../../assets/4.png";
+import week5 from "../../assets/5.png";
+import week6 from "../../assets/6.png";
+import week7 from "../../assets/7.png";
+import week8 from "../../assets/8.png";
+import week9 from "../../assets/9.png";
+import week10 from "../../assets/10.png";
+import week11 from "../../assets/11.png";
+import week12 from "../../assets/12.png";
+import week13 from "../../assets/13.png";
+import week14 from "../../assets/14.png";
+import week15 from "../../assets/15.png";
+import week16 from "../../assets/16.png";
+import week17 from "../../assets/17.png";
+import week18 from "../../assets/18.png";
+import week19 from "../../assets/19.png";
+import week20 from "../../assets/20.png";
+import week21 from "../../assets/21.png";
+import week22 from "../../assets/22.png";
+import week23 from "../../assets/23.png";
+import week24 from "../../assets/24.png";
+import week25 from "../../assets/25.png";
+import week26 from "../../assets/26.png";
+import week27 from "../../assets/27.png";
+import week28 from "../../assets/28.png";
+import week29 from "../../assets/29.png";
+import week30 from "../../assets/30.png";
+import week31 from "../../assets/31.png";
+import week32 from "../../assets/32.png";
+import week33 from "../../assets/33.png";
+import week34 from "../../assets/34.png";
+import week35 from "../../assets/35.png";
+import week36 from "../../assets/36.png";
+import week37 from "../../assets/37.png";
+import week38 from "../../assets/38.png";
+import week39 from "../../assets/39.png";
+import week40 from "../../assets/40.png";
+
+// 🎯 Object chứa ảnh tương ứng với từng tuần
+const weekImages = {
+  2: week2, 3: week3, 4: week4, 5: week5, 6: week6, 7: week7, 8: week8, 9: week9, 
+  10: week10, 11: week11, 12: week12, 13: week13, 14: week14, 15: week15, 16: week16, 
+  17: week17, 18: week18, 19: week19, 20: week20, 21: week21, 22: week22, 23: week23, 
+  24: week24, 25: week25, 26: week26, 27: week27, 28: week28, 29: week29, 30: week30, 
+  31: week31, 32: week32, 33: week33, 34: week34, 35: week35, 36: week36, 37: week37, 
+  38: week38, 39: week39, 40: week40     
+};
 
 const data = [
   { name: 'Chu vi đầu', standard: 0, user: 0, key: 'headCircumference' },
@@ -142,6 +193,9 @@ const PregnancyWeek = () => {
         {weekData.development.map((text, index) => (
           <p key={index}>{text}</p>
         ))}
+        <div className="image-container">
+          <img src={weekImages[week]} alt={`Tuần ${week}`} />
+        </div>
 
         <h3>Thụ Tinh</h3>
         {weekData.symptoms.map((text, index) => (
@@ -152,7 +206,6 @@ const PregnancyWeek = () => {
         {weekData.checklist.map((text, index) => (
           <p key={index}>{text}</p>
         ))}
-        
         <h3>Danh sách kiểm tra thai kỳ ở tuần này</h3>
         {weekData.descriptions.map((text, index) => (
           <p key={index}>{text}</p>

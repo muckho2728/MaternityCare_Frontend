@@ -1,36 +1,42 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
-//import logo from '../../assets/MaternityCare.png';
 import { useAuth } from '../../constants/AuthContext';
 import api from '../../config/api';
 
 const Header = () => {
-    const { user, logout } = useAuth();
+    const { user, logout, token } = useAuth();
+    const [isNotificationOpen, setIsNotificationOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [notifications] = useState(3); // Giả sử có 3 thông báo
+    const [notifications, setNotifications] = useState([]);
+    const notificationRef = useRef(null);
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
-    const [currentPackage, setCurrentPackage] = useState("Free");
 
     useEffect(() => {
-            const fetchCurrentUser = async () => {
-                try {
-                    const response = await api.get(`/authentications/current-user`);
-                    setCurrentPackage(response.data);
-                } catch (error) {
-                    console.error("error fetching current user: ", error);
-                }
-            };
-            fetchCurrentUser();
-        }, []);
-        const handleNavigation = (path) => {
-            if (currentPackage.subscription === "Free" && path !== "/community" && path !=="/package-list") {
-                alert("Vui lòng nâng cấp gói để sử dụng tính năng này!");
-                return;
+        if (!token) return;
+
+        const fetchReminders = async () => {
+            try {
+                const response = await fetch(`${api}/api/reminders`, {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) throw new Error('Lỗi khi tải thông báo');
+
+                const data = await response.json();
+                setNotifications(data);
+            } catch (error) {
+                console.error(error);
             }
-            navigate(path);
-        }
+        };
+
+        fetchReminders();
+    }, [token]);
 
     const handleLogout = () => {
         logout();
@@ -38,37 +44,26 @@ const Header = () => {
         setIsDropdownOpen(false);
     };
 
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-    };
+    const toggleDropdown = () => setIsDropdownOpen(!isDropdownOpen);
+    const toggleNotifications = () => setIsNotificationOpen(!isNotificationOpen);
 
     useEffect(() => {
         const handleClickOutside = (event) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
                 setIsDropdownOpen(false);
             }
+            if (notificationRef.current && !notificationRef.current.contains(event.target)) {
+                setIsNotificationOpen(false);
+            }
         };
-
         document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
+        return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
-
-    // const showSidebar = () => {
-    //     const sidebar = document.querySelector('.sidebar');
-    //     sidebar.style.display = 'flex';
-    // };
-
-    // const hideSidebar = () => {
-    //     const sidebar = document.querySelector('.sidebar');
-    //     sidebar.style.display = 'none';
-    // };
 
     return (
         <header className="header">
             <div className="header-container">
-                <div className="logo-section" onClick={() => navigate('/')}>
+                <div className="logo-section"  onClick={() => navigate('/')}>
                     <Link to="/src/assets/Vector.png" className="logo-link">
                         <img src="/src/assets/Vector.png" alt="Baby Logo" className="logo" />
                         <span className="brand-name">Maternity Care</span>
@@ -77,25 +72,12 @@ const Header = () => {
 
                 <nav className="main-nav">
                     <ul className="nav-list">
-                        <li><span onClick={() => handleNavigation("/community")}>Diễn Đàn</span></li>
-                        <li><span onClick={() => handleNavigation("/create-fetus")}>Đăng ký thông tin thai nhi</span></li>
-                        <li><span onClick={() => handleNavigation("/package-list")}>Dịch Vụ</span></li>
-                        <li><span onClick={() => handleNavigation("/booking")}>Đặt Lịch</span></li>
+                        <li><Link to="/community">Diễn Đàn</Link></li>
+                        <li><Link to="/create-fetus">Đăng ký thông tin thai nhi</Link></li>
+                        <li><Link to="/package-list">Dịch Vụ</Link></li>
+                        <li><Link to="/booking">Đặt Lịch</Link></li>
                     </ul>
                 </nav>
-
-                <script>
-                    {`
-                    function showSiderbar() {
-                        const sidebar = document.querySelector('.sidebar');
-                        sidebar.style.display = 'flex';
-                    }
-                    function hideSiderbar() {
-                        const sidebar = document.querySelector('.sidebar');
-                        sidebar.style.display = 'none';
-                    }
-                    `}
-                </script>
 
                 <div className="header-actions">
                     <div className="search-box">
@@ -110,13 +92,22 @@ const Header = () => {
 
                     {/* 🔔 Nút thông báo với số lượng */}
                     <div className="notification-container">
-                        <button className="notification-button">
+                        <button className="notification-button" onClick={toggleNotifications}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                                 <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                             </svg>
-                            {notifications > 0 && <span className="notification-badge">{notifications}</span>}
+                            {notifications.length > 0 && <span className="notification-badge">{notifications.length}</span>}
                         </button>
+                        {isNotificationOpen && (
+                            <div className="notification-dropdown" ref={notificationRef}>
+                                {notifications.map((notification) => (
+                                    <div key={notification.id} className="notification-item">
+                                        <p>{notification.description}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     {user ? (
@@ -140,7 +131,7 @@ const Header = () => {
                         </div>
                     ) : (
                         <div className="auth-links">
-                            <Link to="/login" className="login-link">Đăng nhập</Link>
+                            <Link to="/login" className="login-link">Đăng nhập</Link> 
                             <Link to="/register" className="register-link">/Đăng Ký</Link>
                         </div>
                     )}
