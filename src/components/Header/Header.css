@@ -44,11 +44,11 @@ body {
     align-items: center;
     text-decoration: none;
     color: #4a235a;
-    /* Tím than */
     font-size: 22px;
     font-weight: bold;
     /* gap: 10px; */
-    margin-left: -10.5%
+    margin-left: -12.5%;
+    margin-right: -30px;
 }
 
 .logo {
