@@ -101,32 +101,23 @@ const CreateFetusHealth = () => {
         <div className="create-fetus-health-container">
             <h1 className="page-title">Thông tin sức khỏe thai nhi</h1>
             <form className="health-form" onSubmit={handleSubmit}>
-                <div className="form-row">
-                    <div className="form-group">
+                <div className="form-group">
+                    <div className="form-group1">
                         <label>Tuần (Week)</label>
-                        <input
-                            type="number"
-                            name="week"
-                            value={healthData.week}
-                            onChange={handleChange}
-                            required
-                            min="2"
-                            max="40"
-                        />
+                            <input
+                                type="number"
+                                name="week"
+                                value={healthData.week}
+                                onChange={handleChange}
+                                required
+                                min="2"
+                                max="40"
+                                width="100%"
+                            />
                     </div>
-                    <div className="form-group">
-                        <label>Chu vi đầu (Head Circumference) (mm)</label>
-                        <input
-                            type="number"
-                            name="headCircumference"
-                            value={healthData.headCircumference}
-                            onChange={handleChange}
-                            required
-                            step="1"
-                            placeholder={healthData.week >= 1 && healthData.week <= 11 && "Không có dữ liệu"}
-                            disabled={healthData.week >= 1 && healthData.week <= 11}
-                        />
-                    </div>
+                        
+                   
+                    
                 </div>
                 <div className="form-row">
                     <div className="form-group">
@@ -144,16 +135,16 @@ const CreateFetusHealth = () => {
                         </select>
                     </div>
                     <div className="form-group">
-                        <label> Chiều dài đầu mông (Crown Rump Length) (mm)</label>
+                        <label>Chu vi đầu (Head Circumference) (mm)</label>
                         <input
                             type="number"
-                            name="crownRumpLength"
-                            value={healthData.crownRumpLength}
+                            name="headCircumference"
+                            value={healthData.headCircumference}
                             onChange={handleChange}
                             required
-                            step="0.5"
-                            placeholder={healthData.week >= 1 && healthData.week <= 4 && "Không có dữ liệu"}
-                            disabled={healthData.week >= 1 && healthData.week <= 4}
+                            step="1"
+                            placeholder={healthData.week >= 1 && healthData.week <= 11 && "Không có dữ liệu"}
+                            disabled={healthData.week >= 1 && healthData.week <= 11}
                         />
                     </div>
                 </div>
@@ -186,6 +177,19 @@ const CreateFetusHealth = () => {
                 </div>
 
                 <div className="form-row">
+                    <div className="form-group">
+                            <label> Chiều dài đầu mông (Crown Rump Length) (mm)</label>
+                        <input
+                            type="number"
+                            name="crownRumpLength"
+                            value={healthData.crownRumpLength}
+                            onChange={handleChange}
+                            required
+                            step="0.5"
+                            placeholder={healthData.week >= 1 && healthData.week <= 4 && "Không có dữ liệu"}
+                            disabled={healthData.week >= 1 && healthData.week <= 4}
+                        />
+                    </div>
                     <div className="form-group">
                         <label>Đường kính túi thai (Gestational Sac Diameter) (mm)</label>
                         <input

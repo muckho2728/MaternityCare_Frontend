@@ -1,122 +1,316 @@
 .blog-container {
-    max-width: 800px;
-    margin: auto;
+    max-width: 1000px;
+    margin: 20px auto;
     padding: 20px;
+    background: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .blog-title {
     text-align: center;
-    font-size: 26px;
-    font-weight: bold;
-    color: #333;
+    font-size: 28px;
+    color: #2c3e50;
+    margin-bottom: 10px;
 }
 
 .blog-description {
     text-align: center;
+    font-size: 16px;
     color: #666;
+    margin-bottom: 20px;
+}
+
+/* Tìm kiếm và bộ lọc */
+.blog-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
 }
 
 .blog-search {
     display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-}
-
-.blog-search-input {
-    padding: 10px;
-    width: 70%;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-.blog-search-btn {
-    padding: 10px;
-    margin-left: 10px;
-    border: none;
-    background-color: #f56a79;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.blog-btn {
-    padding: 8px 12px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-right: 5px;
-    background: #92c3ff;
-}
-
-.blog-btn-like {
-    background: #ff6961;
-    color: white;
-}
-
-.blog-btn-comment {
-    background: #5bc0de;
-    color: white;
-}
-
-.blog-item {
-    display: flex;
     align-items: center;
-    margin-top: 20px;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.blog-item-image {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
-    margin-right: 15px;
-}
-
-.blog-item-content {
+    gap: 5px;
     flex: 1;
 }
 
-.blog-form {
-    background: #fff;
-    padding: 15px;
+.blog-search-input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
     border-radius: 8px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.blog-search-btn {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.blog-filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.blog-btn {
+    background-color: #2980b9;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    transition: background 0.3s ease;
+}
+
+.blog-btn:hover {
+    background-color: #1f6692;
+}
+
+/* Bài viết */
+.blog-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.body-blog {
+    display: flex;
+    gap: 15px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    transition: transform 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.body-blog:hover {
+    transform: translateY(-5px);
+}
+
+.blog-image {
+    width: 250px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.blog-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.blog-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.blog-summary {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.blog-info {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 14px;
+    color: #777;
+    width: 35%;
+}
+
+/* styles.css - Form thiết kế hiện đại với layout đẹp hơn */
+.blog-form-container {
+    max-width: 700px;
+    margin: 50px auto;
+    background: linear-gradient(135deg, #f3f3f3, #ffffff);
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    font-family: "Poppins", sans-serif;
+}
+
+.blog-form-container h1 {
+    text-align: center;
+    color: #08ab61;
+    font-size: 28px;
+    font-weight: bold;
     margin-bottom: 20px;
 }
 
-.blog-form h2 {
-    font-size: 18px;
-    margin-bottom: 10px;
-    text-align: -webkit-center;
+.blog-form-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
 }
 
-.blog-input,
-.blog-textarea {
-    width: 97%;
-    padding: 10px;
+.blog-form-container input,
+.blog-form-container textarea,
+.blog-form-container select {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+    background: #fff;
+    transition: 0.3s;
+    outline: none;
+}
+
+.blog-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+}
+
+.blog-tag {
+    background-color: #e0f2f1;
+    color: #00796b;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.blog-tag.no-tag {
+    background-color: #f0f0f0;
+    color: #888;
+}
+
+
+.selected-tag {
+    display: flex;
+    align-items: center;
+    background-color: #f0f8ff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin: 10px 0;
     font-size: 14px;
+    font-weight: bold;
+    color: #00796b;
+    gap: 8px;
 }
 
-.blog-textarea {
-    height: 100px;
+.selected-tag-name {
+    background-color: #e0f2f1;
+    color: #00796b;
+    padding: 4px 8px;
+    border-radius: 12px;
+}
+
+.clear-tag-btn {
+    background: none;
+    border: none;
+    color: red;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+.clear-tag-btn:hover {
+    text-decoration: underline;
+}
+
+
+.blog-form-container textarea {
+    height: 150px;
     resize: none;
 }
 
-.blog-btn-create {
-    background: #ff5773;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    cursor: pointer;
-    border-radius: 5px;
+.blog-form-container input:focus,
+.blog-form-container textarea:focus,
+.blog-form-container select:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
 }
 
-.blog-btn-create:hover {
-    background: #e04b65;
+.blog-form-container button {
+    /* background: linear-gradient(135deg, #4CAF50, #388E3C); */
+    color: white;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-transform: uppercase;
+    font-weight: bold;
 }
+
+.blog-form-container button:hover {
+    /* background: linear-gradient(135deg, #388E3C, #2E7D32); */
+    transform: scale(1.05);
+}
+
+.blog-form-container p {
+    color: red;
+    text-align: center;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* update  */
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.update-btn {
+    background: linear-gradient(135deg, #4CAF50, #388E3C);
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-transform: uppercase;
+    font-weight: bold;
+    flex: 1;
+    margin-right: 10px;
+}
+
+.update-btn:hover {
+    background: linear-gradient(135deg, #388E3C, #2E7D32);
+    transform: scale(1.05);
+}
+
+.cancel-btn {
+    background: linear-gradient(135deg, #e53935, #c62828);
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-transform: uppercase;
+    font-weight: bold;
+    flex: 1;
+}
+
+.cancel-btn:hover {
+    background: linear-gradient(135deg, #c62828, #b71c1c);
+    transform: scale(1.05);
+}
+
+/*  */
+

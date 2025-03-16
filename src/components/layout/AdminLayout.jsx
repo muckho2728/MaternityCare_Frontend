@@ -52,8 +52,8 @@ const AdminLayout = () => {
       label: 'Blog',
       children: [
         {
-          key: '/admin/manage-blogs',
-          label: <Link to="/admin/manage-blogs">Quản lý bài viết</Link>,
+          key: '/admin/manage-blog',
+          label: <Link to="/admin/manage-blog">Quản lý bài viết</Link>,
         },
         {
           key: '/admin/review-blogs',
