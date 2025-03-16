@@ -50,6 +50,38 @@ const CreateFetusHealth = () => {
         }, {});
     };
 
+    const sendReminder = async (week) => {
+        try {
+            // Gọi API để lấy danh sách nhắc nhở
+            const reminderResponse = await api.get("reminders");
+            const reminderList = reminderResponse.data;
+
+            // Tìm nhắc nhở phù hợp với tuần hiện tại
+            const matchedReminder = reminderList.find((item) => item.week === week);
+
+            if (!matchedReminder) {
+                console.log(`Không có nhắc nhở nào cho tuần ${week}, bỏ qua.`);
+                return;
+            }
+
+            const reminderData = {
+                userId,
+                week: matchedReminder.week,
+                description: matchedReminder.description,
+            };
+
+            const response = await api.post("reminders", reminderData, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
+
+            console.log("Reminder đã được gửi:", response.data);
+            toast.success(`Nhắc nhở: ${matchedReminder.description}`);
+        } catch (error) {
+            console.error("Lỗi khi gửi reminder:", error.response?.data || error.message);
+            toast.error("Lỗi khi gửi nhắc nhở, vui lòng thử lại!");
+        }
+    };
+
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -59,9 +91,14 @@ const CreateFetusHealth = () => {
             const week = Number(value);
             updatedData = {
                 ...updatedData,
-                crownRumpLength: week >= 1 && week <= 4 ? 0 : "",
-                headCircumference: week >= 1 && week <= 11 ? 0 : "",
-                biparietalDiameter: week >= 1 && week <= 11 ? 0 : "",
+                crownRumpLength: week >= 2 && week <= 5 || week >= 16 ? 0 : "",
+                headCircumference: week >= 2 && week <= 9 ? 0 : "",
+                biparietalDiameter: week >= 2 && week <= 9 ? 0 : "",
+                estimatedFetalWeight: week >= 2 && week <= 9 ? 0 : "",
+                abdominalCircumference: week >= 2 && week <= 11 ? 0 : "",
+                gestationalSacDiameter: week >= 2 && week <= 5 || week >= 14 ? 0 : "",
+                femurLength: week >= 2 && week <= 9 ? 0 : "",
+                amnioticFluidLevel: week >= 2 && week <= 5 ? 0 : "",
             };
         }
 
@@ -90,6 +127,7 @@ const CreateFetusHealth = () => {
             console.log("Response từ server:", response);
             toast.success("Thông tin sức khỏe thai nhi đã được lưu!");
             navigate(`/pregnancy/${healthData.week}`);
+            await sendReminder(healthData.week);
         } catch (error) {
             console.error("Lỗi khi gửi request:", error.response?.data || error.message);
             toast.error("Lỗi khi lưu thông tin sức khỏe. Vui lòng thử lại.");
@@ -123,8 +161,8 @@ const CreateFetusHealth = () => {
                             onChange={handleChange}
                             required
                             step="1"
-                            placeholder={healthData.week >= 1 && healthData.week <= 11 && "Không có dữ liệu"}
-                            disabled={healthData.week >= 1 && healthData.week <= 11}
+                            placeholder={healthData.week >= 2 && healthData.week <= 9 && "Không có dữ liệu"}
+                            disabled={healthData.week >= 2 && healthData.week <= 9}
                         />
                     </div>
                 </div>
@@ -136,6 +174,8 @@ const CreateFetusHealth = () => {
                             value={healthData.amnioticFluidLevel}
                             onChange={handleChange}
                             required
+                            placeholder={healthData.week >= 2 && healthData.week <= 5 || healthData.week >= 16 && "Không có dữ liệu"}
+                            disabled={healthData.week >= 2 && healthData.week <= 5 || healthData.week >= 16}
                         >
                             <option value={0}>Chọn mức độ</option>
                             <option value={1}>Bình thường(1)</option>
@@ -152,8 +192,8 @@ const CreateFetusHealth = () => {
                             onChange={handleChange}
                             required
                             step="0.5"
-                            placeholder={healthData.week >= 1 && healthData.week <= 4 && "Không có dữ liệu"}
-                            disabled={healthData.week >= 1 && healthData.week <= 4}
+                            placeholder={healthData.week >= 2 && healthData.week <= 5 && "Không có dữ liệu"}
+                            disabled={healthData.week >= 2 && healthData.week <= 5}
                         />
                     </div>
                 </div>
@@ -168,8 +208,8 @@ const CreateFetusHealth = () => {
                             onChange={handleChange}
                             required
                             step="1"
-                            placeholder={healthData.week >= 1 && healthData.week <= 11 && "Không có dữ liệu"}
-                            disabled={healthData.week >= 1 && healthData.week <= 11}
+                            placeholder={healthData.week >= 2 && healthData.week <= 9 && "Không có dữ liệu"}
+                            disabled={healthData.week >= 2 && healthData.week <= 9}
                         />
                     </div>
                     <div className="form-group">
@@ -181,6 +221,8 @@ const CreateFetusHealth = () => {
                             onChange={handleChange}
                             required
                             step="0.1"
+                            placeholder={healthData.week >= 2 && healthData.week <= 9 && "Không có dữ liệu"}
+                            disabled={healthData.week >= 2 && healthData.week <= 9}
                         />
                     </div>
                 </div>
@@ -195,6 +237,8 @@ const CreateFetusHealth = () => {
                             onChange={handleChange}
                             required
                             step="0.1"
+                            placeholder={healthData.week >= 2 && healthData.week <= 5 || healthData.week >= 14 && "Không có dữ liệu"}
+                            disabled={healthData.week >= 2 && healthData.week <= 5 || healthData.week >= 14}
                         />
                     </div>
                 </div>
@@ -209,6 +253,8 @@ const CreateFetusHealth = () => {
                             onChange={handleChange}
                             required
                             step="1"
+                            placeholder={healthData.week >= 2 && healthData.week <= 9 && "Không có dữ liệu"}
+                            disabled={healthData.week >= 2 && healthData.week <= 9}
                         />
                     </div>
                     <div className="form-group">
@@ -220,6 +266,8 @@ const CreateFetusHealth = () => {
                             onChange={handleChange}
                             required
                             step="0.1"
+                            placeholder={healthData.week >= 2 && healthData.week <= 11 && "Không có dữ liệu"}
+                            disabled={healthData.week >= 2 && healthData.week <= 11}
                         />
                     </div>
                 </div>
