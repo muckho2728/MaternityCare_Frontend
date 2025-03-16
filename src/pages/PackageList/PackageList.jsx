@@ -1,5 +1,5 @@
-import { Card, Col, Row, Button } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { Card, Col, Row, Button, message } from 'antd';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import './PackageList.css';
 import { useEffect, useState } from 'react';
 import api from '../../config/api';
@@ -8,6 +8,8 @@ const PackageList = () => {
   const navigate = useNavigate(); // Khởi tạo useNavigate
   const [packages, setPackages] = useState([]);
   const [currentPackage, setCurrentPackage] = useState("Free");
+  const userId = localStorage.getItem('userId');
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
@@ -20,6 +22,8 @@ const PackageList = () => {
     };
     fetchCurrentUser();
   }, []);
+
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,11 +44,13 @@ const PackageList = () => {
     fetchData();
   }, []);
 
-  const handleBuyClick = (id) => {
+  const handleBuyClick =async(id) => {
     console.log('id: ', id);
 
     //navigate('/payment-detail', { state: { selectedPackage: pkg } }); // Chuyển hướng và truyền thông tin gói
     navigate(`/payment-detail/${id}`)
+   
+   
   };
 
   return (

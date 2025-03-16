@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Card, Col, Row, Button, Typography, message } from 'antd';
 import './PaymentDetail.css';
 import api from '../../config/api';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 const { Title, Text } = Typography;
 
 const PaymentDetail = () => {
@@ -10,12 +10,13 @@ const PaymentDetail = () => {
   const [loading, setLoading] = useState(true);
   const { packageId } = useParams();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   const fetchPackageData = async () => {
     try {
       const response = await api.get(`packages/${packageId}`);
       console.log("Package Data:", response.data);
-      setPkg(response.data); 
+      setPkg(response.data);
     } catch (error) {
       console.error('Error fetching package data:', error);
     } finally {
@@ -32,7 +33,18 @@ const PaymentDetail = () => {
     fetchPackageData();
   }, [packageId]);
 
-  // Xử lý khi người dùng nhấn nút "Thanh Toán"
+  useEffect(() => {
+    const responseCode = searchParams.get("vnp_ResponseCode");
+    if (responseCode !== null) {
+      if (responseCode === "00") {
+        navigate("/payment-success");
+      } else {
+        navigate("/payment-failure");
+      }
+    }
+  }, [searchParams, navigate]);
+
+ 
   const handlePaymentClick = async () => {
     try {
       // const userId = localStorage.getItem('userId');
@@ -43,7 +55,7 @@ const PaymentDetail = () => {
       if (response.data) {
         console.log(response.data)
         // navigate(response.data);
-        window.location.href=response.data;
+        window.location.href = response.data;
       } else {
         message.error('Đăng ký gói thất bại. Vui lòng thử lại.');
       }
