@@ -45,7 +45,7 @@ export const getUserByIdAPI = (id) => handleRequest(api.get(`/users/${id}`));
 export const updateUserAPI = (id, data) => handleRequest(api.put(`/users/${id}`, data));
 
 // ✅ Kích hoạt user
-export const activeUserAPI = (id) => handleRequest(api.put(`/users/${id}/activation`));
+export const activeUserAPI = (id,data) => handleRequest(api.put(`/users/${id}/activation`, data));
 
 // 🔑 Đổi mật khẩu user
 export const changePasswordByUserIdAPI = (id, data) => handleRequest(api.put(`/users/${id}/password`, data));

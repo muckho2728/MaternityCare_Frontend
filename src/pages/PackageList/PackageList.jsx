@@ -7,6 +7,19 @@ import api from '../../config/api';
 const PackageList = () => {
   const navigate = useNavigate(); // Khởi tạo useNavigate
   const [packages, setPackages] = useState([]);
+  const [currentPackage, setCurrentPackage] = useState("Free");
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const response = await api.get(`/authentications/current-user`);
+        setCurrentPackage(response.data.subscription);
+      } catch (error) {
+        console.error("Error fetching current user:", error);
+      }
+    };
+    fetchCurrentUser();
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,7 +59,7 @@ const PackageList = () => {
               <Card title={pkg.type} bordered={true} className="package-card">
                 <div className="package-container">
                   <p className="package-price">Giá: {pkg.price === 0 ? 'Miễn phí' : `${pkg.price} VND`}</p>
-                  <p className="package-duration">Thời hạn: {pkg.duration} tuần</p>
+                  <p className="package-duration">Thời hạn: {pkg.duration} tháng</p>
                   <p className="package-features">Tính năng: </p>
                 </div>
                 <ul className="package-features-container">
@@ -54,8 +67,15 @@ const PackageList = () => {
                     <li key={feature.id}>{feature.trim()}</li>
                   ))}
                 </ul>
-                {pkg.price !== 0 && ( 
-                  <Button type="primary" onClick={() => handleBuyClick(pkg.id)}>Mua</Button>
+                {pkg.price !== 0 && (
+                  <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
+                    {currentPackage === "Premium" && (
+                      <Button type="primary" onClick={() => navigate('/feedback')}>Feedback</Button>
+                    )}
+                    {currentPackage === "Free" && (
+                      <Button type="primary" onClick={() => handleBuyClick(pkg.id)}>Mua</Button>
+                    )}
+                  </div>
                 )}
               </Card>
             </Col>

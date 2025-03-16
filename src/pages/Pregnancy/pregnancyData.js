@@ -40,6 +40,7 @@ const pregnancyData = {
         "Tăng nhiệt độ cơ thể cơ bản (BBT)",
         "Bạn có thể sử dụng nhiệt kế đặc biệt để đo BBT mỗi sáng. Vào ngày sau khi rụng trứng, nhiệt độ sẽ tăng lên một chút và duy trì ở mức cao cho đến kỳ kinh tiếp theo.",
       ],
+
       descriptions: [
         "Đi khám bác sĩ",
         "Kiểm tra trước khi thụ thai là một ý tưởng hay để đảm bảo cơ thể bạn ở trạng thái tốt nhất có thể để sinh con. Tìm hiểu xem bạn có nên ngừng dùng bất kỳ loại thuốc theo toa hoặc không kê đơn hoặc thực phẩm bổ sung nào không. Ngoài ra, hãy sử dụng thời gian này để nói về bất kỳ vấn đề hoặc mối quan tâm nào bạn có về thai kỳ hoặc việc làm cha mẹ.",
@@ -158,7 +159,6 @@ const pregnancyData = {
           "Sẽ mất vài tháng trước khi bạn cần quần áo bầu , nhưng cho đến lúc đó, bạn có thể sẽ thích những thứ rộng rãi ở eo, như quần legging, quần chạy bộ, quần nỉ và váy maxi. Bạn sẽ vui vì có chúng khi cơ thể bạn bắt đầu thay đổi nhiều hơn.",
           "Có thể có một giai đoạn mà quần áo thường ngày của bạn không vừa, nhưng bạn cũng chưa sẵn sàng để mặc quần áo bầu - điều đó là bình thường. Giai đoạn trung gian này là thời điểm tốt để mua sắm tủ quần áo của bạn với sự chú ý đến các loại vải dệt kim mềm mại, quần áo thể thao, áo cánh rộng rãi, áo len cardigan quá khổ và váy rộng. Những món đồ này cũng có thể hữu ích nếu bạn chưa sẵn sàng thông báo về việc mang thai và muốn giữ những người bạn và đồng nghiệp có ý tốt nhưng tò mò tránh xa.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       5: {
         title: "5 tuần mang thai",
@@ -207,7 +207,7 @@ const pregnancyData = {
           "Cắt giảm caffeine",
           "Các nghiên cứu đã chỉ ra mối liên hệ giữa việc tiêu thụ nhiều caffeine với sảy thai và các vấn đề khác khi mang thai. Đó là lý do tại sao Học viện Sản phụ khoa Hoa Kỳ khuyên các bà mẹ tương lai nên hạn chế lượng caffeine tiêu thụ xuống còn 200 mg mỗi ngày hoặc ít hơn (tương đương với một tách cà phê lớn).",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
+        
       },
       6: {
         title: "6 tuần mang thai",
@@ -255,7 +255,7 @@ const pregnancyData = {
           "Tìm hiểu về các lựa chọn xét nghiệm trước khi sinh",
           "Xét nghiệm sàng lọc sử dụng mẫu máu và siêu âm để giúp đánh giá khả năng mắc hội chứng Down hoặc các bất thường nhiễm sắc thể khác của bé. Các xét nghiệm sàng lọc không xâm lấn và không gây ra bất kỳ rủi ro nào cho bạn hoặc bé. Kết quả có thể giúp bạn quyết định có nên lấy mẫu nhung mao màng đệm (CVS) hay chọc ối để tìm hiểu chắc chắn về tình trạng tiềm ẩn hay không.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
+        
       },
       7: {
         title: "7 tuần mang thai",
@@ -294,7 +294,6 @@ const pregnancyData = {
           "Quyết định thời điểm thông báo về việc mang thai của bạn",
           "Một số bà mẹ tương lai chờ đến sau tam cá nguyệt đầu tiên, khi nguy cơ sảy thai giảm xuống, trong khi những người khác thông báo ngay lập tức. Một số người chờ để nói với đồng nghiệp hoặc sếp của họ tránh bị đối xử khác biệt ở nơi làm việc, trong khi những người khác muốn bạn bè ở nơi làm việc của họ hiểu tại sao họ hơi xanh xao. Cũng hãy cân nhắc cách bạn sẽ công khai tin tức - và nhận được cảm hứng sáng tạo từ những bậc cha mẹ khác .",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       8: {
         title: "8 tuần mang thai",
@@ -341,7 +340,6 @@ const pregnancyData = {
           "Tìm hiểu về việc tăng cân khi mang thai",
           "Bạn đang tự hỏi nên tăng bao nhiêu cân khi mang thai ? Điều này phụ thuộc vào chỉ số khối cơ thể trước khi mang thai của bạn và việc bạn có mang thai đôi hay đa thai hay không. Nếu bạn có cân nặng khỏe mạnh, hãy đặt mục tiêu tăng 1 đến 5 pound trong tam cá nguyệt đầu tiên và khoảng 1 pound mỗi tuần sau đó. Hãy xem máy tính tăng cân khi mang thai của chúng tôi để tìm phạm vi cân nặng mục tiêu của bạn.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       9: {
         title: "9 tuần mang thai",
@@ -395,7 +393,6 @@ const pregnancyData = {
           "Biết những gì cần tránh",
           "Khi bạn đang cố gắng thụ thai và mới mang thai, bạn sẽ muốn tránh xa thuốc lá , cần sa , ma túy bất hợp pháp, rượu và quá nhiều caffeine.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       10: {
         title: "10 tuần mang thai",
@@ -452,7 +449,6 @@ const pregnancyData = {
           "Biết những gì cần tránh",
           "Khi bạn đang cố gắng thụ thai và mới mang thai, bạn sẽ muốn tránh xa thuốc lá , cần sa , ma túy bất hợp pháp, rượu và quá nhiều caffeine.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       11: {
         title: "11 tuần mang thai",
@@ -507,7 +503,6 @@ const pregnancyData = {
           "Biết những gì cần tránh",
           "Khi bạn đang cố gắng thụ thai và mới mang thai, bạn sẽ muốn tránh xa thuốc lá , cần sa , ma túy bất hợp pháp, rượu và quá nhiều caffeine.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
     12: {
         title: "12 tuần mang thai",
@@ -562,7 +557,6 @@ const pregnancyData = {
           "Biết những gì cần tránh",
           "Khi bạn đang cố gắng thụ thai và mới mang thai, bạn sẽ muốn tránh xa thuốc lá , cần sa , ma túy bất hợp pháp, rượu và quá nhiều caffeine.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       13: {
         title: "13 tuần mang thai",
@@ -614,7 +608,6 @@ const pregnancyData = {
           "Tiết kiệm tiền mua quần áo bà bầu",
           "Bạn có thể hào hứng mua sắm quần áo bầu , hoặc bạn có thể sợ phải chi tiền cho một tủ quần áo mới mà bạn chỉ mặc trong một thời gian giới hạn. May mắn thay, có rất nhiều lựa chọn để tìm quần áo bầu giá cả phải chăng . Bạn có thể tìm kiếm quần áo bầu đã qua sử dụng trực tuyến hoặc tại các cửa hàng bán đồ cũ và ký gửi. Các nhóm trao đổi quần áo trên mạng xã hội (hoặc trực tiếp) là một cách tốt khác để tìm quần áo bầu dễ thương mà không tốn kém.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       14: {
         title: "14 tuần mang thai",
@@ -663,7 +656,6 @@ const pregnancyData = {
           "Đầu tư vào một loại kem dưỡng ẩm tốt",
           "Bôi kem dưỡng da và kem có thể không ngăn ngừa được vết rạn da , nhưng sẽ làm giảm ngứa. Tìm hiểu thêm về vết rạn da và ngứa da trong thời kỳ mang thai .",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       15: {
         title: "15 tuần mang thai",
@@ -707,7 +699,6 @@ const pregnancyData = {
           "Thực hành khẳng định",
           "Khẳng định là một câu nói tích cực mà bạn lặp lại với chính mình để vượt qua suy nghĩ tiêu cực. Ví dụ, nếu bạn sợ sinh con, bạn có thể tự nhủ, 'Tôi tin tưởng cơ thể mình biết phải làm gì', hoặc 'Tôi kiên cường, mạnh mẽ và dũng cảm', hoặc thậm chí 'Tôi làm được'. Việc sử dụng khẳng định có thể thúc đẩy, truyền cảm hứng và an ủi bạn. Trên thực tế, nghiên cứu cho thấy rằng khẳng định có thể có tác động tích cực lâu dài đến sức khỏe tinh thần và cảm xúc của bạn.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       16: {
         title: "16 tuần mang thai",
@@ -761,7 +752,6 @@ const pregnancyData = {
           "Biết những gì cần tránh",
           "Khi bạn đang cố gắng thụ thai và mới mang thai, bạn sẽ muốn tránh xa thuốc lá , cần sa , ma túy bất hợp pháp, rượu và quá nhiều caffeine.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       17: {
         title: "17 tuần mang thai",
@@ -805,7 +795,6 @@ const pregnancyData = {
           "Sử dụng kem chống nắng",
           "Để tránh những thay đổi về sắc tố da trong thời kỳ mang thai (gọi là nám da hoặc chloasma), hãy đảm bảo thoa kem chống nắng có SPF 30 trở lên bất cứ khi nào bạn ra ngoài trời, ngay cả trong những ngày nhiều mây. Tiếp xúc với ánh nắng mặt trời làm tăng cường sự thay đổi sắc tố, vì vậy bạn cũng nên đội mũ rộng vành và tránh tiếp xúc trực tiếp với ánh nắng mặt trời trong khoảng thời gian từ 10 giờ sáng đến 2 giờ chiều khi ánh nắng mặt trời mạnh nhất. Xem loại kem chống nắng an toàn cho bà bầu và các sản phẩm chăm sóc da khác nào là tốt nhất để sử dụng.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       18: {
         title: "18 tuần mang thai",
@@ -852,7 +841,6 @@ const pregnancyData = {
           "Đối phó với căng thẳng",
           "Cùng với việc tạo ra một con người mới, có lẽ bạn đang phải đối mặt với một loạt các triệu chứng về thể chất và những thay đổi trong cuộc sống ngay lúc này. Ai mà không bị căng thẳng chứ? Nhưng mặc dù căng thẳng trong thời kỳ mang thai là bình thường, nhưng nó có thể gây ra vấn đề nếu nó trở nên quá mạnh. Tìm hiểu một số cách tốt để đối phó với căng thẳng khi mang thai , cùng với thời điểm cần được giúp đỡ.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       19: {
         title: "19 tuần mang thai",
@@ -906,7 +894,6 @@ const pregnancyData = {
           "Cải thiện giấc ngủ của bạn",
           "Cho dù bạn quyết tâm nghỉ ngơi trước khi em bé chào đời như thế nào, cơ thể bạn vẫn có những kế hoạch khác. Cho dù bạn liên tục cần đi tiểu , cảm thấy lo lắng , không thể thoải mái trên giường , thức dậy vì đói , hoặc bị ợ nóng , chuột rút ở chân hoặc chỉ đơn giản là mất ngủ - ngủ đủ giấc trong thời kỳ mang thai có thể là một cuộc đấu tranh. Nhưng điều đó không có nghĩa là bạn không nên thử! Có rất nhiều điều bạn có thể làm để ngủ ngon hơn vào đêm nay, từ việc thay đổi những gì và khi nào bạn ăn hoặc uống đến thực hành vệ sinh giấc ngủ tốt và có đúng loại gối . Đọc những điều cơ bản để có được một đêm ngon giấc trong thời kỳ mang thai và đừng ngần ngại hỏi bác sĩ hoặc nữ hộ sinh của bạn để được tư vấn phù hợp.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       20: {
         title: "20 tuần mang thai",
@@ -946,7 +933,6 @@ const pregnancyData = {
           "Thực hiện 'xả não'",
           "Nếu bạn cảm thấy căng thẳng hoặc khó ngủ vì tâm trí bạn đang chạy đua, hãy thử viết ra mọi thứ đang làm phiền bạn vào nhật ký . Đừng lo lắng về việc viết sao cho gọn gàng hay hay. Điều quan trọng nhất là hãy đưa những lo lắng ra khỏi đầu và viết lên trang giấy.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       21: {
         title: "21 tuần mang thai",
@@ -993,7 +979,6 @@ const pregnancyData = {
           "Làm dịu căng thẳng của bạn",
           "Mọi người đều có một số căng thẳng trong cuộc sống, nhưng khi nó liên tục hoặc quá sức, nó có thể gây ra vấn đề. Một số nghiên cứu đã liên kết căng thẳng mãn tính trong thời kỳ mang thai với sinh non , tiền sản giật và trẻ nhẹ cân khi sinh. Để giảm căng thẳng, hãy thử tập thể dục, tìm kiếm sự hỗ trợ từ bạn bè và gia đình, và thực hành các kỹ thuật chánh niệm. Nếu căng thẳng của bạn trở nên quá sức, hãy nói chuyện với nhà cung cấp dịch vụ chăm sóc sức khỏe của bạn và cân nhắc tìm kiếm sự giúp đỡ từ một nhà trị liệu.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       22: {
         title: "22 tuần mang thai",
@@ -1039,7 +1024,6 @@ const pregnancyData = {
           "Hãy cẩn thận với hội chứng ống cổ tay",
           "Phụ nữ mang thai dễ mắc hội chứng ống cổ tay hơn do tình trạng sưng ở bàn tay và cổ tay. Điều này có nhiều khả năng xảy ra hơn nếu bạn thực hiện các động tác tay lặp đi lặp lại, chẳng hạn như uốn cong và duỗi cổ tay, trong khi làm những việc như làm việc trên máy tính. Nghỉ giải lao, duỗi cổ tay và đảm bảo nơi làm việc của bạn là tiện dụng có thể giúp ích.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       23: {
         title: "23 tuần mang thai",
@@ -1084,7 +1068,6 @@ const pregnancyData = {
           "Bắt đầu chuẩn bị cơ thể cho quá trình chuyển dạ",
           "Bây giờ là thời điểm tốt để bắt đầu thực hiện các bài tập có thể giúp bạn trong quá trình chuyển dạ và sinh nở. Phụ nữ tập thể dục trong thời kỳ mang thai có thể ít đau đớn và khó chịu hơn trong quá trình chuyển dạ, tỷ lệ sinh mổ thấp hơn và phục hồi sau sinh nhanh hơn . Sau đây là hướng dẫn từng bước về các bài tập và động tác kéo giãn giúp ích cho quá trình chuyển dạ , bao gồm động tác mở hông, động tác kéo giãn lưng, bài tập sàn chậu và các kỹ thuật thở.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       24: {
         title: "24 tuần mang thai",
@@ -1131,7 +1114,6 @@ const pregnancyData = {
           "Hãy chuẩn bị cho việc xét nghiệm glucose của bạn",
           "Bác sĩ của bạn có thể sẽ lên lịch xét nghiệm glucose cho bạn trong khoảng từ 24 đến 28 tuần. Xét nghiệm thường quy này theo dõi bệnh tiểu đường thai kỳ , ảnh hưởng đến khoảng 2 đến 10 phần trăm phụ nữ mang thai. Trong quá trình sàng lọc, bạn sẽ được yêu cầu uống một loại đồ uống có đường (thường được mô tả là giống như nước ngọt cam có ga, siro). Sau một khoảng thời gian ngắn, bạn sẽ được lấy máu và xét nghiệm lượng glucose bất thường. Xét nghiệm ban đầu này không phải là chẩn đoán. Thay vào đó, kết quả sẽ cho biết bạn có cần xét nghiệm thêm bệnh tiểu đường thai kỳ hay không.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       25: {
         title: "25 tuần mang thai",
@@ -1182,7 +1164,6 @@ const pregnancyData = {
           "Một số loại vắc-xin rất quan trọng – và được khuyến nghị – trong thời kỳ mang thai để bảo vệ bạn và em bé. Hãy tiêm vắc-xin và đảm bảo bạn đã tiêm vắc-xin cúm , vắc-xin Tdap (uốn ván-bạch hầu-ho gà vô bào) và vắc-xin hoặc mũi tăng cường COVID-19",
           "Nhưng một số loại vắc-xin không an toàn trong thời kỳ mang thai: Tránh tiêm vắc-xin MMR, thủy đậu và HPV khi bạn đang mang thai. Tốt nhất là tránh hai loại đầu tiên vì chúng được làm từ vi-rút sống, giảm độc lực; và HPV chưa được nghiên cứu ở phụ nữ mang thai.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       26: {
         title: "26 tuần mang thai",
@@ -1244,7 +1225,6 @@ const pregnancyData = {
           "Nếu bạn cảm thấy vô cùng thất vọng mà không giải quyết được theo thời gian, hãy đến gặp bác sĩ chăm sóc sức khỏe hoặc chuyên gia trị liệu. Bạn có thể đang gặp phải các triệu chứng của bệnh trầm cảm trong thời kỳ mang thai hoặc lo lắng khi mang thai .",
           
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       27: {
         title: "27 tuần mang thai",
@@ -1318,7 +1298,6 @@ const pregnancyData = {
           "Bài tập Kegel rất hữu ích, nhưng chúng chỉ là một công cụ để tránh rối loạn chức năng sàn chậu. Hãy trao đổi với nhà cung cấp dịch vụ chăm sóc sức khỏe của bạn nếu bạn lo lắng và yêu cầu giới thiệu đến một chuyên gia vật lý trị liệu sàn chậu .",
           
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       28: {
         title: "28 tuần mang thai",
@@ -1388,7 +1367,6 @@ const pregnancyData = {
           "Để chuẩn bị cho những chi phí lớn nhất cho trẻ sơ sinh mà bạn sẽ phải trải qua trong năm đầu tiên, hãy nghiên cứu ngay bây giờ. Biết trước những gì bạn sẽ chi cho các chi phí thường xuyên (như tã, sữa công thức và nhà trẻ) sẽ giúp bạn lập ngân sách. Để xem tất cả các khoản này cộng lại như thế nào, hãy xem Máy tính chi phí cho trẻ sơ sinh của chúng tôi .",
           
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       29: {
         title: "29 tuần mang thai",
@@ -1445,7 +1423,6 @@ const pregnancyData = {
           "Hầu hết thời gian, những người yêu thương bạn muốn giúp đỡ bạn trong giai đoạn chuyển đổi này nhưng đang chờ được yêu cầu. Đừng ngại đề xuất những nhu cầu cụ thể cho những người thân thiết nhất với bạn và cho phép họ đảm nhiệm nhiệm vụ.",
           
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       30: {
         title: "30 tuần mang thai",
@@ -1520,7 +1497,6 @@ const pregnancyData = {
           "Không phải tất cả các loại vắc-xin đều an toàn trong thời kỳ mang thai, vì vậy hãy trao đổi với bác sĩ về loại vắc-xin nào nên tiêm. Ngoài ra, hãy trao đổi với bác sĩ về các loại vắc-xin sau sinh – bạn có thể cần một loại vắc-xin mà bạn không thể tiêm cho đến sau khi mang thai.",
           
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       31: {
         title: "31 tuần mang thai",
@@ -1591,7 +1567,6 @@ const pregnancyData = {
           "Bắt đầu bảo vệ trẻ em",
           "Cuối cùng, bạn sẽ phải bảo vệ trẻ em khỏi mọi phòng trong nhà, bao gồm cả phòng tắm và nhà bếp. May mắn thay, bạn không phải lo lắng về việc kiểm tra từng mục trong danh sách bảo vệ trẻ em ngay bây giờ (một số có thể đợi cho đến khi em bé của bạn ở đây và bắt đầu tự di chuyển). Sau đây là những cách quan trọng nhất để bảo vệ trẻ sơ sinh khỏi những nguy hiểm thường gặp.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       32: {
         title: "32 tuần mang thai",
@@ -1675,7 +1650,6 @@ const pregnancyData = {
           "Chuẩn bị những thứ bạn cần để chăm sóc bản thân và em bé sau khi sinh. Những sản phẩm sau sinh này được các bà mẹ BabyCenter đánh giá cao nhất. Chuẩn bị những thứ cơ bản như tã , khăn lau , băng vệ sinh cho tình trạng chảy máu sau sinh và đồ lót thoải mái sau sinh . Bây giờ là thời điểm tốt để đảm bảo bạn có đủ quần áo cho em bé , cùng với bình sữa và sữa công thức nếu bạn định sử dụng chúng.",
        
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       33: {
         title: "33 tuần mang thai",
@@ -1750,7 +1724,6 @@ const pregnancyData = {
           "Bắt đầu với những điều cơ bản. Đảm bảo cũi của bạn an toàn và tránh những cũi và thanh chắn cũi nguy hiểm, lỗi thời . Nếu bạn đang thêm tác phẩm nghệ thuật vào phòng của bé, đừng treo nó trên cũi hoặc bàn thay tã. Nếu bạn sử dụng đồ chơi di động , hãy đảm bảo nó ở ngoài tầm với và an toàn để không rơi vào cũi của bé. Cố định đồ nội thất nặng vào tường, di chuyển dây điện ra khỏi tầm với và lắp đặt bộ bảo vệ ổ cắm.",
           
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       34: {
         title: "34 tuần mang thai",
@@ -1827,7 +1800,6 @@ const pregnancyData = {
           "Biết các dấu hiệu của tiền sản giật",
           "Tiền sản giật – một rối loạn huyết áp nghiêm trọng – thường xuất hiện sau 37 tuần, nhưng cũng có thể xảy ra sớm hơn, vì vậy điều quan trọng là phải nhận biết các dấu hiệu cảnh báo. Hãy gọi cho bác sĩ nếu bạn bị sưng mặt hoặc sưng quanh mắt, sưng nhiều hơn mức nhẹ ở tay, sưng bàn chân hoặc mắt cá chân quá mức hoặc đột ngột, hoặc tăng cân nhanh (hơn 4 đến 5 pound trong một tuần).",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       35: {
         title: "35 tuần mang thai",
@@ -1905,7 +1877,6 @@ const pregnancyData = {
           "Trong tam cá nguyệt thứ ba, hãy tránh các hoạt động nguy hiểm có thể dẫn đến té ngã hoặc chấn thương tử cung, chẳng hạn như các môn thể thao đối kháng, trượt tuyết và trượt ván trên tuyết. Khi tập thể dục, hãy dành thời gian để khởi động và hạ nhiệt, mặc quần áo rộng rãi để tránh bị quá nóng và giữ đủ nước.",
           "Nếu bạn rất năng động trước khi mang thai và trong tam cá nguyệt thứ nhất và thứ hai, bạn có thể không cần phải thay đổi nhiều thói quen thường ngày của mình ngay bây giờ. Tuy nhiên, hãy luôn kiên nhẫn và nhẹ nhàng với bản thân. Sau cùng, chậm mà chắc sẽ chiến thắng.",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       36: {
         title: "36 tuần mang thai",
@@ -1978,7 +1949,6 @@ const pregnancyData = {
           "Bạn có thể gọi điện thoại không? Email không? Bạn có cung cấp dịch vụ khám bệnh qua video (y tế từ xa) không?",
           "Bác sĩ sẽ đưa con tôi đến bệnh viện nào nếu con tôi bị bệnh nặng hoặc bị thương nghiêm trọng?",
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       37: {
         title: "37 tuần mang thai",
@@ -2050,7 +2020,6 @@ const pregnancyData = {
           "Bạn có thắc mắc tại sao một em bé mới sinh cần phải kiểm tra thính lực không? Thính lực rất quan trọng đối với sự phát triển ngôn ngữ , bắt đầu từ rất lâu trước khi bé bắt đầu bi bô. Vì vậy, tốt nhất là xác định bất kỳ vấn đề tiềm ẩn nào càng sớm càng tốt để bạn có thể nhận được các phương pháp điều trị cần thiết cho bé. Nếu bạn cần thêm trợ giúp hoặc hỗ trợ, tổ chức phi lợi nhuận Hearing Firstcó nhiều tài nguyên và thông tin.",
           
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       38: {
         title: "38 tuần mang thai",
@@ -2119,7 +2088,6 @@ const pregnancyData = {
           "Tất cả các tiểu bang đều yêu cầu xét nghiệm sàng lọc trẻ sơ sinh để phát hiện các tình trạng hiếm gặp nhưng nghiêm trọng, bao gồm mất thính lực , khuyết tật tim bẩm sinh và rối loạn chuyển hóa. Các xét nghiệm này phát hiện các rối loạn có thể gây ra các vấn đề sức khỏe lâu dài hoặc thậm chí tử vong nếu không được chẩn đoán và điều trị kịp thời.",
          
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       39: {
         title: "39 tuần mang thai",
@@ -2186,7 +2154,6 @@ const pregnancyData = {
           "Kết thúc thai kỳ là thời điểm đầy cảm xúc đối với nhiều bậc cha mẹ tương lai. Nếu bạn đang phải đối mặt với những cảm xúc lớn, hoặc chỉ muốn ghi lại khoảnh khắc độc đáo này, viết nhật ký là một cách tuyệt vời để thực hiện. Cho dù bạn viết cho em bé hay chỉ cho chính mình, bạn sẽ thích xem lại những kỷ niệm này sau này.",
           
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
       40: {
         title: "40 tuần mang thai",
@@ -2252,7 +2219,6 @@ const pregnancyData = {
           "Xem chương trình yêu thích, đọc tiểu thuyết, gọi điện cho bạn cũ, ngủ nướng hoặc ngủ trưa khi có thể. Sẽ không lâu nữa cho đến khi em bé của bạn chào đời.",
          
         ],
-        images: ["../../assets/3-1.png", "../../assets/3-2.png"],
       },
   };
   

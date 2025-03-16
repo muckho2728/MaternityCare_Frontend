@@ -1,10 +1,9 @@
 import { useState, useEffect } from "react";
-import { Search, MessageCircle, Heart } from "lucide-react";
+import { Search } from "lucide-react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Blog.css";
-import defaultImage from "../../assets/default-blog.jpg";
 import api from "../../config/api";
 import { Link } from "react-router-dom";
 
@@ -14,6 +13,7 @@ const Blog = () => {
   const [tags, setTags] = useState([]);
   const [selectedTag, setSelectedTag] = useState("");
   const [userId, setUserId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const pageSize = 10;
 
   const [commentsByBlog, setCommentsByBlog] = useState({});
@@ -26,16 +26,23 @@ const Blog = () => {
   const filteredBlogs = Array.isArray(blogs)
     ? blogs.filter(
       (blog) =>
-        (selectedTag ? blog.tag.id === selectedTag : true) &&
+        (selectedTag ? blog.tag?.id === selectedTag : true) &&
         (blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
           blog.content.toLowerCase().includes(searchTerm.toLowerCase()))
     )
     : [];
 
   useEffect(() => {
-    fetchBlogs();
-    fetchTags();
-    fetchCurrentUser();
+    let mounted = true;
+    const fetchData = async () => {
+      setIsLoading(true);
+      await Promise.all([fetchBlogs(), fetchTags(), fetchCurrentUser()]);
+      setIsLoading(false);
+    };
+    fetchData();
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const fetchBlogs = async () => {
@@ -44,6 +51,7 @@ const Blog = () => {
       setBlogs(response.data || []);
     } catch (error) {
       console.error("Lỗi khi lấy danh sách blog:", error);
+      toast.error("Không thể tải danh sách blog");
     }
   };
 
@@ -53,15 +61,13 @@ const Blog = () => {
       setTags(response.data || []);
     } catch (error) {
       console.error("Lỗi khi lấy danh sách tag:", error);
+      toast.error("Không thể tải danh sách tag");
     }
   };
 
   const fetchCurrentUser = async () => {
     const token = localStorage.getItem("token");
-    if (!token) {
-      console.error("Không tìm thấy token");
-      return;
-    }
+    if (!token) return;
     try {
       const response = await api.get(
         "https://maternitycare.azurewebsites.net/api/authentications/current-user",
@@ -96,52 +102,50 @@ const Blog = () => {
 
   const handleCommentSubmit = async (e, blogId) => {
     e.preventDefault();
-    if (newComment.trim() && userId) {
-      try {
-        const response = await api.post(
-          `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/users/${userId}/comments`,
-          { content: newComment }
-        );
-        setCommentsByBlog((prev) => ({
-          ...prev,
-          [blogId]: [
-            {
-              id: response.data.id,
-              user: response.data.author?.name || "Bạn",
-              text: newComment,
-            },
-            ...(prev[blogId] || []),
-          ],
-        }));
-        setNewComment("");
-      } catch (error) {
-        console.error("Lỗi khi đăng bình luận:", error);
-        toast.error("Lỗi khi đăng bình luận.");
-      }
+    if (!newComment.trim() || !userId) return;
+    try {
+      const response = await api.post(
+        `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/users/${userId}/comments`,
+        { content: newComment }
+      );
+      setCommentsByBlog((prev) => ({
+        ...prev,
+        [blogId]: [
+          {
+            id: response.data.id,
+            user: response.data.author?.name || "Bạn",
+            text: newComment,
+          },
+          ...(prev[blogId] || []),
+        ],
+      }));
+      setNewComment("");
+    } catch (error) {
+      console.error("Lỗi khi đăng bình luận:", error);
+      toast.error("Lỗi khi đăng bình luận.");
     }
   };
 
   const handleEditComment = async (blogId) => {
-    if (editContent.trim() && editCommentId) {
-      try {
-        await api.put(
-          `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/users/${userId}/comments/${editCommentId}`,
-          { content: editContent }
-        );
-        setCommentsByBlog((prev) => ({
-          ...prev,
-          [blogId]: prev[blogId].map((comment) =>
-            comment.id === editCommentId
-              ? { ...comment, text: editContent }
-              : comment
-          ),
-        }));
-        setEditCommentId(null);
-        setEditContent("");
-      } catch (error) {
-        console.error("Lỗi khi sửa bình luận:", error);
-        toast.error("Lỗi khi sửa bình luận.");
-      }
+    if (!editContent.trim() || !editCommentId) return;
+    try {
+      await api.put(
+        `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/users/${userId}/comments/${editCommentId}`,
+        { content: editContent }
+      );
+      setCommentsByBlog((prev) => ({
+        ...prev,
+        [blogId]: prev[blogId].map((comment) =>
+          comment.id === editCommentId
+            ? { ...comment, text: editContent }
+            : comment
+        ),
+      }));
+      setEditCommentId(null);
+      setEditContent("");
+    } catch (error) {
+      console.error("Lỗi khi sửa bình luận:", error);
+      toast.error("Lỗi khi sửa bình luận.");
     }
   };
 
@@ -181,9 +185,7 @@ const Blog = () => {
       }));
     } catch (error) {
       console.error("Lỗi khi lấy dữ liệu like:", error.message);
-      toast.error("Lỗi khi lấy dữ liệu like. Vui lòng thử lại!", {
-        autoClose: 3000,
-      });
+      toast.error("Lỗi khi lấy dữ liệu like.");
     }
   };
 
@@ -196,7 +198,6 @@ const Blog = () => {
 
     const currentLikeData = likesByBlog[blogId] || { isLiked: false, likeCount: 0 };
     try {
-      // Gửi yêu cầu POST hoặc DELETE để cập nhật trạng thái like
       await api({
         url: `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/users/${userId}/likes`,
         method: currentLikeData.isLiked ? "DELETE" : "POST",
@@ -206,7 +207,6 @@ const Blog = () => {
         },
       });
 
-      // Gọi lại API để lấy số lượt thích mới nhất
       const likeCountResponse = await api.get(
         `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/number-of-likes`
       );
@@ -220,10 +220,8 @@ const Blog = () => {
         },
       }));
     } catch (error) {
-      console.error("Lỗi khi cập nhật like:", error.response?.data || error.message);
-      toast.error("Lỗi khi cập nhật like. Vui lòng thử lại!", {
-        autoClose: 3000,
-      });
+      console.error("Lỗi khi cập nhật like:", error);
+      toast.error("Lỗi khi cập nhật like.");
     }
   };
 
@@ -244,6 +242,7 @@ const Blog = () => {
             <Search size={18} />
           </button>
         </div>
+
         <Link to="/view-blog-user">
           <button className="blog-btn">Bài Viết Của Tôi</button>
         </Link>
@@ -251,62 +250,83 @@ const Blog = () => {
           <button className="blog-btn">Tạo Bài Viết</button>
         </Link>
 
-        <div className="blog-filter">
-          <label htmlFor="tagFilter">Lọc theo Tag:</label>
-          <select
-            id="tagFilter"
-            onChange={(e) => setSelectedTag(e.target.value)}
-            value={selectedTag}
-          >
-            <option value="">Tất cả</option>
-            {tags.map((tag) => (
-              <option key={tag.id} value={tag.id}>
-                {tag.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        <ToastContainer position="top-right" hideProgressBar={false} />
+        <label htmlFor="tagFilter">Lọc theo Tag:</label>
+        <select
+          id="tagFilter"
+          onChange={(e) => setSelectedTag(e.target.value)}
+          value={selectedTag}
+        >
+          <option value="">Tất cả</option>
+          {tags.map((tag) => (
+            <option key={tag.id} value={tag.id}>
+              {tag.name}
+            </option>
+          ))}
+        </select>
       </div>
 
-      {filteredBlogs.length > 0 ? (
-        filteredBlogs.map((blog) => {
-          const likeData = likesByBlog[blog.id] || { isLiked: false, likeCount: 0 };
+      {selectedTag && (
+        <div className="selected-tag">
+          <span>Bạn đang xem bài viết có tag: </span>
+          <span className="selected-tag-name">
+            {tags.find((tag) => tag.id === selectedTag)?.name || "Không xác định"}
+          </span>
+          <button className="clear-tag-btn" onClick={() => setSelectedTag("")}>
+            Xóa lọc
+          </button>
+        </div>
+      )}
 
-          return (
-            <div key={blog.id}>
-              <h2>{blog.title}</h2>
-              <p>{blog.content}</p>
-              <img
-                src={blog.image || defaultImage}
-                alt={blog.title}
-                style={{ width: "300px", height: "200px" }}
-              />
-              <div className="blog-info">
-                <span className="blog-time">
-                  <button
-                    onClick={() => handleLike(blog.id)}
-                    disabled={!userId}
-                    style={{
-                      border: "none",
-                      background: "transparent",
-                      cursor: "pointer",
-                    }}
-                    onMouseEnter={() => fetchLikeData(blog.id)}
-                  >
-                    {likeData.isLiked ? <FaHeart color="red" /> : <FaRegHeart />}
-                  </button>
-                  <span style={{ marginLeft: "5px" }}>{likeData.likeCount} Likes</span>{" "}
-                  {new Date(blog.createdAt).toLocaleDateString()}
-                </span>
-                <span className="blog-comments">
-                  <div>
+      <div className="blog-list">
+        {isLoading ? (
+          <p>Đang tải...</p>
+        ) : filteredBlogs.length > 0 ? (
+          filteredBlogs.map((blog) => {
+            const likeData = likesByBlog[blog.id] || { isLiked: false, likeCount: 0 };
+            return (
+              <div className="body-blog" key={blog.id}>
+                {blog.image && (
+                  <img src={blog.image} alt={blog.title} className="blog-image" />
+                )}
+                <div className="blog-content">
+                  <h2 className="blog-title">{blog.title}</h2>
+                  <div className="blog-tags">
+                    {blog.tag ? (
+                      <span className="blog-tag">{blog.tag.name}</span>
+                    ) : (
+                      <span className="blog-tag no-tag">Chưa có tag</span>
+                    )}
+                  </div>
+                  <p className="blog-summary">
+                    {blog.content.length > 150
+                      ? `${blog.content.substring(0, 150)}...`
+                      : blog.content}
+                  </p>
+                  <div className="blog-info">
+                    <span className="blog-time">
+                      <button
+                        onClick={() => handleLike(blog.id)}
+                        disabled={!userId}
+                        style={{
+                          border: "none",
+                          background: "transparent",
+                          cursor: "pointer",
+                        }}
+                        onMouseEnter={() => fetchLikeData(blog.id)}
+                      >
+                        {likeData.isLiked ? <FaHeart color="red" /> : <FaRegHeart />}
+                      </button>
+                      <span style={{ marginLeft: "5px" }}>
+                        {likeData.likeCount} Likes
+                      </span>
+                      {" " + new Date(blog.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+
+                  <div className="blog-comments">
                     <h2>Bình luận</h2>
-                    <form
-                      onSubmit={(e) => {
-                        setCurrentBlogId(blog.id);
-                        handleCommentSubmit(e, blog.id);
-                      }}
-                    >
+                    <form onSubmit={(e) => handleCommentSubmit(e, blog.id)}>
                       <input
                         type="text"
                         value={newComment}
@@ -334,9 +354,7 @@ const Blog = () => {
                                 Sửa
                               </button>
                               <button
-                                onClick={() =>
-                                  handleDeleteComment(blog.id, comment.id)
-                                }
+                                onClick={() => handleDeleteComment(blog.id, comment.id)}
                               >
                                 Xóa
                               </button>
@@ -354,9 +372,7 @@ const Blog = () => {
                           value={editContent}
                           onChange={(e) => setEditContent(e.target.value)}
                         />
-                        <button onClick={() => handleEditComment(blog.id)}>
-                          Lưu
-                        </button>
+                        <button onClick={() => handleEditComment(blog.id)}>Lưu</button>
                         <button
                           onClick={() => {
                             setEditCommentId(null);
@@ -374,15 +390,14 @@ const Blog = () => {
                       Tải bình luận
                     </button>
                   </div>
-                </span>
+                </div>
               </div>
-            </div>
-          );
-        })
-      ) : (
-        <p className="blog-no-data">Không có bài viết nào.</p>
-      )}
-      <ToastContainer position="top-right" hideProgressBar={false} />
+            );
+          })
+        ) : (
+          <p className="blog-no-data">Không có bài viết nào.</p>
+        )}
+      </div>
     </div>
   );
 };

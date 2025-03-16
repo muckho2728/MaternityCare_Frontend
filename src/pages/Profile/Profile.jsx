@@ -5,6 +5,8 @@ import { UserOutlined, HeartOutlined, EditOutlined, CameraOutlined, CarryOutOutl
 import { updateUserByIdAction, changePassworbyUserIdAction, fetchUserByIdAction } from '../../store/redux/action/userAction';
 import api from '../../constants/axios';
 import { Link } from 'react-router-dom';
+import { Car } from 'lucide-react';
+import './Profile.css';
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -72,7 +74,7 @@ const Profile = () => {
 
   return (
     <Layout style={{ backgroundColor: '#f0f2f5' }}>
-      <Content style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
+      <Content style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto', background: '#f2fffa8f' }}>
         <Row gutter={24}>
           <Col span={6}>
             <Card style={{ borderRadius: '8px', backgroundColor: '#f9f9f9', padding: '10px' }}>
