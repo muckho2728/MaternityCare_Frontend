@@ -75,10 +75,9 @@ const PackageList = () => {
                 </ul>
                 {pkg.price !== 0 && (
                   <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-                    {currentPackage === "Premium" && (
+                    {currentPackage === pkg.type ? (
                       <Button type="primary" onClick={() => navigate('/feedback')}>Feedback</Button>
-                    )}
-                    {currentPackage === "Free" && (
+                    ) : (
                       <Button type="primary" onClick={() => handleBuyClick(pkg.id)}>Mua</Button>
                     )}
                   </div>
