@@ -29,7 +29,7 @@ import ManageFetusHealth from './pages/Admin/ManageFetusHealth/ManageFetusHealth
 import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
 import PregnancyWeek from './pages/Pregnancy/PregnancyWeek';
 import ManageDoctor from './pages/Admin/ManageDoctor/Doctor';
-
+import ViewBookedSlot from './pages/Appointment/View';
 
 
 
@@ -39,7 +39,7 @@ function Layout() {
   const location = useLocation()
   const isAdmin = location.pathname.startsWith('/admin');
   const isLoginRegister = location.pathname === '/login' || location.pathname === '/register';
-  
+
 
   return (
     <div className="app">
@@ -79,6 +79,7 @@ function Layout() {
           <Route path="/pregnancy" element={<PregnancyWeek />} />
           <Route path="/createslot" element={<CreateSlot />} />
           <Route path="/forget" element={<Forgot />} />
+          <Route path="/viewBookedSlot" element={<ViewBookedSlot />} />
         </Routes>
         <ToastContainer />
       </main>

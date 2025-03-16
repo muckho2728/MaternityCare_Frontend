@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Layout, Menu, Input, Button, Form, Typography, Card, Row, Col, Space, message, Upload } from 'antd';
-import { UserOutlined, HeartOutlined, TeamOutlined, FileSearchOutlined, EditOutlined, CameraOutlined } from '@ant-design/icons';
+import { UserOutlined, HeartOutlined, TeamOutlined, FileSearchOutlined, EditOutlined, CameraOutlined, BookOutlined } from '@ant-design/icons';
 import { updateUserByIdAction, changePassworbyUserIdAction, fetchUserByIdAction } from
   '../../store/redux/action/userAction';
 import api from '../../constants/axios';
@@ -156,6 +156,11 @@ const Profile = () => {
                   icon: <HeartOutlined />,
                   label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link>,
                 },
+                {
+                  key: '3',
+                  icon: <BookOutlined />,
+                  label: <Link to="/viewBookedSlot">Xem lịch hẹn</Link>
+                }
               ]} />
             </Card>
           </Col>
