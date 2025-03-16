@@ -32,7 +32,7 @@ import PaymentFailurePage from './pages/PaymentPage/PaymentFailurePage';
 import TransactionManagementPage from './pages/Admin/TransactionManagementPage/TransactionManagementPage';
 import ViewBlogUser from './pages/Community/ViewBlogUser';
 import CreateBlog from './pages/Community/CreateBlog';
-import UpdateBlog from './pages/Community/UpdateBlog';
+// import UpdateBlog from './pages/Community/UpdateBlog';
 import ManageFeedbackPage from './pages/Admin/ManageFeedback/ManageFeedback';
 import Feedback from './pages/Feedback/Feedback';
 import ManagePregnancy from './pages/ViewFetusHealth/ManagePregnancy';
