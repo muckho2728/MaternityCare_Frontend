@@ -20,7 +20,7 @@ import api from '../../config/api';
 const Home = () => {
     const navigate = useNavigate();
     const [currentWeek, setCurrentWeek] = useState(2);
-    const [currentPackage, setCurrentPackage] = useState("free");
+    const [currentPackage, setCurrentPackage] = useState("Free");
 
     useEffect(() => {
         const fetchCurrentUser = async () => {
@@ -38,9 +38,8 @@ const Home = () => {
         };
         fetchCurrentUser();
     }, []);
-
-    const handleNavigattion = (path) => {
-        if(currentPackage === "free" && path !== "/booking") {
+    const handleNavigation = (path) => {
+        if (currentPackage.subscription === "Free" && path !== "/community" && path !=="/package-list") {
             alert("Vui lòng nâng cấp gói để sử dụng tính năng này!");
             return;
         }
@@ -69,22 +68,22 @@ const Home = () => {
                     </div>
 
                     <div className="feature-container">
-                        <div className="feature-card" onClick={() => navigate(`/pregnancy/${currentWeek}`)}>
+                        <div className="feature-card" onClick={() => handleNavigation(`/pregnancy/${currentWeek}`)}>
                             <img src={pregnancy} alt="Theo dõi thai kỳ" />
                             <h3>Theo dõi thai kỳ</h3>
                             <p>Cập nhật sự phát triển của bé theo từng tuần.</p>
                         </div>
-                        <div className="feature-card" onClick={() => navigate('/booking')}>
+                        <div className="feature-card" onClick={() => handleNavigation('/booking')}>
                             <img src={booking} alt="Đặt lịch khám" />
                             <h3>Đặt lịch khám</h3>
                             <p>Đặt lịch hẹn với bác sĩ.</p>
                         </div>
-                        <div className="feature-card" onClick={() => navigate('/package-list')}>
+                        <div className="feature-card" onClick={() => handleNavigation('/package-list')}>
                             <img src={packageImg} alt="Dịch vụ chăm sóc" />
                             <h3>Dịch vụ</h3>
                             <p>Các dịch vụ hỗ trợ sức khỏe mẹ và bé.</p>
                         </div>
-                        <div className="feature-card" onClick={() => navigate('/community')}>
+                        <div className="feature-card" onClick={() => handleNavigation('/community')}>
                             <img src={communityImg} alt="Diễn đàn mẹ bầu" />
                             <h3>Diễn đàn mẹ bầu</h3>
                             <p>Kết nối và chia sẻ với các mẹ bầu khác.</p>

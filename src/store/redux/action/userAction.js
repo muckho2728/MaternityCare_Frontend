@@ -58,13 +58,13 @@ export const updateUserByIdAction = (id, data) => {
     }
   };
 };
-export const activateUserAction = (id) => {
+export const activateUserAction = ({ id, isActive }) => {
   return async (dispatch) => {
     try {
-      await activeUserAPI(id);
-      dispatch(fetchUsersAction());
+      await activeUserAPI(id, { isActive });
+      dispatch(fetchUsersAction()); 
     } catch (error) {
-      console.error(`Failed to activate user with id ${id}:`, error.response ? error.response.data : error.message);
+      console.error(`Failed to ${isActive ? 'activate' : 'deactivate'} user with id ${id}:`, error.response ? error.response.data : error.message);
     }
   };
 };

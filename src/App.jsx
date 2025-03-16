@@ -33,6 +33,8 @@ import TransactionManagementPage from './pages/Admin/TransactionManagementPage/T
 import ViewBlogUser from './pages/Community/ViewBlogUser';
 import CreateBlog from './pages/Community/CreateBlog';
 import UpdateBlog from './pages/Community/UpdateBlog';
+import ManageFeedbackPage from './pages/Admin/ManageFeedback/ManageFeedback';
+import Feedback from './pages/Feedback/Feedback';
 
 function Layout() {
   const location = useLocation();
@@ -66,6 +68,7 @@ function Layout() {
           <Route path="/create-blog" element={<CreateBlog />} />
           <Route path="/update-blog/:id" element={<UpdateBlog />} />
           <Route path="/view-blog-user" element={<ViewBlogUser />} />
+          <Route path="/feedback" element={<Feedback/>}/>
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="manage-user" element={<ManageUsersPage />} />
@@ -73,6 +76,7 @@ function Layout() {
             <Route path="manage-doctor" element={<ManageDoctor />} />
             <Route path="create-doctor-slot" element={<CreateSlot />} />
             <Route path="manage-transaction" element={<TransactionManagementPage />} />
+            <Route path='manage-feedback' element={<ManageFeedbackPage/>} />
           </Route>
         </Routes>
         <ToastContainer />
