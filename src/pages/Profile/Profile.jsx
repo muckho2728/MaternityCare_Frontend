@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Layout, Menu, Input, Button, Form, Typography, Card, Row, Col, Space, message, Upload, Table } from 'antd';
-import { UserOutlined, HeartOutlined, EditOutlined, CameraOutlined } from '@ant-design/icons';
+import { UserOutlined, HeartOutlined, EditOutlined, CameraOutlined, CarryOutOutlined } from '@ant-design/icons';
 import { updateUserByIdAction, changePassworbyUserIdAction, fetchUserByIdAction } from '../../store/redux/action/userAction';
 import api from '../../constants/axios';
 import { Link } from 'react-router-dom';
@@ -80,6 +80,9 @@ const Profile = () => {
                 <Menu.Item key="1" icon={<UserOutlined />}>Thông tin người dùng</Menu.Item>
                 <Menu.Item key="2" icon={<HeartOutlined />}>
                   <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link>
+                </Menu.Item>
+                <Menu.Item key="3" icon={<CarryOutOutlined />}>
+                  <Link to="/viewBookedSlot">Xem lịch khám đã đặt</Link>
                 </Menu.Item>
               </Menu>
             </Card>

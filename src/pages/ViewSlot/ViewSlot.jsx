@@ -77,7 +77,7 @@ const ViewSlot = () => {
         }
 
         try {
-            const response = await api.get(`https://maternitycare.azurewebsites.net/api/doctors/${doctor.id}/slots?Date=2025-03-12&PageNumber=1&PageSize=10`, {
+            const response = await api.get(`https://maternitycare.azurewebsites.net/api/doctors/${doctor.id}/slots?PageNumber=1&PageSize=10`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -118,20 +118,30 @@ const ViewSlot = () => {
             return;
         }
         try {
-            const response = await api.post(`https://maternitycare.azurewebsites.net/api/users/${userId}/slots/${slotId}/appointments`, {
+            const response = await api.post(`https://maternitycare.azurewebsites.net/api/users/${userId}/slots/${slotId}/appointments`, {}, {
                 headers: {
+                    accept: `*/*`,
                     Authorization: `Bearer ${token}`,
                 },
             });
+            toast.response("Đăng kí lịch khám thành công");
+            console.log("Đăng kí thànhc công");
         } catch (error) {
-            console.log(error);
-            toast.error(error.message);
+            console.log(error.response);
+            toast.error(error.response);
         }
     };
 
     const handleConfirmBooking = () => {
+        console.log('handleConfirmBooking triggered');
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No token found');
+            return;
+        }
         if (currentUser && selectedSlot) {
             bookAppointments(currentUser.id, selectedSlot.id);
+            console.log('Token:', token);
         }
     };
 
@@ -148,6 +158,7 @@ const ViewSlot = () => {
         doctor.fullName.toLowerCase().includes(searchTerm.toLowerCase()) &&
         (specialtyFilter === "all" || doctor.specialization === specialtyFilter)
     );
+
 
     return (
         <div className="view-slot-container">
