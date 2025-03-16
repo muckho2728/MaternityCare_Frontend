@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../config/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './Blog.css';
 
 const UpdateBlog = () => {
     const { blogId } = useParams();
@@ -72,37 +73,50 @@ const UpdateBlog = () => {
         }
     };
     return (
-        <div>
-            <h1>Cập nhật bài viết</h1>
-            <input
-                type="text"
-                placeholder="Tiêu đề"
-                value={blog.title}
-                onChange={(e) => setBlog({ ...blog, title: e.target.value })}
-            />
-            <textarea
-                placeholder="Nội dung"
-                value={blog.content}
-                onChange={(e) => setBlog({ ...blog, content: e.target.value })}
-            />
-            <select
-                value={blog.tagId}
-                onChange={(e) => setBlog({ ...blog, tagId: e.target.value })}
-            >
-                {tags.map((tag) => (
-                    <option key={tag.id} value={tag.id}>
-                        {tag.name}
-                    </option>
-                ))}
-            </select>
-            <input
-                type="file"
-                onChange={(e) => setBlog({ ...blog, image: e.target.files[0] })}
-            />
-            <button onClick={handleUpdate}>Cập nhật</button>
-            <button onClick={() => navigate("/view-blog-user")}>Hủy</button>
-            <ToastContainer />
+        <div className="blog-form-container">
+      <h1>Cập nhật bài viết</h1>
+      <form>
+        <input
+          type="text"
+          placeholder="Tiêu đề bài viết"
+          value={blog.title}
+          onChange={(e) => setBlog({ ...blog, title: e.target.value })}
+        />
+        <textarea
+          placeholder="Nội dung bài viết"
+          value={blog.content}
+          onChange={(e) => setBlog({ ...blog, content: e.target.value })}
+        />
+        <select
+          value={blog.tagId}
+          onChange={(e) => setBlog({ ...blog, tagId: e.target.value })}
+        >
+          <option value="">Chọn tag</option>
+          {tags.map((tag) => (
+            <option key={tag.id} value={tag.id}>
+              {tag.name}
+            </option>
+          ))}
+        </select>
+        <input
+          type="file"
+          onChange={(e) => setBlog({ ...blog, image: e.target.files[0] })}
+        />
+        <div className="button-group">
+          <button type="button" className="update-btn" onClick={handleUpdate}>
+            Cập nhật
+          </button>
+          <button
+            type="button"
+            className="cancel-btn"
+            onClick={() => navigate("/view-blog-user")}
+          >
+            Hủy
+          </button>
         </div>
+      </form>
+      <ToastContainer />
+    </div>
     );
 };
 
