@@ -7,6 +7,7 @@ import {
   FileSearchOutlined,
   ReadOutlined,
   TransactionOutlined,
+  CommentOutlined ,
 } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 import { Link, Outlet, useLocation } from 'react-router-dom';
@@ -66,6 +67,11 @@ const AdminLayout = () => {
       icon: <TransactionOutlined />,
       label: <Link to="/admin/manage-transaction">Transaction</Link>,
     },
+    {
+      key: 'feedback',
+      icon: <CommentOutlined  />,
+      label: <Link to="/admin/manage-feedback">Feedback</Link>,
+    },
   ];
 
   return (
@@ -89,6 +95,7 @@ const AdminLayout = () => {
             {location.pathname.includes('manage-doctor') && <Breadcrumb.Item>Manage Doctor</Breadcrumb.Item>}
             {location.pathname.includes('create-doctor-slot') && <Breadcrumb.Item>Tạo Slot Doctor</Breadcrumb.Item>}
             {location.pathname.includes('manage-transaction') && <Breadcrumb.Item>Manage Transaction</Breadcrumb.Item>}
+            {location.pathname.includes('manage-feedback') && <Breadcrumb.Item>Manage Feedback</Breadcrumb.Item>}
           </Breadcrumb>
           <div
             style={{

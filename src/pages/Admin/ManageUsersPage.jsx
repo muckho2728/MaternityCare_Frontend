@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button, Col, Radio, Drawer, Row, Modal, Form, Input, Table, Select, notification, Upload, Space } from 'antd';
+import { Button, Col, Radio, Drawer, Row, Modal, Form, Input, Table, Select, Upload } from 'antd';
 import { EyeOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import styles from '../../assets/ManageUsersPage.module.scss';
 import { fetchUsersAction, updateUserByIdAction, fetchUserByIdAction, activateUserAction } from '../../store/redux/action/userAction';
@@ -15,16 +15,33 @@ const ManageUsersPage = () => {
   const [form] = Form.useForm();
   const [filterRole, setFilterRole] = useState('all');
   const [searchValue, setSearchValue] = useState('');
-  const [previewAvatar, setPreviewAvatar] = useState('https://via.placeholder.com/150?text=Avatar'); // Avatar mặc định
+  const [previewAvatar, setPreviewAvatar] = useState('https://via.placeholder.com/150?text=Avatar');
   const [avatarFile, setAvatarFile] = useState(null);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  });
 
   const dispatch = useDispatch();
   const usersData = useSelector((state) => state.userReducer.listUser);
   const userDetailData = useSelector((state) => state.userReducer.user);
 
   useEffect(() => {
-    dispatch(fetchUsersAction());
-  }, [dispatch]);
+    fetchUsers(pagination.current, pagination.pageSize);
+  }, [pagination.current, pagination.pageSize]);
+
+  const fetchUsers = async (page, pageSize) => {
+    try {
+      const response = await dispatch(fetchUsersAction(page, pageSize));
+      setPagination({
+        ...pagination,
+        total: response.total, // Giả sử API trả về tổng số bản ghi
+      });
+    } catch (error) {
+      console.error('Failed to fetch users:', error);
+    }
+  };
 
   const handleSearch = (value) => {
     setSearchValue(value.toLowerCase());
@@ -32,15 +49,15 @@ const ManageUsersPage = () => {
 
   const filteredUsersData = Array.isArray(usersData)
     ? usersData.filter((user) => {
-        const userRole = user.role?.name?.toLowerCase() || '';
-        const matchesRole = filterRole === 'all' || userRole === filterRole;
-        const matchesSearch =
-          !searchValue ||
-          (user.fullName && user.fullName.toLowerCase().includes(searchValue)) ||
-          (user.email && user.email.toLowerCase().includes(searchValue)) ||
-          (user.address && user.address.toLowerCase().includes(searchValue));
-        return matchesRole && matchesSearch;
-      })
+      const userRole = user.role?.name?.toLowerCase() || '';
+      const matchesRole = filterRole === 'all' || userRole === filterRole;
+      const matchesSearch =
+        !searchValue ||
+        (user.fullName && user.fullName.toLowerCase().includes(searchValue)) ||
+        (user.email && user.email.toLowerCase().includes(searchValue)) ||
+        (user.address && user.address.toLowerCase().includes(searchValue));
+      return matchesRole && matchesSearch;
+    })
     : [];
 
   const showDrawer = (title, user = null) => {
@@ -68,7 +85,7 @@ const ManageUsersPage = () => {
       if (userDetailData.avatar) {
         setPreviewAvatar(userDetailData.avatar);
       } else {
-        setPreviewAvatar('https://via.placeholder.com/150?text=Avatar'); // Đặt lại avatar mặc định nếu không có avatar
+        setPreviewAvatar('https://via.placeholder.com/150?text=Avatar');
       }
     }
   }, [userDetailData, form]);
@@ -76,7 +93,7 @@ const ManageUsersPage = () => {
   const closeDrawer = () => {
     setOpen(false);
     setSelectedUser(null);
-    setPreviewAvatar('https://via.placeholder.com/150?text=Avatar'); // Đặt lại avatar mặc định khi đóng drawer
+    setPreviewAvatar('https://via.placeholder.com/150?text=Avatar');
     setAvatarFile(null);
     form.resetFields();
   };
@@ -98,19 +115,10 @@ const ManageUsersPage = () => {
       }
 
       await dispatch(updateUserByIdAction(userId, formData));
-
-      notification.success({
-        message: 'Success',
-        description: 'User information updated successfully',
-      });
-
       closeDrawer();
-      dispatch(fetchUsersAction());
+      fetchUsers(pagination.current, pagination.pageSize);
     } catch (error) {
-      notification.error({
-        message: 'Error',
-        description: error.message || 'Failed to update user information',
-      });
+      console.error('Failed to update user information:', error);
     }
   };
 
@@ -132,19 +140,12 @@ const ManageUsersPage = () => {
       confirm({
         title: `Are you sure you want to ${user.isActive ? 'deactivate' : 'activate'} this user?`,
         onOk() {
-          dispatch(activateUserAction(user.id))
+          dispatch(activateUserAction({ id, isActive: user.isActive }))
             .then(() => {
-              notification.success({
-                message: 'Success',
-                description: `User ${user.isActive ? 'deactivated' : 'activated'} successfully`,
-              });
-              dispatch(fetchUsersAction());
+              fetchUsers(pagination.current, pagination.pageSize);
             })
             .catch(() => {
-              notification.error({
-                message: 'Error',
-                description: `Failed to ${user.isActive ? 'deactivate' : 'activate'} user`,
-              });
+              console.error(`Failed to ${user.isActive ? 'deactivate' : 'activate'} user`);
             });
         },
       });
@@ -169,7 +170,6 @@ const ManageUsersPage = () => {
         <span>
           <Button type="link" icon={<EyeOutlined />} onClick={() => showDrawer('View User', record)}>View</Button>
           <Button
-            disabled={record.isActive}
             type="link"
             icon={<UserSwitchOutlined />}
             onClick={() => handleToggleStatus(record.id)}
@@ -199,7 +199,17 @@ const ManageUsersPage = () => {
       >
         <Radio.Button value="all">All</Radio.Button>
       </Radio.Group>
-      <Table dataSource={filteredUsersData} columns={columns} rowKey="id" />
+      <Table
+        dataSource={filteredUsersData}
+        columns={columns}
+        rowKey="id"
+        pagination={{
+          ...pagination,
+          onChange: (page, pageSize) => {
+            setPagination({ ...pagination, current: page, pageSize });
+          },
+        }}
+      />
       <Drawer
         title={drawerTitle}
         width={640}
@@ -237,20 +247,7 @@ const ManageUsersPage = () => {
                 showUploadList={false}
                 beforeUpload={handleAvatarChange}
                 style={{ position: 'absolute', bottom: 0, right: 0 }}
-              >
-                {/* <Button
-                  icon={<CameraOutlined />}
-                  style={{
-                    position: 'absolute',
-                    bottom: '0',
-                    right: '0',
-                    borderRadius: '50%',
-                    backgroundColor: '#1890ff',
-                    color: 'white',
-                    border: 'none',
-                  }}
-                /> */}
-              </Upload>
+              />
             </div>
           </Form.Item>
         </Form>

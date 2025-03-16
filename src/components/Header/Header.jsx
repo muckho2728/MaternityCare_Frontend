@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
 //import logo from '../../assets/MaternityCare.png';
 import { useAuth } from '../../constants/AuthContext';
+import api from '../../config/api';
 
 const Header = () => {
     const { user, logout } = useAuth();
@@ -10,7 +11,26 @@ const Header = () => {
     const [notifications] = useState(3); // Giả sử có 3 thông báo
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
+    const [currentPackage, setCurrentPackage] = useState("Free");
 
+    useEffect(() => {
+            const fetchCurrentUser = async () => {
+                try {
+                    const response = await api.get(`/authentications/current-user`);
+                    setCurrentPackage(response.data);
+                } catch (error) {
+                    console.error("error fetching current user: ", error);
+                }
+            };
+            fetchCurrentUser();
+        }, []);
+        const handleNavigation = (path) => {
+            if (currentPackage.subscription === "Free" && path !== "/community" && path !=="/package-list") {
+                alert("Vui lòng nâng cấp gói để sử dụng tính năng này!");
+                return;
+            }
+            navigate(path);
+        }
 
     const handleLogout = () => {
         logout();
@@ -48,7 +68,7 @@ const Header = () => {
     return (
         <header className="header">
             <div className="header-container">
-                <div className="logo-section"  onClick={() => navigate('/')}>
+                <div className="logo-section" onClick={() => navigate('/')}>
                     <Link to="/src/assets/Vector.png" className="logo-link">
                         <img src="/src/assets/Vector.png" alt="Baby Logo" className="logo" />
                         <span className="brand-name">Maternity Care</span>
@@ -57,10 +77,10 @@ const Header = () => {
 
                 <nav className="main-nav">
                     <ul className="nav-list">
-                        <li><Link to="/community">Diễn Đàn</Link></li>
-                        <li><Link to="/create-fetus">Đăng ký thông tin thai nhi</Link></li>
-                        <li><Link to="/package-list">Dịch Vụ</Link></li>
-                        <li><Link to="/booking">Đặt Lịch</Link></li>
+                        <li><span onClick={() => handleNavigation("/community")}>Diễn Đàn</span></li>
+                        <li><span onClick={() => handleNavigation("/create-fetus")}>Đăng ký thông tin thai nhi</span></li>
+                        <li><span onClick={() => handleNavigation("/package-list")}>Dịch Vụ</span></li>
+                        <li><span onClick={() => handleNavigation("/booking")}>Đặt Lịch</span></li>
                     </ul>
                 </nav>
 
@@ -120,7 +140,7 @@ const Header = () => {
                         </div>
                     ) : (
                         <div className="auth-links">
-                            <Link to="/login" className="login-link">Đăng nhập</Link> 
+                            <Link to="/login" className="login-link">Đăng nhập</Link>
                             <Link to="/register" className="register-link">/Đăng Ký</Link>
                         </div>
                     )}

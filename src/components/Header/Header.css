@@ -79,9 +79,9 @@ body {
     margin: 0 20px;
 }
 
-.nav-list a {
+.nav-list span {
     text-decoration: none;
-    color: #542b64;
+    color: #ffffff;
     font-weight: 500;
     font-size: 16px;
     padding: 8px 12px;
@@ -89,9 +89,9 @@ body {
     transition: all 0.3s ease-in-out;
 }
 
-.nav-list a:hover {
+.nav-list span:hover {
     background-color: #fffeaf;
-    color: white;
+    color: rgb(47, 116, 51);
 }
 
 
