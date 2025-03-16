@@ -107,6 +107,23 @@
     background: #D81B60;
     transform: scale(1.05);
 }
+.package-card button.feedback-button {
+    background: #4CAF50; /* Màu xanh lá cây */
+    border: none;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    margin-top: 20px;
+  }
+  
+  .package-card button.feedback-button:hover {
+    background: #45a049; /* Màu xanh lá cây đậm hơn */
+    transform: scale(1.05);
+  }
 
 @keyframes fadeInUp {
     from {

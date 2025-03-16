@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
 import { useAuth } from '../../constants/AuthContext';
-import api from "../../config/api";
+import api from '../../config/api';
 
 const Header = () => {
     const { user, logout, token } = useAuth();
