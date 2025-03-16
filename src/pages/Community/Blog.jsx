@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Search } from "lucide-react";
+import { Search, MessageCircle } from "lucide-react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,7 +17,7 @@ const Blog = () => {
   const pageSize = 10;
 
   const [commentsByBlog, setCommentsByBlog] = useState({});
-  const [newComment, setNewComment] = useState("");
+  const [newComments, setNewComments] = useState({});
   const [editCommentId, setEditCommentId] = useState(null);
   const [editContent, setEditContent] = useState("");
   const [currentBlogId, setCurrentBlogId] = useState(null);
@@ -44,6 +44,12 @@ const Blog = () => {
       mounted = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (userId && blogs.length > 0) {
+      blogs.forEach((blog) => fetchLikeData(blog.id));
+    }
+  }, [userId, blogs]);
 
   const fetchBlogs = async () => {
     try {
@@ -81,102 +87,19 @@ const Blog = () => {
     }
   };
 
-  const fetchComments = async (blogId, pageNumber = 1) => {
-    try {
-      const response = await api.get(
-        `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/comments?PageNumber=${pageNumber}&PageSize=${pageSize}`
-      );
-      setCommentsByBlog((prev) => ({
-        ...prev,
-        [blogId]: response.data.map((comment) => ({
-          id: comment.id,
-          user: "Ẩn danh",
-          text: comment.content,
-        })),
-      }));
-    } catch (error) {
-      console.error("Lỗi khi lấy bình luận:", error);
-      toast.error("Lỗi khi lấy bình luận.");
-    }
-  };
-
-  const handleCommentSubmit = async (e, blogId) => {
-    e.preventDefault();
-    if (!newComment.trim() || !userId) return;
-    try {
-      const response = await api.post(
-        `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/users/${userId}/comments`,
-        { content: newComment }
-      );
-      setCommentsByBlog((prev) => ({
-        ...prev,
-        [blogId]: [
-          {
-            id: response.data.id,
-            user: response.data.author?.name || "Bạn",
-            text: newComment,
-          },
-          ...(prev[blogId] || []),
-        ],
-      }));
-      setNewComment("");
-    } catch (error) {
-      console.error("Lỗi khi đăng bình luận:", error);
-      toast.error("Lỗi khi đăng bình luận.");
-    }
-  };
-
-  const handleEditComment = async (blogId) => {
-    if (!editContent.trim() || !editCommentId) return;
-    try {
-      await api.put(
-        `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/users/${userId}/comments/${editCommentId}`,
-        { content: editContent }
-      );
-      setCommentsByBlog((prev) => ({
-        ...prev,
-        [blogId]: prev[blogId].map((comment) =>
-          comment.id === editCommentId
-            ? { ...comment, text: editContent }
-            : comment
-        ),
-      }));
-      setEditCommentId(null);
-      setEditContent("");
-    } catch (error) {
-      console.error("Lỗi khi sửa bình luận:", error);
-      toast.error("Lỗi khi sửa bình luận.");
-    }
-  };
-
-  const handleDeleteComment = async (blogId, commentId) => {
-    try {
-      await api.delete(
-        `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/users/${userId}/comments/${commentId}`
-      );
-      setCommentsByBlog((prev) => ({
-        ...prev,
-        [blogId]: prev[blogId].filter((comment) => comment.id !== commentId),
-      }));
-    } catch (error) {
-      console.error("Lỗi khi xóa bình luận:", error);
-      toast.error("Lỗi khi xóa bình luận.");
-    }
-  };
-
   const fetchLikeData = async (blogId) => {
     try {
       const likeCountResponse = await api.get(
         `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/number-of-likes`
       );
-      const likeCount = likeCountResponse.data.likeCount || 0;
+      const likeCount = likeCountResponse.data || 0;
 
       let isLiked = false;
       if (userId) {
         const likeStatusResponse = await api.get(
           `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/likes/${userId}`
         );
-        isLiked = likeStatusResponse.data.isLiked || false;
+        isLiked = likeStatusResponse.data || false;
       }
 
       setLikesByBlog((prev) => ({
@@ -184,7 +107,7 @@ const Blog = () => {
         [blogId]: { isLiked, likeCount },
       }));
     } catch (error) {
-      console.error("Lỗi khi lấy dữ liệu like:", error.message);
+      console.error("Lỗi khi lấy dữ liệu like:", error);
       toast.error("Lỗi khi lấy dữ liệu like.");
     }
   };
@@ -197,8 +120,24 @@ const Blog = () => {
     }
 
     const currentLikeData = likesByBlog[blogId] || { isLiked: false, likeCount: 0 };
+    console.log("Current Like Data before update:", currentLikeData);
+
+    const newIsLiked = !currentLikeData.isLiked;
+    const newLikeCount = newIsLiked
+      ? currentLikeData.likeCount + 1
+      : currentLikeData.likeCount - 1;
+
+    // Cập nhật trạng thái ngay lập tức
+    setLikesByBlog((prev) => ({
+      ...prev,
+      [blogId]: {
+        isLiked: newIsLiked,
+        likeCount: newLikeCount >= 0 ? newLikeCount : 0,
+      },
+    }));
+
     try {
-      await api({
+      const response = await api({
         url: `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/users/${userId}/likes`,
         method: currentLikeData.isLiked ? "DELETE" : "POST",
         headers: {
@@ -206,22 +145,126 @@ const Blog = () => {
           "Authorization": `Bearer ${token}`,
         },
       });
+      console.log("Like/Unlike API Response Status:", response.status);
+      console.log("Like/Unlike API Response Data:", response.data);
 
-      const likeCountResponse = await api.get(
-        `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/number-of-likes`
-      );
-      const newLikeCount = likeCountResponse.data.likeCount || 0;
-
+      // Đồng bộ lại dữ liệu từ server
+      await fetchLikeData(blogId);
+      toast.success(newIsLiked ? "Đã thích bài viết!" : "Đã bỏ thích bài viết!");
+    } catch (error) {
+      console.error("Lỗi khi cập nhật like:", error.response?.status, error.response?.data);
+      toast.error("Lỗi khi cập nhật like.");
       setLikesByBlog((prev) => ({
         ...prev,
-        [blogId]: {
-          isLiked: !currentLikeData.isLiked,
-          likeCount: newLikeCount,
-        },
+        [blogId]: currentLikeData,
+      }));
+    }
+  };
+
+  const fetchComments = async (blogId, pageNumber = 1) => {
+    try {
+      const response = await api.get(
+        `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/comments?PageNumber=${pageNumber}&PageSize=${pageSize}`
+      );
+      setCommentsByBlog((prev) => ({
+        ...prev,
+        [blogId]: response.data.map((comment) => ({
+          id: comment.id,
+          user: comment.author?.name || "Ẩn danh",
+          text: comment.content,
+        })),
       }));
     } catch (error) {
-      console.error("Lỗi khi cập nhật like:", error);
-      toast.error("Lỗi khi cập nhật like.");
+      console.error("Lỗi khi lấy bình luận:", error);
+      toast.error("Lỗi khi lấy bình luận.");
+    }
+  };
+
+  const handleCommentSubmit = async (e, blogId) => {
+    e.preventDefault();
+    const commentText = newComments[blogId] || "";
+    if (!commentText.trim() || !userId) return;
+    try {
+      const response = await api.post(
+        `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/users/${userId}/comments`,
+        { content: commentText }
+      );
+      setCommentsByBlog((prev) => ({
+        ...prev,
+        [blogId]: [
+          {
+            id: response.data.id,
+            user: response.data.author?.name || "Bạn",
+            text: commentText,
+          },
+          ...(prev[blogId] || []),
+        ],
+      }));
+      setNewComments((prev) => ({ ...prev, [blogId]: "" }));
+    } catch (error) {
+      console.error("Lỗi khi đăng bình luận:", error);
+      toast.error("Lỗi khi đăng bình luận.");
+    }
+  };
+
+  const handleEditComment = async (blogId) => {
+    if (!editContent.trim() || !editCommentId) return;
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Vui lòng đăng nhập để chỉnh sửa bình luận!");
+      return;
+    }
+
+    try {
+      await api.put(
+        `https://maternitycare.azurewebsites.net/api/users/${userId}/comments/${editCommentId}`,
+        { content: editContent },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      setCommentsByBlog((prev) => ({
+        ...prev,
+        [blogId]: prev[blogId].map((comment) =>
+          comment.id === editCommentId ? { ...comment, text: editContent } : comment
+        ),
+      }));
+      setEditCommentId(null);
+      setEditContent("");
+      toast.success("Đã cập nhật bình luận thành công!");
+    } catch (error) {
+      console.error("Lỗi khi sửa bình luận:", error);
+      toast.error("Lỗi khi sửa bình luận.");
+    }
+  };
+
+  const handleDeleteComment = async (blogId, commentId) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Vui lòng đăng nhập để xóa bình luận!");
+      return;
+    }
+    try {
+      await api.delete(
+        `https://maternitycare.azurewebsites.net/api/users/${userId}/comments/${commentId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // Sửa lỗi chính tả "Baerer" thành "Bearer"
+          },
+        }
+      );
+      setCommentsByBlog((prev) => ({
+        ...prev,
+        [blogId]: prev[blogId].filter((comment) => comment.id !== commentId),
+      }));
+      toast.success("Đã xóa bình luận thành công!");
+    } catch (error) {
+      console.error("Lỗi khi xóa bình luận:", error.response.data);
+      toast.error("Lỗi khi xóa bình luận.");
     }
   };
 
@@ -229,6 +272,7 @@ const Blog = () => {
     <div className="blog-container">
       <h1 className="blog-title">Diễn Đàn Mẹ Bầu</h1>
       <p className="blog-description">Chia sẻ kinh nghiệm với cộng đồng mẹ bầu!</p>
+
       <div className="blog-controls">
         <div className="blog-search">
           <input
@@ -250,20 +294,21 @@ const Blog = () => {
           <button className="blog-btn">Tạo Bài Viết</button>
         </Link>
 
-        <ToastContainer position="top-right" hideProgressBar={false} />
-        <label htmlFor="tagFilter">Lọc theo Tag:</label>
-        <select
-          id="tagFilter"
-          onChange={(e) => setSelectedTag(e.target.value)}
-          value={selectedTag}
-        >
-          <option value="">Tất cả</option>
-          {tags.map((tag) => (
-            <option key={tag.id} value={tag.id}>
-              {tag.name}
-            </option>
-          ))}
-        </select>
+        <div className="blog-filter">
+          <label htmlFor="tagFilter">Lọc theo Tag:</label>
+          <select
+            id="tagFilter"
+            onChange={(e) => setSelectedTag(e.target.value)}
+            value={selectedTag}
+          >
+            <option value="">Tất cả</option>
+            {tags.map((tag) => (
+              <option key={tag.id} value={tag.id}>
+                {tag.name}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {selectedTag && (
@@ -312,67 +357,74 @@ const Blog = () => {
                           border: "none",
                           background: "transparent",
                           cursor: "pointer",
+                          marginRight: "5px",
                         }}
-                        onMouseEnter={() => fetchLikeData(blog.id)}
                       >
                         {likeData.isLiked ? <FaHeart color="red" /> : <FaRegHeart />}
                       </button>
-                      <span style={{ marginLeft: "5px" }}>
-                        {likeData.likeCount} Likes
-                      </span>
-                      {" " + new Date(blog.createdAt).toLocaleDateString()}
+                      {likeData.likeCount} Likes •{" "}
+                      {new Date(blog.createdAt).toLocaleDateString()}
+                    </span>
+                    <span className="blog-comments">
+                      <MessageCircle size={16} />{" "}
+                      {(commentsByBlog[blog.id]?.length || 0) + " Bình luận"}
                     </span>
                   </div>
 
-                  <div className="blog-comments">
-                    <h2>Bình luận</h2>
+                  <div className="comments-section">
                     <form onSubmit={(e) => handleCommentSubmit(e, blog.id)}>
                       <input
                         type="text"
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
+                        value={newComments[blog.id] || ""}
+                        onChange={(e) =>
+                          setNewComments((prev) => ({
+                            ...prev,
+                            [blog.id]: e.target.value,
+                          }))
+                        }
                         placeholder="Viết bình luận..."
+                        disabled={!userId}
                       />
                       <button type="submit" disabled={!userId}>
                         Đăng
                       </button>
                     </form>
 
-                    <ul>
-                      {(commentsByBlog[blog.id] || []).map((comment) => (
-                        <li key={comment.id}>
-                          <strong>{comment.user}:</strong> {comment.text}
-                          {userId && (
-                            <>
-                              <button
-                                onClick={() => {
-                                  setEditCommentId(comment.id);
-                                  setEditContent(comment.text);
-                                  setCurrentBlogId(blog.id);
-                                }}
-                              >
-                                Sửa
-                              </button>
-                              <button
-                                onClick={() => handleDeleteComment(blog.id, comment.id)}
-                              >
-                                Xóa
-                              </button>
-                            </>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
+                    {(commentsByBlog[blog.id] || []).map((comment) => (
+                      <div key={comment.id} className="comment">
+                        <strong>{comment.user}:</strong> {comment.text}
+                        {userId && (
+                          <>
+                            <button
+                              onClick={() => {
+                                console.log("Comment ID:", comment.id);
+                                setEditCommentId(comment.id);
+                                setEditContent(comment.text);
+                                setCurrentBlogId(blog.id);
+                              }}
+                            >
+                              Sửa
+                            </button>
+                            <button
+                              onClick={() => handleDeleteComment(blog.id, comment.id)}
+                            >
+                              Xóa
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    ))}
 
                     {editCommentId && currentBlogId === blog.id && (
-                      <div>
-                        <h3>Chỉnh sửa bình luận</h3>
+                      <div className="edit-comment">
                         <input
                           type="text"
                           value={editContent}
                           onChange={(e) => setEditContent(e.target.value)}
                         />
-                        <button onClick={() => handleEditComment(blog.id)}>Lưu</button>
+                        <button onClick={() => handleEditComment(blog.id)}>
+                          Lưu
+                        </button>
                         <button
                           onClick={() => {
                             setEditCommentId(null);
@@ -383,6 +435,7 @@ const Blog = () => {
                         </button>
                       </div>
                     )}
+
                     <button
                       onClick={() => fetchComments(blog.id)}
                       style={{ marginTop: "10px" }}
@@ -398,6 +451,8 @@ const Blog = () => {
           <p className="blog-no-data">Không có bài viết nào.</p>
         )}
       </div>
+
+      <ToastContainer position="top-right" hideProgressBar={false} />
     </div>
   );
 };
