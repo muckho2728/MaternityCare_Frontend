@@ -39,7 +39,7 @@ const Home = () => {
         fetchCurrentUser();
     }, []);
 
-    const handleNavigattion = (path) => {
+    const handleNavigation = (path) => {
         if(currentPackage === "free" && path !== "/booking") {
             alert("Vui lòng nâng cấp gói để sử dụng tính năng này!");
             return;

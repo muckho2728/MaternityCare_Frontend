@@ -3,13 +3,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../config/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import './Blog.css';
 
 const UpdateBlog = () => {
     const { blogId } = useParams();
     const navigate = useNavigate();
-    const userId = localStorage.getItem('userId');
-    
+    const userId = localStorage.getItem("userId");
 
     const [blog, setBlog] = useState({
         title: "",
@@ -23,17 +21,16 @@ const UpdateBlog = () => {
     useEffect(() => {
         fetchBlog();
         fetchTags();
-    }, []);
+    }, [blogId]);
 
     const fetchBlog = async () => {
         if (!blogId) {
             console.error("Blog ID không hợp lệ!");
             return;
         }
-    
+
         try {
-            console.log("Fetching blog with ID:", blogId);
-            const response = await api.get(`/api/blogs/${blogId}`);
+            const response = await api.get(`users/${userId}/blogs/${blogId}`);
             setBlog({
                 title: response.data.title,
                 content: response.data.content,
@@ -63,60 +60,48 @@ const UpdateBlog = () => {
             if (blog.image instanceof File) {
                 formData.append("image", blog.image);
             }
-    
-            await api.put(`/api/users/${userId}/blogs/${blogId}`, formData);
+
+            await api.put(`users/${userId}/blogs/${blogId}`, formData);
             toast.success("Cập nhật bài viết thành công!");
-            setTimeout(() => navigate("/view-blogs"), 2000);
+            setTimeout(() => navigate("/view-blog-user"), 2000);
         } catch (error) {
             console.error("Error updating blog:", error);
             toast.error("Cập nhật thất bại!");
         }
     };
+
     return (
-        <div className="blog-form-container">
-      <h1>Cập nhật bài viết</h1>
-      <form>
-        <input
-          type="text"
-          placeholder="Tiêu đề bài viết"
-          value={blog.title}
-          onChange={(e) => setBlog({ ...blog, title: e.target.value })}
-        />
-        <textarea
-          placeholder="Nội dung bài viết"
-          value={blog.content}
-          onChange={(e) => setBlog({ ...blog, content: e.target.value })}
-        />
-        <select
-          value={blog.tagId}
-          onChange={(e) => setBlog({ ...blog, tagId: e.target.value })}
-        >
-          <option value="">Chọn tag</option>
-          {tags.map((tag) => (
-            <option key={tag.id} value={tag.id}>
-              {tag.name}
-            </option>
-          ))}
-        </select>
-        <input
-          type="file"
-          onChange={(e) => setBlog({ ...blog, image: e.target.files[0] })}
-        />
-        <div className="button-group">
-          <button type="button" className="update-btn" onClick={handleUpdate}>
-            Cập nhật
-          </button>
-          <button
-            type="button"
-            className="cancel-btn"
-            onClick={() => navigate("/view-blog-user")}
-          >
-            Hủy
-          </button>
+        <div>
+            <h1>Cập nhật bài viết</h1>
+            <input
+                type="text"
+                placeholder="Tiêu đề"
+                value={blog.title}
+                onChange={(e) => setBlog({ ...blog, title: e.target.value })}
+            />
+            <textarea
+                placeholder="Nội dung"
+                value={blog.content}
+                onChange={(e) => setBlog({ ...blog, content: e.target.value })}
+            />
+            <select
+                value={blog.tagId}
+                onChange={(e) => setBlog({ ...blog, tagId: e.target.value })}
+            >
+                {tags.map((tag) => (
+                    <option key={tag.id} value={tag.id}>
+                        {tag.name}
+                    </option>
+                ))}
+            </select>
+            <input
+                type="file"
+                onChange={(e) => setBlog({ ...blog, image: e.target.files[0] })}
+            />
+            <button onClick={handleUpdate}>Cập nhật</button>
+            <button onClick={() => navigate("/view-blog-user")}>Hủy</button>
+            <ToastContainer />
         </div>
-      </form>
-      <ToastContainer />
-    </div>
     );
 };
 
