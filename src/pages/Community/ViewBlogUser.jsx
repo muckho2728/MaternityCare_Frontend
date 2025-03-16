@@ -4,7 +4,7 @@ import { Search, Trash2, Edit } from 'lucide-react';
 import defaultImage from '../../assets/default-blog.jpg';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import { Link } from 'react-router-dom';
 const ViewBlogUser = () => {
     const [blogUser, setBlogUser] = useState([]);
     const userId = localStorage.getItem('userId');
@@ -55,118 +55,56 @@ const ViewBlogUser = () => {
         }
     };
 
-    const handleEditClick = (blog) => {
-        setEditingBlog(blog.id);
-        setUpdatedBlog({
-            title: blog.title,
-            content: blog.content,
-            tagId: blog.tag.id,
-            image: null,
-        });
-    };
-
-    const handleUpdateBlog = async () => {
-        try {
-            const formData = new FormData();
-            formData.append("title", updatedBlog.title);
-            formData.append("content", updatedBlog.content);
-            formData.append("tagId", updatedBlog.tagId);
-            if (updatedBlog.image) {
-                formData.append("image", updatedBlog.image);
-            }
-
-            await api.put(`users/${userId}/blogs/${editingBlog}`, formData, {
-                headers: { "Content-Type": "multipart/form-data" },
-            });
-
-            toast.success("Cập nhật bài viết thành công!");
-            setEditingBlog(null);
-            fetchBlogs();
-        } catch (error) {
-            console.error("Error updating blog:", error);
-            toast.error("Cập nhật thất bại!");
-        }
-    };
-
-    return (
-        <div>
-            <h1 className="blog-title">Bài Viết Của Tôi</h1>
-            <div className="blog-controls">
-                <div className="blog-search">
-                    <input
-                        type="text"
-                        placeholder="Tìm kiếm bài viết..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="blog-search-input"
-                    />
-                    <button className="blog-search-btn">
-                        <Search size={18} />
-                    </button>
-                </div>
-                <div className="blog-filter">
-                    <label htmlFor="tagFilter">Lọc theo Tag:</label>
-                    <select id="tagFilter" onChange={(e) => setSelectedTag(e.target.value)} value={selectedTag}>
-                        <option value="">Tất cả</option>
-                        {tags.map((tag) => (
-                            <option key={tag.id} value={tag.id}>
-                                {tag.name}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-            </div>
-
-            {blogUser.map((blog) => (
-                <div key={blog.id} className="blog-item">
-                    <h2>{blog.title}</h2>
-                    <p>{blog.content}</p>
-                    <img src={blog.image || defaultImage} alt={blog.title} />
-                    <button className="blog-edit-btn" onClick={() => handleEditClick(blog)}>
-                        <Edit size={18} /> Sửa
-                    </button>
-                    <button className="blog-delete-btn" onClick={() => handleDelete(blog.id)}>
-                        <Trash2 size={18} /> Xóa
-                    </button>
-                </div>
-            ))}
-
-            {editingBlog && (
-                <div className="edit-modal">
-                    <h2>Cập nhật bài viết</h2>
-                    <input
-                        type="text"
-                        placeholder="Tiêu đề"
-                        value={updatedBlog.title}
-                        onChange={(e) => setUpdatedBlog({ ...updatedBlog, title: e.target.value })}
-                    />
-                    <textarea
-                        placeholder="Nội dung"
-                        value={updatedBlog.content}
-                        onChange={(e) => setUpdatedBlog({ ...updatedBlog, content: e.target.value })}
-                    />
-                    <select
-                        value={updatedBlog.tagId}
-                        onChange={(e) => setUpdatedBlog({ ...updatedBlog, tagId: e.target.value })}
-                    >
-                        {tags.map((tag) => (
-                            <option key={tag.id} value={tag.id}>
-                                {tag.name}
-                            </option>
-                        ))}
-                    </select>
-                    <input
-                        type="file"
-                        onChange={(e) => setUpdatedBlog({ ...updatedBlog, image: e.target.files[0] })}
-                    />
-                    <button onClick={handleUpdateBlog}>Cập nhật</button>
-                    <button onClick={() => setEditingBlog(null)}>Hủy</button>
-                </div>
-            )}
-
-            <ToastContainer />
+  return (
+    <div>
+      <h1 className="blog-title">Bài Viết Của Tôi</h1>
+      <div className="blog-controls">
+        <div className="blog-search">
+          <input
+            type="text"
+            placeholder="Tìm kiếm bài viết..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="blog-search-input"
+          />
+          <button className="blog-search-btn">
+            <Search size={18} />
+          </button>
         </div>
-    );
+        <div className="blog-filter">
+          <label htmlFor="tagFilter">Lọc theo Tag:</label>
+          <select id="tagFilter" onChange={(e) => setSelectedTag(e.target.value)} value={selectedTag}>
+            <option value="">Tất cả</option>
+            {tags.map((tag) => (
+              <option key={tag.id} value={tag.id}>
+                {tag.name}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
+      {filteredBlogs.length > 0 ? (
+        filteredBlogs.map((blog) => (
+          <div key={blog.id}>
+            <h2>{blog.title}</h2>
+            <p>{blog.content}</p>
+            <img src={blog.image || defaultImage} alt={blog.title} style={{ width: '300px', height: '200px' }}/>
+            <Link to={`/update-blog/${blog.id}`}>
+              <button className="blog-edit">
+                <Edit size={18} /> Sửa
+              </button>
+            </Link>
+            <button className="blog-delete" onClick={() => handleDelete(blog.id)}>
+              <Trash2 size={18} /> Xóa
+            </button>
+          </div>
+        ))
+      ) : (
+        <p className="blog-no-data">Không có bài viết nào.</p>
+      )}
+      <ToastContainer />
+    </div>
+  );
 };
 
 export default ViewBlogUser;

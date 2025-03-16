@@ -5,6 +5,8 @@ import { UserOutlined, HeartOutlined, EditOutlined, CameraOutlined, MessageOutli
 import { updateUserByIdAction, changePassworbyUserIdAction, fetchUserByIdAction } from '../../store/redux/action/userAction';
 import api from '../../config/api';
 import { Link } from 'react-router-dom';
+import { Car } from 'lucide-react';
+import './Profile.css';
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -186,36 +188,10 @@ const Profile = () => {
 
   return (
     <Layout style={{ backgroundColor: '#f0f2f5' }}>
-      <Content style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
+      <Content style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto', background:'#f2fffa8f' }}>
         <Row gutter={24}>
           <Col span={6}>
-            <Card
-              style={{
-                borderRadius: '10px',
-                backgroundColor: '#ffffff',
-                padding: '10px',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
-              }}
-            >
-              <Menu mode="vertical" defaultSelectedKeys={['1']} style={{ border: 'none', backgroundColor: 'transparent' }} items={[
-                { key: '1', icon: <UserOutlined />, label: 'Thông tin người dùng' },
-                { key: '2', icon: <HeartOutlined />, label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link> },
-                { key: '3', icon: <MessageOutlined />, label: <Link to="/manage-pregnancy">Quản lý thông tin thai kỳ</Link> },
-              ]} />
-            </Card>
-          </Col>
-
-          <Col span={18}>
-            <Card
-              style={{
-                borderRadius: '10px',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-                padding: '24px',
-                backgroundColor: '#ffffff'
-              }}
-            >
-              <Row gutter={24}>
-                <Col span={8} style={{ textAlign: 'center' }}>
+                <Card span={0} style={{ textAlign: 'center'}}>
                   <Title level={3} style={{ color: '#EC407A' }}>Ảnh đại diện</Title>
                   <div style={{ position: 'relative', margin: '0 auto', width: '150px', height: '150px' }}>
                     <img
@@ -257,9 +233,36 @@ const Profile = () => {
                   <p>{userDetailData?.email || userLogin?.email}</p>
                   <p>{userLogin?.phone}</p>
                   <p>{userLogin?.address}</p>
-                </Col>
+                </Card>
+            <Card
+              style={{
+                borderRadius: '10px',
+                backgroundColor: '#ffffff',
+                padding: '10px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+              }}
+            >
+              <Menu mode="vertical" defaultSelectedKeys={['1']} style={{ border: 'none', backgroundColor: 'transparent' }} items={[
+                { key: '1', icon: <UserOutlined />, label: 'Thông tin người dùng' },
+                { key: '2', icon: <HeartOutlined />, label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link> },
+                { key: '3', icon: <MessageOutlined />, label: <Link to="/manage-pregnancy">Quản lý thông tin thai kỳ</Link> },
+              ]} />
+            </Card>
+          </Col>
 
-                <Col span={16}>
+          <Col span={18}>
+            <Card
+              style={{
+                borderRadius: '10px',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                padding: '24px',
+                backgroundColor: '#ffffff'
+              }}
+            >
+              <Row gutter={24}>
+                
+
+                <Col span={24}>
                   <Title level={3} style={{ color: '#EC407A' }}>Thông tin cá nhân</Title>
                   <Form
                     form={profileForm}
@@ -272,7 +275,7 @@ const Profile = () => {
                     }}
                     onFinish={handleSubmit}
                   >
-                    <Row gutter={16}>
+                    <Row gutter={24}>
                       <Col xs={24} sm={12}>
                         <Form.Item label="Họ và Tên" name="fullName">
                           <Input disabled={!isEditing} />
@@ -355,7 +358,7 @@ const Profile = () => {
 
                   <Title level={3} style={{ color: '#EC407A' }}>Đổi mật khẩu</Title>
                   <Form form={passwordForm} layout="vertical" style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.2)' }} onFinish={handleSubmitPassword}>
-                    <Row gutter={16}>
+                    <Row gutter={24}>
                       <Col xs={24} sm={12}>
                         <Form.Item
                           label="Mật Khẩu Cũ"

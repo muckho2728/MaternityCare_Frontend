@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import api from "../../config/api";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import api from '../../config/api';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const UpdateBlog = () => {
     const { blogId } = useParams();
@@ -73,16 +73,31 @@ const UpdateBlog = () => {
     return (
         <div>
             <h1>Cập nhật bài viết</h1>
-            <input type="text" placeholder="Tiêu đề" value={blog.title} onChange={(e) => setBlog({ ...blog, title: e.target.value })} />
-            <textarea placeholder="Nội dung" value={blog.content} onChange={(e) => setBlog({ ...blog, content: e.target.value })} />
-            <select value={blog.tagId} onChange={(e) => setBlog({ ...blog, tagId: e.target.value })}>
+            <input
+                type="text"
+                placeholder="Tiêu đề"
+                value={blog.title}
+                onChange={(e) => setBlog({ ...blog, title: e.target.value })}
+            />
+            <textarea
+                placeholder="Nội dung"
+                value={blog.content}
+                onChange={(e) => setBlog({ ...blog, content: e.target.value })}
+            />
+            <select
+                value={blog.tagId}
+                onChange={(e) => setBlog({ ...blog, tagId: e.target.value })}
+            >
                 {tags.map((tag) => (
                     <option key={tag.id} value={tag.id}>
                         {tag.name}
                     </option>
                 ))}
             </select>
-            <input type="file" onChange={(e) => setBlog({ ...blog, image: e.target.files[0] })} />
+            <input
+                type="file"
+                onChange={(e) => setBlog({ ...blog, image: e.target.files[0] })}
+            />
             <button onClick={handleUpdate}>Cập nhật</button>
             <button onClick={() => navigate("/view-blog-user")}>Hủy</button>
             <ToastContainer />
