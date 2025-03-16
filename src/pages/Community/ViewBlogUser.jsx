@@ -107,7 +107,7 @@ const ViewBlogUser = () => {
     );
 
     return (
-        <div>
+        <div className="blog-container"> 
             <h1 className="blog-title">Bài Viết Của Tôi</h1>
             <div className="blog-controls">
                 <div className="blog-search">
@@ -135,9 +135,11 @@ const ViewBlogUser = () => {
                 </div>
             </div>
 
+            <div >
             {editingBlog && (
-                <div className="edit-modal">
-                    <h2>Cập nhật bài viết</h2>
+                <div className="blog-form-container">
+                    <h1>Cập nhật bài viết</h1>
+                    <form className='blog-form'>
                     <input
                         type="text"
                         placeholder="Tiêu đề"
@@ -161,31 +163,54 @@ const ViewBlogUser = () => {
                     </select>
                     <input type="file" onChange={handleImageChange} />
                     {updatedBlog.previewImage && <img src={updatedBlog.previewImage} alt="Preview" className="preview-image" />}
-                    <button onClick={handleUpdateBlog}>Cập nhật</button>
-                    <button onClick={() => setEditingBlog(null)}>
-                        <XCircle size={18} /> Hủy
-                    </button>
+                    <div className='blog-info'>
+                        <button className='update-btn' onClick={handleUpdateBlog}>Cập nhật</button>
+                        
+                        <button className='cancel-btn' onClick={() => setEditingBlog(null)}>
+                            <XCircle size={18} /> Hủy
+                        </button>
+                    </div>
+                    
+                    </form>
                 </div>
             )}
+            </div>
+            
 
+            <div className="blog-list">
             {filteredBlogs.length > 0 ? (
                 filteredBlogs.map((blog) => (
-                    <div key={blog.id} className="blog-item">
-                        <h2>{blog.title}</h2>
-                        <p>{blog.content}</p>
+                    <div key={blog.id} className="body-blog">
                         {blog.image && <img src={blog.image} alt={blog.title} className="blog-image" />}
-                        <button className="blog-edit-btn" onClick={() => handleEditClick(blog)}>
-                            <Edit size={18} /> Sửa
-                        </button>
-                        <button className="blog-delete-btn" onClick={() => handleDelete(blog.id)}>
-                            <Trash2 size={18} /> Xóa
-                        </button>
+                        <div className="blog-content">
+                            <h2 className="blog-title">{blog.title}</h2>
+                            <div className="blog-tags">
+                                {blog.tag ? (
+                                    <span className="blog-tag">{blog.tag.name}</span>
+                                ) : (
+                                    <span className="blog-tag no-tag">Chưa có tag</span>
+                                )}
+                            </div>
+                            <p className="blog-summary">
+                                {blog.content.length > 150 ? `${blog.content.substring(0, 150)}...` : blog.content}
+                            </p>
+                            <div className="blog-info" >
+                                <button className="update-btn" onClick={() => handleEditClick(blog)}>
+                                    <Edit size={18} /> Sửa
+                                </button>
+                                <button className="cancel-btn" onClick={() => handleDelete(blog.id)}>
+                                    <Trash2 size={18} /> Xóa
+                                </button>
+                            </div>
+                            
+                        </div>
                     </div>
                 ))
             ) : (
                 <p className="no-blogs">Không tìm thấy bài viết nào.</p>
             )}
             <ToastContainer />
+            </div>
         </div>
     );
 };

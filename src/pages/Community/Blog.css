@@ -130,6 +130,7 @@
     align-items: center;
     font-size: 14px;
     color: #777;
+    width: 35%;
 }
 
 /* styles.css - Form thiết kế hiện đại với layout đẹp hơn */
@@ -275,7 +276,7 @@
 .update-btn {
     background: linear-gradient(135deg, #4CAF50, #388E3C);
     color: white;
-    padding: 14px;
+    padding: 10px;
     border: none;
     border-radius: 10px;
     font-size: 18px;
@@ -295,7 +296,7 @@
 .cancel-btn {
     background: linear-gradient(135deg, #e53935, #c62828);
     color: white;
-    padding: 14px;
+    padding: 10px;
     border: none;
     border-radius: 10px;
     font-size: 18px;
@@ -313,96 +314,3 @@
 
 /*  */
 
-.view-blog-container {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    max-width: 800px;
-    margin: auto;
-}
-
-.view-blog {
-    display: flex;
-    flex-direction: row;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    transition: transform 0.2s ease-in-out;
-}
-
-.view-blog:hover {
-    transform: translateY(-5px);
-}
-
-.view-blog-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-}
-
-.view-blog-title {
-    font-size: 20px;
-    font-weight: bold;
-    color: #2c3e50;
-}
-
-.view-blog-text {
-    font-size: 14px;
-    color: #666;
-    line-height: 1.6;
-    margin-bottom: 15px;
-}
-
-.view-blog-image {
-    width: 250px;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-.view-blog-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 14px;
-    color: #777;
-    border-top: 1px solid #eee;
-    padding-top: 10px;
-}
-
-.view-blog-actions {
-    display: flex;
-    gap: 10px;
-    justify-content: flex-end;
-}
-
-.view-blog-button {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    padding: 8px 12px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.2s;
-}
-
-.edit-btn {
-    background: #3498db;
-    color: white;
-}
-
-.edit-btn:hover {
-    background: #2980b9;
-}
-
-.delete-btn {
-    background: #e74c3c;
-    color: white;
-}
-
-.delete-btn:hover {
-    background: #c0392b;
-}
