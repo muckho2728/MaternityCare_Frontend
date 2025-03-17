@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Rate, Button, Input } from 'antd';
 import './Feedback.css';
 import api from '../../config/api';
