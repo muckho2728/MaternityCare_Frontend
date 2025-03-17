@@ -4,41 +4,75 @@ import api from '../..//config/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const Comment = ({ blogId }) => {
+const Comment = () => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [userId, setUserId] = useState(null);
   const [commentId, setCommentId] = useState(null);
   const [editContent, setEditContent] = useState('');
+  const [blogId, setBlogId] = useState(null);
   const pageSize = 10;
+  const [pageNumber, setPageNumber] = useState(1);
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
       const token = localStorage.getItem('token');
       if (!token) {
-        toast.error('Không tìm thấy token đăng nhập');
+        console.error('No token found');
+        return;
+      }
+
+      try {
+        const response = await api.get('https://maternitycare.azurewebsites.net/api/authentications/current-user', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        console.log('Current user data:', response.data);
+        setUserId(response.data.id);
+      } catch (error) {
+        console.error('Failed to fetch current user:', error.response ? error.response.data : error.message);
+        throw error;
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
+  useEffect(() => {
+    const fetchBlogId = async () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found');
         return;
       }
       try {
-        const response = await api.get('/authentications/current-user');
-        console.log("User data:", response.data); // Kiểm tra dữ liệu API trả về
-        setUserId(response.data.id);
+        const response = await api.get('https://maternitycare.azurewebsites.net/api/blogs/active-blogs', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.data.length > 0) {
+          setBlogId(response.data[0].id);
+        }
       } catch (error) {
-        console.error("Lỗi khi lấy thông tin người dùng:", error);
-        toast.error('Lỗi khi lấy thông tin người dùng.');
+        console.error("Lỗi khi lấy blogId:", error);
+        toast.error('Lỗi khi lấy blogId.');
       }
     };
-  
-    fetchCurrentUser();
+
+    fetchBlogId();
   }, []);
+
   useEffect(() => {
+    if (!blogId) return;
     const fetchComments = async () => {
       try {
-        const response = await api.get(`/blogs/${blogId}/comments?PageSize=${pageSize}`);
-        console.log("API response:", response.data); // Kiểm tra dữ liệu
+        const response = await api.get(`https://maternitycare.azurewebsites.net/api/blogs/${blogId}/comments?PageNumber=${pageNumber}&PageSize=${pageSize}`);
+        console.log("API response:", response.data);
         setComments(response.data.map(comment => ({
           id: comment.id,
-          user: comment.author?.name || "Ẩn danh",
+          user: "Ẩn danh",
           text: comment.content
         })));
       } catch (error) {
@@ -47,35 +81,35 @@ const Comment = ({ blogId }) => {
       }
     };
     fetchComments();
-  }, [blogId]);
+  }, [blogId, pageNumber]);
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
     if (newComment.trim() && userId) {
       try {
-        const response = await api.post(`blogs/${blogId}/users/${userId}/comments`, {
+        const response = await api.post(`https://maternitycare.azurewebsites.net/api/blogs/${blogId}/users/${userId}/comments`, {
           content: newComment,
         });
         console.log("Blog ID:", blogId);
 
         console.log("Bình luận mới:", response.data);
-        setComments([{ 
-          id: response.data.id, 
-          user: response.data.author?.name || "Bạn", 
-          text: newComment 
+        setComments([{
+          id: response.data.id,
+          user: response.data.author?.name || "Bạn",
+          text: newComment
         }, ...comments]);
         setNewComment('');
       } catch (error) {
-        
         console.error("Lỗi khi đăng bình luận:", error);
         toast.error('Lỗi khi đăng bình luận.');
       }
     }
   };
+
   const handleEditComment = async () => {
     if (editContent.trim() && commentId) {
       try {
-        await api.put(`/blogs/${blogId}/users/${userId}/comments/${commentId}`, {
+        await api.put(`https://maternitycare.azurewebsites.net/api/blogs/${blogId}/users/${userId}/comments/${commentId}`, {
           content: editContent,
         });
         setComments(comments.map(comment => (comment.id === commentId ? { ...comment, text: editContent } : comment)));
@@ -88,9 +122,13 @@ const Comment = ({ blogId }) => {
     }
   };
 
+  const handlePageChange = (newPage) => {
+    setPageNumber(newPage);
+  };
+
   const handleDeleteComment = async (id) => {
     try {
-      await api.delete(`/blogs/${blogId}/users/${userId}/comments/${id}`);
+      await api.delete(`https://maternitycare.azurewebsites.net/api/blogs/${blogId}/users/${userId}/comments/${id}`);
       setComments(comments.filter(comment => comment.id !== id));
     } catch (error) {
       console.error(error);
@@ -98,7 +136,6 @@ const Comment = ({ blogId }) => {
     }
   };
 
-  
   return (
     <div>
       <h2>Bình luận</h2>
@@ -145,10 +182,6 @@ const Comment = ({ blogId }) => {
       <ToastContainer autoClose={3000} closeButton position="top-right" />
     </div>
   );
-};
-
-Comment.propTypes = {
-  blogId: PropTypes.string.isRequired, // Xác định kiểu dữ liệu của blogId
 };
 
 export default Comment;

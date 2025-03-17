@@ -147,9 +147,6 @@ const ViewSlot = () => {
                 ))}
             </select>
 
-            <button onClick={() => handlePageChange(pageNumber - 1)} disabled={pageNumber === 1}>Trước</button>
-            <button onClick={() => handlePageChange(pageNumber + 1)}>Sau</button>
-
             <div>
                 {filteredDoctors.map((doctor) => (
                     <div key={doctor.id}>
@@ -167,6 +164,9 @@ const ViewSlot = () => {
                                 <button onClick={() => { setSelectedDoctorId(doctor.id); setIsModalOpen(true); }} style={{ marginRight: '10px' }}>Tạo Slot</button>
                             </div>
                         </div>
+
+                        <button onClick={() => handlePageChange(pageNumber - 1)} disabled={pageNumber === 1}>Trước</button>
+                        <button onClick={() => handlePageChange(pageNumber + 1)}>Sau</button>
 
                         {selectedDoctorId === doctor.id && slots.map(slot => (
                             <div key={slot.id} style={{ marginTop: '10px', padding: '5px', border: '1px solid #ccc' }}>
@@ -196,6 +196,7 @@ const ViewSlot = () => {
                     </Form.Item>
                 </Form>
             </Modal>
+
         </div>
     );
 };
