@@ -27,6 +27,11 @@ import Forgot from './pages/ForgotPassword/ForgetP';
 import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
 import PregnancyWeek from './pages/Pregnancy/PregnancyWeek';
 import ManageDoctor from './pages/Admin/ManageDoctor/Doctor';
+import ViewBookedSlot from './pages/Appointment/View';
+
+
+
+
 import PaymentSuccessPage from './pages/PaymentPage/PaymentSuccessPage';
 import PaymentFailurePage from './pages/PaymentPage/PaymentFailurePage';
 import TransactionManagementPage from './pages/Admin/TransactionManagementPage/TransactionManagementPage';
@@ -42,6 +47,7 @@ function Layout() {
   const location = useLocation();
   const isAdmin = location.pathname.startsWith('/admin');
   const isLoginRegister = location.pathname === '/login' || location.pathname === '/register';
+
 
   return (
     <div className="app">
@@ -63,10 +69,11 @@ function Layout() {
           <Route path="/censor" element={<Censor />} />
           <Route path="/booking" element={<ViewSlot />} />
           <Route path="/pregnancy/:week" element={<PregnancyWeek />} />
-          <Route path="/payment-success" element={<PaymentSuccessPage/>}/>
-          <Route path="/payment-failure" element={<PaymentFailurePage/>}/>
+          <Route path="/payment-success" element={<PaymentSuccessPage />} />
+          <Route path="/payment-failure" element={<PaymentFailurePage />} />
           <Route path="/Censor" element={<Censor />} />
           <Route path="/forget" element={<Forgot />} />
+          <Route path="/viewBookedSlot" element={<ViewBookedSlot />} />
           <Route path="/create-blog" element={<CreateBlog />} />
           <Route path="/view-blog-user" element={<ViewBlogUser />} />
           <Route path="/feedback" element={<Feedback/>}/>

@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import api from '../../constants/axios';
 import { Modal, Button, Card } from "antd";
@@ -14,6 +14,35 @@ const ViewSlot = () => {
     const [selectedDoctor, setSelectedDoctor] = useState(null);
     const [slots, setSlots] = useState([]);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+    const [selectedSlot, setSelectedSlot] = useState(null);
+    const [currentUser, setCurrentUser] = useState(null);
+
+    useEffect(() => {
+        const fetchCurrentUser = async (url) => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                console.error('No token found');
+                return;
+            }
+
+            try {
+                const response = await api.get(url, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+                console.log('Current user data:', response.data);
+                setCurrentUser(response.data);
+                console.log('User ID:', response.data.id);
+            } catch (error) {
+                console.error('Failed to fetch current user:', error.response ? error.response.data : error.message);
+                throw error;
+            }
+        };
+
+        fetchCurrentUser('https://maternitycare.azurewebsites.net/api/authentications/current-user');
+    }, []);
 
     useEffect(() => {
         const fetchDoctors = async () => {
@@ -48,17 +77,71 @@ const ViewSlot = () => {
         }
 
         try {
-            const response = await api.get(`https://maternitycare.azurewebsites.net/api/doctors/${doctor.id}/slots?Date=2025-03-12&PageNumber=1&PageSize=10`, {
+            const response = await api.get(`https://maternitycare.azurewebsites.net/api/doctors/${doctor.id}/slots?PageNumber=1&PageSize=10`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
             setSlots(response.data);
             setSelectedDoctor(doctor);
-            setIsModalOpen(true); // Mở modal khi có dữ liệu
+            setIsModalOpen(true);
         } catch (error) {
             console.error("Error fetching slots:", error);
             toast.error("Error fetching slots: " + (error.response?.data?.message || error.message));
+        }
+    };
+
+    const confirmBooking = async (doctorId, slotId) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No token found');
+            return;
+        }
+
+        try {
+            const response = await api.get(`https://maternitycare.azurewebsites.net/api/doctors/${doctorId}/slots/${slotId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            setSelectedSlot(response.data);
+            setIsConfirmModalOpen(true);
+        } catch (error) {
+            console.error("Error confirming slot:", error);
+            toast.error("Error confirming slot: " + (error.response?.data?.message || error.message));
+        }
+    };
+    const bookAppointments = async (userId, slotId) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No token found');
+            return;
+        }
+        try {
+            const response = await api.post(`https://maternitycare.azurewebsites.net/api/users/${userId}/slots/${slotId}/appointments`, {}, {
+                headers: {
+                    accept: `*/*`,
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            toast.response("Đăng kí lịch khám thành công");
+            console.log("Đăng kí thànhc công");
+        } catch (error) {
+            console.log(error.response);
+            toast.error(error.response);
+        }
+    };
+
+    const handleConfirmBooking = () => {
+        console.log('handleConfirmBooking triggered');
+        const token = localStorage.getItem('token');
+        if (!token) {
+            console.error('No token found');
+            return;
+        }
+        if (currentUser && selectedSlot) {
+            bookAppointments(currentUser.id, selectedSlot.id);
+            console.log('Token:', token);
         }
     };
 
@@ -75,6 +158,7 @@ const ViewSlot = () => {
         doctor.fullName.toLowerCase().includes(searchTerm.toLowerCase()) &&
         (specialtyFilter === "all" || doctor.specialization === specialtyFilter)
     );
+
 
     return (
         <div className="view-slot-container">
@@ -95,11 +179,6 @@ const ViewSlot = () => {
                 </select>
             </div>
 
-            <div className="pagination">
-                <button onClick={() => handlePageChange(pageNumber - 1)} disabled={pageNumber === 1}>Trước</button>
-                <button onClick={() => handlePageChange(pageNumber + 1)}>Sau</button>
-            </div>
-
             <div className="doctor-list">
                 {filteredDoctors.map((doctor) => (
                     <div key={doctor.id} className="doctor-card" onClick={() => fetchSlots(doctor)}>
@@ -109,8 +188,10 @@ const ViewSlot = () => {
                     </div>
                 ))}
             </div>
-
-            {/* Popup Modal */}
+            <div className="pagination">
+                <button onClick={() => handlePageChange(pageNumber - 1)} disabled={pageNumber === 1}>Trước</button>
+                <button onClick={() => handlePageChange(pageNumber + 1)}>Sau</button>
+            </div>
             <Modal
                 title={selectedDoctor ? `Lịch khám của ${selectedDoctor.fullName}` : "Lịch khám"}
                 open={isModalOpen}
@@ -123,14 +204,27 @@ const ViewSlot = () => {
                             <p>Ngày: {slot.date}</p>
                             <p>Giờ bắt đầu: {slot.startTime}</p>
                             <p>Giờ kết thúc: {slot.endTime}</p>
-                            <Button className="book-btn">Đặt lịch hẹn</Button>
+                            <Button className="book-btn" onClick={() => confirmBooking(selectedDoctor.id, slot.id)}>Đặt lịch hẹn</Button>
                         </Card>
                     )) : <p>Không có lịch hẹn nào</p>}
                 </div>
+            </Modal>
+            <Modal
+                title="Xác nhận lịch hẹn"
+                open={isConfirmModalOpen}
+                onCancel={() => setIsConfirmModalOpen(false)}
+                footer={<Button onClick={handleConfirmBooking}>Xác nhận</Button>}
+            >
+                {selectedSlot && (
+                    <div>
+                        <p>Ngày: {selectedSlot.date}</p>
+                        <p>Giờ bắt đầu: {selectedSlot.startTime}</p>
+                        <p>Giờ kết thúc: {selectedSlot.endTime}</p>
+                    </div>
+                )}
             </Modal>
         </div>
     );
 };
 
 export default ViewSlot;
-
