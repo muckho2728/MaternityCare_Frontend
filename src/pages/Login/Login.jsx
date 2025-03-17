@@ -61,7 +61,7 @@ const Login = () => {
       });
 
       if (formData.username === 'Admin' || formData.username === 'admin') {
-        navigate('/admin');
+        navigate('/admin/manage-user');
         toast.success("Đăng nhập Admin thành công!");
         return;
       }
