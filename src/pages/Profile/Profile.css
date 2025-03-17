@@ -10,7 +10,7 @@
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
-    background: #f2fffa8f;
+    background: #52977c8f;
     border: none;
     padding: 24px;
 }
@@ -32,7 +32,7 @@
 .profile-subtitle {
     font-size: 1.5em;
     font-weight: bold;
-    color: #160c0c;
+    color: #ad3c3c;
     margin: 15px 0;
 }
 
