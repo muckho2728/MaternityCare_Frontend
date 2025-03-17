@@ -5,7 +5,6 @@ import { UserOutlined, HeartOutlined, EditOutlined, CameraOutlined, MessageOutli
 import { updateUserByIdAction, changePassworbyUserIdAction, fetchUserByIdAction } from '../../store/redux/action/userAction';
 import api from '../../config/api';
 import { Link } from 'react-router-dom';
-import { Car } from 'lucide-react';
 import './Profile.css';
 
 const { Content } = Layout;
