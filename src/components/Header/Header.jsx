@@ -12,6 +12,7 @@ const Header = () => {
     const notificationRef = useRef(null);
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
+    const [currentPackage, setCurrentPackage] = useState("free"); 
 
     useEffect(() => {
         if (!token) return;
@@ -38,6 +39,14 @@ const Header = () => {
         fetchReminders();
     }, [token]);
 
+    const handleNavigation = (path) => {
+        if (currentPackage === "free" && (path === "/create-fetus" || path === "/booking")) {
+            alert("Vui lòng nâng cấp gói để sử dụng tính năng này!");
+            return; 
+        }
+        navigate(path); 
+    };
+
     const handleLogout = () => {
         logout();
         navigate('/');
@@ -63,7 +72,7 @@ const Header = () => {
     return (
         <header className="header">
             <div className="header-container">
-                <div className="logo-section"  onClick={() => navigate('/')}>
+                <div className="logo-section" onClick={() => handleNavigation('/')}>
                     <Link to="/src/assets/Vector.png" className="logo-link">
                         <img src="/src/assets/Vector.png" alt="Baby Logo" className="logo" />
                         <span className="brand-name">Maternity Care</span>
@@ -73,9 +82,35 @@ const Header = () => {
                 <nav className="main-nav">
                     <ul className="nav-list">
                         <li><Link to="/community">Diễn Đàn</Link></li>
-                        <li><Link to="/create-fetus">Đăng ký thông tin thai nhi</Link></li>
+                        <li>
+                            <Link
+                                to="/create-fetus"
+                                className={currentPackage === "free" ? "disabled" : ""}
+                                onClick={(e) => {
+                                    if (currentPackage === "free") {
+                                        e.preventDefault();
+                                        alert("Vui lòng nâng cấp gói để sử dụng tính năng này!");
+                                    }
+                                }}
+                            >
+                                Đăng ký thông tin thai nhi
+                            </Link>
+                        </li>
                         <li><Link to="/package-list">Dịch Vụ</Link></li>
-                        <li><Link to="/booking">Đặt Lịch</Link></li>
+                        <li>
+                            <Link
+                                to="/booking"
+                                className={currentPackage === "free" ? "disabled" : ""}
+                                onClick={(e) => {
+                                    if (currentPackage === "free") {
+                                        e.preventDefault();
+                                        alert("Vui lòng nâng cấp gói để sử dụng tính năng này!");
+                                    }
+                                }}
+                            >
+                                Đặt Lịch
+                            </Link>
+                        </li>
                     </ul>
                 </nav>
 
@@ -131,7 +166,7 @@ const Header = () => {
                         </div>
                     ) : (
                         <div className="auth-links">
-                            <Link to="/login" className="login-link">Đăng nhập</Link> 
+                            <Link to="/login" className="login-link">Đăng nhập</Link>
                             <Link to="/register" className="register-link">/Đăng Ký</Link>
                         </div>
                     )}
