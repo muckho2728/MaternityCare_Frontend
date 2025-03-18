@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Rate, Button, Input } from 'antd';
 import './Feedback.css';
 import api from '../../config/api';
-import { Navigate } from 'react-router-dom';
 const { TextArea } = Input;
 const userId = localStorage.getItem('userId');
 const Feedback = () => {
