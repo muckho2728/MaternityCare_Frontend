@@ -14,7 +14,6 @@ import { AuthProvider } from './constants/AuthContext';
 import ViewFetusHealth from './pages/ViewFetusHealth/ViewFetusHealth';
 import Blog from './pages/Community/Blog';
 import { ToastContainer } from 'react-toastify';
-import Censor from './pages/AdminCensor/Censor';
 import PackageList from './pages/PackageList/PackageList';
 import CreatePackage from './pages/Admin/CreatePackage';
 import { ThemeProvider } from './constants/ThemeContext';
@@ -66,12 +65,10 @@ function Layout() {
           <Route path="/package-list" element={<PackageList />} />
           <Route path="/create-package" element={<CreatePackage />} />
           <Route path="/payment-detail/:packageId" element={<PaymentDetail />} />
-          <Route path="/censor" element={<Censor />} />
           <Route path="/booking" element={<ViewSlot />} />
           <Route path="/pregnancy/:week" element={<PregnancyWeek />} />
           <Route path="/payment-success" element={<PaymentSuccessPage />} />
           <Route path="/payment-failure" element={<PaymentFailurePage />} />
-          <Route path="/Censor" element={<Censor />} />
           <Route path="/forget" element={<Forgot />} />
           <Route path="/viewBookedSlot" element={<ViewBookedSlot />} />
           <Route path="/create-blog" element={<CreateBlog />} />

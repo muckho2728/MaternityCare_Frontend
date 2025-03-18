@@ -7,10 +7,12 @@ import {
   FileSearchOutlined,
   ReadOutlined,
   TransactionOutlined,
-  CommentOutlined ,
+  CommentOutlined,
+  LogoutOutlined
 } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import { Link, Outlet, useLocation } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../constants/AuthContext';
 
 const { Header, Content, Sider } = Layout;
 
@@ -18,6 +20,13 @@ const AdminLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const { token: { colorBgContainer, borderRadiusLG } } = theme.useToken();
   const location = useLocation();
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   const items = [
     {
@@ -56,10 +65,6 @@ const AdminLayout = () => {
           key: '/admin/manage-blog',
           label: <Link to="/admin/manage-blog">Quản lý bài viết</Link>,
         },
-        {
-          key: '/admin/review-blogs',
-          label: <Link to="/admin/review-blogs">Duyệt bài viết</Link>,
-        },
       ],
     },
     {
@@ -71,6 +76,12 @@ const AdminLayout = () => {
       key: 'feedback',
       icon: <CommentOutlined  />,
       label: <Link to="/admin/manage-feedback">Feedback</Link>,
+    },
+    {
+      key: 'logout',
+      icon: <LogoutOutlined />,
+      label: <span style={{ color: 'red' }}>Logout</span>,
+      onClick: handleLogout,
     },
   ];
 
