@@ -114,6 +114,11 @@ const ViewFetusHealth = () => {
                                     icon: <MessageOutlined />,
                                     label: <Link to="/manage-pregnancy">Quản lý thông tin thai kỳ</Link>,
                                 },
+                                {
+                                    key: '4',
+                                    icon: <MessageOutlined />,
+                                    label: <Link to="/manage-preg">Quản lý thai kỳ</Link>,
+                                },
                             ]} />
                         </Card>
                     </Col>
@@ -123,7 +128,7 @@ const ViewFetusHealth = () => {
                             <Form form={form} layout="vertical">
                                 <Row gutter={16}>
                                     <Col span={12}><Form.Item label="Ngày thụ thai" name="conceptionDate"><Input disabled={!isEditing} /></Form.Item></Col>
-                                    <Col span={12}><Form.Item label="Tuần thai" name="week"><Input disabled={!isEditing} /></Form.Item></Col>
+                                    <Col span={12}><Form.Item label="Tuần thai" name="week"><Input disabled /></Form.Item></Col>
                                     <Col span={12}><Form.Item label="Chu vi đầu (mm)" name="headCircumference"><Input disabled={!isEditing} /></Form.Item></Col>
                                     <Col span={12}><Form.Item label="Mức nước ối" name="amnioticFluidLevel"><Input disabled={!isEditing} /></Form.Item></Col>
                                     <Col span={12}><Form.Item label="Chiều dài đầu mông (mm)" name="crownRumpLength"><Input disabled={!isEditing} /></Form.Item></Col>

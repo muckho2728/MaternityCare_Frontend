@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Table, Button, Modal, message, Card, Row, Col, Layout, Menu } from "antd";
-import { UserOutlined, HeartOutlined, MessageOutlined, EyeOutlined } from "@ant-design/icons";
+import { UserOutlined, HeartOutlined, MessageOutlined, EyeOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import api from "../../config/api";
-import './ManagePregnancy.css';
+import CreateFetusHealth from "../CreateFetusHealth/CreateFetusHealth"; 
 
 const { Content } = Layout;
 
@@ -12,6 +12,8 @@ const ManagePregnancy = () => {
     const [fetusHealthData, setFetusHealthData] = useState([]);
     const [selectedFetus, setSelectedFetus] = useState(null);
     const [viewOpen, setViewOpen] = useState(false);
+    const [editOpen, setEditOpen] = useState(false);
+    const [isAdding, setIsAdding] = useState(false);
 
     // Hàm gọi API lấy dữ liệu sức khỏe thai nhi
     const fetchData = async () => {
@@ -38,14 +40,31 @@ const ManagePregnancy = () => {
         setViewOpen(true);
     };
 
+    // Xử lý xóa tuần thai
+    const deleteFetusHealth = async (id) => {
+        Modal.confirm({
+            title: "Bạn có chắc chắn muốn xóa tuần thai này?",
+            onOk: async () => {
+                try {
+                    await api.delete(`fetuses/${fetusId}/fetus-healths/${id}`);
+                    message.success("Xóa tuần thai thành công!");
+                    fetchData();
+                } catch (error) {
+                    message.error("Lỗi khi xóa tuần thai! Vui lòng thử lại.");
+                }
+            },
+        });
+    };
+
     const columns = [
         { title: "Tuần thai", dataIndex: "week", key: "week" },
         {
             title: "Hành động",
             render: (_, record) => (
-                <Button type="link" icon={<EyeOutlined />} onClick={() => showDetails(record)}>
-                    Xem
-                </Button>
+                <>
+                    <Button type="link" icon={<EyeOutlined />} onClick={() => showDetails(record)}>Xem</Button>
+                    <Button type="link" danger icon={<DeleteOutlined />} onClick={() => deleteFetusHealth(record.id)}>Xóa</Button>
+                </>
             ),
         },
     ];
@@ -57,32 +76,26 @@ const ManagePregnancy = () => {
                     <Col span={6}>
                         <Card style={{ borderRadius: "8px", backgroundColor: "#f9f9f9", padding: "10px" }}>
                             <Menu mode="vertical" defaultSelectedKeys={["3"]} style={{ border: "none", width: "100%" }} items={[
-                                {
-                                    key: "1",
-                                    icon: <UserOutlined />,
-                                    label: <Link to="/profile">Thông tin người dùng</Link>,
-                                },
-                                {
-                                    key: "2",
-                                    icon: <HeartOutlined />,
-                                    label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link>,
-                                },
-                                {
-                                    key: "3",
-                                    icon: <MessageOutlined />,
-                                    label: <Link to="/manage-pregnancy">Quản lý thông tin thai kỳ</Link>,
-                                },
+                                { key: "1", icon: <UserOutlined />, label: <Link to="/profile">Thông tin người dùng</Link> },
+                                { key: "2", icon: <HeartOutlined />, label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link> },
+                                { key: "3", icon: <MessageOutlined />, label: <Link to="/manage-pregnancy">Quản lý thông tin thai kỳ</Link> },
+                                { key: "4", icon: <MessageOutlined />, label: <Link to="/manage-preg">Quản lý thai kỳ</Link> },
                             ]} />
                         </Card>
                     </Col>
                     <Col span={18}>
-                        <Card style={{ padding: "16px", borderRadius: "8px", marginLeft: "50px"}}>
-                            <h2>Quản lý thông tin sức khỏe thai nhi</h2>
+                        <Card style={{ padding: "16px", borderRadius: "8px", marginLeft: "50px" }}>
+                            <h2>Quản lý thông tin thai nhi</h2>
+                            <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsAdding(true)} style={{ marginBottom: "16px" }}>
+                                Thêm tuần thai
+                            </Button>
                             <Table dataSource={fetusHealthData} columns={columns} rowKey="id" />
                         </Card>
                     </Col>
                 </Row>
             </Content>
+
+            {/* Modal Xem chi tiết */}
             <Modal title="Chi tiết sức khỏe thai nhi" open={viewOpen} onCancel={() => setViewOpen(false)} footer={null}>
                 {selectedFetus && (
                     <div>
@@ -97,6 +110,23 @@ const ManagePregnancy = () => {
                         <p><strong>Đường kính túi thai (mm):</strong> {selectedFetus.gestationalSacDiameter}</p>
                     </div>
                 )}
+            </Modal>
+
+            {/* Modal Thêm/Sửa tuần thai */}
+            <Modal
+                title={selectedFetus ? "Chỉnh sửa tuần thai" : "Thêm tuần thai"}
+                open={editOpen || isAdding}
+                onCancel={() => { setEditOpen(false); setIsAdding(false); }}
+                footer={null}
+            >
+                <CreateFetusHealth
+                    fetusHealthData={selectedFetus}
+                    onSuccess={() => {
+                        fetchData();
+                        setEditOpen(false);
+                        setIsAdding(false);
+                    }}
+                />
             </Modal>
         </Layout>
     );

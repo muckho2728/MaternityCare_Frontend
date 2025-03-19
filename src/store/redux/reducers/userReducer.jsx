@@ -3,7 +3,8 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     user: {},
     listUser: [],
-    currentUser: {}
+    currentUser: {},
+    totalElements:0
 };
 
 const userReducer = createSlice({
@@ -27,12 +28,16 @@ const userReducer = createSlice({
         state.currentUser = {
             ...state.currentUser, 
         };
+    },
+    setTotalElements : (state , action)=>{
+        console.log("action", action.payload); 
+        state.totalElements = action.payload;
     }
   }
 });
 
 // Export actions
-export const { setListUser, setUser, setCurrentUser, updateUserLoginAction } = userReducer.actions;
+export const { setListUser, setUser, setCurrentUser, updateUserLoginAction , setTotalElements } = userReducer.actions;
 
 // Export reducer
 export default userReducer.reducer;

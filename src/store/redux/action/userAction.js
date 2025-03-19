@@ -1,12 +1,16 @@
-import { activeUserAPI, getAllUserAPI, getUserByIdAPI, updateUserAPI, changePasswordByUserIdAPI, getCurrentUserAPI } from '../../../config/userAPI';
-import { setListUser, setUser, setCurrentUser } from '../reducers/userReducer';
+import { activeUserAPI, getAllUserAPI, getUserByIdAPI, updateUserAPI, changePasswordByUserIdAPI, getCurrentUserAPI, getAllUserPaginationAPI } from '../../../config/userAPI';
+import { setListUser, setUser, setCurrentUser, setTotalElements } from '../reducers/userReducer';
 
-export const fetchUsersAction = () => {
+export const fetchUsersAction = (pageNumber,pageSize) => {
   return async (dispatch) => {
     try {
-      const res = await getAllUserAPI();
+      console.log(pageNumber)
+      console.log(pageSize)
+      const res = await getAllUserPaginationAPI(pageNumber , pageSize);
       console.log(res)
-      dispatch(setListUser(res));
+      dispatch(setListUser(res.data));
+      console.log(res.pagination.totalElements)
+      dispatch(setTotalElements(res.pagination.totalElements))
     } catch (error) {
       console.error("Failed to fetch users:", error.response ? error.response.data : error.message);
     }
