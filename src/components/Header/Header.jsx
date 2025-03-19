@@ -158,6 +158,7 @@ const Header = () => {
                                     <Link to="/profile" className="dropdown-item">Hồ sơ người dùng</Link>
                                     <Link to="/view-fetus-health" className="dropdown-item">Hồ sơ sức khỏe</Link>
                                     <Link to="/manage-pregnancy" className="dropdown-item">Quản lý thông tin thai </Link>
+                                    <Link to="/manage-preg" className="dropdown-item">Quản lý thai kỳ</Link>
                                     <button className="dropdown-item logout-button" onClick={handleLogout}>
                                         Đăng xuất
                                     </button>

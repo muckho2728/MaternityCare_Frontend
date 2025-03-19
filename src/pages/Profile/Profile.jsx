@@ -245,6 +245,7 @@ const Profile = () => {
                 { key: '1', icon: <UserOutlined />, label: 'Thông tin người dùng' },
                 { key: '2', icon: <HeartOutlined />, label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link> },
                 { key: '3', icon: <MessageOutlined />, label: <Link to="/manage-pregnancy">Quản lý thông tin thai kỳ</Link> },
+                { key: '4', icon: <MessageOutlined />, label: <Link to="/manage-preg">Quản lý thai kỳ</Link> },
               ]} />
             </Card>
           </Col>
