@@ -31,8 +31,32 @@ const handleRequest = async (apiCall) => {
     }
 };
 
+const handleRequestWithPagination = async (apiCall) => {
+    
+    try {
+        const responsePagination = {
+         data : [],
+         pagination : {
+            totalElements : 0
+         }
+        }
+        console.log("apiCall",apiCall);
+        const response = await apiCall;
+        console.log("response",response);
+        console.log("response header",response.headers)
+        responsePagination.data = response.data;
+        responsePagination.pagination.totalElements = JSON.parse(response.headers['x-pagination']).TotalCount ;
+        return responsePagination;
+    } catch (error) {
+        console.error("API Error:", error.response?.data || error.message);
+        throw error.response?.data || error.message;
+    }
+};
+
 // 🟢 Lấy danh sách tất cả user
 export const getAllUserAPI = () => handleRequest(api.get("/users"));
+
+export const getAllUserPaginationAPI = (pageNumber,pageSize) => handleRequestWithPagination(api.get(`/users?PageNumber=${pageNumber}&PageSize=${pageSize}`));
 
 
 export const getCurrentUserAPI = () => handleRequest(api.get("/users/current"));
