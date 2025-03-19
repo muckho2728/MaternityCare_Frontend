@@ -27,20 +27,16 @@ import PaymentDetail from './pages/PaymentDetail/PaymentDetail';
 import PregnancyWeek from './pages/Pregnancy/PregnancyWeek';
 import ManageDoctor from './pages/Admin/ManageDoctor/Doctor';
 import ViewBookedSlot from './pages/Appointment/View';
-
-
-
-
 import PaymentSuccessPage from './pages/PaymentPage/PaymentSuccessPage';
 import PaymentFailurePage from './pages/PaymentPage/PaymentFailurePage';
 import TransactionManagementPage from './pages/Admin/TransactionManagementPage/TransactionManagementPage';
 import ViewBlogUser from './pages/Community/ViewBlogUser';
 import CreateBlog from './pages/Community/CreateBlog';
-// import UpdateBlog from './pages/Community/UpdateBlog';
 import ManageFeedbackPage from './pages/Admin/ManageFeedback/ManageFeedback';
 import Feedback from './pages/Feedback/Feedback';
 import ManagePregnancy from './pages/ViewFetusHealth/ManagePregnancy';
 import ManageBlog from './pages/Admin/ManageBlog/ManageBlog';
+import ManagePreg from './pages/ViewFetusHealth/ManagePreg';
 
 function Layout() {
   const location = useLocation();
@@ -75,6 +71,7 @@ function Layout() {
           <Route path="/view-blog-user" element={<ViewBlogUser />} />
           <Route path="/feedback" element={<Feedback/>}/>
           <Route path="/manage-pregnancy" element={<ManagePregnancy />} />
+          <Route path="/manage-preg" element={<ManagePreg />} />
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="manage-user" element={<ManageUsersPage />} />
