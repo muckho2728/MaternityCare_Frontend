@@ -102,7 +102,7 @@ const Home = () => {
                             </div>
                         </div>
                         <div className="introduction-text">
-                            <h2>GIỢI THIỆU VỀ MATERNITY CARE</h2>
+                            <h2>GIỚI THIỆU VỀ MATERNITY CARE</h2>
                             <p>
                                 <strong>Maternity Care</strong> là nền tảng hỗ trợ theo dõi thai kỳ và chăm sóc sức khỏe mẹ bầu toàn diện.
                                 Chúng tôi giúp mẹ bầu dễ dàng nắm bắt thông tin quan trọng trong suốt thai kỳ, cung cấp lời khuyên khoa học

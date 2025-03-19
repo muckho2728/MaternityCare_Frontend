@@ -1,310 +1,493 @@
-.blog-container {
-    max-width: 1000px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #f9f9f9;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+/* ====== Global Styles ====== */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
 }
 
+/* ====== Blog Container ====== */
+.blog-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 25px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ====== Title & Description ====== */
 .blog-title {
     text-align: center;
-    font-size: 28px;
-    color: #2c3e50;
-    margin-bottom: 10px;
+    font-size: 30px;
+    color: #00897b;
+    font-weight: bold;
+    
+    margin: 20px;
 }
 
 .blog-description {
     text-align: center;
     font-size: 16px;
-    color: #666;
-    margin-bottom: 20px;
+    color: #777;
+    margin-bottom: 25px;
 }
 
-/* Tìm kiếm và bộ lọc */
+/* ====== Search & Filter ====== */
 .blog-controls {
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 12px;
     margin-bottom: 20px;
 }
 
-.blog-search {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    flex: 1;
+.blog-filter select{
+    padding: 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
 }
 
+/* Search Input */
 .blog-search-input {
     flex: 1;
-    padding: 8px;
-    border: 1px solid #ccc;
+    padding: 10px;
+    border: 2px solid #ddd;
     border-radius: 8px;
+    font-size: 16px;
 }
 
+/* Buttons */
+.blog-btn,
 .blog-search-btn {
-    background-color: #27ae60;
+    background: #00897b;
     color: white;
-    border: none;
-    padding: 8px 12px;
+    padding: 10px 15px;
     border-radius: 8px;
-    cursor: pointer;
-}
-
-.blog-filter {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.blog-btn {
-    background-color: #2980b9;
-    color: white;
-    padding: 8px 12px;
-    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
     border: none;
-    transition: background 0.3s ease;
+    transition: background 0.3s ease-in-out, transform 0.2s;
 }
 
-.blog-btn:hover {
-    background-color: #1f6692;
+.blog-btn:hover,
+.blog-search-btn:hover {
+    background: #219150;
+    transform: scale(1.05);
 }
 
-/* Bài viết */
+/* ====== Blog List ====== */
 .blog-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
+/* Blog Post */
 .body-blog {
-    display: flex;
-    gap: 15px;
-    background: #fff;
+    background: white;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 15px;
     transition: transform 0.2s ease-in-out;
     cursor: pointer;
+    width: 100%;
+    max-width: 700px; /* Giới hạn chiều rộng để nhìn gọn gàng hơn */
+    margin: 0 auto; /* Canh giữa */
 }
 
 .body-blog:hover {
     transform: translateY(-5px);
 }
 
+/* Blog Image */
 .blog-image {
-    width: 250px;
-    height: 180px;
+    width: 100%;
+    height: 220px;
     object-fit: cover;
     border-radius: 8px;
 }
 
+/* Blog Content */
 .blog-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
+    position: relative;
+  }
+  
+  .blog-summary {
+    max-height: 50px; /* Giới hạn hiển thị */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: max-height 0.3s ease-in-out;
+    margin: 20px;
+    margin-bottom: auto;
+    margin: 20px;
+  }
+  
+  /* Khi checkbox được chọn, hiển thị đầy đủ nội dung */
+  .blog-toggle:checked ~ .blog-summary {
+    max-height: none;
+    white-space: normal;
+  }
+  
+  .blog-toggle-label {
+    display: block;
+    cursor: pointer;
+    color: blue;
+    text-decoration: none;
+    margin-top: 5px;
+  }
+  
+  /* Đổi nội dung của label khi checkbox được chọn */
+  .blog-toggle:checked ~ .blog-toggle-label::after {
+    content: " Ẩn bớt";
+  }
+  
+  .blog-toggle-label::after {
+    content: " Xem thêm";
+    color: #bec5c5;
+    margin: 20px;
+    
+  }
+  
+  .blog-toggle {
+    display: none; /* Ẩn checkbox */
+  }
 
-.blog-title {
-    font-size: 20px;
-    font-weight: bold;
-    color: #2c3e50;
-    margin-bottom: 5px;
-}
-
-.blog-summary {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 10px;
-    margin-left: 10px;
-}
-
+/* Blog Info */
 .blog-info {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
+    justify-content: space-evenly;
+    align-items: baseline;
     font-size: 14px;
     color: #777;
-    width: 35%;
 }
 
-/* styles.css - Form thiết kế hiện đại với layout đẹp hơn */
+
+
+.blog-container:has(.blog-comments.active) .comments-section {
+    max-height: 500px;
+    opacity: 1;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  }
+  
+  .comments-section {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  }
+  
+  .blog-comments {
+    cursor: pointer;
+  }
+  
+  .blog-comments.active {
+    color: green; /* Đổi màu khi đang mở */
+  }
+  
+  .upcomment {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    margin: 10px;
+  }
+
+  .upcomment button {
+    background: #00897b;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    transition: background 0.3s ease-in-out, transform 0.2s;
+  }
+
+  .upcomment button:hover {
+    background: #219150;
+    transform: scale(1.05);
+  }
+
+  .upcomment input {
+    width: 80%;
+    padding: 6px 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+  
+  /* Căn chỉnh toàn bộ comment */
+.comment {
+    display: flex;
+    
+    flex-direction: column;
+
+    padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+}
+/* Phần nội dung bình luận nằm sát trái */
+.comment-content {
+    flex: 1;
+    text-align: left;
+}
+
+/* Định dạng tên người dùng */
+.comment strong {
+    color: #333;
+    font-weight: bold;
+}
+
+/* Container chứa nút Sửa/Xóa */
+.comment-btn {
+    display: flex;
+    gap: 8px;
+    flex-direction: row-reverse;
+}
+
+/* Định dạng chung cho nút */
+.comment-btn button {
+    background: #4caf93;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* Hover cho nút */
+.comment-btn button:hover {
+    background: #1f8c4e;
+}
+
+/* Nút Xóa có màu đỏ */
+.comment-btn button:last-child {
+    background: #e53935;
+}
+
+.comment-btn button:last-child:hover {
+    background: #c62828;
+}
+
+/* Kiểu hiển thị nội dung bình luận */
+.comment-text {
+    display: inline-block;
+    max-width: 100%;
+    position: relative;
+}
+
+/* Chỉ hiển thị phần rút gọn */
+.short-text {
+    display: inline;
+}
+
+/* Ẩn checkbox */
+.comment-toggle {
+    display: none;
+}
+
+/* Ẩn nội dung đầy đủ khi chưa mở */
+.full-text {
+    display: none;
+}
+
+/* Khi checkbox được chọn, hiển thị nội dung đầy đủ */
+.comment-toggle:checked ~ .full-text {
+    display: inline;
+}
+
+.comment-toggle:checked ~ .short-text {
+    display: none;
+}
+
+/* Hiển thị nút "Xem thêm" hoặc "Thu gọn" */
+.read-more {
+    color: #007bff;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 5px;
+}
+
+/* Khi mở rộng, đổi nội dung nút */
+.comment-toggle:checked ~ .read-more::after {
+    content: " Thu gọn";
+}
+
+/* Khi chưa mở rộng, hiển thị "Xem thêm" */
+.read-more::after {
+    content: " Xem thêm";
+    color: #bec5c5;
+
+}
+/* Ẩn nút "Xem thêm" nếu nội dung ngắn */
+.comment-text:not(.long) .read-more {
+    display: none;
+}
+
+.edit-comment input{
+    width: 80%;
+    padding: 6px 10px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+}
+  
+.edit-comment button {
+    background: #e53935;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.edit-comment button:last-child {
+    background: #4caf93;
+}
+
+
+
+/* ====== Blog Form ====== */
 .blog-form-container {
-    max-width: 700px;
-    margin: 50px auto;
-    background: linear-gradient(135deg, #f3f3f3, #ffffff);
-    padding: 30px;
+    max-width: 750px;
+    margin: 40px auto;
+    background: #ffffff;
+    padding: 25px;
     border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    font-family: "Poppins", sans-serif;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
 }
 
 .blog-form-container h1 {
     text-align: center;
-    color: #08ab61;
-    font-size: 28px;
+    color: #4caf93;
+    font-size: 26px;
     font-weight: bold;
-    margin-bottom: 20px;
+    margin-bottom: 18px;
 }
 
-.blog-form-container form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    align-items: center;
-}
-
+/* Input Fields */
 .blog-form-container input,
 .blog-form-container textarea,
 .blog-form-container select {
     width: 100%;
-    padding: 14px;
+    padding: 10px;
     border: 2px solid #ddd;
-    border-radius: 10px;
-    font-size: 16px;
-    background: #fff;
-    transition: 0.3s;
-    outline: none;
-}
-
-.blog-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 10px;
-}
-
-.blog-tag {
-    background-color: #e0f2f1;
-    color: #00796b;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: bold;
-    display: inline-block;
-}
-
-.blog-tag.no-tag {
-    background-color: #f0f0f0;
-    color: #888;
-}
-
-
-.selected-tag {
-    display: flex;
-    align-items: center;
-    background-color: #f0f8ff;
-    padding: 8px 12px;
     border-radius: 8px;
-    margin: 10px 0;
-    font-size: 14px;
-    font-weight: bold;
-    color: #00796b;
-    gap: 8px;
+    font-size: 15px;
+    transition: 0.3s;
+    background: white;
 }
 
-.selected-tag-name {
-    background-color: #e0f2f1;
-    color: #00796b;
-    padding: 4px 8px;
-    border-radius: 12px;
-}
-
-.clear-tag-btn {
-    background: none;
-    border: none;
-    color: red;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-}
-.clear-tag-btn:hover {
-    text-decoration: underline;
-}
-
-
-.blog-form-container textarea {
-    height: 150px;
-    resize: none;
-}
-
+/* Focus Effect */
 .blog-form-container input:focus,
 .blog-form-container textarea:focus,
 .blog-form-container select:focus {
-    border-color: #4CAF50;
-    box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+    border-color: #27ae60;
+    box-shadow: 0 0 8px rgba(39, 174, 96, 0.25);
 }
 
+/* Submit Button */
 .blog-form-container button {
-    /* background: linear-gradient(135deg, #4CAF50, #388E3C); */
+    background: #00897b;
     color: white;
-    padding: 14px;
+    padding: 12px;
     border: none;
-    border-radius: 10px;
-    font-size: 18px;
+    border-radius: 8px;
+    font-size: 16px;
     cursor: pointer;
     transition: all 0.3s ease-in-out;
-    text-transform: uppercase;
     font-weight: bold;
 }
 
 .blog-form-container button:hover {
-    /* background: linear-gradient(135deg, #388E3C, #2E7D32); */
+    background: #36826a;
     transform: scale(1.05);
 }
+.blog-form {
+    width: 97%;
+  display: flex;
+  flex-direction: column;
 
-.blog-form-container p {
-    color: red;
-    text-align: center;
-    font-weight: bold;
-    font-size: 14px;
 }
 
-/* update  */
+.blog-form button{
+    display: block;  /* Đảm bảo nó là block */
+    margin: 15px 120px;    /* Căn giữa theo chiều ngang */
+    text-align: center;
+}
+
+.blog-form select {
+    width: 103%;
+}
+
+
+/* ====== Tags ====== */
+.blog-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.blog-tag {
+    background-color: #e8f5e9;
+    color: #1b5e20;
+    padding: 4px 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* ====== Button Group (Update & Cancel) ====== */
 .button-group {
     display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-top: 10px;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px
+}
+.btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+.update-btn, .cancel-btn {
+    background: linear-gradient(135deg, #e53935, #c62828);
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
 }
 
 .update-btn {
-    background: linear-gradient(135deg, #4CAF50, #388E3C);
+    background: #00897b;
     color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 10px;
-    font-size: 18px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    text-transform: uppercase;
-    font-weight: bold;
-    flex: 1;
-    margin-right: 10px;
+    margin-right: 8px;
 }
 
 .update-btn:hover {
-    background: linear-gradient(135deg, #388E3C, #2E7D32);
+    background: #36826a;
     transform: scale(1.05);
 }
 
-.cancel-btn {
+.blog-form .cancel-btn {
     background: linear-gradient(135deg, #e53935, #c62828);
     color: white;
-    padding: 10px;
-    border: none;
+    padding: 12px 20px;
     border-radius: 10px;
     font-size: 18px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    text-transform: uppercase;
     font-weight: bold;
-    flex: 1;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease-in-out;
 }
 
 .cancel-btn:hover {
@@ -312,5 +495,4 @@
     transform: scale(1.05);
 }
 
-/*  */
-
+/* ====== Pagination ====== */

@@ -68,19 +68,26 @@ const CreateBlog = () => {
     return (
         <div className="blog-form-container">
             <h1>Tạo Bài Viết Mới</h1>
-            {error && <p>{error}</p>}
-            <form onSubmit={handleSubmit}>
-                <input type="text" name="title" placeholder="Tiêu Đề" value={newBlog.title} onChange={handleChange} required />
-                <textarea name="content" placeholder="Nội Dung" value={newBlog.content} onChange={handleChange} required />
-                <input type="file" name="image" accept="image/*" onChange={handleImageChange} />
-                <select name="tagId" value={newBlog.tagId} onChange={handleChange}>
-                    <option value="">Chọn Tag</option>
-                    {tags.map((tag) => (
-                        <option key={tag.id} value={tag.id}>{tag.name}</option>
-                    ))}
-                </select>
-                <button type="submit" disabled={loading}>{loading ? "Đang Tạo..." : "Tạo Bài Viết"}</button>
-            </form>
+            <div className='blog-form'>
+                {error && <p>{error}</p>}
+                <form onSubmit={handleSubmit}>
+                    <input type="text" name="title" placeholder="Tiêu Đề" value={newBlog.title} onChange={handleChange} required />
+                    <textarea name="content" placeholder="Nội Dung" value={newBlog.content} onChange={handleChange} required />
+                    <input type="file" name="image" accept="image/*" onChange={handleImageChange} />
+                    <select name="tagId" value={newBlog.tagId} onChange={handleChange}>
+                        <option value="">Chọn Tag</option>
+                        {tags.map((tag) => (
+                            <option key={tag.id} value={tag.id}>{tag.name}</option>
+                        ))}
+                    </select>
+                    <div className="button-group">
+                        <button type="submit" className="" disabled={loading}>{loading ? "Đang Tạo..." : "Tạo Bài Viết"}</button>
+                        <button type="button" className="cancel-btn" onClick={() => window.history.back()}>Hủy</button>
+                    </div>
+                    
+                </form>
+            </div>
+            
             <ToastContainer />
         </div>
     );
