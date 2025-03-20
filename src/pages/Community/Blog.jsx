@@ -22,15 +22,37 @@ const Blog = () => {
   const [editContent, setEditContent] = useState("");
   const [currentBlogId, setCurrentBlogId] = useState(null);
   const [likesByBlog, setLikesByBlog] = useState({});
+  const [currentUser, setCurrentUser] = useState(null);
 
   const filteredBlogs = Array.isArray(blogs)
     ? blogs.filter(
-        (blog) =>
-          (selectedTag ? blog.tag?.id === selectedTag : true) &&
-          (blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            blog.content.toLowerCase().includes(searchTerm.toLowerCase()))
-      )
+      (blog) =>
+        (selectedTag ? blog.tag?.id === selectedTag : true) &&
+        (blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          blog.content.toLowerCase().includes(searchTerm.toLowerCase()))
+    )
     : [];
+
+  useEffect(() => {
+    const fetchCurrentUser = async (url) => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found');
+        return;
+      }
+
+      try {
+        const response = await api.get(url, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setCurrentUser(response.data); // Thiết lập currentUser
+      } catch (error) {
+        console.error('Failed to fetch current user:', error);
+      }
+    };
+
+    fetchCurrentUser('https://maternitycare.azurewebsites.net/api/authentications/current-user');
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -172,6 +194,7 @@ const Blog = () => {
 
   const fetchComments = async (blogId, pageNumber = 1) => {
     try {
+      console.log(currentUser);
       const response = await api.get(
         `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/comments?PageNumber=${pageNumber}&PageSize=${pageSize}`
       );
@@ -179,7 +202,7 @@ const Blog = () => {
         ...prev,
         [blogId]: response.data.map((comment) => ({
           id: comment.id,
-          user: comment.author?.name || "Ẩn danh",
+          user: comment.userId === currentUser?.id ? currentUser.fullName : "Ẩn Danh",
           text: comment.content,
         })),
       }));
@@ -203,13 +226,14 @@ const Blog = () => {
         [blogId]: [
           {
             id: response.data.id,
-            user: response.data.author?.name || "Bạn",
+            user: userId === currentUser?.id ? currentUser.fullName : "Bạn",
             text: commentText,
           },
           ...(prev[blogId] || []),
         ],
       }));
       setNewComments((prev) => ({ ...prev, [blogId]: "" }));
+      console.log(response.data);
     } catch (error) {
       console.error("Lỗi khi đăng bình luận:", error);
       toast.error("Lỗi khi đăng bình luận.");
@@ -264,7 +288,7 @@ const Blog = () => {
         `https://maternitycare.azurewebsites.net/api/users/${userId}/comments/${commentId}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Sửa lỗi chính tả "Baerer" thành "Bearer"
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -462,7 +486,7 @@ const Blog = () => {
                                 Hủy
                               </button>
                               <button className="save" onClick={() => handleEditComment(blog.id)}>Lưu</button>
-                              
+
                             </div>
                           ) : (
                             <div className={`comment-text ${comment.text.length > 100 ? "long" : ""}`}>
