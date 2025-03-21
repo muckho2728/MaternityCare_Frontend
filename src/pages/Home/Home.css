@@ -48,12 +48,13 @@
     align-items: center;
     /* text-align: center; */
     margin-top: 15px;
+    background: #F5FBF6;
 }
 
 .introduction h2 {
     font-size: 28px;
     font-weight: bold;
-    color: #333;
+    color: #4caf93;
     text-transform: uppercase;
     margin-bottom: 20px;
 }
@@ -70,10 +71,10 @@
 
 /* Hiệu ứng hover cho các đoạn text */
 
-.introduction-text p:hover {
+/* .introduction-text p:hover {
     color: #ff4d6d;
     transition: 0.3s;
-}
+} */
 
 /* --- PHẦN GIỚI THIỆU VỚI HÌNH ẢNH VÀ HIỆU ỨNG --- */
 .introduction-section {
@@ -298,7 +299,7 @@ img.introduction-img4 {
 
 .feature-card {
     width: 220px;
-    background: #fff;
+    background: #daede7;
     border-radius: 12px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;

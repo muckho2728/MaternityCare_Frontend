@@ -101,10 +101,7 @@
     transition: background 0.3s, transform 0.3s;
 }
 
-.profile-button:hover {
-    background: #D81B60;
-    transform: scale(1.05);
-}
+
 
 /* Style cho bảng lịch sử thanh toán */
 .profile-table {

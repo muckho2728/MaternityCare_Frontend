@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import api from '../../config/api';
-import { Search, Trash2, Edit, XCircle } from 'lucide-react';
+import { Search, Trash2, Edit } from 'lucide-react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Blog.css';
@@ -167,7 +167,7 @@ const ViewBlogUser = () => {
                         <button className='update-btn' onClick={handleUpdateBlog}>Cập nhật</button>
                         
                         <button className='cancel-btn' onClick={() => setEditingBlog(null)}>
-                            <XCircle size={18} /> Hủy
+                             Hủy
                         </button>
                     </div>
                     
