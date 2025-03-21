@@ -18,7 +18,7 @@ const Profile = () => {
   const userDetailData = useSelector((state) => state.userReducer.user);
   const [previewAvatar, setPreviewAvatar] = useState(null);
   const [avatarFile, setAvatarFile] = useState(null);
-  const [isEditing, setIsEditing] = useState(false)
+  const [isEditing, setIsEditing] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
   const [userPackage, setUserPackage] = useState(null);
   const [subscriptionDetails, setSubscriptionDetails] = useState(null);
@@ -38,10 +38,9 @@ const Profile = () => {
   const fetchUserPackage = async () => {
     try {
       const response = await api.get(`/authentications/current-user`, {
-        headers: { Authorization: `Bearer ${token}` }, 
+        headers: { Authorization: `Bearer ${token}` },
       });
       const subscription = response.data.subscription;
-
       setUserPackage({
         name: subscription,
       });
@@ -53,7 +52,7 @@ const Profile = () => {
   const fetchSubscriptionDetails = async () => {
     try {
       const response = await api.get(`/users/${userId}/subscriptions`, {
-        headers: { Authorization: `Bearer ${token}` }, 
+        headers: { Authorization: `Bearer ${token}` },
       });
       setSubscriptionDetails(response.data);
     } catch (error) {
@@ -76,7 +75,7 @@ const Profile = () => {
         const response = await api.get(url, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setCurrentUser(response.data); // Thiết lập currentUser
+        setCurrentUser(response.data);
       } catch (error) {
         console.error('Failed to fetch current user:', error);
       }
@@ -92,17 +91,6 @@ const Profile = () => {
       fetchPaymentHistory(currentUser.id);
     }
   }, [currentUser, dispatch]);
-
-
-
-  // const fetchPaymentHistory = async (userId) => {
-  //   try {
-  //     const response = await api.get(`/api/users/${userId}/transactions`);
-  //     setPaymentHistory(response.data);
-  //   } catch (error) {
-  //     console.error('Failed to fetch payment history:', error);
-  //   }
-  // };
 
   useEffect(() => {
     if (userDetailData) {
@@ -176,6 +164,25 @@ const Profile = () => {
     return false;
   };
 
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setPreviewAvatar(userDetailData.avatar);
+    setAvatarFile(null);
+
+    // Đặt lại giá trị ban đầu của form
+    profileForm.setFieldsValue({
+      roleId: userDetailData.role?.name || '',
+      username: userDetailData?.username,
+      email: userDetailData?.email,
+      fullName: userDetailData?.fullName,
+      dateOfBirth: userDetailData?.dateOfBirth,
+      avatar: userDetailData?.avatar,
+      experience: userDetailData?.experience,
+      status: userDetailData?.status,
+      cccd: userDetailData?.cccd,
+    });
+  };
+
   const paymentHistoryColumns = [
     { title: 'Id', dataIndex: 'id', key: 'id' },
     { title: 'Số tiền', dataIndex: 'amount', key: 'amount' },
@@ -190,55 +197,55 @@ const Profile = () => {
       <Content style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto', background:'transparent' }}>
         <Row gutter={24}>
           <Col span={6}>
-                <Card span={0} style={{ textAlign: 'center'}}>
-                  <Title level={3} style={{ color: '#EC407A' }}>Ảnh đại diện</Title>
-                  <div style={{ position: 'relative', margin: '0 auto', width: '150px', height: '150px' }}>
-                    <img
-                      src={previewAvatar || 'https://via.placeholder.com/150?text=Avatar'}
-                      alt="avatar"
+            <Card span={0} style={{ textAlign: 'center' }}>
+              <Title level={3} style={{ color: '#EC407A' }}>Ảnh đại diện</Title>
+              <div style={{ position: 'relative', margin: '0 auto', width: '150px', height: '150px' }}>
+                <img
+                  src={previewAvatar || 'https://via.placeholder.com/150?text=Avatar'}
+                  alt="avatar"
+                  style={{
+                    width: '150px',
+                    height: '150px',
+                    borderRadius: '50%',
+                    objectFit: 'cover',
+                    border: '1px solid #EC407A',
+                  }}
+                />
+                {isEditing && (
+                  <Upload
+                    name="avatar"
+                    showUploadList={false}
+                    beforeUpload={(file) => {
+                      handleAvatarChange({ file });
+                      return false;
+                    }}
+                  >
+                    <Button
+                      icon={<CameraOutlined />}
                       style={{
-                        width: '150px',
-                        height: '150px',
+                        position: 'absolute',
+                        bottom: '0',
+                        right: '0',
                         borderRadius: '50%',
-                        objectFit: 'cover',
-                        border: '1px solid #EC407A',
+                        backgroundColor: '#1890ff',
+                        color: 'white',
+                        border: 'none',
                       }}
                     />
-                    {isEditing && (
-                      <Upload
-                        name="avatar"
-                        showUploadList={false}
-                        beforeUpload={(file) => {
-                          handleAvatarChange({ file });
-                          return false;
-                        }}
-                      >
-                        <Button
-                          icon={<CameraOutlined />}
-                          style={{
-                            position: 'absolute',
-                            bottom: '0',
-                            right: '0',
-                            borderRadius: '50%',
-                            backgroundColor: '#1890ff',
-                            color: 'white',
-                            border: 'none',
-                          }}
-                        />
-                      </Upload>
-                    )}
-                  </div>
-                  <Title level={4}>{userDetailData?.fullName || userLogin?.fullName}</Title>
-                  <p>{userDetailData?.email || userLogin?.email}</p>
-                  <p>{userLogin?.phone}</p>
-                  <p>{userLogin?.address}</p>
-                </Card>
+                  </Upload>
+                )}
+              </div>
+              <Title level={4}>{userDetailData?.fullName || userLogin?.fullName}</Title>
+              <p>{userDetailData?.email || userLogin?.email}</p>
+              <p>{userLogin?.phone}</p>
+              <p>{userLogin?.address}</p>
+            </Card>
             <Card
               style={{
                 borderRadius: '10px',
                 backgroundColor: '#ffffff',
                 padding: '10px',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+                boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
               }}
             >
               <Menu mode="vertical" defaultSelectedKeys={['1']} style={{ border: 'none', backgroundColor: 'transparent' }} items={[
@@ -256,12 +263,10 @@ const Profile = () => {
                 borderRadius: '10px',
                 boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
                 padding: '24px',
-                backgroundColor: '#ffffff'
+                backgroundColor: '#ffffff',
               }}
             >
               <Row gutter={24}>
-                
-
                 <Col span={24}>
                   <Title level={3} style={{ color: '#EC407A' }}>Thông tin cá nhân</Title>
                   <Form
@@ -318,12 +323,7 @@ const Profile = () => {
                             <Button type="primary" onClick={() => profileForm.submit()} style={{ width: '48%' }}>
                               Lưu
                             </Button>
-                            <Button onClick={() => {
-                              setIsEditing(false);
-                              setPreviewAvatar(userDetailData.avatar);
-                              setAvatarFile(null);
-                              profileForm.resetFields();
-                            }} style={{ width: '48%' }}>
+                            <Button onClick={handleCancelEdit} style={{ width: '48%' }}>
                               Hủy
                             </Button>
                           </>
@@ -339,14 +339,14 @@ const Profile = () => {
                       backgroundColor: '#f9f9f9',
                       padding: '20px',
                       borderRadius: '8px',
-                      boxShadow: '0 2px 10px rgba(0,0,0,0.2)'
+                      boxShadow: '0 2px 10px rgba(0,0,0,0.2)',
                     }}
                   >
                     <p><strong>Gói hiện tại:</strong> {userPackage ? userPackage.name : 'Free'}</p>
                     <p><strong>Ngày bắt đầu:</strong> {subscriptionDetails?.[0]?.startDate || 'Không có'}</p>
                     <p><strong>Ngày hết hạn:</strong> {subscriptionDetails?.[0]?.endDate || 'Không có'}</p>
                   </Card>
-                  {/*lich su thanh toan */}
+                  {/* Lịch sử thanh toán */}
                   <Title level={3} style={{ color: '#EC407A' }}>Lịch sử thanh toán</Title>
                   <Table
                     columns={paymentHistoryColumns}

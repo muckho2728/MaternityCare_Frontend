@@ -9,9 +9,25 @@ const Header = () => {
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [notifications, setNotifications] = useState([]);
+    const [currentPackage, setCurrentPackage] = useState("Free"); 
     const notificationRef = useRef(null);
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchCurrentUser = async () => {
+            try {
+                const response = await api.get(`/authentications/current-user`);
+                setCurrentPackage(response.data.subscription); 
+            } catch (error) {
+                console.error("Error fetching current user:", error);
+            }
+        };
+
+        if (token) { 
+            fetchCurrentUser();
+        }
+    }, [token]);
 
     useEffect(() => {
         if (!token) return;
@@ -37,6 +53,16 @@ const Header = () => {
 
         fetchReminders();
     }, [token]);
+
+    const handleNavigation = (path) => {
+        console.log(path)
+        console.log(currentPackage)
+        if (currentPackage === "Free" && (path === "create-fetus" || path === "booking")) {
+            alert("Vui lòng nâng cấp gói để sử dụng tính năng này!");
+            return; 
+        }
+        navigate(path); 
+    };
 
     const handleLogout = () => {
         logout();
@@ -72,6 +98,7 @@ const Header = () => {
 
                 <nav className="main-nav">
                     <ul className="nav-list">
+                        {/* Diễn Đàn - Luôn có thể truy cập */}
                         <li><Link to="/community">Diễn Đàn</Link></li>
                         <li><Link to="/create-fetus">Đăng ký thông tin thai nhi</Link></li>
                         <li><Link to="/package-list">Dịch Vụ</Link></li>
@@ -90,7 +117,6 @@ const Header = () => {
                         </button>
                     </div>
 
-                    {/* 🔔 Nút thông báo với số lượng */}
                     <div className="notification-container">
                         <button className="notification-button" onClick={toggleNotifications}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
