@@ -14,11 +14,12 @@ import intro2 from '../../assets/intro2.jpg';
 import intro3 from '../../assets/intro3.jpg';
 import intro4 from '../../assets/intro4.jpg';
 import { useState, useEffect } from 'react';
-import api from  '../../config/api';
+import api from '../../config/api';
+
 const Home = () => {
     const navigate = useNavigate();
     const [currentWeek, setCurrentWeek] = useState(2);
-    const [currentPackage, setCurrentPackage] = useState("Free"); 
+    const [currentPackage, setCurrentPackage] = useState("Free");
 
     useEffect(() => {
         const fetchCurrentUser = async () => {
@@ -28,23 +29,22 @@ const Home = () => {
                     setCurrentWeek(parseInt(storedWeek, 10));
                 }
 
-                const response = await api.get(`/authentications/current-user`);
-                setCurrentPackage(response.data);
+                const response = await api.get('/authentications/current-user');
+                setCurrentPackage(response.data.subscription); // Giả sử subscription là trường chứa thông tin gói
             } catch (error) {
-                console.error("error fetching current user: ", error);
+                console.error("Error fetching current user: ", error);
             }
         };
         fetchCurrentUser();
     }, []);
 
-
     const handleNavigation = (path) => {
-        if(currentPackage === "Free" && (path === "create-fetus" || path === "booking")) {
+        if (currentPackage === "Free" && (path.includes("pregnancy") || path.includes("booking"))) {
             alert("Vui lòng nâng cấp gói để sử dụng tính năng này!");
             return;
         }
         navigate(path);
-    }
+    };
 
     return (
         <div className="home">
@@ -69,38 +69,38 @@ const Home = () => {
 
                     <div className="feature-container">
                         <div
-                            className={`feature-card ${currentPackage === "free" ? "disabled" : ""}`}
+                            className={`feature-card ${currentPackage === "Free" ? "disabled" : ""}`}
                             onClick={() => handleNavigation(`/pregnancy/${currentWeek}`)}
                         >
                             <img src={pregnancy} alt="Theo dõi thai kỳ" />
                             <h3>Theo dõi thai kỳ</h3>
                             <p>Cập nhật sự phát triển của bé theo từng tuần.</p>
-                            {currentPackage === "free" && <div className="overlay">Vui lòng nâng cấp gói</div>}
+                            {currentPackage === "Free" && <div className="overlay">Vui lòng nâng cấp gói</div>}
                         </div>
-                        <div className={`feature-card ${currentPackage === "free" ? "disabled" : ""}`}
-                            onClick={() => handleNavigation(`/booking/${currentWeek}`)}>
+                        <div
+                            className={`feature-card ${currentPackage === "Free" ? "disabled" : ""}`}
+                            onClick={() => handleNavigation('/booking')}
+                        >
                             <img src={booking} alt="Đặt lịch khám" />
                             <h3>Đặt lịch khám</h3>
                             <p>Đặt lịch hẹn với bác sĩ.</p>
-                            {currentPackage === "free" && <div className="overlay">Vui lòng nâng cấp gói</div>}
+                            {currentPackage === "Free" && <div className="overlay">Vui lòng nâng cấp gói</div>}
                         </div>
                         <div
-                            className={`feature-card ${currentPackage === "free" ? "disabled" : ""}`}
+                            className="feature-card"
                             onClick={() => handleNavigation('/package-list')}
                         >
                             <img src={packageImg} alt="Dịch vụ chăm sóc" />
                             <h3>Dịch vụ</h3>
                             <p>Các dịch vụ hỗ trợ sức khỏe mẹ và bé.</p>
-                            {currentPackage === "free" && <div className="overlay">Vui lòng nâng cấp gói</div>}
                         </div>
                         <div
-                            className={`feature-card ${currentPackage === "free" ? "disabled" : ""}`}
+                            className="feature-card"
                             onClick={() => handleNavigation('/community')}
                         >
                             <img src={communityImg} alt="Diễn đàn mẹ bầu" />
                             <h3>Diễn đàn mẹ bầu</h3>
                             <p>Kết nối và chia sẻ với các mẹ bầu khác.</p>
-                            {currentPackage === "free" && <div className="overlay">Vui lòng nâng cấp gói</div>}
                         </div>
                     </div>
 
