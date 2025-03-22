@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Button, Col, Radio, Drawer, Row, Modal, Form, Input, Select, Upload, Table } from 'antd';
+import { Button, Col, Radio, Drawer, Row, Modal, Form, Input, Upload, Table } from 'antd';
 import { EyeOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import styles from '../../assets/ManageUsersPage.module.scss';
 import { fetchUsersAction, updateUserByIdAction, fetchUserByIdAction, activateUserAction } from '../../store/redux/action/userAction';
 import { useDispatch, useSelector } from 'react-redux';
 
 const { confirm } = Modal;
-const { Option } = Select;
+// const { Option } = Select;
 
 const ManageUsersPage = () => {
   const [open, setOpen] = useState(false);
@@ -17,12 +17,12 @@ const ManageUsersPage = () => {
   const [searchValue, setSearchValue] = useState('');
   const [previewAvatar, setPreviewAvatar] = useState('https://via.placeholder.com/150?text=Avatar');
   const [avatarFile, setAvatarFile] = useState(null);
- 
+
 
   const dispatch = useDispatch();
   const usersData = useSelector((state) => state.userReducer.listUser);
   const userDetailData = useSelector((state) => state.userReducer.user);
-  const totalElements = useSelector((state)=>state.userReducer.totalElements)
+  const totalElements = useSelector((state) => state.userReducer.totalElements)
 
   console.log(totalElements)
   const [pagination, setPagination] = useState({
@@ -35,22 +35,18 @@ const ManageUsersPage = () => {
   useEffect(() => {
     console.log(pagination.pageNumber)
     console.log(pagination.pageSize)
-    fetchUsers(pagination.pageNumber,pagination.pageSize);
+    fetchUsers(pagination.pageNumber, pagination.pageSize);
   }, [pagination.pageNumber]);
 
-  const fetchUsers = async (pageNumber,pageSize) => {
+  const fetchUsers = async (pageNumber, pageSize) => {
     try {
       console.log(pageNumber)
       console.log(pageSize)
-      await dispatch(fetchUsersAction(pageNumber,pageSize));
-      
+      await dispatch(fetchUsersAction(pageNumber, pageSize));
+
     } catch (error) {
       console.error('Failed to fetch users:', error);
     }
-  };
-
-  const handleSearch = (value) => {
-    setSearchValue(value.toLowerCase());
   };
 
   const filteredUsersData = Array.isArray(usersData)
@@ -64,7 +60,10 @@ const ManageUsersPage = () => {
         (user.address && user.address.toLowerCase().includes(searchValue));
       return matchesRole && matchesSearch;
     })
-    : [];
+    : [filterRole, searchValue, usersData];
+  const handleSearch = (value) => {
+    setSearchValue(value.toLowerCase());
+  };
 
   const showDrawer = (title, user = null) => {
     setDrawerTitle(title);
@@ -187,14 +186,15 @@ const ManageUsersPage = () => {
     },
   ];
 
-  const handleOnTableChange = (pageNumber , pageSize) => {
-     setPagination((prev) => (
-      {...prev,
-      pageNumber: pageNumber,
-      pageSize: pageSize,
+  const handleOnTableChange = (pageNumber, pageSize) => {
+    setPagination((prev) => (
+      {
+        ...prev,
+        pageNumber: pageNumber,
+        pageSize: pageSize,
       }
-     ))
-     fetchUsers(pageNumber,pageSize)
+    ))
+    fetchUsers(pageNumber, pageSize)
   }
 
   return (
@@ -216,19 +216,19 @@ const ManageUsersPage = () => {
         <Radio.Button value="all">All</Radio.Button>
       </Radio.Group>
       <Table
-        dataSource={usersData}
+        dataSource={filteredUsersData}
         columns={columns}
         rowKey="id"
-        
+
         pagination={
           {
-            current:pagination.pageNumber,
-            pageSize:pagination.pageSize,
-            total:totalElements,
-            onChange:(page , pageSize)=>{
-              handleOnTableChange(page,pageSize);
+            current: pagination.pageNumber,
+            pageSize: pagination.pageSize,
+            total: totalElements,
+            onChange: (page, pageSize) => {
+              handleOnTableChange(page, pageSize);
             },
-            showSizeChanger:false
+            showSizeChanger: false
           }
         }
       />

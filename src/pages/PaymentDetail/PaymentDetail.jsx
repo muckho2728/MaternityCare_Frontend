@@ -81,7 +81,7 @@ const PaymentDetail = () => {
       <Row gutter={16}>
         <Col span={16}>
           <Card title={pkg.type} bordered={true} className="package-card">
-            <p className="package-price"><Text strong>Giá:</Text> {pkg.price} VND</p>
+            <p className="package-price"><Text strong>Giá:</Text> {pkg.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
             <p className="package-duration"><Text strong>Thời hạn:</Text> {pkg.duration} tháng</p>
             <p className="package-features"><Text strong>Tính năng:</Text></p>
             <ul>
@@ -96,7 +96,7 @@ const PaymentDetail = () => {
           <Card className="summary-card" bordered={true}>
             <Title level={4}>Tóm Tắt Thanh Toán</Title>
             <div className="summary-section">
-              <p><Text strong>Tạm tính:</Text> {pkg.price} VND</p>
+              <p><Text strong>Tạm tính:</Text> {pkg.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</p>
             </div>
             {/* Nút "Thanh Toán" với sự kiện onClick */}
             <Button type="primary" block onClick={handlePaymentClick}>
