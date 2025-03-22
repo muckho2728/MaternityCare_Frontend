@@ -185,7 +185,14 @@ const Profile = () => {
 
   const paymentHistoryColumns = [
     { title: 'Id', dataIndex: 'id', key: 'id' },
-    { title: 'Số tiền', dataIndex: 'amount', key: 'amount' },
+    { 
+      title: 'Số tiền', 
+      dataIndex: 'amount', 
+      key: 'amount',
+      render: (text) => {
+        return text.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+      }
+    },
     { title: 'Mô tả', dataIndex: 'description', key: 'description' },
     { title: 'Ngày', dataIndex: 'createdAt', key: 'createdAt' },
     { title: 'Trạng thái', dataIndex: 'status', key: 'status' },

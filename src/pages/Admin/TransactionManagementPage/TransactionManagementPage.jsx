@@ -58,13 +58,13 @@ const TransactionManagementPage = () => {
       title: 'Mô tả',
       dataIndex: 'description',
       key: 'description',
-      render: (text) => text || 'Không có mô tả', // Hiển thị mô tả, nếu không có thì hiển thị "Không có mô tả"
+      render: (text) => text || 'Không có mô tả', 
     },
     {
       title: 'Số tiền',
       dataIndex: 'amount',
       key: 'amount',
-      render: (text) => `${text} VND`, // Định dạng số tiền thành VND
+      render: (text) => `${text.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}`,
     },
     {
       title: 'Trạng thái',

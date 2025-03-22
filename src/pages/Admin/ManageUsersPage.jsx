@@ -49,10 +49,6 @@ const ManageUsersPage = () => {
     }
   };
 
-  const handleSearch = (value) => {
-    setSearchValue(value.toLowerCase());
-  };
-
   const filteredUsersData = Array.isArray(usersData)
     ? usersData.filter((user) => {
       const userRole = user.role?.name?.toLowerCase() || '';
@@ -65,6 +61,9 @@ const ManageUsersPage = () => {
       return matchesRole && matchesSearch;
     })
     : [];
+    const handleSearch = (value) => {
+      setSearchValue(value.toLowerCase());
+    };
 
   const showDrawer = (title, user = null) => {
     setDrawerTitle(title);
