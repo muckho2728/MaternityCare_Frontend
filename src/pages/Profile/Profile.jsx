@@ -176,6 +176,23 @@ const Profile = () => {
     return false;
   };
 
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setPreviewAvatar(userDetailData.avatar);
+    setAvatarFile(null);
+    profileForm.setFieldsValue({
+      roleId: userDetailData.role?.name || '',
+      username: userDetailData?.username,
+      email: userDetailData?.email,
+      fullName: userDetailData?.fullName,
+      dateOfBirth: userDetailData?.dateOfBirth,
+      avatar: userDetailData?.avatar,
+      experience: userDetailData?.experience,
+      status: userDetailData?.status,
+      cccd: userDetailData?.cccd,
+    });
+  };
+
   const paymentHistoryColumns = [
     { title: 'Id', dataIndex: 'id', key: 'id' },
     { title: 'Số tiền', dataIndex: 'amount', key: 'amount' },
@@ -318,12 +335,7 @@ const Profile = () => {
                             <Button type="primary" onClick={() => profileForm.submit()} style={{ width: '48%' }}>
                               Lưu
                             </Button>
-                            <Button onClick={() => {
-                              setIsEditing(false);
-                              setPreviewAvatar(userDetailData.avatar);
-                              setAvatarFile(null);
-                              profileForm.resetFields();
-                            }} style={{ width: '48%' }}>
+                            <Button onClick={handleCancelEdit} style={{ width: '48%' }}>
                               Hủy
                             </Button>
                           </>
