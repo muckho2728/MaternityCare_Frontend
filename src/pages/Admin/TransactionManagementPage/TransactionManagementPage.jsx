@@ -64,8 +64,9 @@ const TransactionManagementPage = () => {
       title: 'Số tiền',
       dataIndex: 'amount',
       key: 'amount',
-      render: (text) => `${text} VND`, // Định dạng số tiền thành VND
+      render: (text) => `${text.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}`,
     },
+
     {
       title: 'Trạng thái',
       dataIndex: 'status',

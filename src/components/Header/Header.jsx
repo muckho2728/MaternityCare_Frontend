@@ -9,9 +9,38 @@ const Header = () => {
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [notifications, setNotifications] = useState([]);
+    const [currentPackage, setCurrentPackage] = useState("Free");
     const notificationRef = useRef(null);
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const fetchCurrentUser = async () => {
+            try {
+                const response = await api.get('/authentications/current-user');
+                setCurrentPackage(response.data.subscription);
+            } catch (error) {
+                console.error("Error fetching current user:", error);
+            }
+        };
+
+        if (token) fetchCurrentUser();
+    }, [token]);
+
+    const checkPermission = async (e, url) => {
+        try {
+            const response = await api.get('/authentications/current-user');
+            if (response.data.subscription === "Free") {
+                alert("Vui lòng nâng cấp gói để sử dụng tính năng này!");
+                e.preventDefault();
+            } else {
+                navigate(url);
+            }
+            setCurrentPackage(response.data.subscription);
+        } catch (error) {
+            console.error("Error fetching current user:", error);
+        }
+    };
 
     useEffect(() => {
         if (!token) return;
@@ -63,7 +92,7 @@ const Header = () => {
     return (
         <header className="header">
             <div className="header-container">
-                <div className="logo-section"  onClick={() => navigate('/')}>
+                <div className="logo-section" onClick={() => navigate('/')}>
                     <Link to="/src/assets/Vector.png" className="logo-link">
                         <img src="/src/assets/Vector.png" alt="Baby Logo" className="logo" />
                         <span className="brand-name">Maternity Care</span>
@@ -73,9 +102,23 @@ const Header = () => {
                 <nav className="main-nav">
                     <ul className="nav-list">
                         <li><Link to="/community">Diễn Đàn</Link></li>
-                        <li><Link to="/create-fetus">Đăng ký thông tin thai nhi</Link></li>
+                        <li>
+                            <Link
+                                className={currentPackage === "Free" ? "disabled" : ""}
+                                onClick={(e) => checkPermission(e, "/create-fetus")}
+                            >
+                                Đăng ký thông tin thai nhi
+                            </Link>
+                        </li>
                         <li><Link to="/package-list">Dịch Vụ</Link></li>
-                        <li><Link to="/booking">Đặt Lịch</Link></li>
+                        <li>
+                            <Link
+                                className={currentPackage === "Free" ? "disabled" : ""}
+                                onClick={(e) => checkPermission(e, "/booking")}
+                            >
+                                Đặt Lịch
+                            </Link>
+                        </li>
                     </ul>
                 </nav>
 
@@ -131,7 +174,7 @@ const Header = () => {
                         </div>
                     ) : (
                         <div className="auth-links">
-                            <Link to="/login" className="login-link">Đăng nhập</Link> 
+                            <Link to="/login" className="login-link">Đăng nhập</Link>
                             <Link to="/register" className="register-link">/Đăng Ký</Link>
                         </div>
                     )}
