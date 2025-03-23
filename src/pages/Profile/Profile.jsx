@@ -200,8 +200,8 @@ const Profile = () => {
   ];
 
   return (
-    <Layout style={{ backgroundColor: 'transparent' }}>
-      <Content style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto', background:'transparent' }}>
+    <Layout style={{ backgroundColor: '#f0f2f5' }}>
+      <Content style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto', background: '#f2fffa8f' }}>
         <Row gutter={24}>
           <Col span={6}>
             <Card span={0} style={{ textAlign: 'center' }}>
