@@ -64,7 +64,7 @@ const PackageList = () => {
             <Col span={8} key={pkg.id}>
               <Card title={pkg.type} bordered={true} className="package-card">
                 <div className="package-container">
-                  <p className="package-price">Giá: {pkg.price === 0 ? 'Miễn phí' : `${pkg.price} VND`}</p>
+                  <p className="package-price">Giá: {pkg.price === 0 ? 'Miễn phí' : `${pkg.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} `}</p>
                   <p className="package-duration">Thời hạn: {pkg.duration} tháng</p>
                   <p className="package-features">Tính năng: </p>
                 </div>
