@@ -176,6 +176,23 @@ const Profile = () => {
     return false;
   };
 
+  const handleCancelEdit = () => {
+    setIsEditing(false);
+    setPreviewAvatar(userDetailData.avatar);
+    setAvatarFile(null);
+    profileForm.setFieldsValue({
+      roleId: userDetailData.role?.name || '',
+      username: userDetailData?.username,
+      email: userDetailData?.email,
+      fullName: userDetailData?.fullName,
+      dateOfBirth: userDetailData?.dateOfBirth,
+      avatar: userDetailData?.avatar,
+      experience: userDetailData?.experience,
+      status: userDetailData?.status,
+      cccd: userDetailData?.cccd,
+    });
+  };
+
   const paymentHistoryColumns = [
     { title: 'Id', dataIndex: 'id', key: 'id' },
     { title: 'Số tiền', dataIndex: 'amount', key: 'amount' },
@@ -186,8 +203,8 @@ const Profile = () => {
   ];
 
   return (
-    <Layout style={{ backgroundColor: '#f0f2f5' }}>
-      <Content style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto', background: '#f2fffa8f' }}>
+    <Layout style={{ backgroundColor: 'transparent' }}>
+      <Content style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto', background: 'transparent' }}>
         <Row gutter={24}>
           <Col span={6}>
             <Card span={0} style={{ textAlign: 'center' }}>
@@ -319,12 +336,7 @@ const Profile = () => {
                             <Button type="primary" onClick={() => profileForm.submit()} style={{ width: '48%' }}>
                               Lưu
                             </Button>
-                            <Button onClick={() => {
-                              setIsEditing(false);
-                              setPreviewAvatar(userDetailData.avatar);
-                              setAvatarFile(null);
-                              profileForm.resetFields();
-                            }} style={{ width: '48%' }}>
+                            <Button onClick={handleCancelEdit} style={{ width: '48%' }}>
                               Hủy
                             </Button>
                           </>

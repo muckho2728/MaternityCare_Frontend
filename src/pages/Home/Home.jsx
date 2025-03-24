@@ -14,21 +14,31 @@ import intro2 from '../../assets/intro2.jpg';
 import intro3 from '../../assets/intro3.jpg';
 import intro4 from '../../assets/intro4.jpg';
 import { useState, useEffect } from 'react';
-
+import api from '../../config/api';
 const Home = () => {
     const navigate = useNavigate();
     const [currentWeek, setCurrentWeek] = useState(2);
-    const [currentPackage, setCurrentPackage] = useState("free"); // Thêm state currentPackage
-
+    const [currentPackage, setCurrentPackage] = useState("Free"); 
+    
     useEffect(() => {
-        const storedWeek = localStorage.getItem('currentWeek');
-        if (storedWeek) {
-            setCurrentWeek(parseInt(storedWeek, 10));
-        }
+        const fetchCurrentUser = async () => {
+            try {
+                const storedWeek = localStorage.getItem('currentWeek');
+                if (storedWeek) {
+                    setCurrentWeek(parseInt(storedWeek, 10));
+                }
+
+                const response = await api.get(`/authentications/current-user`);
+                setCurrentPackage(response.data.subscription);
+            } catch (error) {
+                console.error("error fetching current user: ", error);
+            }
+        };
+        fetchCurrentUser();
     }, []);
 
     const handleNavigation = (path) => {
-        if (currentPackage === "free" && path !== "/booking") {
+        if (currentPackage === "Free" && (path.includes("pregnancy") || path.includes("booking"))) {
             alert("Vui lòng nâng cấp gói để sử dụng tính năng này!");
             return; 
         }

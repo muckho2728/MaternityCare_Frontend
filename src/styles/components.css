@@ -319,7 +319,7 @@ body {
     border: none;
     cursor: pointer;
     font-size: 18px;
-    color: #4a235a;
+    color: #ffffff;
 }
 
 .notification-button:hover {
@@ -349,11 +349,11 @@ body {
     background: none;
     border: none;
     cursor: pointer;
-    color: #4a235a;
+    color: #ffffff;
 }
 
 .profile-button:hover {
-    color: #f6ef8b;
+    color: #f4e513;
 }
 
 
@@ -374,14 +374,14 @@ body {
 .dropdown-item {
     display: block;
     padding: 10px;
-    color: #4a235a;
+    color: #4caf93;
     text-decoration: none;
     font-size: 14px;
     transition: 0.3s;
 }
 
 .dropdown-item:hover {
-    background: #2f7119;
+    background: #00897b;
     color: white;
 }
 
@@ -397,7 +397,7 @@ body {
 
 .theme-toggle label {
     font-size: 14px;
-    color: #4a235a;
+    color: #ffffff;
     cursor: pointer;
 }
 
@@ -405,7 +405,7 @@ body {
     width: 40px;
     height: 20px;
     appearance: none;
-    background: #ff66a3;
+    /* background: #ff66a3; */
     border-radius: 20px;
     position: relative;
     cursor: pointer;

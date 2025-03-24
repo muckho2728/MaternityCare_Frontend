@@ -66,7 +66,7 @@ export default function ManagePackagePage() {
             title: 'Giá',
             dataIndex: 'price',
             key: 'price',
-            render: (text) => `${text} VND`,
+            render: (text) => `${text.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}`,
         },
         {
             title: 'Thời hạn',
