@@ -20,7 +20,7 @@ const Blog = () => {
   const [newComments, setNewComments] = useState({});
   const [editCommentId, setEditCommentId] = useState(null);
   const [editContent, setEditContent] = useState("");
-  const [currentBlogId, setCurrentBlogId] = useState(null);
+  const [setCurrentBlogId] = useState(null);
   const [likesByBlog, setLikesByBlog] = useState({});
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -55,7 +55,7 @@ const Blog = () => {
   }, []);
 
   useEffect(() => {
-    let mounted = true;
+    // let mounted = true;
     const fetchData = async () => {
       setIsLoading(true);
       await Promise.all([fetchBlogs(), fetchTags(), fetchCurrentUser()]);

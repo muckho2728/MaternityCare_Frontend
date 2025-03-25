@@ -139,15 +139,28 @@ const handleCTAClick = () => {
 
                 <div className="package-actions">
                   {pkg.price !== 0 ? (
-                    currentPackage === "Premium" ? (
-                      <span className="current-package-label">🎉 Bạn đang sử dụng gói Cao Cấp</span>
+                    currentPackage === pkg.type ? (
+                      <>
+                        <span className="current-package-label">🎉 Gói hiện tại của bạn</span>
+                        <br /> {/* Xuống dòng */}
+                        <Button type="primary" className="feedback-btn" onClick={() => navigate('/feedback')}>
+                          Gửi Feedback
+                        </Button>
+                      </>
                     ) : (
-                      <Button type="primary" className="buy-btn" onClick={() => handleBuyClick(pkg.id)}>Nâng Cấp Ngay</Button>
+                      <Button 
+                        type="primary" 
+                        className="buy-btn" 
+                        onClick={() => userId ? handleBuyClick(pkg.id) : navigate('/register')}
+                      >
+                        {userId ? "Nâng Cấp Ngay" : "Đăng Ký Ngay"}
+                      </Button>
                     )
                   ) : (
                     currentPackage === "Free" && <span className="current-package-label">🎉 Gói hiện tại của bạn</span>
                   )}
                 </div>
+
               </Card>
             </Col>
           ))}
