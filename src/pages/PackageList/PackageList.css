@@ -1,118 +1,144 @@
-/* Định dạng tổng thể */
 .package-list {
-    width: 90%;
-    max-width: 1200px;
-    margin: 40px auto;
-    padding: 20px;
-    background: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Header */
-  .package-list-header {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .package-list-header h2 {
-    font-size: 32px;
-    font-weight: bold;
-    color: #4caf93;
-  }
-  
-  /* Nội dung chính */
-  .package-list-content {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-  }
-  
-  /* Card gói */
-  .package-card {
-    background: #fff;
-    border-radius: 10px !important;
-    overflow: hidden;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  }
-  
-  .package-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Nội dung bên trong card */
-  .package-container {
-    padding: 10px 15px;
-    text-align: center;
-  }
-  
-  .package-price {
-    font-size: 18px;
-    font-weight: bold;
-    color: #4caf93;
-    margin: 5px 0;
-  }
-  
-  .package-duration {
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 10px;
-  }
-  
-  .package-features {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  /* Danh sách tính năng */
-  .package-features-container {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    text-align: left;
-  }
-  
-  .package-features-container li {
-    padding: 8px 10px;
-    border-bottom: 1px solid #eee;
-    font-size: 14px;
-    color: #555;
-  }
-  
-  .package-features-container li:last-child {
-    border-bottom: none;
-  }
-  
-  /* Nút mua hoặc feedback */
-  .package-card button {
-    width: 100px;
-    padding: 8px 12px;
-    font-size: 14px;
-    border-radius: 5px;
-    transition: all 0.2s ease-in-out;
-  }
-  
-  .package-card button:first-child {
-    background: #4caf93;
-    color: white;
-    border: none;
-  }
-  
-  .package-card button:first-child:hover {
-    background: #4caf93;
-  }
-  
-  .package-card button:last-child {
-    background: #4caf93;
-    color: white;
-    border: none;
-  }
-  
-  .package-card button:last-child:hover {
-    background: #4caf93;
-  }
-  
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* 🌟 Hero Section */
+.hero-section {
+  text-align: center;
+  background: #e0f2f1;
+  padding: 40px 20px;
+  border-radius: 10px;
+}
+.hero-section h1 {
+  color: #00796b;
+}
+.hero-section p {
+  font-size: 18px;
+  color: #333;
+}
+
+/* 📊 Bảng So Sánh */
+.comparison-section {
+  margin: 40px 0;
+}
+.comparison-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* 💳 Gói Dịch Vụ */
+.package-list-content h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.package-card {
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+.package-card:hover {
+  transform: scale(1.05);
+}
+.package-card.current-package {
+  border: 2px solid #00796b;
+  background: #e0f2f1;
+}
+
+/* 🔥 CTA Cuối Trang */
+.cta-section {
+  text-align: center;
+  background: #00796b;
+  color: white;
+  padding: 30px;
+  margin-top: 40px;
+  border-radius: 10px;
+}
+.cta-section h2 {
+  color: white;
+}
+.cta-section p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+.cta-section .ant-btn-primary {
+  background: #ffcc80;
+  border-color: #ffcc80;
+  color: #333;
+  font-weight: bold;
+}
+/* 📦 Chọn Gói Dịch Vụ */
+.package-list-content {
+  text-align: center;
+  margin: 50px 0;
+}
+.package-list-content h2 {
+  font-size: 26px;
+  font-weight: bold;
+  color: #00796b;
+}
+.package-description {
+  font-size: 18px;
+  color: #555;
+  max-width: 600px;
+  margin: 0 auto 30px;
+}
+
+/* 💳 Thiết kế Card */
+.package-card {
+  text-align: center;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+.package-card:hover {
+  transform: translateY(-5px);
+}
+.package-card.current-package {
+  border: 2px solid #00796b;
+  background: #e0f2f1;
+}
+.package-card.highlight-package {
+  border: 2px solid #ff9800;
+  background: #fff3e0;
+}
+
+/* 💰 Giá và thời hạn */
+.package-price {
+  font-size: 22px;
+  font-weight: bold;
+  color: #00796b;
+  margin-bottom: 10px;
+}
+.package-duration {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 15px;
+}
+
+/* ✅ Danh sách tính năng */
+.package-features {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  margin: 0 auto 15px;
+  max-width: 250px;
+}
+.package-features li {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+/* 🛒 Nút CTA */
+.buy-btn {
+  background: #ff9800;
+  border-color: #ff9800;
+  color: white;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+.buy-btn:hover {
+  background: #e68900;
+}
