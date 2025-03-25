@@ -55,7 +55,7 @@ const Blog = () => {
   }, []);
 
   useEffect(() => {
-    // let mounted = true;
+    let mounted = true;
     const fetchData = async () => {
       setIsLoading(true);
       await Promise.all([fetchBlogs(), fetchTags(), fetchCurrentUser()]);
