@@ -82,7 +82,7 @@ const PaymentDetail = () => {
         <Col span={16}>
           <Card title={pkg.type} bordered={true} className="package-card">
             <p className="package-price"><Text strong>Giá:</Text> {pkg.price} VND</p>
-            <p className="package-duration"><Text strong>Thời hạn:</Text> {pkg.duration}</p>
+            <p className="package-duration"><Text strong>Thời hạn:</Text> {pkg.duration} tháng</p>
             <p className="package-features"><Text strong>Tính năng:</Text></p>
             <ul>
               {pkg.feature.split(';').map((feature, index) => (

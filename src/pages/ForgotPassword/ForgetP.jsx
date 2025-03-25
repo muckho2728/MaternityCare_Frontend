@@ -4,6 +4,7 @@ import { BiLoaderAlt } from "react-icons/bi";
 import api from '../../constants/axios';
 import { toast } from 'react-toastify';
 import { Link, useNavigate } from 'react-router-dom';
+import './ForgotPass.css'
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -62,20 +63,24 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="container">
-      <h1 className="title">Quên mật khẩu</h1>
-      <Link to="/login" className="back-to-login">Quay lại đăng nhập</Link>
+    <div className="container1">
+      <h1 className="title1">Quên mật khẩu</h1>
+      
       {stage === "email" && (
-        <div className="input-container">
-          <FiMail className="icon" />
+        <div className="input-container1">
+          <div>
+          <FiMail className="icon1" />
           <input type="email" placeholder="Nhập email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          </div>
+          
           <button onClick={handleSendToken} disabled={loading}>
-            {loading ? <BiLoaderAlt className="animate-spin" /> : 'Gửi mã'}
+            {loading ? <BiLoaderAlt className="animate-spin1" /> : 'Gửi mã'}
           </button>
         </div>
       )}
+      <Link to="/login" className="back-to-login1">Quay lại đăng nhập</Link>
       {stage === "verification" && (
-        <div className="input-container">
+        <div className="input-container11">
           <input type="text" placeholder="Nhập mã OTP" value={token} onChange={(e) => setToken(e.target.value)} />
           <button onClick={() => setStage("reset")}>
             Xác minh
@@ -83,8 +88,8 @@ const ForgotPassword = () => {
         </div>
       )}
       {stage === "reset" && (
-        <div className="input-container">
-          <FiLock className="icon" />
+        <div className="input-container1">
+          <FiLock className="icon1" />
           <input type={showPassword ? "text" : "password"} placeholder="Mật khẩu mới" value={password} onChange={(e) => setPassword(e.target.value)} />
           <button onClick={() => setShowPassword(!showPassword)}>
             {showPassword ? <FiEyeOff /> : <FiEye />}
@@ -94,7 +99,7 @@ const ForgotPassword = () => {
             {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
           </button>
           <button onClick={handlePasswordReset} disabled={loading}>
-            {loading ? <BiLoaderAlt className="animate-spin" /> : 'Đặt lại mật khẩu'}
+            {loading ? <BiLoaderAlt className="animate-spin1" /> : 'Đặt lại mật khẩu'}
           </button>
         </div>
       )}

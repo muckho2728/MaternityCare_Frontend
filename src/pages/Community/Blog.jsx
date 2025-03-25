@@ -22,6 +22,7 @@ const Blog = () => {
   const [editContent, setEditContent] = useState("");
   const [currentBlogId, setCurrentBlogId] = useState(null);
   const [likesByBlog, setLikesByBlog] = useState({});
+  const [currentUser, setCurrentUser] = useState(null);
 
   const filteredBlogs = Array.isArray(blogs)
     ? blogs.filter(
@@ -31,6 +32,27 @@ const Blog = () => {
           blog.content.toLowerCase().includes(searchTerm.toLowerCase()))
     )
     : [];
+
+  useEffect(() => {
+    const fetchCurrentUser = async (url) => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.error('No token found');
+        return;
+      }
+
+      try {
+        const response = await api.get(url, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setCurrentUser(response.data); // Thiết lập currentUser
+      } catch (error) {
+        console.error('Failed to fetch current user:', error);
+      }
+    };
+
+    fetchCurrentUser('https://maternitycare.azurewebsites.net/api/authentications/current-user');
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -119,7 +141,10 @@ const Blog = () => {
       return;
     }
 
-    const currentLikeData = likesByBlog[blogId] || { isLiked: false, likeCount: 0 };
+    const currentLikeData = likesByBlog[blogId] || {
+      isLiked: false,
+      likeCount: 0,
+    };
     console.log("Current Like Data before update:", currentLikeData);
 
     const newIsLiked = !currentLikeData.isLiked;
@@ -141,8 +166,8 @@ const Blog = () => {
         url: `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/users/${userId}/likes`,
         method: currentLikeData.isLiked ? "DELETE" : "POST",
         headers: {
-          "accept": "*/*",
-          "Authorization": `Bearer ${token}`,
+          accept: "*/*",
+          Authorization: `Bearer ${token}`,
         },
       });
       console.log("Like/Unlike API Response Status:", response.status);
@@ -150,9 +175,15 @@ const Blog = () => {
 
       // Đồng bộ lại dữ liệu từ server
       await fetchLikeData(blogId);
-      toast.success(newIsLiked ? "Đã thích bài viết!" : "Đã bỏ thích bài viết!");
+      toast.success(
+        newIsLiked ? "Đã thích bài viết!" : "Đã bỏ thích bài viết!"
+      );
     } catch (error) {
-      console.error("Lỗi khi cập nhật like:", error.response?.status, error.response?.data);
+      console.error(
+        "Lỗi khi cập nhật like:",
+        error.response?.status,
+        error.response?.data
+      );
       toast.error("Lỗi khi cập nhật like.");
       setLikesByBlog((prev) => ({
         ...prev,
@@ -163,6 +194,7 @@ const Blog = () => {
 
   const fetchComments = async (blogId, pageNumber = 1) => {
     try {
+      console.log(currentUser);
       const response = await api.get(
         `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/comments?PageNumber=${pageNumber}&PageSize=${pageSize}`
       );
@@ -170,7 +202,7 @@ const Blog = () => {
         ...prev,
         [blogId]: response.data.map((comment) => ({
           id: comment.id,
-          user: comment.author?.name || "Ẩn danh",
+          user: comment.userId === currentUser?.id ? currentUser.fullName : "Ẩn Danh",
           text: comment.content,
         })),
       }));
@@ -194,13 +226,14 @@ const Blog = () => {
         [blogId]: [
           {
             id: response.data.id,
-            user: response.data.author?.name || "Bạn",
+            user: userId === currentUser?.id ? currentUser.fullName : "Bạn",
             text: commentText,
           },
           ...(prev[blogId] || []),
         ],
       }));
       setNewComments((prev) => ({ ...prev, [blogId]: "" }));
+      console.log(response.data);
     } catch (error) {
       console.error("Lỗi khi đăng bình luận:", error);
       toast.error("Lỗi khi đăng bình luận.");
@@ -230,7 +263,9 @@ const Blog = () => {
       setCommentsByBlog((prev) => ({
         ...prev,
         [blogId]: prev[blogId].map((comment) =>
-          comment.id === editCommentId ? { ...comment, text: editContent } : comment
+          comment.id === editCommentId
+            ? { ...comment, text: editContent }
+            : comment
         ),
       }));
       setEditCommentId(null);
@@ -253,7 +288,7 @@ const Blog = () => {
         `https://maternitycare.azurewebsites.net/api/users/${userId}/comments/${commentId}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Sửa lỗi chính tả "Baerer" thành "Bearer"
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -271,7 +306,9 @@ const Blog = () => {
   return (
     <div className="blog-container">
       <h1 className="blog-title">Diễn Đàn Mẹ Bầu</h1>
-      <p className="blog-description">Chia sẻ kinh nghiệm với cộng đồng mẹ bầu!</p>
+      <p className="blog-description">
+        Chia sẻ kinh nghiệm với cộng đồng mẹ bầu!
+      </p>
 
       <div className="blog-controls">
         <div className="blog-search">
@@ -311,28 +348,36 @@ const Blog = () => {
         </div>
       </div>
 
-      {selectedTag && (
+      {/* {selectedTag && (
         <div className="selected-tag">
           <span>Bạn đang xem bài viết có tag: </span>
           <span className="selected-tag-name">
-            {tags.find((tag) => tag.id === selectedTag)?.name || "Không xác định"}
+            {tags.find((tag) => tag.id === selectedTag)?.name ||
+              "Không xác định"}
           </span>
           <button className="clear-tag-btn" onClick={() => setSelectedTag("")}>
             Xóa lọc
           </button>
         </div>
-      )}
+      )} */}
 
       <div className="blog-list">
         {isLoading ? (
           <p>Đang tải...</p>
         ) : filteredBlogs.length > 0 ? (
           filteredBlogs.map((blog) => {
-            const likeData = likesByBlog[blog.id] || { isLiked: false, likeCount: 0 };
+            const likeData = likesByBlog[blog.id] || {
+              isLiked: false,
+              likeCount: 0,
+            };
             return (
               <div className="body-blog" key={blog.id}>
                 {blog.image && (
-                  <img src={blog.image} alt={blog.title} className="blog-image" />
+                  <img
+                    src={blog.image}
+                    alt={blog.title}
+                    className="blog-image"
+                  />
                 )}
                 <div className="blog-content">
                   <h2 className="blog-title">{blog.title}</h2>
@@ -343,11 +388,23 @@ const Blog = () => {
                       <span className="blog-tag no-tag">Chưa có tag</span>
                     )}
                   </div>
+                  <input
+                    type="checkbox"
+                    id={`toggle-${blog.id}`}
+                    className="blog-toggle"
+                  />
                   <p className="blog-summary">
-                    {blog.content.length > 150
+                    {blog.content.length < 150
                       ? `${blog.content.substring(0, 150)}...`
                       : blog.content}
                   </p>
+
+                  {blog.content.length > 150 && (
+                    <label
+                      htmlFor={`toggle-${blog.id}`}
+                      className="blog-toggle-label"
+                    ></label>
+                  )}
                   <div className="blog-info">
                     <span className="blog-time">
                       <button
@@ -360,19 +417,31 @@ const Blog = () => {
                           marginRight: "5px",
                         }}
                       >
-                        {likeData.isLiked ? <FaHeart color="red" /> : <FaRegHeart />}
+                        {likeData.isLiked ? (
+                          <FaHeart color="red" />
+                        ) : (
+                          <FaRegHeart />
+                        )}
                       </button>
-                      {likeData.likeCount} Likes •{" "}
-                      {new Date(blog.createdAt).toLocaleDateString()}
+                      {likeData.likeCount} Likes
                     </span>
-                    <span className="blog-comments">
+                    <span
+                      onClick={(e) => {
+                        fetchComments(blog.id);
+                        e.target.classList.toggle("active"); // Chỉ toggle class, không sửa JSX
+                      }}
+                      style={{ marginTop: "10px", cursor: "pointer" }}
+                      className="blog-comments"
+                    >
                       <MessageCircle size={16} />{" "}
-                      {(commentsByBlog[blog.id]?.length || 0) + " Bình luận"}
+                      {commentsByBlog[blog.id]?.length > 0
+                        ? `${commentsByBlog[blog.id].length} Bình luận`
+                        : "Không có bình luận nào"}
                     </span>
                   </div>
 
-                  <div className="comments-section">
-                    <form onSubmit={(e) => handleCommentSubmit(e, blog.id)}>
+                  <div>
+                    <form className="upcomment" onSubmit={(e) => handleCommentSubmit(e, blog.id)}>
                       <input
                         type="text"
                         value={newComments[blog.id] || ""}
@@ -388,60 +457,67 @@ const Blog = () => {
                       <button type="submit" disabled={!userId}>
                         Đăng
                       </button>
-                    </form>
-
-                    {(commentsByBlog[blog.id] || []).map((comment) => (
-                      <div key={comment.id} className="comment">
-                        <strong>{comment.user}:</strong> {comment.text}
-                        {userId && (
-                          <>
-                            <button
-                              onClick={() => {
-                                console.log("Comment ID:", comment.id);
-                                setEditCommentId(comment.id);
-                                setEditContent(comment.text);
-                                setCurrentBlogId(blog.id);
-                              }}
-                            >
-                              Sửa
-                            </button>
-                            <button
-                              onClick={() => handleDeleteComment(blog.id, comment.id)}
-                            >
-                              Xóa
-                            </button>
-                          </>
-                        )}
-                      </div>
-                    ))}
-
-                    {editCommentId && currentBlogId === blog.id && (
-                      <div className="edit-comment">
-                        <input
-                          type="text"
-                          value={editContent}
-                          onChange={(e) => setEditContent(e.target.value)}
-                        />
-                        <button onClick={() => handleEditComment(blog.id)}>
-                          Lưu
-                        </button>
-                        <button
-                          onClick={() => {
-                            setEditCommentId(null);
-                            setEditContent("");
-                          }}
-                        >
-                          Hủy
-                        </button>
-                      </div>
-                    )}
-
-                    <button
+                      {/* <button
                       onClick={() => fetchComments(blog.id)}
                       style={{ marginTop: "10px" }}
                     >
                       Tải bình luận
-                    </button>
+                    </button> */}
+                    </form>
+                    <div className="comments-section">
+                      {(commentsByBlog[blog.id] || []).map((comment) => (
+                        <div key={comment.id} className="comment">
+                          <strong>{comment.user}:</strong>
+
+                          {/* Nếu đang sửa comment, hiển thị ô input */}
+                          {editCommentId === comment.id ? (
+                            <div className="edit-comment">
+                              <input
+                                type="text"
+                                value={editContent}
+                                onChange={(e) => setEditContent(e.target.value)}
+                              />
+                              <button
+                                onClick={() => {
+                                  setEditCommentId(null);
+                                  setEditContent("");
+                                }}
+                              >
+                                Hủy
+                              </button>
+                              <button className="save" onClick={() => handleEditComment(blog.id)}>Lưu</button>
+
+                            </div>
+                          ) : (
+                            <div className={`comment-text ${comment.text.length > 100 ? "long" : ""}`}>
+                              <input type="checkbox" id={`toggle-${comment.id}`} className="comment-toggle" />
+                              <span className="short-text">{comment.text.length > 100 ? comment.text.slice(0, 100) + "..." : comment.text}</span>
+                              <span className="full-text">{comment.text}</span>
+                              {comment.text.length > 100 && (
+                                <label htmlFor={`toggle-${comment.id}`} className="read-more"></label>
+                              )}
+                            </div>
+                          )}
+
+                          {/* Ẩn nút khi đang sửa comment */}
+                          {userId && editCommentId !== comment.id && (
+                            <div className="comment-btn">
+                              <button
+                                onClick={() => {
+                                  setEditCommentId(comment.id);
+                                  setEditContent(comment.text);
+                                  setCurrentBlogId(blog.id);
+                                }}
+                              >
+                                Sửa
+                              </button>
+                              <button onClick={() => handleDeleteComment(blog.id, comment.id)}>Xóa</button>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+
                   </div>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Button, Col, Radio, Drawer, Row, Modal, Form, Input, Table, Select, Upload } from 'antd';
+import { Button, Col, Radio, Drawer, Row, Modal, Form, Input, Select, Upload, Table } from 'antd';
 import { EyeOutlined, UserSwitchOutlined } from '@ant-design/icons';
 import styles from '../../assets/ManageUsersPage.module.scss';
 import { fetchUsersAction, updateUserByIdAction, fetchUserByIdAction, activateUserAction } from '../../store/redux/action/userAction';
@@ -17,27 +17,33 @@ const ManageUsersPage = () => {
   const [searchValue, setSearchValue] = useState('');
   const [previewAvatar, setPreviewAvatar] = useState('https://via.placeholder.com/150?text=Avatar');
   const [avatarFile, setAvatarFile] = useState(null);
-  const [pagination, setPagination] = useState({
-    current: 1,
-    pageSize: 10,
-    total: 0,
-  });
+ 
 
   const dispatch = useDispatch();
   const usersData = useSelector((state) => state.userReducer.listUser);
   const userDetailData = useSelector((state) => state.userReducer.user);
+  const totalElements = useSelector((state)=>state.userReducer.totalElements)
+
+  console.log(totalElements)
+  const [pagination, setPagination] = useState({
+    pageNumber: 1,
+    pageSize: 10,
+    total: 0,
+  });
+  console.log(pagination)
 
   useEffect(() => {
-    fetchUsers(pagination.current, pagination.pageSize);
-  }, [pagination.current, pagination.pageSize]);
+    console.log(pagination.pageNumber)
+    console.log(pagination.pageSize)
+    fetchUsers(pagination.pageNumber,pagination.pageSize);
+  }, [pagination.pageNumber]);
 
-  const fetchUsers = async (page, pageSize) => {
+  const fetchUsers = async (pageNumber,pageSize) => {
     try {
-      const response = await dispatch(fetchUsersAction(page, pageSize));
-      setPagination({
-        ...pagination,
-        total: response.total, // Giả sử API trả về tổng số bản ghi
-      });
+      console.log(pageNumber)
+      console.log(pageSize)
+      await dispatch(fetchUsersAction(pageNumber,pageSize));
+      
     } catch (error) {
       console.error('Failed to fetch users:', error);
     }
@@ -58,7 +64,7 @@ const ManageUsersPage = () => {
         (user.address && user.address.toLowerCase().includes(searchValue));
       return matchesRole && matchesSearch;
     })
-    : [];
+    : [filterRole, searchValue, usersData];
 
   const showDrawer = (title, user = null) => {
     setDrawerTitle(title);
@@ -181,6 +187,16 @@ const ManageUsersPage = () => {
     },
   ];
 
+  const handleOnTableChange = (pageNumber , pageSize) => {
+     setPagination((prev) => (
+      {...prev,
+      pageNumber: pageNumber,
+      pageSize: pageSize,
+      }
+     ))
+     fetchUsers(pageNumber,pageSize)
+  }
+
   return (
     <div className={styles.manageUsersPage}>
       <Row gutter={[16, 16]} style={{ marginBottom: 16 }}>
@@ -203,12 +219,18 @@ const ManageUsersPage = () => {
         dataSource={filteredUsersData}
         columns={columns}
         rowKey="id"
-        pagination={{
-          ...pagination,
-          onChange: (page, pageSize) => {
-            setPagination({ ...pagination, current: page, pageSize });
-          },
-        }}
+        
+        pagination={
+          {
+            current:pagination.pageNumber,
+            pageSize:pagination.pageSize,
+            total:totalElements,
+            onChange:(page , pageSize)=>{
+              handleOnTableChange(page,pageSize);
+            },
+            showSizeChanger:false
+          }
+        }
       />
       <Drawer
         title={drawerTitle}
