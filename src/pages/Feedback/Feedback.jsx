@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { Rate, Button, Input } from 'antd';
 import './Feedback.css';
 import api from '../../config/api';
+import { useNavigate } from 'react-router-dom';
 const { TextArea } = Input;
 const userId = localStorage.getItem('userId');
 const Feedback = () => {
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
+    const navigate = useNavigate();
 
     const handleRatingChange = (value) => {
         setRating(value);
@@ -29,6 +31,7 @@ const Feedback = () => {
             });
             console.log('Feedback submitted:', response.data);
             alert('Cảm ơn phản hồi của bạn!');
+            navigate('/');
         } catch (error) {
             console.error('Error submitting feedback:', error);
             alert('Có lỗi xảy ra khi gửi phản hồi. Vui lòng thử lại!');
