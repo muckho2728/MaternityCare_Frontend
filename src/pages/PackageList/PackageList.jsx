@@ -59,9 +59,9 @@ const PackageList = () => {
         <h2>Danh sách gói</h2>
       </header>
       <main className="package-list-content">
-        <Row gutter={16} justify="center">
+        <Row gutter={18} justify="center">
           {packages?.map(pkg => (
-            <Col span={8} key={pkg.id}>
+            <Col span={9} key={pkg.id}>
               <Card title={pkg.type} bordered={true} className="package-card">
                 <div className="package-container">
                   <p className="package-price">Giá: {pkg.price === 0 ? 'Miễn phí' : `${pkg.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} `}</p>

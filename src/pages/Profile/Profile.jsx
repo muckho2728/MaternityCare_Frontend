@@ -204,11 +204,11 @@ const Profile = () => {
 
   return (
     <Layout style={{ backgroundColor: 'transparent' }}>
-      <Content style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto', background:'transparent' }}>
+      <Content style={{ padding: '15px', maxWidth: '1200px', margin: '0 auto', background:'transparent' }}>
         <Row gutter={24}>
           <Col span={6}>
                 <Card span={0} style={{ textAlign: 'center'}}>
-                  <Title level={3} style={{ color: '#EC407A' }}>Ảnh đại diện</Title>
+                  {/* <Title level={3} style={{ color: '#4caf93' }}>Ảnh đại diện</Title> */}
                   <div style={{ position: 'relative', margin: '0 auto', width: '150px', height: '150px' }}>
                     <img
                       src={previewAvatar || 'https://via.placeholder.com/150?text=Avatar'}
@@ -218,7 +218,7 @@ const Profile = () => {
                         height: '150px',
                         borderRadius: '50%',
                         objectFit: 'cover',
-                        border: '1px solid #EC407A',
+                        border: '1px solid #4caf93',
                       }}
                     />
                     {isEditing && (
@@ -237,7 +237,7 @@ const Profile = () => {
                             bottom: '0',
                             right: '0',
                             borderRadius: '50%',
-                            backgroundColor: '#1890ff',
+                            backgroundColor: '#4caf93',
                             color: 'white',
                             border: 'none',
                           }}
@@ -280,7 +280,7 @@ const Profile = () => {
                 
 
                 <Col span={24}>
-                  <Title level={3} style={{ color: '#EC407A' }}>Thông tin cá nhân</Title>
+                  <Title level={3} style={{ color: '#4caf93' }}>Thông tin cá nhân</Title>
                   <Form
                     form={profileForm}
                     layout="vertical"
@@ -327,15 +327,15 @@ const Profile = () => {
                     <Form.Item>
                       <Space style={{ display: 'flex', justifyContent: 'center' }}>
                         {!isEditing ? (
-                          <Button type="primary" icon={<EditOutlined />} onClick={() => setIsEditing(true)} style={{ width: '100%' }}>
+                          <Button type="primary" icon={<EditOutlined />} onClick={() => setIsEditing(true)} style={{ width: '100%'}}>
                             Chỉnh sửa
                           </Button>
                         ) : (
                           <>
-                            <Button type="primary" onClick={() => profileForm.submit()} style={{ width: '48%' }}>
+                            <Button type="primary" onClick={() => profileForm.submit()} style={{ width: '100%' }}>
                               Lưu
                             </Button>
-                            <Button onClick={handleCancelEdit} style={{ width: '48%' }}>
+                            <Button onClick={handleCancelEdit} style={{ width: '100%', background:'#f55b5b' }}>
                               Hủy
                             </Button>
                           </>
@@ -344,7 +344,7 @@ const Profile = () => {
                     </Form.Item>
                   </Form>
                   {/* Thông tin gói */}
-                  <Title level={3} style={{ color: '#EC407A' }}>Thông tin gói</Title>
+                  <Title level={3} style={{ color: '#4caf93' }}>Thông tin gói</Title>
                   <Card
                     style={{
                       marginBottom: '24px',
@@ -359,16 +359,16 @@ const Profile = () => {
                     <p><strong>Ngày hết hạn:</strong> {subscriptionDetails?.[0]?.endDate || 'Không có'}</p>
                   </Card>
                   {/*lich su thanh toan */}
-                  <Title level={3} style={{ color: '#EC407A' }}>Lịch sử thanh toán</Title>
+                  <Title level={3} style={{ color: '#4caf93' }}>Lịch sử thanh toán</Title>
                   <Table
                     columns={paymentHistoryColumns}
                     dataSource={paymentHistory}
                     rowKey="id"
                     pagination={false}
-                    style={{ backgroundColor: '#EC407A', borderRadius: '8px' }}
+                    style={{ backgroundColor: '#4caf93', borderRadius: '8px' }}
                   />
 
-                  <Title level={3} style={{ color: '#EC407A' }}>Đổi mật khẩu</Title>
+                  <Title level={3} style={{ color: '#4caf93' }}>Đổi mật khẩu</Title>
                   <Form form={passwordForm} layout="vertical" style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.2)' }} onFinish={handleSubmitPassword}>
                     <Row gutter={24}>
                       <Col xs={24} sm={12}>

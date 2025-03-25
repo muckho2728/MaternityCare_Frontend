@@ -16,9 +16,9 @@
   }
   
   .package-list-header h2 {
-    font-size: 24px;
+    font-size: 32px;
     font-weight: bold;
-    color: #333;
+    color: #4caf93;
   }
   
   /* Nội dung chính */
@@ -52,7 +52,7 @@
   .package-price {
     font-size: 18px;
     font-weight: bold;
-    color: #28a745;
+    color: #4caf93;
     margin: 5px 0;
   }
   
@@ -97,22 +97,22 @@
   }
   
   .package-card button:first-child {
-    background: #007bff;
+    background: #4caf93;
     color: white;
     border: none;
   }
   
   .package-card button:first-child:hover {
-    background: #0056b3;
+    background: #4caf93;
   }
   
   .package-card button:last-child {
-    background: #28a745;
+    background: #4caf93;
     color: white;
     border: none;
   }
   
   .package-card button:last-child:hover {
-    background: #1f7a30;
+    background: #4caf93;
   }
   
