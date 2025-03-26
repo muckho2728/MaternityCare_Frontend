@@ -71,7 +71,7 @@ function Layout() {
           <Route path="/viewBookedSlot" element={<ViewBookedSlot />} />
           <Route path="/create-blog" element={<CreateBlog />} />
           <Route path="/view-blog-user" element={<ViewBlogUser />} />
-          <Route path="/feedback" element={<Feedback/>}/>
+          <Route path="/feedback" element={<Feedback />} />
           <Route path="/manage-pregnancy" element={<ManagePregnancy />} />
           <Route path="/manage-preg" element={<ManagePreg />} />
           {/* Admin Routes */}
@@ -81,7 +81,7 @@ function Layout() {
             <Route path="manage-doctor" element={<ManageDoctor />} />
             <Route path="create-doctor-slot" element={<CreateSlot />} />
             <Route path="manage-transaction" element={<TransactionManagementPage />} />
-            <Route path='manage-feedback' element={<ManageFeedbackPage/>} />
+            <Route path='manage-feedback' element={<ManageFeedbackPage />} />
             <Route path="manage-blog" element={<ManageBlog />} />
             {/*  */}
           </Route>

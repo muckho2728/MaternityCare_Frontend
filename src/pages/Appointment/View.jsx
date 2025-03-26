@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { FiDownload } from "react-icons/fi";
-import * as XLSX from "xlsx";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import api from '../../constants/axios';
@@ -16,9 +14,7 @@ const View = () => {
     const [showModal, setShowModal] = useState(false);
     const [selectedAppointment, setSelectedAppointment] = useState(null);
     const [userId, setUserId] = useState(null);
-    const [currentUser, setCurrentUser] = useState('');
-    const [slots, setSlots] = useState({});
-    const [doctors, setDoctors] = useState([]);
+    const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
         const fetchCurrentUser = async (url) => {
@@ -45,31 +41,6 @@ const View = () => {
     }, []);
 
     useEffect(() => {
-        const fetchDoctors = async () => {
-            const token = localStorage.getItem('token');
-            if (!token) {
-                console.error('No token found');
-                return;
-            }
-
-            try {
-                const response = await api.get(`https://maternitycare.azurewebsites.net/api/doctors/active-doctors?PageNumber=1&PageSize=100`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                });
-                setDoctors(response.data);
-                console.log("Doctors data:", response.data); // Log dữ liệu doctors để kiểm tra
-            } catch (error) {
-                console.error("Error fetching doctors:", error.response?.data || error.message);
-                toast.error("Error fetching doctors: " + (error.response?.data?.message || error.message));
-            }
-        };
-
-        fetchDoctors();
-    }, []);
-
-    useEffect(() => {
         const fetchAppointmentsAndSlots = async () => {
             const token = localStorage.getItem('token');
             if (!token || !userId) {
@@ -85,36 +56,8 @@ const View = () => {
                 const appointmentsData = response.data;
                 setAppointments(appointmentsData);
                 console.log("Appointments data:", appointmentsData);
-
-                const slotsData = {};
-                await Promise.all(
-                    appointmentsData.map(async (appointment) => {
-                        if (appointment.slotId) {
-                            const doctorId = appointment.doctorId || doctors.find(doc => doc.slots?.includes(appointment.slotId))?.id;
-                            console.log(`doctorId for slotId ${appointment.slotId}:`, doctorId); // Log doctorId
-                            if (doctorId) {
-                                const slotResponse = await api.get(
-                                    `https://maternitycare.azurewebsites.net/api/doctors/${doctorId}/slots/${appointment.slotId}`,
-                                    {
-                                        headers: {
-                                            Authorization: `Bearer ${token}`,
-                                        },
-                                    }
-                                );
-                                console.log(`Slot data for slotId ${appointment.slotId}:`, slotResponse.data);
-                                slotsData[appointment.slotId] = slotResponse.data;
-                            } else {
-                                console.log(`No doctorId found for slotId ${appointment.slotId}`);
-                            }
-                        } else {
-                            console.log("No slotId found for appointment:", appointment);
-                        }
-                    })
-                );
-                setSlots(slotsData);
-                console.log("All slots data:", slotsData);
             } catch (error) {
-                console.log("Error fetching appointments or slots:", error.response?.data || error.message);
+                console.log("Error fetching appointments:", error.response?.data || error.message);
                 toast.error(error.message);
             } finally {
                 setLoading(false);
@@ -124,7 +67,7 @@ const View = () => {
         if (userId) {
             fetchAppointmentsAndSlots();
         }
-    }, [userId, doctors]);
+    }, [userId]);
 
     const handleSearch = (value) => setSearchTerm(value);
 
@@ -160,27 +103,26 @@ const View = () => {
         }
     };
 
-    const exportToExcel = () => {
-        const ws = XLSX.utils.json_to_sheet(appointments);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Appointments");
-        XLSX.writeFile(wb, "appointments.xlsx");
-    };
-
-    const filteredAppointments = appointments.filter(appointment =>
-        appointment.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        appointment.userId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        appointment.slotId.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // Filter appointments dynamically based on the current date
+    const filteredAppointments = appointments.filter(appointment => {
+        const currentDate = new Date(); // Dynamically get the current date
+        const appointmentDate = new Date(appointment.slot?.date);
+        return (
+            appointmentDate >= currentDate && // Only show appointments on or after today
+            (appointment.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                appointment.userId.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                appointment.slotId.toLowerCase().includes(searchTerm.toLowerCase()))
+        );
+    });
 
     const columns = [
         {
             title: 'Avatar',
             key: 'avatar',
-            render: () => (
-                currentUser && currentUser.avatar ? (
+            render: (_, record) => (
+                record.user?.avatar ? (
                     <img
-                        src={currentUser.avatar}
+                        src={record.user.avatar}
                         alt="Avatar"
                         style={{ width: '40px', height: '40px', borderRadius: '50%' }}
                     />
@@ -192,22 +134,17 @@ const View = () => {
         {
             title: 'Họ tên',
             key: 'fullName',
-            render: () => currentUser && currentUser.fullName ? currentUser.fullName : 'Không có tên',
+            render: (_, record) => record.user?.fullName || 'Không có tên',
         },
         {
             title: 'Ngày',
             key: 'date',
-            render: (_, record) => slots[record.slotId]?.date || 'N/A',
+            render: (_, record) => record.slot?.date || 'N/A',
         },
         {
             title: 'Giờ bắt đầu',
             key: 'startTime',
-            render: (_, record) => slots[record.slotId]?.startTime || 'N/A',
-        },
-        {
-            title: 'Giờ kết thúc',
-            key: 'endTime',
-            render: (_, record) => slots[record.slotId]?.endTime || 'N/A',
+            render: (_, record) => record.slot?.startTime || 'N/A',
         },
         {
             title: 'Hành động',
@@ -224,7 +161,7 @@ const View = () => {
     ];
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div>Đang tải...</div>;
     }
 
     return (
@@ -239,16 +176,9 @@ const View = () => {
                         enterButton
                         style={{ width: 300 }}
                     />
-                    <Button
-                        type="primary"
-                        icon={<FiDownload />}
-                        onClick={exportToExcel}
-                    >
-                        Export
-                    </Button>
                 </Space>
             </Space>
-
+            <strong><p><i>Lưu ý: </i>Vui lòng tới trước giờ hẹn 15 phút</p></strong>
             <Table
                 columns={columns}
                 dataSource={filteredAppointments}
