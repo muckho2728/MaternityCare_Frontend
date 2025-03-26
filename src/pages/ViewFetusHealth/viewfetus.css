@@ -1,0 +1,65 @@
+/* Cấu hình modal */
+.ant-modal {
+    width: 950px;
+    transform-origin: 120.6px 132px;
+}
+
+/* Nút đóng modal */
+.ant-modal-close {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+/* Phần nội dung modal */
+.ant-modal-content {
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+}
+
+/* Tiêu đề của modal */
+.ant-modal-header .ant-modal-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Tiêu đề trang */
+.page-title {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+/* Form container */
+.create-fetus-health-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Form Row */
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+/* Form Group */
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Nút Submit */
+.submit-button {
+    background-color: #4CAF50; /* Màu xanh lá */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-button:hover {
+    background-color: #45a049;
+}

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Table, Button, Modal, message, Card, Row, Col, Layout, Menu } from "antd";
-import { UserOutlined, HeartOutlined, MessageOutlined, EyeOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { UserOutlined, HeartOutlined, MessageOutlined, EyeOutlined, PlusOutlined, BookOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import api from "../../config/api";
-import CreateFetusHealth from "../CreateFetusHealth/CreateFetusHealth"; 
+import CreateFetusHealth from "../CreateFetusHealth/CreateFetusHealth";
+import "./viewfetus.css";
 
 const { Content } = Layout;
 
@@ -15,7 +16,6 @@ const ManagePregnancy = () => {
     const [editOpen, setEditOpen] = useState(false);
     const [isAdding, setIsAdding] = useState(false);
 
-    // Hàm gọi API lấy dữ liệu sức khỏe thai nhi
     const fetchData = async () => {
         if (!fetusId) {
             message.error("Không tìm thấy fetusId! Vui lòng kiểm tra lại.");
@@ -26,7 +26,7 @@ const ManagePregnancy = () => {
             const response = await api.get(`fetuses/${fetusId}/fetus-healths`);
             setFetusHealthData(response.data);
         } catch (error) {
-            message.error("Lỗi khi tải dữ liệu! Vui lòng thử lại.");
+            message.error("Lỗi khi tải dữ liệu! Vui lòng thử lại.", error);
         }
     };
 
@@ -34,25 +34,18 @@ const ManagePregnancy = () => {
         fetchData();
     }, [fetusId]);
 
-    // Xử lý mở modal xem chi tiết
     const showDetails = (record) => {
         setSelectedFetus(record);
         setViewOpen(true);
     };
 
-    // Xử lý xóa tuần thai
-    const deleteFetusHealth = async (id) => {
-        Modal.confirm({
-            title: "Bạn có chắc chắn muốn xóa tuần thai này?",
-            onOk: async () => {
-                try {
-                    await api.delete(`fetuses/${fetusId}/fetus-healths/${id}`);
-                    message.success("Xóa tuần thai thành công!");
-                    fetchData();
-                } catch (error) {
-                    message.error("Lỗi khi xóa tuần thai! Vui lòng thử lại.");
-                }
-            },
+    const handleSuccess = (messageText) => {
+        fetchData();
+        setEditOpen(false);
+        setIsAdding(false);
+        message.success({
+            message: "Thành công",
+            description: messageText,
         });
     };
 
@@ -63,28 +56,28 @@ const ManagePregnancy = () => {
             render: (_, record) => (
                 <>
                     <Button type="link" icon={<EyeOutlined />} onClick={() => showDetails(record)}>Xem</Button>
-                    <Button type="link" danger icon={<DeleteOutlined />} onClick={() => deleteFetusHealth(record.id)}>Xóa</Button>
                 </>
             ),
         },
     ];
 
     return (
-        <Layout>
-            <Content style={{ padding: "12px", marginTop: "24px", maxWidth: "1400px", marginLeft: "50px" }}>
+        <Layout style={{ backgroundColor: 'transparent' }}>
+            <Content style={{ padding: "15px", marginTop: "24px", width: '100%', maxWidth: "1400px", margin: '0 auto'  }}>
                 <Row gutter={24}>
                     <Col span={6}>
-                        <Card style={{ borderRadius: "8px", backgroundColor: "#f9f9f9", padding: "10px" }}>
-                            <Menu mode="vertical" defaultSelectedKeys={["3"]} style={{ border: "none", width: "100%" }} items={[
-                                { key: "1", icon: <UserOutlined />, label: <Link to="/profile">Thông tin người dùng</Link> },
-                                { key: "2", icon: <HeartOutlined />, label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link> },
-                                { key: "3", icon: <MessageOutlined />, label: <Link to="/manage-pregnancy">Quản lý thông tin thai kỳ</Link> },
-                                { key: "4", icon: <MessageOutlined />, label: <Link to="/manage-preg">Quản lý thai kỳ</Link> },
+                        <Card style={{ borderRadius: "8px", padding: "10px" }}>
+                            <Menu mode="vertical" defaultSelectedKeys={["3"]} style={{ border: "none"}} items={[
+                                { key: '1', icon: <UserOutlined />, label: 'Thông tin người dùng' },
+                                { key: '2', icon: <HeartOutlined />, label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link> },
+                                { key: '3', icon: <MessageOutlined />, label: <Link to="/manage-pregnancy">Quản lý thông tin thai kỳ</Link> },
+                                { key: '4', icon: <MessageOutlined />, label: <Link to="/manage-preg">Quản lý thai kỳ</Link> },
+                                { key: '5', icon: <BookOutlined />, label: <Link to="/viewBookedSlot">Xem lịch đã đặt</Link> }
                             ]} />
                         </Card>
                     </Col>
                     <Col span={18}>
-                        <Card style={{ padding: "16px", borderRadius: "8px", marginLeft: "50px" }}>
+                        <Card style={{ borderRadius: '10px', padding: 24 }}>
                             <h2>Quản lý thông tin thai nhi</h2>
                             <Button type="primary" icon={<PlusOutlined />} onClick={() => setIsAdding(true)} style={{ marginBottom: "16px" }}>
                                 Thêm tuần thai
@@ -96,7 +89,7 @@ const ManagePregnancy = () => {
             </Content>
 
             {/* Modal Xem chi tiết */}
-            <Modal title="Chi tiết sức khỏe thai nhi" open={viewOpen} onCancel={() => setViewOpen(false)} footer={null}>
+            <Modal style={{ width: '950px' }} className="custom" title="Chi tiết sức khỏe thai nhi" open={viewOpen} onCancel={() => setViewOpen(false)} footer={null}>
                 {selectedFetus && (
                     <div>
                         <p><strong>Tuần thai:</strong> {selectedFetus.week}</p>
@@ -118,14 +111,11 @@ const ManagePregnancy = () => {
                 open={editOpen || isAdding}
                 onCancel={() => { setEditOpen(false); setIsAdding(false); }}
                 footer={null}
+                style={{ width: '950px' }}
             >
                 <CreateFetusHealth
                     fetusHealthData={selectedFetus}
-                    onSuccess={() => {
-                        fetchData();
-                        setEditOpen(false);
-                        setIsAdding(false);
-                    }}
+                    onSuccess={(messageText) => handleSuccess(messageText)}
                 />
             </Modal>
         </Layout>

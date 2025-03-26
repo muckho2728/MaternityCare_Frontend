@@ -1,0 +1,40 @@
+/* ❓ Câu Hỏi Thường Gặp */
+.faq-section {
+    text-align: center;
+    margin: 50px 0;
+    padding: 20px;
+    background: #f7f7f7;
+    border-radius: 10px;
+  }
+  
+  .faq-section h2 {
+    font-size: 26px;
+    font-weight: bold;
+    color: #00796b;
+  }
+  
+  .faq-intro {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+  }
+  
+  .faq-collapse {
+    background: white;
+    border-radius: 10px;
+  }
+  
+  .faq-collapse .ant-collapse-header {
+    font-weight: bold;
+    font-size: 16px;
+    color: #00796b;
+  }
+  
+  .faq-collapse .ant-collapse-content {
+    background: #fff;
+    font-size: 14px;
+    color: #333;
+    text-align: left;
+    padding: 10px 20px;
+  }
+  

@@ -25,20 +25,25 @@
 }
 
 .ant-input:focus, .ant-input-textarea:focus {
-    border-color: #40a9ff; /* Màu viền khi focus */
+    border-color: #4caf93; /* Màu viền khi focus */
     box-shadow: 0 0 5px rgba(64, 169, 255, 0.5); /* Hiệu ứng đổ bóng khi focus */
 }
 
 .ant-btn-primary {
-    background-color: #1890ff; /* Màu nền cho nút */
-    border-color: #1890ff; /* Viền cho nút */
+    background-color: #4caf93; /* Màu nền cho nút */
+    border-color: #4caf93; /* Viền cho nút */
 }
 
 .ant-btn-primary:hover {
-    background-color: #40a9ff; /* Màu nền khi hover */
-    border-color: #40a9ff; /* Viền khi hover */
+    background-color: #00897b; /* Màu nền khi hover */
+    border-color: #00897b; /* Viền khi hover */
 }
 
 .ant-typography {
     font-family: 'Arial', sans-serif; /* Font chữ cho trang */
+}
+.ant-card-body h2{
+    color: #4caf93;
+    font-size: 30px;
+    text-align: center;
 }
