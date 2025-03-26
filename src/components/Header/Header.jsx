@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
 import { useAuth } from '../../constants/AuthContext';
@@ -8,13 +8,14 @@ const Header = () => {
     const { user, logout, token } = useAuth();
     const [isNotificationOpen, setIsNotificationOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [notifications, setNotifications] = useState([]);
     const [currentPackage, setCurrentPackage] = useState("Free");
     const notificationRef = useRef(null);
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
-    const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
 
     useEffect(() => {
+        if (!token) return;
         const fetchCurrentUser = async () => {
             try {
                 const response = await api.get('/authentications/current-user');
@@ -23,11 +24,15 @@ const Header = () => {
                 console.error("Error fetching current user:", error);
             }
         };
-
-        if (token) fetchCurrentUser();
+        fetchCurrentUser();
     }, [token]);
 
-    const checkPermission = async (e, url) => {
+    useEffect(() => {
+        const storedReminders = JSON.parse(localStorage.getItem("reminders")) || [];
+        setNotifications(storedReminders);
+    }, []);
+
+    const checkPermission = useCallback(async (e, url) => {
         try {
             const response = await api.get('/authentications/current-user');
             if (response.data.subscription === "Free") {
@@ -36,41 +41,21 @@ const Header = () => {
             } else {
                 navigate(url);
             }
-            setCurrentPackage(response.data.subscription);
         } catch (error) {
             console.error("Error fetching current user:", error);
         }
-    };
-
-    useEffect(() => {
-        const fetchNotifications = async () => {
-            try {
-                const storedReminder = localStorage.getItem("reminder");
-                if (storedReminder) {
-                    reminders.push({ id: 1, description: storedReminder });
-                }
-            } catch (error) {
-                console.error("Error fetching notifications:", error);
-            }
-        };
-        
-        fetchNotifications();
-    }, []);
+    }, [navigate]);
 
     const handleLogout = () => {
         logout();
         navigate('/');
+        setNotifications([]);
         setIsDropdownOpen(false);
     };
 
-    const toggleDropdown = () => {
-        setIsDropdownOpen(!isDropdownOpen);
-        setIsNotificationOpen(false); // Đóng thông báo khi mở dropdown profile
-    };
-    
-    const toggleNotifications = () => {
-        setIsNotificationOpen(!isNotificationOpen);
-        setIsDropdownOpen(false); // Đóng dropdown profile khi mở thông báo
+    const toggleMenu = (menuType) => {
+        setIsNotificationOpen(menuType === 'notifications' ? !isNotificationOpen : false);
+        setIsDropdownOpen(menuType === 'dropdown' ? !isDropdownOpen : false);
     };
 
     useEffect(() => {
@@ -89,30 +74,23 @@ const Header = () => {
     return (
         <header className="header">
             <div className="header-container">
-                <div className="logo-section" onClick={() => navigate('/')}>
-                    <Link to="/src/assets/Vector.png" className="logo-link">
+                <div className="logo-section" onClick={() => navigate('/')}> 
+                    <Link to="/" className="logo-link">
                         <img src="/src/assets/Vector.png" alt="Baby Logo" className="logo" />
                         <span className="brand-name">Maternity Care</span>
                     </Link>
                 </div>
-
                 <nav className="main-nav">
                     <ul className="nav-list">
                         <li><Link to="/community">Diễn Đàn</Link></li>
                         <li>
-                            <Link
-                                className={currentPackage === "Free" ? "disabled" : ""}
-                                onClick={(e) => checkPermission(e, "/create-fetus")}
-                            >
+                            <Link className={currentPackage === "Free" ? "disabled" : ""} onClick={(e) => checkPermission(e, "/create-fetus")}>
                                 Đăng ký thông tin thai nhi
                             </Link>
                         </li>
                         <li><Link to="/package-list">Dịch Vụ</Link></li>
                         <li>
-                            <Link
-                                className={currentPackage === "Free" ? "disabled" : ""}
-                                onClick={(e) => checkPermission(e, "/booking")}
-                            >
+                            <Link className={currentPackage === "Free" ? "disabled" : ""} onClick={(e) => checkPermission(e, "/booking")}>
                                 Đặt Lịch
                             </Link>
                         </li>
@@ -130,19 +108,18 @@ const Header = () => {
                         </button>
                     </div>
 
-                    {/* 🔔 Nút thông báo với số lượng */}
-                    <div className="notification-container">
-                    <button className="notification-button" onClick={toggleNotifications}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-                        </svg>
-                        {reminders.length > 0 && <span className="notification-badge">{reminders.length}</span>}
-                    </button>
-                    {isNotificationOpen && (
+                    <div className="notification-container" ref={notificationRef}>
+                        <button className="notification-button" onClick={() => toggleMenu('notifications')}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                            </svg>
+                            {notifications.length > 0 && <span className="notification-badge">{notifications.length}</span>}
+                        </button>
+                        {isNotificationOpen && (
                             <div className="dropdown-menu">
-                                {reminders.length > 0 ? (
-                                    reminders.map((reminder) => (
+                                {notifications.length > 0 ? (
+                                    notifications.map((reminder) => (
                                         <div key={reminder.id} className="dropdown-item">{reminder.description}</div>
                                     ))
                                 ) : (
@@ -150,11 +127,10 @@ const Header = () => {
                                 )}
                             </div>
                         )}
-                </div>
-
+                    </div>
                     {user ? (
                         <div className="profile-dropdown" ref={dropdownRef}>
-                            <button className="profile-button" onClick={toggleDropdown}>
+                            <button className="profile-button" onClick={() => toggleMenu('dropdown')}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                     <circle cx="12" cy="7" r="4"></circle>
@@ -164,11 +140,10 @@ const Header = () => {
                                 <div className="dropdown-menu">
                                     <Link to="/profile" className="dropdown-item">Hồ sơ người dùng</Link>
                                     <Link to="/view-fetus-health" className="dropdown-item">Hồ sơ sức khỏe</Link>
-                                    <Link to="/manage-pregnancy" className="dropdown-item">Quản lý thông tin thai </Link>
+                                    <Link to="/manage-pregnancy" className="dropdown-item">Quản lý thông tin thai</Link>
                                     <Link to="/manage-preg" className="dropdown-item">Quản lý thai kỳ</Link>
-                                    <button className="dropdown-item logout-button" onClick={handleLogout}>
-                                        Đăng xuất
-                                    </button>
+                                    <Link to="/viewBookedSlot" className="dropdown-item">Xem lịch đã đặt</Link>
+                                    <button className="dropdown-item logout-button" onClick={handleLogout}>Đăng xuất</button>
                                 </div>
                             )}
                         </div>

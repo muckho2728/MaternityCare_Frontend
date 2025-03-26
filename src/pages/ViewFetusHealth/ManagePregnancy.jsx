@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Table, Button, Modal, message, Card, Row, Col, Layout, Menu } from "antd";
-import { UserOutlined, HeartOutlined, MessageOutlined, EyeOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { UserOutlined, HeartOutlined, MessageOutlined, EyeOutlined, PlusOutlined, BookOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import api from "../../config/api";
 import CreateFetusHealth from "../CreateFetusHealth/CreateFetusHealth";
@@ -14,7 +14,6 @@ const ManagePregnancy = () => {
     const [viewOpen, setViewOpen] = useState(false);
     const [editOpen, setEditOpen] = useState(false);
     const [isAdding, setIsAdding] = useState(false);
-    const notificationRef = useRef(null);
 
     const fetchData = async () => {
         if (!fetusId) {
@@ -43,7 +42,7 @@ const ManagePregnancy = () => {
         fetchData();
         setEditOpen(false);
         setIsAdding(false);
-        notificationRef.current = notification.success({
+        message.success({
             message: "Thành công",
             description: messageText,
         });
