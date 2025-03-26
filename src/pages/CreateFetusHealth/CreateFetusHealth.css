@@ -10,8 +10,8 @@
 
 .page-title {
     text-align: center;
-    font-size: 28px;
-    color: #136c51;
+    font-size: 32px;
+    color: #4caf93;
     margin-bottom: 25px;
     font-weight: 700;
 }
@@ -59,8 +59,8 @@
 
 .form-group input:focus,
 .form-group select:focus {
-    border-color: #34d399;
-    box-shadow: 0 0 8px rgba(52, 211, 153, 0.3);
+    border-color: #4caf93;
+    /* box-shadow: 0 0 8px rgba(52, 211, 153, 0.3); */
 }
 
 .submit-button {
@@ -68,7 +68,7 @@
     font-size: 18px;
     font-weight: bold;
     color: #fff;
-    background: #34d399;
+    background: #4caf93;
     border: none;
     border-radius: 8px;
     cursor: pointer;

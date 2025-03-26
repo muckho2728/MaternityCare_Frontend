@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./Blog.css";
 import api from "../../config/api";
 import { Link } from "react-router-dom";
+import { Avatar } from "antd";
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -20,7 +21,7 @@ const Blog = () => {
   const [newComments, setNewComments] = useState({});
   const [editCommentId, setEditCommentId] = useState(null);
   const [editContent, setEditContent] = useState("");
-  const [currentBlogId, setCurrentBlogId] = useState(null);
+  const [setCurrentBlogId] = useState(null);
   const [likesByBlog, setLikesByBlog] = useState({});
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -201,8 +202,10 @@ const Blog = () => {
       setCommentsByBlog((prev) => ({
         ...prev,
         [blogId]: response.data.map((comment) => ({
+          avatar: comment.user?.avatar || "https://via.placeholder.com/40",
           id: comment.id,
-          user: comment.userId === currentUser?.id ? currentUser.fullName : "Ẩn Danh",
+          user: comment.user?.fullName || "Ẩn Danh",
+          userId: comment.user?.id,
           text: comment.content,
         })),
       }));
@@ -225,6 +228,7 @@ const Blog = () => {
         ...prev,
         [blogId]: [
           {
+            avatar: userId === currentUser?.id ? currentUser.avatar : "No avatar",
             id: response.data.id,
             user: userId === currentUser?.id ? currentUser.fullName : "Bạn",
             text: commentText,
@@ -302,7 +306,36 @@ const Blog = () => {
       toast.error("Lỗi khi xóa bình luận.");
     }
   };
-
+  useEffect(() => {
+    const fetchAllComments = async () => {
+      const commentsData = {}; // Đối tượng để lưu số lượng bình luận theo blog ID
+  
+      await Promise.all(
+        blogs.map(async (blog) => {
+          try {
+            const response = await api.get(
+              `https://maternitycare.azurewebsites.net/api/blogs/${blog.id}/comments?PageNumber=1&PageSize=${pageSize}`
+            );
+            commentsData[blog.id] = response.data.map((comment) => ({
+              id: comment.id,
+              user: comment.userId === currentUser?.id ? currentUser.fullName : "Ẩn Danh",
+              text: comment.content,
+            }));
+          } catch (error) {
+            console.error(`Lỗi khi lấy bình luận cho blog ${blog.id}:`, error);
+          }
+        })
+      );
+  
+      setCommentsByBlog(commentsData); // Cập nhật state một lần sau khi fetch xong
+    };
+  
+    if (blogs.length > 0) {
+      fetchAllComments(); // Gọi API ngay khi component load
+    }
+  }, [blogs]); // Chạy lại khi danh sách blogs thay đổi
+  
+  
   return (
     <div className="blog-container">
       <h1 className="blog-title">Diễn Đàn Mẹ Bầu</h1>
@@ -426,17 +459,11 @@ const Blog = () => {
                       {likeData.likeCount} Likes
                     </span>
                     <span
-                      onClick={(e) => {
-                        fetchComments(blog.id);
-                        e.target.classList.toggle("active"); // Chỉ toggle class, không sửa JSX
-                      }}
                       style={{ marginTop: "10px", cursor: "pointer" }}
                       className="blog-comments"
                     >
                       <MessageCircle size={16} />{" "}
-                      {commentsByBlog[blog.id]?.length > 0
-                        ? `${commentsByBlog[blog.id].length} Bình luận`
-                        : "Không có bình luận nào"}
+                      {`${commentsByBlog[blog.id]?.length ?? 0} Bình luận`}
                     </span>
                   </div>
 
@@ -467,8 +494,15 @@ const Blog = () => {
                     <div className="comments-section">
                       {(commentsByBlog[blog.id] || []).map((comment) => (
                         <div key={comment.id} className="comment">
-                          <strong>{comment.user}:</strong>
-
+                          <div style={{ display: "flex", alignItems: "center" }}>
+                            <img
+                              src={comment.avatar}
+                              alt={comment.user}
+                              className="comment-avatar"
+                              style={{ width: "30px", height: "30px", borderRadius: "50%", marginRight: "8px" }}
+                            />
+                            <strong>{comment.user}:</strong>
+                          </div>
                           {/* Nếu đang sửa comment, hiển thị ô input */}
                           {editCommentId === comment.id ? (
                             <div className="edit-comment">
@@ -499,8 +533,8 @@ const Blog = () => {
                             </div>
                           )}
 
-                          {/* Ẩn nút khi đang sửa comment */}
-                          {userId && editCommentId !== comment.id && (
+                          {/* Chỉ hiển thị nút Sửa/Xóa nếu currentUser.id trùng với comment.userId và không đang sửa */}
+                          {currentUser?.id === comment.userId && editCommentId !== comment.id && (
                             <div className="comment-btn">
                               <button
                                 onClick={() => {
@@ -511,7 +545,9 @@ const Blog = () => {
                               >
                                 Sửa
                               </button>
-                              <button onClick={() => handleDeleteComment(blog.id, comment.id)}>Xóa</button>
+                              <button onClick={() => handleDeleteComment(blog.id, comment.id)}>
+                                Xóa
+                              </button>
                             </div>
                           )}
                         </div>

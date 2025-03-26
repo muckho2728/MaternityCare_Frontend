@@ -75,7 +75,7 @@ const ViewSlot = () => {
             return;
         }
         try {
-            await api.post(
+            const response = await api.post(
                 `https://maternitycare.azurewebsites.net/api/doctors/${selectedDoctorId}/slots`,
                 {
                     date: date,
@@ -93,6 +93,7 @@ const ViewSlot = () => {
             setIsModalOpen(false);
             form.resetFields();
             fetchSlots(selectedDoctorId);
+            console.log(response.data);
         } catch (error) {
             console.error("Error creating slot:", error);
             toast.error("Error creating slot: " + (error.response?.data?.message || error.message));
@@ -165,9 +166,6 @@ const ViewSlot = () => {
                             </div>
                         </div>
 
-                        <button onClick={() => handlePageChange(pageNumber - 1)} disabled={pageNumber === 1}>Trước</button>
-                        <button onClick={() => handlePageChange(pageNumber + 1)}>Sau</button>
-
                         {selectedDoctorId === doctor.id && slots.map(slot => (
                             <div key={slot.id} style={{ marginTop: '10px', padding: '5px', border: '1px solid #ccc' }}>
                                 <p>Ngày: {slot.date}</p>
@@ -179,6 +177,9 @@ const ViewSlot = () => {
                     </div>
                 ))}
             </div>
+            <button onClick={() => handlePageChange(pageNumber - 1)} disabled={pageNumber === 1}>Trước</button>
+            <button onClick={() => handlePageChange(pageNumber + 1)}>Sau</button>
+
             <Modal title="Tạo Slot" open={isModalOpen} onCancel={() => setIsModalOpen(false)} footer={null}>
                 <Form form={form} onFinish={handleCreateSlot}>
                     <Form.Item name="date" label="Ngày" rules={[{ required: true, message: 'Vui lòng nhập ngày' }]}>
