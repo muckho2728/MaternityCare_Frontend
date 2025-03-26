@@ -177,8 +177,14 @@ const ViewSlot = () => {
 
     return (
         <div className="view-slot-container">
-            <h1 className="view-slot-header">Chọn bác sĩ</h1>
-
+            <header className="hero-section">
+            <h1 className="view-slot-header">Đội ngũ bác sĩ tận tâm – Hãy chọn người phù hợp nhất cho bạn</h1>
+            
+            <p className="view-slot-description">
+                Chúng tôi hiểu rằng sức khỏe của bạn là ưu tiên hàng đầu. Dưới đây là danh sách các bác sĩ chuyên khoa hàng đầu, 
+                sẵn sàng hỗ trợ bạn. Hãy tìm kiếm và chọn một bác sĩ phù hợp để bắt đầu hành trình chăm sóc sức khỏe ngay hôm nay!
+            </p>
+            </header>
             <div className="search-bar">
                 <div className="blog-search">
                     <input
@@ -209,15 +215,23 @@ const ViewSlot = () => {
                     </div>
                 ))}
             </div>
+
+
+            {/* Pagination */}
             <div className="pagination">
-                <button onClick={() => handlePageChange(pageNumber - 1)} disabled={pageNumber === 1}>Trước</button>
+                <button onClick={() => handlePageChange(pageNumber - 1)} disabled={pageNumber === 1}>
+                    Trước
+                </button>
                 <button onClick={() => handlePageChange(pageNumber + 1)}>Sau</button>
             </div>
+
+            {/* Modal lịch khám */}
             <Modal
                 title={selectedDoctor ? `Lịch khám của ${selectedDoctor.fullName}` : "Lịch khám"}
                 open={isModalOpen}
                 onCancel={() => setIsModalOpen(false)}
                 footer={null}
+                className="custom-modal"
             >
                 <div className="slot-container">
                     {slots.length > 0 ? (
@@ -230,19 +244,14 @@ const ViewSlot = () => {
                             .sort((a, b) => {
                                 const dateA = new Date(a.date);
                                 const dateB = new Date(b.date);
-                                if (dateA < dateB) return -1;
-                                if (dateA > dateB) return 1;
-                                return a.startTime.localeCompare(b.startTime);
+                                return dateA - dateB || a.startTime.localeCompare(b.startTime);
                             })
                             .map(slot => (
                                 <Card className="slot-card" key={slot.id}>
-                                    <p>Ngày: {slot.date}</p>
-                                    <p>Giờ bắt đầu: {slot.startTime}</p>
-                                    <p>Giờ kết thúc: {slot.endTime}</p>
-                                    <Button
-                                        className="book-btn"
-                                        onClick={() => showConfirmModal(selectedDoctor.id, slot.id)}
-                                    >
+                                    <p>📅 Ngày: {slot.date}</p>
+                                    <p>⏰ Giờ bắt đầu: {slot.startTime}</p>
+                                    <p>⏳ Giờ kết thúc: {slot.endTime}</p>
+                                    <Button className="book-btn" onClick={() => showConfirmModal(selectedDoctor.id, slot.id)}>
                                         Đặt lịch hẹn
                                     </Button>
                                 </Card>
@@ -252,12 +261,14 @@ const ViewSlot = () => {
                     )}
                 </div>
             </Modal>
+
+            {/* Modal xác nhận đặt lịch */}
             <Modal
                 title="Xác nhận lịch hẹn"
                 open={isConfirmModalOpen}
                 onCancel={() => setIsConfirmModalOpen(false)}
                 footer={
-                    <Button onClick={handleConfirmBooking} disabled={loadingSlot}>
+                    <Button className="confirm-btn" onClick={handleConfirmBooking} disabled={loadingSlot}>
                         Xác nhận
                     </Button>
                 }
@@ -266,15 +277,16 @@ const ViewSlot = () => {
                     <p>Đang tải thông tin...</p>
                 ) : selectedSlot && selectedSlot.date ? (
                     <div>
-                        <p>Ngày: {selectedSlot.date}</p>
-                        <p>Giờ bắt đầu: {selectedSlot.startTime}</p>
-                        <p>Giờ kết thúc: {selectedSlot.endTime}</p>
+                        <p>📅 Ngày: {selectedSlot.date}</p>
+                        <p>⏰ Giờ bắt đầu: {selectedSlot.startTime}</p>
+                        <p>⏳ Giờ kết thúc: {selectedSlot.endTime}</p>
                     </div>
                 ) : (
                     <p>Không thể tải thông tin slot.</p>
                 )}
             </Modal>
         </div>
+
     );
 };
 

@@ -1,11 +1,16 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Layout, Row, Col, Card, Menu } from "antd";  // Ant Design components
+import { Link } from "react-router-dom";  // React Router link
+import { UserOutlined, HeartOutlined, MessageOutlined, BookOutlined } from "@ant-design/icons";
 import api from '../../constants/axios';
 import { Table, Button, Input, Modal, Space, Typography } from 'antd';
 
+
 const { Title } = Typography;
 const { Search } = Input;
+const { Content } = Layout;
 
 const View = () => {
     const [appointments, setAppointments] = useState([]);
@@ -165,39 +170,61 @@ const View = () => {
     }
 
     return (
-        <div style={{ padding: '20px' }}>
-            <Title level={2}>Lịch khám</Title>
+        <Layout style={{ backgroundColor: "transparent" }}>
+            <Content style={{ padding: "15px", marginTop: "24px", width: "100%", maxWidth: "1400px", margin: "0 auto" }}>
+                <Row gutter={24}>
+                    {/* Menu bên trái */}
+                    <Col span={6}>
+                        <Card style={{ borderRadius: "8px", padding: "10px" }}>
+                            <Menu
+                                mode="vertical"
+                                defaultSelectedKeys={["5"]}
+                                style={{ border: "none" }}
+                                items={[
+                                    { key: "1", icon: <UserOutlined />, label: <Link to="/profile">Thông tin người dùng</Link> },
+                                    { key: "2", icon: <HeartOutlined />, label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link> },
+                                    { key: "3", icon: <MessageOutlined />, label: <Link to="/manage-pregnancy">Quản lý thông tin thai kỳ</Link> },
+                                    { key: "4", icon: <MessageOutlined />, label: <Link to="/manage-preg">Quản lý thai kỳ</Link> },
+                                    { key: "5", icon: <BookOutlined />, label: <Link to="/viewBookedSlot">Xem lịch đã đặt</Link> },
+                                ]}
+                            />
+                        </Card>
+                    </Col>
 
-            <Space direction="vertical" style={{ width: '100%', marginBottom: '20px' }}>
-                <Space>
-                    <Search
-                        placeholder="Tìm kiếm lịch hẹn..."
-                        onSearch={handleSearch}
-                        enterButton
-                        style={{ width: 300 }}
-                    />
-                </Space>
-            </Space>
-            <strong><p><i>Lưu ý: </i>Vui lòng tới trước giờ hẹn 15 phút</p></strong>
-            <Table
-                columns={columns}
-                dataSource={filteredAppointments}
-                rowKey="id"
-                pagination={{ pageSize: 10 }}
-            />
+                    {/* Nội dung chính */}
+                    <Col span={18}>
+                        <Card style={{ borderRadius: "10px", padding: 24 }}>
+                            <Title level={2}>Lịch khám</Title>
 
-            <Modal
-                title="Xác nhận hủy lịch hẹn"
-                open={showModal}
-                onOk={confirmCancelAppointment}
-                onCancel={() => setShowModal(false)}
-                okText="Xác nhận"
-                cancelText="Hủy"
-                okButtonProps={{ danger: true }}
-            >
-                <p>Bạn có chắc muốn hủy lịch hẹn này không?</p>
-            </Modal>
-        </div>
+                            <Space direction="vertical" style={{ width: "100%", marginBottom: "20px" }}>
+                                <Space>
+                                    <Search placeholder="Tìm kiếm lịch hẹn..." onSearch={handleSearch} enterButton style={{ width: 300 }} />
+                                </Space>
+                            </Space>
+
+                            <strong>
+                                <p><i>Lưu ý: </i>Vui lòng tới trước giờ hẹn 30 phút</p>
+                            </strong>
+
+                            <Table columns={columns} dataSource={filteredAppointments} rowKey="id" pagination={{ pageSize: 10 }} />
+
+                            <Modal
+                                title="Xác nhận hủy lịch hẹn"
+                                open={showModal}
+                                onOk={confirmCancelAppointment}
+                                onCancel={() => setShowModal(false)}
+                                okText="Xác nhận"
+                                cancelText="Hủy"
+                                okButtonProps={{ style: { backgroundColor: "green", borderColor: "green" } }}
+                                cancelButtonProps={{ style: { backgroundColor: "red", borderColor: "red", color: "white" } }}
+                            >
+                                <p>Bạn có chắc muốn hủy lịch hẹn này không?</p>
+                            </Modal>
+                        </Card>
+                    </Col>
+                </Row>
+            </Content>
+        </Layout>
     );
 };
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Table, Button, Modal, message, Card, Row, Col, Layout, Menu } from "antd";
-import { UserOutlined, HeartOutlined, MessageOutlined, EyeOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { UserOutlined, HeartOutlined, MessageOutlined, EyeOutlined, DeleteOutlined, PlusOutlined, BookOutlined } from "@ant-design/icons";
+
 import { Link } from "react-router-dom";
 import api from "../../config/api";
 import CreateFetusHealth from "../CreateFetusHealth/CreateFetusHealth"; 
@@ -76,10 +77,11 @@ const ManagePregnancy = () => {
                     <Col span={6}>
                         <Card style={{ borderRadius: "8px", padding: "10px" }}>
                             <Menu mode="vertical" defaultSelectedKeys={["3"]} style={{ border: "none"}} items={[
-                                { key: "1", icon: <UserOutlined />, label: <Link to="/profile">Thông tin người dùng</Link> },
-                                { key: "2", icon: <HeartOutlined />, label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link> },
-                                { key: "3", icon: <MessageOutlined />, label: <Link to="/manage-pregnancy">Quản lý thông tin thai kỳ</Link> },
-                                { key: "4", icon: <MessageOutlined />, label: <Link to="/manage-preg">Quản lý thai kỳ</Link> },
+                                { key: '1', icon: <UserOutlined />, label: 'Thông tin người dùng' },
+                                { key: '2', icon: <HeartOutlined />, label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link> },
+                                { key: '3', icon: <MessageOutlined />, label: <Link to="/manage-pregnancy">Quản lý thông tin thai kỳ</Link> },
+                                { key: '4', icon: <MessageOutlined />, label: <Link to="/manage-preg">Quản lý thai kỳ</Link> },
+                                { key: '5', icon: <BookOutlined />, label: <Link to="/viewBookedSlot">Xem lịch đã đặt</Link> }
                             ]} />
                         </Card>
                     </Col>

@@ -18,11 +18,14 @@ const PackageList = () => {
         setCurrentPackage(response.data.subscription);
         setIsLoggedIn(true);
       } catch (error) {
+        console.warn("Người dùng chưa đăng nhập, hiển thị danh sách gói dịch vụ.");
         setIsLoggedIn(false);
+        setCurrentPackage("Free"); // Người dùng chưa đăng ký thì mặc định là gói Free
       }
     };
     fetchCurrentUser();
   }, []);
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -120,51 +123,51 @@ const handleCTAClick = () => {
         </p>
 
         <Row gutter={30} justify="center">
-          {packages.map((pkg) => (
-            <Col xs={24} sm={12} md={8} key={pkg.id}>
-              <Card
-                title={pkg.type}
-                bordered={true}
-                className={`package-card ${pkg.type === currentPackage ? "current-package" : ""} ${pkg.type === "Premium" ? "highlight-package" : ""}`}
-              >
-                <div className="package-price">
-                  {pkg.price === 0 ? "Miễn phí" : `${pkg.price.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}`}
-                </div>
-                <div className="package-duration">⏳ Thời hạn: {pkg.duration} tháng</div>
-                <ul className="package-features">
-                  {pkg.features.map((feature, index) => (
-                    <li key={index}>✅ {feature.trim()}</li>
-                  ))}
-                </ul>
-
-                <div className="package-actions">
-                  {pkg.price !== 0 ? (
-                    currentPackage === pkg.type ? (
-                      <>
-                        <span className="current-package-label">🎉 Gói hiện tại của bạn</span>
-                        <br /> {/* Xuống dòng */}
-                        <Button type="primary" className="feedback-btn" onClick={() => navigate('/feedback')}>
-                          Gửi Feedback
-                        </Button>
-                      </>
-                    ) : (
-                      <Button 
-                        type="primary" 
-                        className="buy-btn" 
-                        onClick={() => userId ? handleBuyClick(pkg.id) : navigate('/register')}
-                      >
-                        {userId ? "Nâng Cấp Ngay" : "Đăng Ký Ngay"}
-                      </Button>
-                    )
-                  ) : (
-                    currentPackage === "Free" && <span className="current-package-label">🎉 Gói hiện tại của bạn</span>
-                  )}
-                </div>
-
-              </Card>
-            </Col>
+  {packages.map((pkg) => (
+    <Col xs={24} sm={12} md={8} key={pkg.id}>
+      <Card
+        title={pkg.type}
+        bordered={true}
+        className={`package-card ${pkg.type === currentPackage ? "current-package" : ""} ${pkg.type === "Premium" ? "highlight-package" : ""}`}
+      >
+        <div className="package-price">
+          {pkg.price === 0 ? "Miễn phí" : `${pkg.price.toLocaleString("vi-VN", { style: "currency", currency: "VND" })}`}
+        </div>
+        <div className="package-duration">⏳ Thời hạn: {pkg.duration} tháng</div>
+        <ul className="package-features">
+          {pkg.features.map((feature, index) => (
+            <li key={index}>✅ {feature.trim()}</li>
           ))}
-        </Row>
+        </ul>
+
+        <div className="package-actions">
+          {pkg.price !== 0 ? (
+            currentPackage === pkg.type ? (
+              <>
+                <span className="current-package-label">🎉 Gói hiện tại của bạn</span>
+                <br />
+                <Button type="primary" className="feedback-btn" onClick={() => navigate('/feedback')}>
+                  Gửi Feedback
+                </Button>
+              </>
+            ) : (
+              <Button 
+                type="primary" 
+                className="buy-btn" 
+                onClick={() => handleBuyClick(pkg.id)}
+              >
+                {isLoggedIn ? "Nâng Cấp Ngay" : "Đăng Ký Ngay"}
+              </Button>
+            )
+          ) : (
+            currentPackage === "Free" && <span className="current-package-label">🎉 Gói hiện tại của bạn</span>
+          )}
+        </div>
+
+      </Card>
+    </Col>
+  ))}
+</Row>
       </section>
     </div>
   );

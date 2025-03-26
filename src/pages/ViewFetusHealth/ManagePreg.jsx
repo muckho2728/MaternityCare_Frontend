@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Table, Button, Modal, message, Card, Row, Col, Layout, Menu } from "antd";
-import { UserOutlined, HeartOutlined, MessageOutlined, EyeOutlined } from "@ant-design/icons";
+import { UserOutlined, HeartOutlined, MessageOutlined, EyeOutlined, BookOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import api from "../../config/api";
 
@@ -81,6 +81,7 @@ const ManagePreg = () => {
                                 { key: "2", icon: <HeartOutlined />, label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link> },
                                 { key: "3", icon: <MessageOutlined />, label: <Link to="/manage-pregnancy">Quản lý thông tin thai kỳ</Link> },
                                 { key: "4", icon: <MessageOutlined />, label: <Link to="/manage-preg">Quản lý thai kỳ</Link> },
+                                { key: '5', icon: <BookOutlined />, label: <Link to="/viewBookedSlot">Xem lịch đã đặt</Link> }
                             ]} />
                         </Card>
                     </Col>

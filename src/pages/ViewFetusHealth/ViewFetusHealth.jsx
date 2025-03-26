@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Card, Typography, Row, Col, Layout, Menu, Input, Button, Form, Space, message } from 'antd';
-import { UserOutlined, HeartOutlined, MessageOutlined } from '@ant-design/icons';
+import { UserOutlined, HeartOutlined, MessageOutlined, BookOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { FetusContext } from '../../constants/FetusContext';
 import api from '../../config/api';
@@ -119,6 +119,7 @@ const ViewFetusHealth = () => {
                                     icon: <MessageOutlined />,
                                     label: <Link to="/manage-preg">Quản lý thai kỳ</Link>,
                                 },
+                                {key: '5', icon: <BookOutlined />, label: <Link to="/viewBookedSlot">Xem lịch đã đặt</Link> }
                             ]} />
                         </Card>
                     </Col>

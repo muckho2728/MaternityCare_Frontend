@@ -208,7 +208,7 @@ const Profile = () => {
         <Row gutter={24}>
           <Col span={6}>
             <Card span={0} style={{ textAlign: 'center' }}>
-              <Title level={3} style={{ color: '#EC407A' }}>Ảnh đại diện</Title>
+              <Title level={3} style={{ color: '#4caf93' }}>Ảnh đại diện</Title>
               <div style={{ position: 'relative', margin: '0 auto', width: '150px', height: '150px' }}>
                 <img
                   src={previewAvatar || 'https://via.placeholder.com/150?text=Avatar'}
@@ -218,7 +218,7 @@ const Profile = () => {
                     height: '150px',
                     borderRadius: '50%',
                     objectFit: 'cover',
-                    border: '1px solid #EC407A',
+                    border: '1px solid #4caf93',
                   }}
                 />
                 {isEditing && (

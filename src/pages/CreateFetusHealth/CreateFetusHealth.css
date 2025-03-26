@@ -1,5 +1,5 @@
 .create-fetus-health-container {
-    max-width: 700px;
+    max-width: 850px;
     margin: 40px auto;
     padding: 30px;
     background: #fefefe; /* Xanh pastel nhẹ */
@@ -51,6 +51,8 @@
     outline: none;
     transition: all 0.3s ease;
     color: #333;
+    width: 93%;
+
 }
 
 .form-group input::placeholder {
