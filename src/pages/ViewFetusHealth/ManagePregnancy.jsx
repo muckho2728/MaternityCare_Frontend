@@ -3,7 +3,8 @@ import { Table, Button, Modal, message, Card, Row, Col, Layout, Menu } from "ant
 import { UserOutlined, HeartOutlined, MessageOutlined, EyeOutlined, PlusOutlined, BookOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import api from "../../config/api";
-import CreateFetusHealth from "../CreateFetusHealth/CreateFetusHealth"; 
+import CreateFetusHealth from "../CreateFetusHealth/CreateFetusHealth";
+import "./viewfetus.css";
 
 const { Content } = Layout;
 
@@ -87,7 +88,7 @@ const ManagePregnancy = () => {
             </Content>
 
             {/* Modal Xem chi tiết */}
-            <Modal title="Chi tiết sức khỏe thai nhi" open={viewOpen} onCancel={() => setViewOpen(false)} footer={null}>
+            <Modal style={{ width: '950px' }} className="custom" title="Chi tiết sức khỏe thai nhi" open={viewOpen} onCancel={() => setViewOpen(false)} footer={null}>
                 {selectedFetus && (
                     <div>
                         <p><strong>Tuần thai:</strong> {selectedFetus.week}</p>
@@ -109,6 +110,7 @@ const ManagePregnancy = () => {
                 open={editOpen || isAdding}
                 onCancel={() => { setEditOpen(false); setIsAdding(false); }}
                 footer={null}
+                style={{ width: '950px' }}
             >
                 <CreateFetusHealth
                     fetusHealthData={selectedFetus}
