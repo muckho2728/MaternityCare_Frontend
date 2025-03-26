@@ -111,6 +111,7 @@
     flex-direction: column;
     gap: 18px;
     transition: all 0.3s;
+    margin-top: 20px;
 }
 
 

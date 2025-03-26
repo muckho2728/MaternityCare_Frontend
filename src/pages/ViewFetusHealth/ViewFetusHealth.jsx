@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { Card, Typography, Row, Col, Layout, Menu, Input, Button, Form, Space, message } from 'antd';
-import { UserOutlined, HeartOutlined, MessageOutlined } from '@ant-design/icons';
+import { UserOutlined, HeartOutlined, MessageOutlined, BookOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { FetusContext } from '../../constants/FetusContext';
 import api from '../../config/api';
@@ -25,11 +25,11 @@ const ViewFetusHealth = () => {
                     return;
                 }
                 
-                let fetusID = localStorage.getItem('fetusId') || response.data[response.data.length - 1].id;
+                let fetusID = localStorage.getItem('fetusId') || response.data[0].id;
                 localStorage.setItem('fetusId', fetusID);
                 
-                if(fetusID !== response.data[response.data.length - 1].id) {
-                    localStorage.setItem('fetusId', response.data[response.data.length - 1].id);
+                if(fetusID !== response.data[0].id) {
+                    localStorage.setItem('fetusId', response.data[0].id);
                 }
                 
                 const responseHealth = await api.get(`fetuses/${fetusID}/fetus-healths`);
@@ -40,12 +40,12 @@ const ViewFetusHealth = () => {
                 }
 
                 const latestHealthData = responseHealth.data[responseHealth.data.length - 1];
-                setFetusData(response.data[response.data.length - 1]);
+                setFetusData(response.data[0]);
                 setHealthData(latestHealthData);
                 localStorage.setItem('currentWeek', latestHealthData.week);
                 
                 form.setFieldsValue({
-                    conceptionDate: response.data[response.data.length - 1].conceptionDate,
+                    conceptionDate: response.data[0].conceptionDate,
                     ...latestHealthData
                 });
             } catch (error) {
@@ -93,11 +93,11 @@ const ViewFetusHealth = () => {
     }
 
     return (
-        <Layout>
-            <Content style={{ padding: '12px', marginTop: '24px', maxWidth: '1400px', margin: '0 auto' }}>
+        <Layout style={{ backgroundColor: 'transparent' }}>
+            <Content style={{ padding: '15px', marginTop: '24px', maxWidth: '1400px', margin: '0 auto' }}>
                 <Row gutter={24}>
                     <Col span={6}>
-                        <Card style={{ borderRadius: '8px', backgroundColor: '#f9f9f9', padding: '10px' }}>
+                        <Card style={{ borderRadius: '8px', padding: '10px' }}>
                             <Menu mode="vertical" defaultSelectedKeys={['2']} style={{ border: 'none' }} items={[
                                 {
                                     key: '1',
@@ -119,11 +119,12 @@ const ViewFetusHealth = () => {
                                     icon: <MessageOutlined />,
                                     label: <Link to="/manage-preg">Quản lý thai kỳ</Link>,
                                 },
+                                {key: '5', icon: <BookOutlined />, label: <Link to="/viewBookedSlot">Xem lịch đã đặt</Link> }
                             ]} />
                         </Card>
                     </Col>
                     <Col span={18}>
-                        <Card style={{ borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', padding: 24 }}>
+                        <Card style={{ borderRadius: '10px', padding: 24 }}>
                             <Title level={2} style={{ textAlign: 'center' }}>Thông tin sức khỏe thai nhi</Title>
                             <Form form={form} layout="vertical">
                                 <Row gutter={16}>

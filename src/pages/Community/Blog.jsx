@@ -6,6 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./Blog.css";
 import api from "../../config/api";
 import { Link } from "react-router-dom";
+import { Avatar } from "antd";
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
@@ -20,24 +21,24 @@ const Blog = () => {
   const [newComments, setNewComments] = useState({});
   const [editCommentId, setEditCommentId] = useState(null);
   const [editContent, setEditContent] = useState("");
-  const [currentBlogId, setCurrentBlogId] = useState(null);
+  const [setCurrentBlogId] = useState(null);
   const [likesByBlog, setLikesByBlog] = useState({});
   const [currentUser, setCurrentUser] = useState(null);
 
   const filteredBlogs = Array.isArray(blogs)
     ? blogs.filter(
-      (blog) =>
-        (selectedTag ? blog.tag?.id === selectedTag : true) &&
-        (blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          blog.content.toLowerCase().includes(searchTerm.toLowerCase()))
-    )
+        (blog) =>
+          (selectedTag ? blog.tag?.id === selectedTag : true) &&
+          (blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            blog.content.toLowerCase().includes(searchTerm.toLowerCase()))
+      )
     : [];
 
   useEffect(() => {
     const fetchCurrentUser = async (url) => {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem("token");
       if (!token) {
-        console.error('No token found');
+        console.error("No token found");
         return;
       }
 
@@ -47,11 +48,13 @@ const Blog = () => {
         });
         setCurrentUser(response.data); // Thiết lập currentUser
       } catch (error) {
-        console.error('Failed to fetch current user:', error);
+        console.error("Failed to fetch current user:", error);
       }
     };
 
-    fetchCurrentUser('https://maternitycare.azurewebsites.net/api/authentications/current-user');
+    fetchCurrentUser(
+      "https://maternitycare.azurewebsites.net/api/authentications/current-user"
+    );
   }, []);
 
   useEffect(() => {
@@ -201,8 +204,10 @@ const Blog = () => {
       setCommentsByBlog((prev) => ({
         ...prev,
         [blogId]: response.data.map((comment) => ({
+          avatar: comment.user?.avatar || "https://via.placeholder.com/40",
           id: comment.id,
-          user: comment.userId === currentUser?.id ? currentUser.fullName : "Ẩn Danh",
+          user: comment.user?.fullName || "Ẩn Danh",
+          userId: comment.user?.id,
           text: comment.content,
         })),
       }));
@@ -225,6 +230,8 @@ const Blog = () => {
         ...prev,
         [blogId]: [
           {
+            avatar:
+              userId === currentUser?.id ? currentUser.avatar : "No avatar",
             id: response.data.id,
             user: userId === currentUser?.id ? currentUser.fullName : "Bạn",
             text: commentText,
@@ -302,6 +309,37 @@ const Blog = () => {
       toast.error("Lỗi khi xóa bình luận.");
     }
   };
+  useEffect(() => {
+    const fetchAllComments = async () => {
+      const commentsData = {}; // Đối tượng để lưu số lượng bình luận theo blog ID
+
+      await Promise.all(
+        blogs.map(async (blog) => {
+          try {
+            const response = await api.get(
+              `https://maternitycare.azurewebsites.net/api/blogs/${blog.id}/comments?PageNumber=1&PageSize=${pageSize}`
+            );
+            commentsData[blog.id] = response.data.map((comment) => ({
+              id: comment.id,
+              user:
+                comment.userId === currentUser?.id
+                  ? currentUser.fullName
+                  : "Ẩn Danh",
+              text: comment.content,
+            }));
+          } catch (error) {
+            console.error(`Lỗi khi lấy bình luận cho blog ${blog.id}:`, error);
+          }
+        })
+      );
+
+      setCommentsByBlog(commentsData); // Cập nhật state một lần sau khi fetch xong
+    };
+
+    if (blogs.length > 0) {
+      fetchAllComments(); // Gọi API ngay khi component load
+    }
+  }, [blogs]); // Chạy lại khi danh sách blogs thay đổi
 
   return (
     <div className="blog-container">
@@ -428,20 +466,26 @@ const Blog = () => {
                     <span
                       onClick={(e) => {
                         fetchComments(blog.id);
-                        e.target.classList.toggle("active"); // Chỉ toggle class, không sửa JSX
+                        e.target.classList.toggle("active");
                       }}
                       style={{ marginTop: "10px", cursor: "pointer" }}
                       className="blog-comments"
                     >
                       <MessageCircle size={16} />{" "}
-                      {commentsByBlog[blog.id]?.length > 0
-                        ? `${commentsByBlog[blog.id].length} Bình luận`
-                        : "Không có bình luận nào"}
+                      
+                      {commentsByBlog[blog.id] === undefined
+                        ? "Đang tải bình luận..."
+                        : commentsByBlog[blog.id].length > 0
+                        ? `${commentsByBlog[blog.id].length ?? 0} Bình luận`
+                        : "Bình luận"}
                     </span>
                   </div>
 
                   <div>
-                    <form className="upcomment" onSubmit={(e) => handleCommentSubmit(e, blog.id)}>
+                    <form
+                      className="upcomment"
+                      onSubmit={(e) => handleCommentSubmit(e, blog.id)}
+                    >
                       <input
                         type="text"
                         value={newComments[blog.id] || ""}
@@ -467,8 +511,22 @@ const Blog = () => {
                     <div className="comments-section">
                       {(commentsByBlog[blog.id] || []).map((comment) => (
                         <div key={comment.id} className="comment">
-                          <strong>{comment.user}:</strong>
-
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <img
+                              src={comment.avatar}
+                              alt={comment.user}
+                              className="comment-avatar"
+                              style={{
+                                width: "30px",
+                                height: "30px",
+                                borderRadius: "50%",
+                                marginRight: "8px",
+                              }}
+                            />
+                            <strong>{comment.user}:</strong>
+                          </div>
                           {/* Nếu đang sửa comment, hiển thị ô input */}
                           {editCommentId === comment.id ? (
                             <div className="edit-comment">
@@ -485,39 +543,64 @@ const Blog = () => {
                               >
                                 Hủy
                               </button>
-                              <button className="save" onClick={() => handleEditComment(blog.id)}>Lưu</button>
-
+                              <button
+                                className="save"
+                                onClick={() => handleEditComment(blog.id)}
+                              >
+                                Lưu
+                              </button>
                             </div>
                           ) : (
-                            <div className={`comment-text ${comment.text.length > 100 ? "long" : ""}`}>
-                              <input type="checkbox" id={`toggle-${comment.id}`} className="comment-toggle" />
-                              <span className="short-text">{comment.text.length > 100 ? comment.text.slice(0, 100) + "..." : comment.text}</span>
+                            <div
+                              className={`comment-text ${
+                                comment.text.length > 100 ? "long" : ""
+                              }`}
+                            >
+                              <input
+                                type="checkbox"
+                                id={`toggle-${comment.id}`}
+                                className="comment-toggle"
+                              />
+                              <span className="short-text">
+                                {comment.text.length > 100
+                                  ? comment.text.slice(0, 100) + "..."
+                                  : comment.text}
+                              </span>
                               <span className="full-text">{comment.text}</span>
                               {comment.text.length > 100 && (
-                                <label htmlFor={`toggle-${comment.id}`} className="read-more"></label>
+                                <label
+                                  htmlFor={`toggle-${comment.id}`}
+                                  className="read-more"
+                                ></label>
                               )}
                             </div>
                           )}
 
-                          {/* Ẩn nút khi đang sửa comment */}
-                          {userId && editCommentId !== comment.id && (
-                            <div className="comment-btn">
-                              <button
-                                onClick={() => {
-                                  setEditCommentId(comment.id);
-                                  setEditContent(comment.text);
-                                  setCurrentBlogId(blog.id);
-                                }}
-                              >
-                                Sửa
-                              </button>
-                              <button onClick={() => handleDeleteComment(blog.id, comment.id)}>Xóa</button>
-                            </div>
-                          )}
+                          {/* Chỉ hiển thị nút Sửa/Xóa nếu currentUser.id trùng với comment.userId và không đang sửa */}
+                          {currentUser?.id === comment.userId &&
+                            editCommentId !== comment.id && (
+                              <div className="comment-btn">
+                                <button
+                                  onClick={() => {
+                                    setEditCommentId(comment.id);
+                                    setEditContent(comment.text);
+                                    setCurrentBlogId(blog.id);
+                                  }}
+                                >
+                                  Sửa
+                                </button>
+                                <button
+                                  onClick={() =>
+                                    handleDeleteComment(blog.id, comment.id)
+                                  }
+                                >
+                                  Xóa
+                                </button>
+                              </div>
+                            )}
                         </div>
                       ))}
                     </div>
-
                   </div>
                 </div>
               </div>
