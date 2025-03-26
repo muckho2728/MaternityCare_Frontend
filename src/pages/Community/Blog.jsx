@@ -459,12 +459,21 @@ const Blog = () => {
                       {likeData.likeCount} Likes
                     </span>
                     <span
-                      style={{ marginTop: "10px", cursor: "pointer" }}
-                      className="blog-comments"
-                    >
-                      <MessageCircle size={16} />{" "}
-                      {`${commentsByBlog[blog.id]?.length ?? 0} Bình luận`}
-                    </span>
+  onClick={(e) => {
+    fetchComments(blog.id);
+    e.target.classList.toggle("active");
+  }}
+  style={{ marginTop: "10px", cursor: "pointer" }}
+  className="blog-comments"
+>
+  <MessageCircle size={16} />{" "}
+  {commentsByBlog[blog.id] === undefined
+    ? "Đang tải bình luận..."
+    : commentsByBlog[blog.id].length > 0
+    ? `${commentsByBlog[blog.id].length ?? 0} Bình luận`
+     : "Bình luận"}
+</span>
+
                   </div>
 
                   <div>
