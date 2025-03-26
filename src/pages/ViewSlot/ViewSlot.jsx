@@ -18,6 +18,7 @@ const ViewSlot = () => {
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
+    const [loadingSlot, setLoadingSlot] = useState(false); // Thêm state để theo dõi trạng thái loading
 
     useEffect(() => {
         const fetchCurrentUser = async (url) => {
@@ -100,6 +101,7 @@ const ViewSlot = () => {
             return;
         }
 
+        setLoadingSlot(true); // Bắt đầu loading
         try {
             const response = await api.get(`https://maternitycare.azurewebsites.net/api/doctors/${doctorId}/slots/${slotId}`, {
                 headers: {
@@ -108,12 +110,21 @@ const ViewSlot = () => {
             });
             setSelectedSlot(response.data);
             console.log(response.data);
-            setIsConfirmModalOpen(true);
         } catch (error) {
             console.error("Error confirming slot:", error);
             toast.error("Error confirming slot: " + (error.response?.data?.message || error.message));
+        } finally {
+            setLoadingSlot(false); // Kết thúc loading
         }
     };
+
+    const showConfirmModal = async (doctorId, slotId) => {
+        setSelectedDoctor({ id: doctorId });
+        setSelectedSlot({ id: slotId });
+        await confirmBooking(doctorId, slotId); // Gọi API để lấy thông tin slot ngay lập tức
+        setIsConfirmModalOpen(true);
+    };
+
     const bookAppointments = async (userId, slotId) => {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -127,11 +138,13 @@ const ViewSlot = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            toast.response("Đăng kí lịch khám thành công");
-            console.log("Đăng kí thànhc công");
+            toast.success("Đăng ký lịch khám thành công");
+            console.log("Đăng ký thành công");
+            setIsConfirmModalOpen(false);
+            setIsModalOpen(false);
         } catch (error) {
             console.log(error.response);
-            toast.error(error.response);
+            toast.error("Đăng ký thất bại: " + (error.response?.data?.message || error.message));
         }
     };
 
@@ -142,7 +155,7 @@ const ViewSlot = () => {
             console.error('No token found');
             return;
         }
-        if (currentUser && selectedSlot) {
+        if (currentUser && selectedSlot && selectedDoctor) {
             bookAppointments(currentUser.id, selectedSlot.id);
             console.log('Token:', token);
         }
@@ -162,24 +175,23 @@ const ViewSlot = () => {
         (specialtyFilter === "all" || doctor.specialization === specialtyFilter)
     );
 
-
     return (
         <div className="view-slot-container">
             <h1 className="view-slot-header">Chọn bác sĩ</h1>
 
             <div className="search-bar">
-            <div className="blog-search">
-                <input
-                    type="text"
-                    placeholder="Tìm kiếm bác sĩ..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    className="blog-search-input"
-                />
-                <button className="blog-search-btn">
-                    <Search size={18} />
-                </button>
-            </div>
+                <div className="blog-search">
+                    <input
+                        type="text"
+                        placeholder="Tìm kiếm bác sĩ..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        className="blog-search-input"
+                    />
+                    <button className="blog-search-btn">
+                        <Search size={18} />
+                    </button>
+                </div>
                 <select value={specialtyFilter} onChange={(e) => setSpecialtyFilter(e.target.value)}>
                     <option value="all">Toàn bộ</option>
                     {specialties.map((specialty, index) => (
@@ -211,20 +223,16 @@ const ViewSlot = () => {
                     {slots.length > 0 ? (
                         slots
                             .filter(slot => {
-                                const currentDate = new Date(); // Ngày hiện tại
-                                const slotDate = new Date(slot.date); // Chuyển slot.date thành đối tượng Date
-                                return !slot.isBooked && slotDate >= currentDate; // Lọc slot chưa đặt và từ ngày hiện tại trở đi
+                                const currentDate = new Date();
+                                const slotDate = new Date(slot.date);
+                                return !slot.isBooked && slotDate >= currentDate;
                             })
                             .sort((a, b) => {
-                                const dateA = new Date(a.date); // Ngày của slot A
-                                const dateB = new Date(b.date); // Ngày của slot B
-
-                                // So sánh ngày trước
+                                const dateA = new Date(a.date);
+                                const dateB = new Date(b.date);
                                 if (dateA < dateB) return -1;
                                 if (dateA > dateB) return 1;
-
-                                // Nếu ngày bằng nhau, so sánh startTime
-                                return a.startTime.localeCompare(b.startTime); // Sắp xếp theo chuỗi startTime
+                                return a.startTime.localeCompare(b.startTime);
                             })
                             .map(slot => (
                                 <Card className="slot-card" key={slot.id}>
@@ -233,7 +241,7 @@ const ViewSlot = () => {
                                     <p>Giờ kết thúc: {slot.endTime}</p>
                                     <Button
                                         className="book-btn"
-                                        onClick={() => confirmBooking(selectedDoctor.id, slot.id)}
+                                        onClick={() => showConfirmModal(selectedDoctor.id, slot.id)}
                                     >
                                         Đặt lịch hẹn
                                     </Button>
@@ -248,14 +256,22 @@ const ViewSlot = () => {
                 title="Xác nhận lịch hẹn"
                 open={isConfirmModalOpen}
                 onCancel={() => setIsConfirmModalOpen(false)}
-                footer={<Button onClick={handleConfirmBooking}>Xác nhận</Button>}
+                footer={
+                    <Button onClick={handleConfirmBooking} disabled={loadingSlot}>
+                        Xác nhận
+                    </Button>
+                }
             >
-                {selectedSlot && (
+                {loadingSlot ? (
+                    <p>Đang tải thông tin...</p>
+                ) : selectedSlot && selectedSlot.date ? (
                     <div>
                         <p>Ngày: {selectedSlot.date}</p>
                         <p>Giờ bắt đầu: {selectedSlot.startTime}</p>
                         <p>Giờ kết thúc: {selectedSlot.endTime}</p>
                     </div>
+                ) : (
+                    <p>Không thể tải thông tin slot.</p>
                 )}
             </Modal>
         </div>
