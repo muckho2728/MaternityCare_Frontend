@@ -85,6 +85,7 @@ const ViewSlot = () => {
             setSlots(response.data);
             setSelectedDoctor(doctor);
             setIsModalOpen(true);
+            console.log(response.data);
         } catch (error) {
             console.error("Error fetching slots:", error);
             toast.error("Error fetching slots: " + (error.response?.data?.message || error.message));
@@ -105,6 +106,7 @@ const ViewSlot = () => {
                 },
             });
             setSelectedSlot(response.data);
+            console.log(response.data);
             setIsConfirmModalOpen(true);
         } catch (error) {
             console.error("Error confirming slot:", error);
@@ -199,14 +201,40 @@ const ViewSlot = () => {
                 footer={null}
             >
                 <div className="slot-container">
-                    {slots.length > 0 ? slots.map(slot => (
-                        <Card className="slot-card" key={slot.id}>
-                            <p>Ngày: {slot.date}</p>
-                            <p>Giờ bắt đầu: {slot.startTime}</p>
-                            <p>Giờ kết thúc: {slot.endTime}</p>
-                            <Button className="book-btn" onClick={() => confirmBooking(selectedDoctor.id, slot.id)}>Đặt lịch hẹn</Button>
-                        </Card>
-                    )) : <p>Không có lịch hẹn nào</p>}
+                    {slots.length > 0 ? (
+                        slots
+                            .filter(slot => {
+                                const currentDate = new Date(); // Ngày hiện tại
+                                const slotDate = new Date(slot.date); // Chuyển slot.date thành đối tượng Date
+                                return !slot.isBooked && slotDate >= currentDate; // Lọc slot chưa đặt và từ ngày hiện tại trở đi
+                            })
+                            .sort((a, b) => {
+                                const dateA = new Date(a.date); // Ngày của slot A
+                                const dateB = new Date(b.date); // Ngày của slot B
+
+                                // So sánh ngày trước
+                                if (dateA < dateB) return -1;
+                                if (dateA > dateB) return 1;
+
+                                // Nếu ngày bằng nhau, so sánh startTime
+                                return a.startTime.localeCompare(b.startTime); // Sắp xếp theo chuỗi startTime
+                            })
+                            .map(slot => (
+                                <Card className="slot-card" key={slot.id}>
+                                    <p>Ngày: {slot.date}</p>
+                                    <p>Giờ bắt đầu: {slot.startTime}</p>
+                                    <p>Giờ kết thúc: {slot.endTime}</p>
+                                    <Button
+                                        className="book-btn"
+                                        onClick={() => confirmBooking(selectedDoctor.id, slot.id)}
+                                    >
+                                        Đặt lịch hẹn
+                                    </Button>
+                                </Card>
+                            ))
+                    ) : (
+                        <p>Không có lịch hẹn nào</p>
+                    )}
                 </div>
             </Modal>
             <Modal
