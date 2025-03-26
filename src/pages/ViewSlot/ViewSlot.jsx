@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { Search, MessageCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import api from '../../constants/axios';
 import { Modal, Button, Card } from "antd";
 import "./ViewSlot.css";
@@ -18,7 +19,9 @@ const ViewSlot = () => {
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
-    const [loadingSlot, setLoadingSlot] = useState(false); // Thêm state để theo dõi trạng thái loading
+    const [loadingSlot, setLoadingSlot] = useState(false); // Theo dõi trạng thái loading
+
+    const navigate = useNavigate(); // Khai báo useNavigate
 
     useEffect(() => {
         const fetchCurrentUser = async (url) => {
@@ -142,6 +145,7 @@ const ViewSlot = () => {
             console.log("Đăng ký thành công");
             setIsConfirmModalOpen(false);
             setIsModalOpen(false);
+            navigate("/viewBookedSlot"); // Chuyển hướng sau khi thành công
         } catch (error) {
             console.log(error.response);
             toast.error("Đăng ký thất bại: " + (error.response?.data?.message || error.message));
@@ -178,12 +182,12 @@ const ViewSlot = () => {
     return (
         <div className="view-slot-container">
             <header className="hero-section">
-            <h1 className="view-slot-header">Đội ngũ bác sĩ tận tâm – Hãy chọn người phù hợp nhất cho bạn</h1>
-            
-            <p className="view-slot-description">
-                Chúng tôi hiểu rằng sức khỏe của bạn là ưu tiên hàng đầu. Dưới đây là danh sách các bác sĩ chuyên khoa hàng đầu, 
-                sẵn sàng hỗ trợ bạn. Hãy tìm kiếm và chọn một bác sĩ phù hợp để bắt đầu hành trình chăm sóc sức khỏe ngay hôm nay!
-            </p>
+                <h1 className="view-slot-header">Đội ngũ bác sĩ tận tâm – Hãy chọn người phù hợp nhất cho bạn</h1>
+
+                <p className="view-slot-description">
+                    Chúng tôi hiểu rằng sức khỏe của bạn là ưu tiên hàng đầu. Dưới đây là danh sách các bác sĩ chuyên khoa hàng đầu,
+                    sẵn sàng hỗ trợ bạn. Hãy tìm kiếm và chọn một bác sĩ phù hợp để bắt đầu hành trình chăm sóc sức khỏe ngay hôm nay!
+                </p>
             </header>
             <div className="search-bar">
                 <div className="blog-search">
@@ -215,7 +219,6 @@ const ViewSlot = () => {
                     </div>
                 ))}
             </div>
-
 
             {/* Pagination */}
             <div className="pagination">
@@ -286,7 +289,6 @@ const ViewSlot = () => {
                 )}
             </Modal>
         </div>
-
     );
 };
 
