@@ -10,7 +10,6 @@ const CreateFetusHealth = () => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
 
-    const [standardHealthData, setStandardHealthData] = useState({});
     const [fetusHealthId, setFetusHealthId] = useState(null);
     const [healthData, setHealthData] = useState({
         week:2,
@@ -47,30 +46,6 @@ const CreateFetusHealth = () => {
         fetchFetusData();
         
     }, [userId, token]);
-
-    useEffect(() => {
-        const fetchStandardHealthData = async () => {
-            try {
-                const response = await api.get(`/standard-fetus-healths/${healthData.week}`);
-                setStandardHealthData(response.data);
-            } catch (error) {
-                console.error("Lỗi khi tải dữ liệu chuẩn:", error);
-            }
-        };
-        fetchStandardHealthData();
-    }, [healthData.week]);
-    
-    const checkOutOfRange = (name, value) => {
-        if (!standardHealthData || !standardHealthData[name]) return;
-
-        const standardValue = standardHealthData[name];
-        const minLimit = standardValue - 5;
-        const maxLimit = standardValue + 5;
-
-        if (value < minLimit || value > maxLimit) {
-            toast.warning(`⚠ Giá trị ${name} (${value}) lệch so với chuẩn (${standardValue} ± 5 đơn vị)!`);
-        }
-    };
 
     const sanitizeHealthData = (data) => {
         return Object.keys(data).reduce((acc, key) => {
@@ -125,7 +100,6 @@ const CreateFetusHealth = () => {
         }
 
         setHealthData(updatedData);
-        checkOutOfRange(name, value);
     };
 
     const handleSubmit = async (e) => {
