@@ -93,11 +93,11 @@ const ViewFetusHealth = () => {
     }
 
     return (
-        <Layout>
-            <Content style={{ padding: '12px', marginTop: '24px', maxWidth: '1400px', margin: '0 auto' }}>
+        <Layout style={{ backgroundColor: 'transparent' }}>
+            <Content style={{ padding: '15px', marginTop: '24px', maxWidth: '1400px', margin: '0 auto' }}>
                 <Row gutter={24}>
                     <Col span={6}>
-                        <Card style={{ borderRadius: '8px', backgroundColor: '#f9f9f9', padding: '10px' }}>
+                        <Card style={{ borderRadius: '8px', padding: '10px' }}>
                             <Menu mode="vertical" defaultSelectedKeys={['2']} style={{ border: 'none' }} items={[
                                 {
                                     key: '1',
@@ -123,7 +123,7 @@ const ViewFetusHealth = () => {
                         </Card>
                     </Col>
                     <Col span={18}>
-                        <Card style={{ borderRadius: '10px', boxShadow: '0 2px 10px rgba(0,0,0,0.1)', padding: 24 }}>
+                        <Card style={{ borderRadius: '10px', padding: 24 }}>
                             <Title level={2} style={{ textAlign: 'center' }}>Thông tin sức khỏe thai nhi</Title>
                             <Form form={form} layout="vertical">
                                 <Row gutter={16}>

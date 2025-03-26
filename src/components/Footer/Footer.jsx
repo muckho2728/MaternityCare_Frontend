@@ -25,7 +25,7 @@ const Footer = () => {
                 </div>
 
                 <div className="footer-section">
-                    <h3>Contact Us</h3>
+                    <h3>Liên hệ với chúng tôi tại:</h3>
                     <ul>
                         <li>Email: maternitycare@gmail.com</li>
                         <li>Phone: (123) 456-7890</li>

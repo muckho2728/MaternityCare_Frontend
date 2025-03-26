@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
+import { Search, MessageCircle } from "lucide-react";
 import api from '../../constants/axios';
 import { Modal, Button, Card } from "antd";
 import "./ViewSlot.css";
@@ -167,12 +168,18 @@ const ViewSlot = () => {
             <h1 className="view-slot-header">Chọn bác sĩ</h1>
 
             <div className="search-bar">
+            <div className="blog-search">
                 <input
                     type="text"
-                    placeholder="Tìm kiếm bác sĩ"
+                    placeholder="Tìm kiếm bác sĩ..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
+                    className="blog-search-input"
                 />
+                <button className="blog-search-btn">
+                    <Search size={18} />
+                </button>
+            </div>
                 <select value={specialtyFilter} onChange={(e) => setSpecialtyFilter(e.target.value)}>
                     <option value="all">Toàn bộ</option>
                     {specialties.map((specialty, index) => (

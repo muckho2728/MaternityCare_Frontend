@@ -204,7 +204,7 @@ const Profile = () => {
 
   return (
     <Layout style={{ backgroundColor: 'transparent' }}>
-      <Content style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto', background: 'transparent' }}>
+      <Content style={{ padding: '15px', maxWidth: '1200px', margin: '0 auto', background: 'transparent' }}>
         <Row gutter={24}>
           <Col span={6}>
             <Card span={0} style={{ textAlign: 'center' }}>
@@ -281,7 +281,7 @@ const Profile = () => {
 
 
                 <Col span={24}>
-                  <Title level={3} style={{ color: '#EC407A' }}>Thông tin cá nhân</Title>
+                  <Title level={3} style={{ color: '#4caf93' }}>Thông tin cá nhân</Title>
                   <Form
                     form={profileForm}
                     layout="vertical"
@@ -333,10 +333,10 @@ const Profile = () => {
                           </Button>
                         ) : (
                           <>
-                            <Button type="primary" onClick={() => profileForm.submit()} style={{ width: '48%' }}>
+                            <Button type="primary" onClick={() => profileForm.submit()} style={{ width: '100%' }}>
                               Lưu
                             </Button>
-                            <Button onClick={handleCancelEdit} style={{ width: '48%' }}>
+                            <Button onClick={handleCancelEdit} style={{ width: '100%', background: '#f55b5b' }}>
                               Hủy
                             </Button>
                           </>
@@ -345,7 +345,7 @@ const Profile = () => {
                     </Form.Item>
                   </Form>
                   {/* Thông tin gói */}
-                  <Title level={3} style={{ color: '#EC407A' }}>Thông tin gói</Title>
+                  <Title level={3} style={{ color: '#4caf93' }}>Thông tin gói</Title>
                   <Card
                     style={{
                       marginBottom: '24px',
@@ -360,16 +360,16 @@ const Profile = () => {
                     <p><strong>Ngày hết hạn:</strong> {subscriptionDetails?.[0]?.endDate || 'Không có'}</p>
                   </Card>
                   {/*lich su thanh toan */}
-                  <Title level={3} style={{ color: '#EC407A' }}>Lịch sử thanh toán</Title>
+                  <Title level={3} style={{ color: '#4caf93' }}>Lịch sử thanh toán</Title>
                   <Table
                     columns={paymentHistoryColumns}
                     dataSource={paymentHistory}
                     rowKey="id"
                     pagination={false}
-                    style={{ backgroundColor: '#EC407A', borderRadius: '8px' }}
+                    style={{ backgroundColor: '#4caf93', borderRadius: '8px' }}
                   />
 
-                  <Title level={3} style={{ color: '#EC407A' }}>Đổi mật khẩu</Title>
+                  <Title level={3} style={{ color: '#4caf93' }}>Đổi mật khẩu</Title>
                   <Form form={passwordForm} layout="vertical" style={{ backgroundColor: '#f9f9f9', padding: '20px', borderRadius: '8px', boxShadow: '0 2px 10px rgba(0,0,0,0.2)' }} onFinish={handleSubmitPassword}>
                     <Row gutter={24}>
                       <Col xs={24} sm={12}>

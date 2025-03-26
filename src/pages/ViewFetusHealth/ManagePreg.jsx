@@ -71,12 +71,12 @@ const ManagePreg = () => {
     ];
 
     return (
-        <Layout>
-            <Content style={{ padding: "12px", marginTop: "24px", maxWidth: "1400px", marginLeft: "50px" }}>
+        <Layout style={{ backgroundColor: 'transparent' }}>
+            <Content style={{ padding: "15px", marginTop: "24px", width: '100%', maxWidth: "1400px", margin: '0 auto'  }}>
                 <Row gutter={24}>
                     <Col span={6}>
-                        <Card style={{ borderRadius: "8px", backgroundColor: "#f9f9f9", padding: "10px" }}>
-                            <Menu mode="vertical" defaultSelectedKeys={["4"]} style={{ border: "none", width: "100%" }} items={[
+                        <Card style={{ borderRadius: "8px", padding: "10px" }}>
+                            <Menu mode="vertical" defaultSelectedKeys={["4"]} style={{ border: "none" }} items={[
                                 { key: "1", icon: <UserOutlined />, label: <Link to="/profile">Thông tin người dùng</Link> },
                                 { key: "2", icon: <HeartOutlined />, label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link> },
                                 { key: "3", icon: <MessageOutlined />, label: <Link to="/manage-pregnancy">Quản lý thông tin thai kỳ</Link> },
@@ -85,7 +85,7 @@ const ManagePreg = () => {
                         </Card>
                     </Col>
                     <Col span={18}>
-                        <Card style={{ padding: "16px", borderRadius: "8px", marginLeft: "50px"}}>
+                        <Card style={{ borderRadius: '10px', padding: 24 }}>
                             <h2>Quản lý thai kỳ</h2>
                             <Table dataSource={fetusData} columns={columns} rowKey="id" />
                         </Card>

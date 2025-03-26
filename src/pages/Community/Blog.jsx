@@ -21,7 +21,7 @@ const Blog = () => {
   const [newComments, setNewComments] = useState({});
   const [editCommentId, setEditCommentId] = useState(null);
   const [editContent, setEditContent] = useState("");
-  const [currentBlogId, setCurrentBlogId] = useState(null);
+  const [setCurrentBlogId] = useState(null);
   const [likesByBlog, setLikesByBlog] = useState({});
   const [currentUser, setCurrentUser] = useState(null);
 
@@ -306,7 +306,36 @@ const Blog = () => {
       toast.error("Lỗi khi xóa bình luận.");
     }
   };
-
+  useEffect(() => {
+    const fetchAllComments = async () => {
+      const commentsData = {}; // Đối tượng để lưu số lượng bình luận theo blog ID
+  
+      await Promise.all(
+        blogs.map(async (blog) => {
+          try {
+            const response = await api.get(
+              `https://maternitycare.azurewebsites.net/api/blogs/${blog.id}/comments?PageNumber=1&PageSize=${pageSize}`
+            );
+            commentsData[blog.id] = response.data.map((comment) => ({
+              id: comment.id,
+              user: comment.userId === currentUser?.id ? currentUser.fullName : "Ẩn Danh",
+              text: comment.content,
+            }));
+          } catch (error) {
+            console.error(`Lỗi khi lấy bình luận cho blog ${blog.id}:`, error);
+          }
+        })
+      );
+  
+      setCommentsByBlog(commentsData); // Cập nhật state một lần sau khi fetch xong
+    };
+  
+    if (blogs.length > 0) {
+      fetchAllComments(); // Gọi API ngay khi component load
+    }
+  }, [blogs]); // Chạy lại khi danh sách blogs thay đổi
+  
+  
   return (
     <div className="blog-container">
       <h1 className="blog-title">Diễn Đàn Mẹ Bầu</h1>
@@ -430,17 +459,11 @@ const Blog = () => {
                       {likeData.likeCount} Likes
                     </span>
                     <span
-                      onClick={(e) => {
-                        fetchComments(blog.id);
-                        e.target.classList.toggle("active"); // Chỉ toggle class, không sửa JSX
-                      }}
                       style={{ marginTop: "10px", cursor: "pointer" }}
                       className="blog-comments"
                     >
                       <MessageCircle size={16} />{" "}
-                      {commentsByBlog[blog.id]?.length > 0
-                        ? `${commentsByBlog[blog.id].length} Bình luận`
-                        : "Không có bình luận nào"}
+                      {`${commentsByBlog[blog.id]?.length ?? 0} Bình luận`}
                     </span>
                   </div>
 

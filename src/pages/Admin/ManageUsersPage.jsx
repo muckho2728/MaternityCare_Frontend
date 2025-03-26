@@ -64,7 +64,7 @@ const ManageUsersPage = () => {
         (user.address && user.address.toLowerCase().includes(searchValue));
       return matchesRole && matchesSearch;
     })
-    : [];
+    : [filterRole, searchValue, usersData];
 
   const showDrawer = (title, user = null) => {
     setDrawerTitle(title);
@@ -216,7 +216,7 @@ const ManageUsersPage = () => {
         <Radio.Button value="all">All</Radio.Button>
       </Radio.Group>
       <Table
-        dataSource={usersData}
+        dataSource={filteredUsersData}
         columns={columns}
         rowKey="id"
         
