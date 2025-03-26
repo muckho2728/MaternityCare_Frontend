@@ -25,11 +25,11 @@ const ViewFetusHealth = () => {
                     return;
                 }
                 
-                let fetusID = localStorage.getItem('fetusId') || response.data[response.data.length - 1].id;
+                let fetusID = localStorage.getItem('fetusId') || response.data[0].id;
                 localStorage.setItem('fetusId', fetusID);
                 
-                if(fetusID !== response.data[response.data.length - 1].id) {
-                    localStorage.setItem('fetusId', response.data[response.data.length - 1].id);
+                if(fetusID !== response.data[0].id) {
+                    localStorage.setItem('fetusId', response.data[0].id);
                 }
                 
                 const responseHealth = await api.get(`fetuses/${fetusID}/fetus-healths`);
@@ -40,12 +40,12 @@ const ViewFetusHealth = () => {
                 }
 
                 const latestHealthData = responseHealth.data[responseHealth.data.length - 1];
-                setFetusData(response.data[response.data.length - 1]);
+                setFetusData(response.data[0]);
                 setHealthData(latestHealthData);
                 localStorage.setItem('currentWeek', latestHealthData.week);
                 
                 form.setFieldsValue({
-                    conceptionDate: response.data[response.data.length - 1].conceptionDate,
+                    conceptionDate: response.data[0].conceptionDate,
                     ...latestHealthData
                 });
             } catch (error) {
