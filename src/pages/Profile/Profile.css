@@ -49,7 +49,7 @@
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #1890ff;
+    border: 3px solid #00897b;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -57,7 +57,7 @@
     position: absolute;
     bottom: 0;
     right: 0;
-    background: #1890ff;
+    background: #00897b;
     border: none;
     border-radius: 50%;
     padding: 8px;
@@ -66,7 +66,7 @@
 }
 
 .profile-avatar-upload:hover {
-    background: #096dd9;
+    background: #00897b;
 }
 
 /* Style cho form */
@@ -82,9 +82,18 @@
     padding: 10px;
     border: 1px solid #ddd;
 }
-
+input[type="date"] {
+    padding: 2px 0px;
+    border: 1.5px solid #efefef;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%;
+    background: #efefef;
+    outline: none;
+    transition: all 0.3s ease;
+}
 .profile-input:focus {
-    border-color: #1890ff;
+    border-color: #4caf93;
     box-shadow: 0 0 5px rgba(24, 144, 255, 0.5);
 }
 
@@ -111,7 +120,7 @@
 }
 
 .profile-table th {
-    background: #1890ff;
+    background: #4caf93;
     color: white;
     font-weight: bold;
 }
@@ -119,8 +128,13 @@
 .profile-table td {
     background: #f9f9f9;
 }
-
-
+.ant-card-body h3{
+    font-size: 30px;
+}
+.ant-menu-light .ant-menu-item-selected {
+    background: #4caf93;
+    color: white;
+}
 /* Responsive design */
 @media (max-width: 768px) {
     .profile-title {

@@ -2,11 +2,13 @@ import { useState } from 'react';
 import { Rate, Button, Input } from 'antd';
 import './Feedback.css';
 import api from '../../config/api';
+import { useNavigate } from 'react-router-dom';
 const { TextArea } = Input;
 const userId = localStorage.getItem('userId');
 const Feedback = () => {
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState('');
+    const navigate = useNavigate();
 
     const handleRatingChange = (value) => {
         setRating(value);
@@ -29,6 +31,7 @@ const Feedback = () => {
             });
             console.log('Feedback submitted:', response.data);
             alert('Cảm ơn phản hồi của bạn!');
+            navigate('/');
         } catch (error) {
             console.error('Error submitting feedback:', error);
             alert('Có lỗi xảy ra khi gửi phản hồi. Vui lòng thử lại!');
@@ -37,30 +40,41 @@ const Feedback = () => {
 
     return (
         <div className="feedback-container">
-            <h2>Bạn có hài lòng về dịch vụ của chúng tôi không?</h2>
-            <Rate
-                className="feedback-rating"
-                value={rating}
-                onChange={handleRatingChange}
-                count={5}
-            />
-            <div className="feedback-labels">
-                <span>Không hài lòng</span>
-                <span>Rất hài lòng</span>
-            </div>
-            <h3>
-                Chúng tôi luôn lắng nghe để mang đến trải nghiệm tuyệt vời nhất cho bạn!
-            </h3>
-            <TextArea
-                rows={4}
-                value={comment}
-                onChange={handleCommentChange}
-                placeholder="Nhập phản hồi của bạn..."
-            />
-            <Button type="primary" onClick={handleSubmit} className="feedback-submit">
-                Gửi
-            </Button>
-        </div>
+    <h2 className="feedback-title">
+        🌟 Trải nghiệm của bạn với chúng tôi thế nào?
+    </h2>
+    <p className="feedback-subtitle">
+        Chúng tôi rất mong nhận được đánh giá của bạn để ngày càng hoàn thiện hơn! 💖
+    </p>
+    
+    <Rate
+        className="feedback-rating"
+        value={rating}
+        onChange={handleRatingChange}
+        count={5}
+    />
+    <div className="feedback-labels">
+        <span>😞 Không hài lòng</span>
+        <span>😍 Rất hài lòng</span>
+    </div>
+
+    <h3 className="feedback-message">
+        ✨ Mọi đóng góp của bạn đều giúp chúng tôi nâng cao chất lượng dịch vụ! ✨
+    </h3>
+
+    <TextArea
+        className="feedback-textarea"
+        rows={4}
+        value={comment}
+        onChange={handleCommentChange}
+        placeholder="Hãy chia sẻ suy nghĩ của bạn..."
+    />
+
+    <Button type="primary" onClick={handleSubmit} className="feedback-submit">
+        Gửi phản hồi 💌
+    </Button>
+</div>
+
     );
 };
 
