@@ -185,31 +185,26 @@ const Home = () => {
             <div className="introduction-text">
               <h2>CHÀO MỪNG MẸ ĐẾN VỚI MATERNITY CARE</h2>
               <p>
-                <strong>Maternity Care</strong> là người bạn đồng hành của mẹ
-                trong hành trình 9 tháng 10 ngày. Chúng tôi cung cấp **công cụ
-                theo dõi thai kỳ**, **lịch khám định kỳ**, và **diễn đàn kết nối
-                mẹ bầu** để bạn luôn cảm thấy an tâm & hạnh phúc.
+                <strong>Maternity Care</strong> ra đời với sứ mệnh đồng hành cùng mẹ trong suốt chín tháng mười ngày, mang đến những công cụ hỗ trợ cần thiết để hành trình này trở nên nhẹ nhàng, ý nghĩa và trọn vẹn hơn.
               </p>
               <p>
-                <p>🎯 **Tại Maternity Care, mẹ sẽ nhận được:**</p>
+                <p>🎯 Tại sao mẹ cần Maternity Care?</p>
               </p>
               <ul>
-                <li>🍼 **Theo dõi sự phát triển của bé** theo từng tuần.</li>
+                <li>🍼Hiểu rõ từng giai đoạn phát triển của bé: Chúng tôi giúp mẹ cập nhật thông tin chi tiết về sự phát triển của bé, những thay đổi trong cơ thể mẹ và những điều cần lưu ý để chăm sóc tốt nhất cho cả hai.</li>
                 <li>
-                  📅 **Đặt lịch khám** với bác sĩ chuyên khoa nhanh chóng.
+                  📅Chủ động chăm sóc sức khỏe: Maternity Care giúp mẹ dễ dàng đặt lịch khám, lưu trữ thông tin sức khỏe và luôn sẵn sàng cho mỗi cột mốc quan trọng.
                 </li>
                 <li>
-                  💖 **Chăm sóc sức khỏe mẹ bầu** với dịch vụ thư giãn & dinh
+                  💖Kết nối với cộng đồng: Mẹ không hề đơn độc trong hành trình này. Hàng ngàn mẹ bầu khác cũng đang trải qua những cảm xúc, lo lắng và niềm vui giống mẹ.
                   dưỡng.
                 </li>
                 <li>
-                  👩‍👩‍👦 **Diễn đàn mẹ bầu** – nơi mẹ có thể kết nối & chia sẻ kinh
-                  nghiệm.
+                  👩‍👩‍👦 Chuẩn bị sẵn sàng cho ngày gặp con: Thai kỳ không chỉ là chín tháng mong chờ mà còn là khoảng thời gian để mẹ chuẩn bị tốt nhất cho hành trình làm mẹ. 
                 </li>
               </ul>
               <p>
-                🌿 Hãy để Maternity Care giúp mẹ có một thai kỳ khỏe mạnh & đáng
-                nhớ! 🌿
+                🌿 Hãy để Maternity Care trở thành người bạn đồng hành của mẹ – giúp mẹ yên tâm tận hưởng từng khoảnh khắc của hành trình kỳ diệu này. Vì mỗi thai kỳ là một câu chuyện đẹp, và chúng tôi muốn cùng mẹ viết nên những trang đầu tiên trọn vẹn nhất. 🌿
               </p>
             </div>
           </div>

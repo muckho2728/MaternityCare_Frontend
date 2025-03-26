@@ -94,7 +94,7 @@ const handleCTAClick = () => {
             { key: "5", feature: "Đặt lịch khám trực tuyến 🏥", free: "❌", premium: "✔️" },
             { key: "6", feature: "Nhắc nhở lịch khám 🔔", free: "❌", premium: "✔️" },
             { key: "7", feature: "Hỗ trợ ưu tiên 📞", free: "❌", premium: "✔️" },
-            { key: "8", feature: "💰 Giá", free: "Miễn phí", premium: "xxx VND/tháng" },
+            { key: "8", feature: "💰 Giá", free: "Miễn phí", premium: "200.000 VND/tháng" },
             {
               key: "9",
               feature: "🚀 Chọn ngay",
