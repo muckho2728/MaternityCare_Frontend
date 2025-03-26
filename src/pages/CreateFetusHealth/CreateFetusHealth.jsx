@@ -10,6 +10,7 @@ const CreateFetusHealth = () => {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
 
+    const [standardHealthData, setStandardHealthData] = useState({});
     const [fetusHealthId, setFetusHealthId] = useState(null);
     const [healthData, setHealthData] = useState({
         week:2,
@@ -32,16 +33,44 @@ const CreateFetusHealth = () => {
                 );
 
                 if (response.data.length > 0) {
+                    const firstFetusId = response.data[0].id;
                     console.log(response);
-                    setFetusHealthId(localStorage.getItem('fetusId'));
+                    setFetusHealthId(firstFetusId);
+                    localStorage.setItem('fetusId', firstFetusId);
                 }
             } catch (error) {
                 console.error("Lỗi khi lấy thông tin:", error);
-            }
+            }   
+            
         };
 
         fetchFetusData();
+        
     }, [userId, token]);
+
+    useEffect(() => {
+        const fetchStandardHealthData = async () => {
+            try {
+                const response = await api.get(`/standard-fetus-healths/${healthData.week}`);
+                setStandardHealthData(response.data);
+            } catch (error) {
+                console.error("Lỗi khi tải dữ liệu chuẩn:", error);
+            }
+        };
+        fetchStandardHealthData();
+    }, [healthData.week]);
+    
+    const checkOutOfRange = (name, value) => {
+        if (!standardHealthData || !standardHealthData[name]) return;
+
+        const standardValue = standardHealthData[name];
+        const minLimit = standardValue - 5;
+        const maxLimit = standardValue + 5;
+
+        if (value < minLimit || value > maxLimit) {
+            toast.warning(`⚠ Giá trị ${name} (${value}) lệch so với chuẩn (${standardValue} ± 5 đơn vị)!`);
+        }
+    };
 
     const sanitizeHealthData = (data) => {
         return Object.keys(data).reduce((acc, key) => {
@@ -55,26 +84,19 @@ const CreateFetusHealth = () => {
             // Gọi API để lấy danh sách nhắc nhở
             const reminderResponse = await api.get("reminders");
             const reminderList = reminderResponse.data;
-
+            console.log(week)
             // Tìm nhắc nhở phù hợp với tuần hiện tại
-            const matchedReminder = reminderList.find((item) => item.week === week);
-
+            const matchedReminder = reminderList.find((item) => {
+                const weekNum = Number(item.week)
+                return weekNum === week;
+            });
+            console.log(matchedReminder)
             if (!matchedReminder) {
                 console.log(`Không có nhắc nhở nào cho tuần ${week}, bỏ qua.`);
                 return;
             }
-
-            const reminderData = {
-                userId,
-                week: matchedReminder.week,
-                description: matchedReminder.description,
-            };
-
-            const response = await api.post("reminders", reminderData, {
-                headers: { Authorization: `Bearer ${token}` },
-            });
-
-            console.log("Reminder đã được gửi:", response.data);
+            const reminders = JSON.parse(localStorage.getItem("reminders")) || [];
+            localStorage.setItem("reminders", JSON.stringify([...reminders, matchedReminder]));
             toast.success(`Nhắc nhở: ${matchedReminder.description}`);
         } catch (error) {
             console.error("Lỗi khi gửi reminder:", error.response?.data || error.message);
@@ -103,6 +125,7 @@ const CreateFetusHealth = () => {
         }
 
         setHealthData(updatedData);
+        checkOutOfRange(name, value);
     };
 
     const handleSubmit = async (e) => {
@@ -127,11 +150,12 @@ const CreateFetusHealth = () => {
             console.log("Response từ server:", response);
             toast.success("Thông tin sức khỏe thai nhi đã được lưu!");
             navigate(`/pregnancy/${healthData.week}`);
-            await sendReminder(healthData.week);
+        
         } catch (error) {
             console.error("Lỗi khi gửi request:", error.response?.data || error.message);
             toast.error("Lỗi khi lưu thông tin sức khỏe. Vui lòng thử lại.");
         }
+        sendReminder(Number(healthData.week));
     };
     
 

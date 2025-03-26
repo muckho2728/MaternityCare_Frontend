@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { Table, Button, Modal, message, Card, Row, Col, Layout, Menu } from "antd";
-import { UserOutlined, HeartOutlined, MessageOutlined, EyeOutlined, DeleteOutlined, PlusOutlined } from "@ant-design/icons";
+import { useEffect, useState, useRef } from "react";
+import { Table, Button, Modal, message, Card, Row, Col, Layout, Menu, notification } from "antd";
+import { UserOutlined, HeartOutlined, MessageOutlined, EyeOutlined, PlusOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import api from "../../config/api";
-import CreateFetusHealth from "../CreateFetusHealth/CreateFetusHealth"; 
+import CreateFetusHealth from "../CreateFetusHealth/CreateFetusHealth";
 
 const { Content } = Layout;
 
@@ -14,8 +14,8 @@ const ManagePregnancy = () => {
     const [viewOpen, setViewOpen] = useState(false);
     const [editOpen, setEditOpen] = useState(false);
     const [isAdding, setIsAdding] = useState(false);
+    const notificationRef = useRef(null);
 
-    // Hàm gọi API lấy dữ liệu sức khỏe thai nhi
     const fetchData = async () => {
         if (!fetusId) {
             message.error("Không tìm thấy fetusId! Vui lòng kiểm tra lại.");
@@ -26,7 +26,7 @@ const ManagePregnancy = () => {
             const response = await api.get(`fetuses/${fetusId}/fetus-healths`);
             setFetusHealthData(response.data);
         } catch (error) {
-            message.error("Lỗi khi tải dữ liệu! Vui lòng thử lại.");
+            message.error("Lỗi khi tải dữ liệu! Vui lòng thử lại.", error);
         }
     };
 
@@ -34,25 +34,18 @@ const ManagePregnancy = () => {
         fetchData();
     }, [fetusId]);
 
-    // Xử lý mở modal xem chi tiết
     const showDetails = (record) => {
         setSelectedFetus(record);
         setViewOpen(true);
     };
 
-    // Xử lý xóa tuần thai
-    const deleteFetusHealth = async (id) => {
-        Modal.confirm({
-            title: "Bạn có chắc chắn muốn xóa tuần thai này?",
-            onOk: async () => {
-                try {
-                    await api.delete(`fetuses/${fetusId}/fetus-healths/${id}`);
-                    message.success("Xóa tuần thai thành công!");
-                    fetchData();
-                } catch (error) {
-                    message.error("Lỗi khi xóa tuần thai! Vui lòng thử lại.");
-                }
-            },
+    const handleSuccess = (messageText) => {
+        fetchData();
+        setEditOpen(false);
+        setIsAdding(false);
+        notificationRef.current = notification.success({
+            message: "Thành công",
+            description: messageText,
         });
     };
 
@@ -63,7 +56,6 @@ const ManagePregnancy = () => {
             render: (_, record) => (
                 <>
                     <Button type="link" icon={<EyeOutlined />} onClick={() => showDetails(record)}>Xem</Button>
-                    <Button type="link" danger icon={<DeleteOutlined />} onClick={() => deleteFetusHealth(record.id)}>Xóa</Button>
                 </>
             ),
         },
@@ -121,11 +113,7 @@ const ManagePregnancy = () => {
             >
                 <CreateFetusHealth
                     fetusHealthData={selectedFetus}
-                    onSuccess={() => {
-                        fetchData();
-                        setEditOpen(false);
-                        setIsAdding(false);
-                    }}
+                    onSuccess={(messageText) => handleSuccess(messageText)}
                 />
             </Modal>
         </Layout>
