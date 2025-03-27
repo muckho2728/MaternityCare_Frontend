@@ -12,7 +12,7 @@ const PaymentFailurePage = () => {
         title="Thanh Toán Thất Bại"
         subTitle="Vui lòng kiểm tra lại thông tin thanh toán và thử lại."
         extra={[
-          <Button type="primary" key="retry" onClick={() => navigate('/payment')}>
+          <Button type="primary" key="retry" onClick={() => navigate('/payment-detail/:packageId')}>
             Thử Lại
           </Button>,
           <Button key="home" onClick={() => navigate('/')}>

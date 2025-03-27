@@ -38,6 +38,7 @@ import ManagePregnancy from './pages/ViewFetusHealth/ManagePregnancy';
 import ManageBlog from './pages/Admin/ManageBlog/ManageBlog';
 import ManagePreg from './pages/ViewFetusHealth/ManagePreg';
 import FAQSection from "./pages/FAQSections/FAQSection";
+import RedirectPayment from './pages/PaymentPage/RedirectPayment';
 
 function Layout() {
   const location = useLocation();
@@ -74,6 +75,8 @@ function Layout() {
           <Route path="/feedback" element={<Feedback />} />
           <Route path="/manage-pregnancy" element={<ManagePregnancy />} />
           <Route path="/manage-preg" element={<ManagePreg />} />
+          <Route path="/redirect-payment" element={<RedirectPayment />} />
+          
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route path="manage-user" element={<ManageUsersPage />} />
