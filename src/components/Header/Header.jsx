@@ -33,6 +33,12 @@ const Header = () => {
     }, []);
 
     const checkPermission = useCallback(async (e, url) => {
+        if (!user) {
+            e.preventDefault();
+            navigate('/login');
+            return;
+        }
+        
         try {
             const response = await api.get('/authentications/current-user');
             if (response.data.subscription === "Free") {
@@ -44,7 +50,7 @@ const Header = () => {
         } catch (error) {
             console.error("Error fetching current user:", error);
         }
-    }, [navigate]);
+    }, [navigate, user]);
 
     const handleLogout = () => {
         logout();
@@ -118,6 +124,7 @@ const Header = () => {
                         </button>
                         {isNotificationOpen && (
                             <div className="dropdown-menu">
+                                <div className="dropdown-header">Thông báo</div>
                                 {notifications.length > 0 ? (
                                     notifications.map((reminder) => (
                                         <div key={reminder.id} className="dropdown-item">{reminder.description}</div>

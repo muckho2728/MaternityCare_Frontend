@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import './Pregnancy.css';
-import { Button } from 'antd';
+import { Modal, Button } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import api from '../../config/api';
 import pregnancyData from './pregnancyData';
-
-// 🖼 Import tất cả ảnh từ assets
 
 import week2 from "../../assets/2.png";
 import week3 from "../../assets/3.png";
@@ -48,7 +46,6 @@ import week38 from "../../assets/38.png";
 import week39 from "../../assets/39.png";
 import week40 from "../../assets/40.png";
 
-// 🎯 Object chứa ảnh tương ứng với từng tuần
 const weekImages = {
   2: week2, 3: week3, 4: week4, 5: week5, 6: week6, 7: week7, 8: week8, 9: week9, 
   10: week10, 11: week11, 12: week12, 13: week13, 14: week14, 15: week15, 16: week16, 
@@ -74,6 +71,8 @@ const PregnancyWeek = () => {
   const { week } = useParams();
   const weekData = pregnancyData[week];
   const [dueDate, setDueDate] = useState("");
+  const [alerts, setAlerts] = useState([]);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -99,15 +98,31 @@ const PregnancyWeek = () => {
   
         setWeight(standardData.estimatedFetalWeight || 0);
         setUserWeight(userData?.estimatedFetalWeight || 0);
-  
-        const updatedData = data.map(item => ({
+
+        let alertsList = [];
+      const updatedData = data.map(item => {
+        const standardValue = standardData[item.key] ? parseRange(standardData[item.key]) : 0;
+        const userValue = userData && userData[item.key] ? userData[item.key] : 0;
+
+        // Chỉ hiển thị cảnh báo nếu người dùng có dữ liệu và lệch hơn 5 đơn vị so với chuẩn
+        if (userData && Math.abs(userValue - standardValue) > 5) {
+          alertsList.push({
+            name: item.name,
+            userValue: userValue,
+            range: { min: standardValue - 5, max: standardValue + 5 }
+          });
+        }
+
+        return {
           name: item.name,
-          standard: standardData[item.key] ? parseRange(standardData[item.key]) : 0, 
-          user: userData && userData[item.key] ? userData[item.key] : 0, 
+          standard: standardValue,
+          user: userValue, // Nếu userValue = 0 thì biểu đồ không hiển thị dữ liệu người dùng
           key: item.key
-        }));
+        };
+      });
   
         setChartData(updatedData);
+        setAlerts(alertsList);
       } catch (error) {
         console.log("Lỗi khi lấy dữ liệu:", error);
       }
@@ -169,6 +184,21 @@ const PregnancyWeek = () => {
           </LineChart>
         </ResponsiveContainer>
       </div>
+
+        <Button type="primary" onClick={() => setIsModalVisible(true)} style={{ marginTop: '20px' }}>
+        Xem cảnh báo
+      </Button>
+
+      <Modal title="Cảnh báo chỉ số bất thường" open={isModalVisible} onOk={() => setIsModalVisible(false)} onCancel={() => setIsModalVisible(false)}>
+        {alerts.length > 0 ? alerts.map((alert, index) => (
+          <div key={index} style={{ border: '1px solid red', padding: '10px', margin: '10px 0', borderRadius: '5px', backgroundColor: '#ffebeb' }}>
+            <h4>{alert.name} ({alert.userValue} mm)</h4>
+            <p>Chỉ số an toàn: {alert.range.min} - {alert.range.max} mm</p>
+            <p style={{ color: 'red', fontWeight: 'bold' }}>⚠️ Chỉ số ngoài phạm vi an toàn!</p>
+          </div>
+        )) : <p>Không có chỉ số bất thường.</p>}
+      </Modal>
+
       <div className='weight-table'>
         <div className='weight-box'>
           <div className='weight-section'>

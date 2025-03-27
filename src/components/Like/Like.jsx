@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import api from "axios";
 
-const Like = ({ blogId }) => {
+const Like = ({blogId}) => {
     const [Like, setLike] = useState(false);
     const [LikeCount, setLikeCount] = useState(0);
     const [userId, setUserId] = useState("");
@@ -53,7 +53,7 @@ const Like = ({ blogId }) => {
                 setLike(response.data.isLiked || false);
             } catch (error) {
                 console.error("Lỗi khi lấy trạng thái like của người dùng:", error.message);
-                toast.error(eror.message ||"Lỗi khi lấy trạng thái like. Vui lòng thử lại!", { autoClose: 3000 });
+                toast.error(error.message ||"Lỗi khi lấy trạng thái like. Vui lòng thử lại!", { autoClose: 3000 });
             }
         };
 
