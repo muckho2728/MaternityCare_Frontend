@@ -111,7 +111,7 @@ const Home = () => {
               className={`feature-card ${
                 currentPackage === "free" ? "disabled" : ""
               }`}
-              onClick={() => handleNavigation(`/booking/${currentWeek}`)}
+              onClick={() => handleNavigation("/booking")}
             >
               <img src={booking} alt="Đặt lịch khám" />
               <h3>Đặt lịch khám</h3>
