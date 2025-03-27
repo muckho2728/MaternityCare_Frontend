@@ -60,11 +60,11 @@ const ManagePregnancy = () => {
     ];
 
     return (
-        <Layout>
-            <Content style={{ padding: "12px", marginTop: "24px", maxWidth: "1400px", marginLeft: "50px" }}>
+        <Layout style={{ backgroundColor: 'transparent' }}>
+            <Content style={{ padding: "15x", maxWidth: "1400px", margin: "15px" }}>
                 <Row gutter={24}>
                     <Col span={6}>
-                        <Card style={{ borderRadius: "8px", backgroundColor: "#f9f9f9", padding: "10px" }}>
+                        <Card style={{ borderRadius: "8px", padding: "10px" }}>
                             <Menu mode="vertical" defaultSelectedKeys={["3"]} style={{ border: "none", width: "100%" }} items={[
                                 { key: "1", icon: <UserOutlined />, label: <Link to="/profile">Thông tin người dùng</Link> },
                                 { key: "2", icon: <HeartOutlined />, label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link> },
@@ -76,7 +76,7 @@ const ManagePregnancy = () => {
                         </Card>
                     </Col>
                     <Col span={18}>
-                        <Card style={{ padding: "16px", borderRadius: "8px", marginLeft: "50px" }}>
+                        <Card style={{ padding: "16px", borderRadius: "8px", }}>
                             <h2>Quản lý thông tin thai nhi</h2>
                             <Button type="primary" icon={<PlusOutlined />} onClick={handleAddWeek} style={{ marginBottom: "16px" }}>
                                 Thêm tuần thai
