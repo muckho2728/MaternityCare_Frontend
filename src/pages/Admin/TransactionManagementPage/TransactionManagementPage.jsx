@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Space, Typography } from 'antd';
+import { Table, Typography, Tag } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import api from '../../../config/api';
 import { useAuth } from '../../../constants/AuthContext';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const TransactionManagementPage = () => {
   const [transactions, setTransactions] = useState([]);
@@ -13,39 +13,63 @@ const TransactionManagementPage = () => {
     current: 1,
     pageSize: 10,
     total: 0,
+    hasPrevious: false,
+    hasNext: false,
+    totalPages: 1
   });
 
   const { user } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchData();
+    fetchData(pagination.current, pagination.pageSize);
   }, [pagination.current, pagination.pageSize]);
 
-  const fetchData = async () => {
+  const fetchData = async (pageNumber, pageSize) => {
+    setLoading(true);
     try {
-      const response = await api.get("transactions");
-      console.log("API Response:", response.data);
+      const response = await api.get(`transactions?pageNumber=${pageNumber}&pageSize=${pageSize}`);
+      
+      // Lấy thông tin phân trang từ header
+      const paginationHeader = response.headers['x-pagination'];
+      if (paginationHeader) {
+        const paginationData = JSON.parse(paginationHeader);
+        setPagination({
+          current: paginationData.CurrentPage,
+          pageSize: paginationData.PageSize,
+          total: paginationData.TotalCount,
+          hasPrevious: paginationData.HasPrevious,
+          hasNext: paginationData.HasNext,
+          totalPages: paginationData.TotalPages
+        });
+      }
 
-      // Xử lý dữ liệu trả về nếu cần
       const updatedTransactions = response.data.map(transaction => ({
         ...transaction,
-        // Ví dụ: Chuyển đổi định dạng ngày tháng
         createdAt: new Date(transaction.createdAt).toLocaleString(),
+        fullName: transaction.subscription?.user?.fullName || 'N/A',
+        email: transaction.subscription?.user?.email || 'N/A',
+        cccd: transaction.subscription?.user?.cccd || 'N/A'
       }));
 
       setTransactions(updatedTransactions);
     } catch (error) {
       console.error('Error fetching transactions:', error);
-      if (error.response && error.response.status === 403) {
+      if (error.response?.status === 403) {
         alert('Bạn không có quyền truy cập trang này.');
         navigate('/');
       }
+    } finally {
+      setLoading(false);
     }
   };
   
   const handleTableChange = (pagination) => {
-    setPagination(pagination);
+    setPagination(prev => ({
+      ...prev,
+      current: pagination.current,
+      pageSize: pagination.pageSize
+    }));
   };
 
   const columns = [
@@ -53,64 +77,106 @@ const TransactionManagementPage = () => {
       title: 'ID',
       dataIndex: 'id',
       key: 'id',
+      width: 200,
+      render: (text) => <Text copyable>{text}</Text>
+    },
+    {
+      title: 'Khách hàng',
+      children: [
+        {
+          title: 'Họ tên',
+          dataIndex: 'fullName',
+          key: 'fullName',
+          width: 150
+        },
+        {
+          title: 'Email',
+          dataIndex: 'email',
+          key: 'email',
+          width: 200
+        },
+        {
+          title: 'CCCD',
+          dataIndex: 'cccd',
+          key: 'cccd',
+          width: 120
+        }
+      ]
     },
     {
       title: 'Mô tả',
       dataIndex: 'description',
       key: 'description',
-      render: (text) => text || 'Không có mô tả', // Hiển thị mô tả, nếu không có thì hiển thị "Không có mô tả"
+      render: (text) => text || 'Không có mô tả',
     },
     {
       title: 'Số tiền',
       dataIndex: 'amount',
       key: 'amount',
-      render: (text) => `${text.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}`,
+      align: 'right',
+      render: (text) => `${text.toLocaleString('vi-VN')} VND`,
     },
-
     {
       title: 'Trạng thái',
       dataIndex: 'status',
       key: 'status',
-      render: (text) => {
-        // Tùy chỉnh hiển thị trạng thái (ví dụ: thêm màu sắc hoặc icon)
-        switch (text) {
+      render: (status) => {
+        const statusText = status.toLowerCase();
+        let color, text;
+        
+        switch (statusText) {
           case 'success':
-            return <span style={{ color: 'green' }}>Thành công</span>;
+            color = 'green';
+            text = 'Thành công';
+            break;
           case 'pending':
-            return <span style={{ color: 'orange' }}>Đang chờ</span>;
+            color = 'orange';
+            text = 'Đang chờ';
+            break;
           case 'failed':
-            return <span style={{ color: 'red' }}>Thất bại</span>;
+            color = 'red';
+            text = 'Thất bại';
+            break;
           default:
-            return <span>{text}</span>;
+            color = 'default';
+            text = status;
         }
+        
+        return (
+          <Tag color={color} style={{ fontWeight: 500 }}>
+            {text}
+          </Tag>
+        );
       },
     },
     {
       title: 'Ngày tạo',
       dataIndex: 'createdAt',
       key: 'createdAt',
-      render: (text) => new Date(text).toLocaleString(), // Định dạng ngày tháng
-    },
-    {
-      title: 'ID đăng ký',
-      dataIndex: 'subscriptionId',
-      key: 'subscriptionId',
-      render: (text) => text || 'Không có', // Hiển thị subscriptionId, nếu không có thì hiển thị "Không có"
+      width: 180
     },
   ];
 
-
-
   return (
-    <div className="transaction-management">
+    <div className="transaction-management" style={{ padding: '24px' }}>
       <Title level={2}>Quản lý giao dịch</Title>
       <Table
         columns={columns}
         dataSource={transactions}
         loading={loading}
-        pagination={pagination}
+        pagination={{
+          current: pagination.current,
+          pageSize: pagination.pageSize,
+          total: pagination.total,
+          showSizeChanger: false,
+          pageSizeOptions: ['10', '20', '50', '100'],
+          showQuickJumper: false,
+          position: ['bottomRight']
+        }}
         onChange={handleTableChange}
         rowKey="id"
+        bordered
+        scroll={{ x: 1300 }}
       />
     </div>
   );
