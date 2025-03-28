@@ -61,11 +61,11 @@ const ManagePregnancy = () => {
 
     return (
         <Layout style={{ backgroundColor: 'transparent' }}>
-            <Content style={{ padding: "15x", maxWidth: "1400px", margin: "15px" }}>
+            <Content style={{ padding: '15px', marginTop: '24px', maxWidth: '1400px', width: '100%', margin: '0 auto' }}>
                 <Row gutter={24}>
                     <Col span={6}>
-                        <Card style={{ borderRadius: "8px", padding: "10px" }}>
-                            <Menu mode="vertical" defaultSelectedKeys={["3"]} style={{ border: "none", width: "100%" }} items={[
+                        <Card style={{  borderRadius: '8px', padding: '10px' }}>
+                            <Menu mode="vertical" defaultSelectedKeys={["3"]} style={{ border: "none" }} items={[
                                 { key: "1", icon: <UserOutlined />, label: <Link to="/profile">Thông tin người dùng</Link> },
                                 { key: "2", icon: <HeartOutlined />, label: <Link to="/view-fetus-health">Xem thông tin sức khỏe</Link> },
                                 { key: "3", icon: <MessageOutlined />, label: <Link to="/manage-pregnancy">Quản lý thông tin thai kỳ</Link> },
@@ -76,9 +76,9 @@ const ManagePregnancy = () => {
                         </Card>
                     </Col>
                     <Col span={18}>
-                        <Card style={{ padding: "16px", borderRadius: "8px", }}>
+                        <Card style={{ borderRadius: '10px', padding: 24  }}>
                             <h2>Quản lý thông tin thai nhi</h2>
-                            <Button type="primary" icon={<PlusOutlined />} onClick={handleAddWeek} style={{ marginBottom: "16px" }}>
+                            <Button type="primary" icon={<PlusOutlined />} onClick={handleAddWeek} style={{ textAlign: 'center' }}>
                                 Thêm tuần thai
                             </Button>
                             <Table dataSource={fetusHealthData} columns={columns} rowKey="id" />
@@ -88,7 +88,7 @@ const ManagePregnancy = () => {
             </Content>
 
             {/* Modal Xem chi tiết */}
-            <Modal style={{ width: '950px' }} className="custom" title="Chi tiết sức khỏe thai nhi" open={viewOpen} onCancel={() => setViewOpen(false)} footer={null}>
+            <Modal  title="Chi tiết sức khỏe thai nhi" open={viewOpen} onCancel={() => setViewOpen(false)} footer={null} width={800}>
                 {selectedFetus && (
                     <div>
                         <p><strong>Tuần thai:</strong> {selectedFetus.week}</p>
@@ -110,7 +110,7 @@ const ManagePregnancy = () => {
                 open={editOpen || isAdding}
                 onCancel={() => { setEditOpen(false); setIsAdding(false); }}
                 footer={null}
-                style={{ width: '950px' }}
+                
             >
                 <CreateFetusHealth
                     fetusHealthData={selectedFetus}
