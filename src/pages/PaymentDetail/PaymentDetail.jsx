@@ -76,7 +76,7 @@ const PaymentDetail = () => {
   }
 
   return (
-    <div className="payment-detail">
+    <div className="payment-detail-confirm">
       <Title level={2}>Xác Nhận Gói</Title>
       <Row gutter={16}>
         <Col span={16}>

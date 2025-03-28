@@ -18,3 +18,141 @@
 .summary-card .ant-btn {
     margin-top: 10px; 
 }
+/* 📦 Xác nhận gói */
+.payment-detail-confirm {
+    max-width: 950px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* ✨ Hiệu ứng khi hover vào toàn bộ card */
+.payment-detail-confirm:hover {
+    transform: translateY(-4px);
+}
+
+/* 🎯 Tiêu đề chính */
+.payment-detail-confirm h2 {
+    text-align: center;
+    color: #00796b;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* 📋 Chi tiết gói */
+.package-card {
+    border-radius: 12px;
+    padding: 25px;
+    background: linear-gradient(135deg, #e0f7fa, #ffffff);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+/* 🏷 Tiêu đề gói */
+.package-card .ant-card-head {
+    background: #00796b;
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 10px 10px 0 0;
+}
+
+/* 🔥 Hover mượt mà */
+.package-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* 💰 Giá & thời hạn */
+.package-price, .package-duration {
+    font-size: 18px;
+    color: #444;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+/* ✅ Danh sách tính năng */
+.package-features {
+    font-size: 18px;
+    color: #00796b;
+    font-weight: bold;
+    margin-top: 15px;
+}
+
+/* 📌 Danh sách các tính năng chi tiết */
+.package-card ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.package-card ul li {
+    font-size: 16px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 🟢 Biểu tượng checkmark */
+.package-card ul li::before {
+    content: "✔";
+    font-size: 18px;
+    color: #00796b;
+    font-weight: bold;
+}
+
+/* 📄 Tóm tắt thanh toán */
+.summary-card {
+    border-radius: 12px;
+    background: #f7fdfc;
+    padding: 25px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+/* 🛍 Tiêu đề "Tóm Tắt Thanh Toán" */
+.summary-card h4 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #00796b;
+    margin-bottom: 12px;
+}
+
+/* 🏷 Thông tin giá */
+.summary-section {
+    font-size: 18px;
+    color: #444;
+    margin-bottom: 15px;
+}
+
+/* 💳 Nút Thanh Toán */
+.summary-card .ant-btn {
+    background: #4caf93;
+    border-color: #4caf93;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 14px;
+    border-radius: 8px;
+    width: 100%;
+    box-shadow: 0 6px 14px rgba(30, 166, 155, 0.4);
+    transition: all 0.3s ease;
+}
+
+.summary-card .ant-btn:hover {
+    background: #00897b;
+    border-color: #00897b;
+    transform: scale(1.05);
+    box-shadow: 0 6px 14px rgba(30, 166, 155, 0.4);
+}
