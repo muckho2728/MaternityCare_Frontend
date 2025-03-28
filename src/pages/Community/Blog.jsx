@@ -27,11 +27,11 @@ const Blog = () => {
 
   const filteredBlogs = Array.isArray(blogs)
     ? blogs.filter(
-        (blog) =>
-          (selectedTag ? blog.tag?.id === selectedTag : true) &&
-          (blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            blog.content.toLowerCase().includes(searchTerm.toLowerCase()))
-      )
+      (blog) =>
+        (selectedTag ? blog.tag?.id === selectedTag : true) &&
+        (blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          blog.content.toLowerCase().includes(searchTerm.toLowerCase()))
+    )
     : [];
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const Blog = () => {
         });
         setCurrentUser(response.data); // Thiết lập currentUser
       } catch (error) {
-        console.error("Failed to fetch current user:", error);
+        console.error("Lỗi khi lấy thông tin người dùng:", error);
       }
     };
 
@@ -461,7 +461,7 @@ const Blog = () => {
                           <FaRegHeart />
                         )}
                       </button>
-                      {likeData.likeCount} Likes
+                      {likeData.likeCount} Thích
                     </span>
                     <span
                       onClick={(e) => {
@@ -472,12 +472,12 @@ const Blog = () => {
                       className="blog-comments"
                     >
                       <MessageCircle size={16} />{" "}
-                      
+
                       {commentsByBlog[blog.id] === undefined
                         ? "Đang tải bình luận..."
                         : commentsByBlog[blog.id].length > 0
-                        ? `${commentsByBlog[blog.id].length ?? 0} Bình luận`
-                        : "Bình luận"}
+                          ? `${commentsByBlog[blog.id].length ?? 0} Bình luận`
+                          : "Bình luận"}
                     </span>
                   </div>
 
@@ -552,9 +552,8 @@ const Blog = () => {
                             </div>
                           ) : (
                             <div
-                              className={`comment-text ${
-                                comment.text.length > 100 ? "long" : ""
-                              }`}
+                              className={`comment-text ${comment.text.length > 100 ? "long" : ""
+                                }`}
                             >
                               <input
                                 type="checkbox"

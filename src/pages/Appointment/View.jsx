@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Layout, Row, Col, Card, Menu } from "antd";  // Ant Design components
@@ -159,7 +159,7 @@ const View = () => {
                     danger
                     onClick={() => handleCancelAppointment(record)}
                 >
-                    Hủy
+                    Hủy lịch hẹn
                 </Button>
             ),
         },
@@ -213,8 +213,8 @@ const View = () => {
                                 open={showModal}
                                 onOk={confirmCancelAppointment}
                                 onCancel={() => setShowModal(false)}
-                                okText="Xác nhận"
-                                cancelText="Hủy"
+                                cancelText="Quay lại"
+                                okText="Xác nhận hủy"
                                 okButtonProps={{ style: { backgroundColor: "green", borderColor: "green" } }}
                                 cancelButtonProps={{ style: { backgroundColor: "red", borderColor: "red", color: "white" } }}
                             >

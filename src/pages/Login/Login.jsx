@@ -5,7 +5,7 @@ import api from '../../constants/axios';
 import { toast } from 'react-toastify';
 import { useAuth } from '../../constants/AuthContext';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUserByIdAction } from '../../store/redux/action/userAction'; 
+import { fetchUserByIdAction } from '../../store/redux/action/userAction';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -33,10 +33,10 @@ const Login = () => {
   const validateForm = () => {
     const newErrors = {};
     if (!formData.username.trim()) {
-      newErrors.username = "Username cannot be empty";
+      newErrors.username = "Tên đăng nhập không được để trống";
     }
     if (!formData.password || formData.password.length < 4) {
-      newErrors.password = "Password must be at least 4 characters";
+      newErrors.password = "Mật khẩu không được dưới 4 kí tự";
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Trả về true nếu không có lỗi
@@ -86,7 +86,7 @@ const Login = () => {
         toast.success("Đăng nhập thành công!");
       }
     } catch (error) {
-      toast.error(error.response?.data?.detail || "Đăng nhập thất bại");
+      toast.error("Đăng nhập thất bại" || error.response?.data?.detail);
     } finally {
       setLoading(false);
     }
@@ -96,9 +96,9 @@ const Login = () => {
     <div className="login-page">
       <div className="login-container">
 
-      <Link to="/" className="logo-link">
-                        <img src="/src/assets/Vector.png" alt="Baby Logo" className="logo" style={{display: 'flex', marginLeft: 'auto', marginRight: 'auto'}}/>
-                    </Link>
+        <Link to="/" className="logo-link">
+          <img src="/src/assets/Vector.png" alt="Baby Logo" className="logo" style={{ display: 'flex', marginLeft: 'auto', marginRight: 'auto' }} />
+        </Link>
 
         <h1>Đăng Nhập</h1>
         <form className="login-form" onSubmit={handleSubmit}>
