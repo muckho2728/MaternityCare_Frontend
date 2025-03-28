@@ -43,7 +43,7 @@ body {
 
 .blog-filter select{
     padding: 10px;
-    border: 2px solid #ddd;
+    border: 2px solid #4caf93;
     border-radius: 8px;
     font-size: 16px;
 }
@@ -52,7 +52,7 @@ body {
 .blog-search-input {
     flex: 1;
     padding: 10px;
-    border: 2px solid #ddd;
+    border: 2px solid #4caf93;
     border-radius: 8px;
     font-size: 16px;
 }

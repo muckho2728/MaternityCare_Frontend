@@ -45,7 +45,7 @@ const PackageList = () => {
 
   const handleBuyClick = (id) => {
     if (!isLoggedIn) {
-      navigate("/register");
+      navigate("/login");
     } else if (currentPackage === "Premium") {
       message.info("🎉 Bạn đang sử dụng gói Cao Cấp.");
     } else {
@@ -55,7 +55,7 @@ const PackageList = () => {
 // 🔥 Xử lý sự kiện khi nhấn nút CTA
 const handleCTAClick = () => {
   if (!isLoggedIn) {
-    navigate("/register");
+    navigate("/login");
   } else if (currentPackage === "Premium") {
     message.info("🎉 Bạn đang sử dụng gói Cao Cấp.");
   } else {
@@ -98,7 +98,7 @@ const handleCTAClick = () => {
             {
               key: "9",
               feature: "🚀 Chọn ngay",
-              free: isLoggedIn ? "" : <Button type="primary" onClick={() => navigate("/register")}>Đăng ký ngay</Button>,
+              free: isLoggedIn ? "" : <Button type="primary" onClick={() => navigate("/login")}>Đăng ký ngay</Button>,
               premium: currentPackage === "Premium" ? "🎉 Bạn đang sử dụng gói Cao Cấp" : (
                 <Button type="primary" onClick={() => handleBuyClick(2)}>Nâng cấp ngay</Button>
               ),
