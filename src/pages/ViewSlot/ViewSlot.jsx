@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import { Search, MessageCircle } from "lucide-react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import api from '../../constants/axios';
 import { Modal, Button, Card } from "antd";
 import "./ViewSlot.css";
@@ -19,9 +19,9 @@ const ViewSlot = () => {
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
     const [selectedSlot, setSelectedSlot] = useState(null);
     const [currentUser, setCurrentUser] = useState(null);
-    const [loadingSlot, setLoadingSlot] = useState(false); // Theo dõi trạng thái loading
+    const [loadingSlot, setLoadingSlot] = useState(false);
 
-    const navigate = useNavigate(); // Khai báo useNavigate
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCurrentUser = async (url) => {
@@ -67,7 +67,7 @@ const ViewSlot = () => {
                 extractSpecialties(response.data);
             } catch (error) {
                 console.error("Error fetching doctors:", error.response?.data || error.message);
-                toast.error("Error fetching doctors: " + (error.response?.data?.message || error.message));
+                toast.error("Lỗi khi lấy thông tin bác sĩ ");
             }
         };
 
@@ -93,7 +93,7 @@ const ViewSlot = () => {
             console.log(response.data);
         } catch (error) {
             console.error("Error fetching slots:", error);
-            toast.error("Error fetching slots: " + (error.response?.data?.message || error.message));
+            toast.error("Lỗi khi lấy lịch: " + (error.response?.data?.message || error.message));
         }
     };
 
@@ -104,7 +104,7 @@ const ViewSlot = () => {
             return;
         }
 
-        setLoadingSlot(true); // Bắt đầu loading
+        setLoadingSlot(true);
         try {
             const response = await api.get(`https://maternitycare.azurewebsites.net/api/doctors/${doctorId}/slots/${slotId}`, {
                 headers: {
@@ -115,16 +115,15 @@ const ViewSlot = () => {
             console.log(response.data);
         } catch (error) {
             console.error("Error confirming slot:", error);
-            toast.error("Error confirming slot: " + (error.response?.data?.message || error.message));
+            toast.error("Lỗi xác nhận lịch: " + (error.response?.data?.message || error.message));
         } finally {
-            setLoadingSlot(false); // Kết thúc loading
+            setLoadingSlot(false);
         }
     };
 
     const showConfirmModal = async (doctorId, slotId) => {
-        setSelectedDoctor({ id: doctorId });
-        setSelectedSlot({ id: slotId });
-        await confirmBooking(doctorId, slotId); // Gọi API để lấy thông tin slot ngay lập tức
+        setSelectedSlot({ id: slotId }); // Temporarily set slot ID
+        await confirmBooking(doctorId, slotId); // Fetch slot details
         setIsConfirmModalOpen(true);
     };
 
@@ -135,17 +134,24 @@ const ViewSlot = () => {
             return;
         }
         try {
-            const response = await api.post(`https://maternitycare.azurewebsites.net/api/users/${userId}/slots/${slotId}/appointments`, {}, {
-                headers: {
-                    accept: `*/*`,
-                    Authorization: `Bearer ${token}`,
-                },
+            const response = await api.post(
+                `https://maternitycare.azurewebsites.net/api/users/${userId}/slots/${slotId}/appointments`,
+                {},
+                {
+                    headers: {
+                        accept: `*/*`,
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+            toast.success("Đăng ký lịch khám thành công", {
+                autoClose: 3000, // Hiển thị trong 3 giây (có thể điều chỉnh)
+                // Hoặc dùng `autoClose: false` nếu muốn toast không tự đóng mà yêu cầu người dùng tự đóng
             });
-            toast.success("Đăng ký lịch khám thành công");
             console.log("Đăng ký thành công");
             setIsConfirmModalOpen(false);
             setIsModalOpen(false);
-            navigate("/viewBookedSlot"); // Chuyển hướng sau khi thành công
+            navigate("/viewBookedSlot");
         } catch (error) {
             console.log(error.response);
             toast.error("Đăng ký thất bại: " + (error.response?.data?.message || error.message));
@@ -183,7 +189,6 @@ const ViewSlot = () => {
         <div className="view-slot-container">
             <header className="hero-section">
                 <h1 className="view-slot-header">Đội ngũ bác sĩ tận tâm – Hãy chọn người phù hợp nhất cho bạn</h1>
-
                 <p className="view-slot-description">
                     Chúng tôi hiểu rằng sức khỏe của bạn là ưu tiên hàng đầu. Dưới đây là danh sách các bác sĩ chuyên khoa hàng đầu,
                     sẵn sàng hỗ trợ bạn. Hãy tìm kiếm và chọn một bác sĩ phù hợp để bắt đầu hành trình chăm sóc sức khỏe ngay hôm nay!
@@ -209,7 +214,6 @@ const ViewSlot = () => {
                     ))}
                 </select>
             </div>
-
             <div className="doctor-list">
                 {filteredDoctors.map((doctor) => (
                     <div key={doctor.id} className="doctor-card" onClick={() => fetchSlots(doctor)}>
@@ -267,7 +271,7 @@ const ViewSlot = () => {
 
             {/* Modal xác nhận đặt lịch */}
             <Modal
-                title="Xác nhận lịch hẹn"
+                title={selectedDoctor ? `Xác nhận lịch hẹn với ${selectedDoctor.fullName}` : "Xác nhận lịch hẹn"}
                 open={isConfirmModalOpen}
                 onCancel={() => setIsConfirmModalOpen(false)}
                 footer={

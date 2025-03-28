@@ -34,7 +34,7 @@ const Register = () => {
         navigate("/login");
       } catch (err) {
         console.log(err.response.data.detail);
-        toast.error(err.response.data.detail || "Đăng kí thất bại");
+        toast.error("Đăng kí thất bại");
       } finally {
         setLoading(false);
       }
@@ -42,14 +42,14 @@ const Register = () => {
       setErrors(newErrors);
       setLoading(false);
     }
-};
+  };
   const ValidateForm = () => {
     const newErrors = {};
     if (ActiveTab === "register") {
       if (!formData.email) {
-        newErrors.email = "Email is required";
+        newErrors.email = "Email không được để trống";
       } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-        newErrors.email = "Email is invalid";
+        newErrors.email = "Email không được nhập đúng định dạng";
       }
     }
     if (!formData.fullName) newErrors.fullName = "Vui lòng nhập đầy đủ họ và tên";
@@ -84,9 +84,9 @@ const Register = () => {
         <img src={registBanner} alt="Register" />
       </div> */}
       <div className="register-container">
-      <Link to="/" className="logo-link">
-                        <img src="/src/assets/Vector.png" alt="Baby Logo" className="logo" style={{display: 'flex', marginLeft: 'auto', marginRight: 'auto'}}/>
-                    </Link>
+        <Link to="/" className="logo-link">
+          <img src="/src/assets/Vector.png" alt="Baby Logo" className="logo" style={{ display: 'flex', marginLeft: 'auto', marginRight: 'auto' }} />
+        </Link>
         <h1 className="register-title">Đăng ký</h1>
         <div className="form-group">
           <p>Họ và tên</p>
