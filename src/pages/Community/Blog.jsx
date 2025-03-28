@@ -15,15 +15,17 @@ const Blog = () => {
   const [selectedTag, setSelectedTag] = useState("");
   const [userId, setUserId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [isUserLoading, setIsUserLoading] = useState(true);
   const pageSize = 10;
 
   const [commentsByBlog, setCommentsByBlog] = useState({});
   const [newComments, setNewComments] = useState({});
   const [editCommentId, setEditCommentId] = useState(null);
   const [editContent, setEditContent] = useState("");
-  const [setCurrentBlogId] = useState(null);
   const [likesByBlog, setLikesByBlog] = useState({});
   const [currentUser, setCurrentUser] = useState(null);
+  const [activeBlogId, setActiveBlogId] = useState(null);
+  const [commentCounts, setCommentCounts] = useState({});
 
   const filteredBlogs = Array.isArray(blogs)
     ? blogs.filter(
@@ -35,46 +37,93 @@ const Blog = () => {
     : [];
 
   useEffect(() => {
-    const fetchCurrentUser = async (url) => {
+    const fetchCurrentUser = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
         console.error("No token found");
+        setIsUserLoading(false);
         return;
       }
 
       try {
-        const response = await api.get(url, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setCurrentUser(response.data); // Thiết lập currentUser
+        const response = await api.get(
+          "https://maternitycare.azurewebsites.net/api/authentications/current-user",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setCurrentUser(response.data);
+        setUserId(response.data.id);
       } catch (error) {
         console.error("Lỗi khi lấy thông tin người dùng:", error);
+      } finally {
+        setIsUserLoading(false);
       }
     };
 
-    fetchCurrentUser(
-      "https://maternitycare.azurewebsites.net/api/authentications/current-user"
-    );
+    fetchCurrentUser();
+
+    // Khôi phục activeBlogId từ localStorage sau khi reload
+    const savedActiveBlogId = localStorage.getItem("activeBlogId");
+    if (savedActiveBlogId) {
+      setActiveBlogId(savedActiveBlogId);
+    }
   }, []);
 
   useEffect(() => {
     let mounted = true;
     const fetchData = async () => {
-      setIsLoading(true);
-      await Promise.all([fetchBlogs(), fetchTags(), fetchCurrentUser()]);
-      setIsLoading(false);
+      if (!isUserLoading) {
+        setIsLoading(true);
+        await Promise.all([fetchBlogs(), fetchTags()]);
+        setIsLoading(false);
+      }
     };
     fetchData();
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [isUserLoading]);
 
   useEffect(() => {
     if (userId && blogs.length > 0) {
       blogs.forEach((blog) => fetchLikeData(blog.id));
     }
   }, [userId, blogs]);
+
+  useEffect(() => {
+    const fetchAllCommentsData = async () => {
+      if (blogs.length > 0 && !isUserLoading) {
+        const counts = {};
+        const commentsData = {};
+        await Promise.all(
+          blogs.map(async (blog) => {
+            try {
+              const response = await api.get(
+                `https://maternitycare.azurewebsites.net/api/blogs/${blog.id}/comments?PageNumber=1&PageSize=${pageSize}`
+              );
+              counts[blog.id] = response.data.length;
+              commentsData[blog.id] = response.data.map((comment) => ({
+                avatar: comment.user?.avatar || "https://via.placeholder.com/40",
+                id: comment.id,
+                user: comment.user?.fullName || "Ẩn Danh",
+                userId: comment.user?.id,
+                text: comment.content,
+              }));
+            } catch (error) {
+              console.error(`Lỗi khi lấy dữ liệu bình luận cho blog ${blog.id}:`, error);
+              counts[blog.id] = 0;
+              commentsData[blog.id] = [];
+            }
+          })
+        );
+        setCommentCounts(counts);
+        setCommentsByBlog(commentsData);
+      }
+    };
+
+    fetchAllCommentsData();
+  }, [blogs, isUserLoading]);
 
   const fetchBlogs = async () => {
     try {
@@ -93,22 +142,6 @@ const Blog = () => {
     } catch (error) {
       console.error("Lỗi khi lấy danh sách tag:", error);
       toast.error("Không thể tải danh sách tag");
-    }
-  };
-
-  const fetchCurrentUser = async () => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-    try {
-      const response = await api.get(
-        "https://maternitycare.azurewebsites.net/api/authentications/current-user",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setUserId(response.data.id);
-    } catch (error) {
-      console.error("Lỗi khi lấy thông tin người dùng:", error);
     }
   };
 
@@ -148,14 +181,11 @@ const Blog = () => {
       isLiked: false,
       likeCount: 0,
     };
-    console.log("Current Like Data before update:", currentLikeData);
-
     const newIsLiked = !currentLikeData.isLiked;
     const newLikeCount = newIsLiked
       ? currentLikeData.likeCount + 1
       : currentLikeData.likeCount - 1;
 
-    // Cập nhật trạng thái ngay lập tức
     setLikesByBlog((prev) => ({
       ...prev,
       [blogId]: {
@@ -165,7 +195,7 @@ const Blog = () => {
     }));
 
     try {
-      const response = await api({
+      await api({
         url: `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/users/${userId}/likes`,
         method: currentLikeData.isLiked ? "DELETE" : "POST",
         headers: {
@@ -173,20 +203,12 @@ const Blog = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("Like/Unlike API Response Status:", response.status);
-      console.log("Like/Unlike API Response Data:", response.data);
-
-      // Đồng bộ lại dữ liệu từ server
       await fetchLikeData(blogId);
       toast.success(
         newIsLiked ? "Đã thích bài viết!" : "Đã bỏ thích bài viết!"
       );
     } catch (error) {
-      console.error(
-        "Lỗi khi cập nhật like:",
-        error.response?.status,
-        error.response?.data
-      );
+      console.error("Lỗi khi cập nhật like:", error);
       toast.error("Lỗi khi cập nhật like.");
       setLikesByBlog((prev) => ({
         ...prev,
@@ -197,7 +219,6 @@ const Blog = () => {
 
   const fetchComments = async (blogId, pageNumber = 1) => {
     try {
-      console.log(currentUser);
       const response = await api.get(
         `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/comments?PageNumber=${pageNumber}&PageSize=${pageSize}`
       );
@@ -211,9 +232,23 @@ const Blog = () => {
           text: comment.content,
         })),
       }));
+      setCommentCounts((prev) => ({
+        ...prev,
+        [blogId]: response.data.length,
+      }));
     } catch (error) {
       console.error("Lỗi khi lấy bình luận:", error);
       toast.error("Lỗi khi lấy bình luận.");
+    }
+  };
+
+  const handleCommentsToggle = (blogId) => {
+    if (activeBlogId === blogId) {
+      setActiveBlogId(null);
+      localStorage.removeItem("activeBlogId"); // Xóa khi đóng phần bình luận
+    } else {
+      setActiveBlogId(blogId);
+      localStorage.setItem("activeBlogId", blogId); // Lưu khi mở phần bình luận
     }
   };
 
@@ -222,25 +257,20 @@ const Blog = () => {
     const commentText = newComments[blogId] || "";
     if (!commentText.trim() || !userId) return;
     try {
-      const response = await api.post(
+      await api.post(
         `https://maternitycare.azurewebsites.net/api/blogs/${blogId}/users/${userId}/comments`,
-        { content: commentText }
+        { content: commentText },
+        {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        }
       );
-      setCommentsByBlog((prev) => ({
-        ...prev,
-        [blogId]: [
-          {
-            avatar:
-              userId === currentUser?.id ? currentUser.avatar : "No avatar",
-            id: response.data.id,
-            user: userId === currentUser?.id ? currentUser.fullName : "Bạn",
-            text: commentText,
-          },
-          ...(prev[blogId] || []),
-        ],
-      }));
       setNewComments((prev) => ({ ...prev, [blogId]: "" }));
-      console.log(response.data);
+      toast.success("Đã đăng bình luận thành công!");
+
+      // Lưu activeBlogId trước khi reload
+      localStorage.setItem("activeBlogId", blogId);
+      // Tự động reload trang để lấy dữ liệu mới nhất
+      window.location.reload();
     } catch (error) {
       console.error("Lỗi khi đăng bình luận:", error);
       toast.error("Lỗi khi đăng bình luận.");
@@ -290,6 +320,16 @@ const Blog = () => {
       toast.error("Vui lòng đăng nhập để xóa bình luận!");
       return;
     }
+
+    if (!commentId) {
+      console.error("commentId is undefined in handleDeleteComment");
+      toast.error("Không tìm thấy ID bình luận để xóa!");
+      return;
+    }
+
+    console.log("Attempting to delete comment with:", { blogId, commentId, userId });
+    console.log("Request URL:", `https://maternitycare.azurewebsites.net/api/users/${userId}/comments/${commentId}`);
+
     try {
       await api.delete(
         `https://maternitycare.azurewebsites.net/api/users/${userId}/comments/${commentId}`,
@@ -303,43 +343,24 @@ const Blog = () => {
         ...prev,
         [blogId]: prev[blogId].filter((comment) => comment.id !== commentId),
       }));
+      setCommentCounts((prev) => ({
+        ...prev,
+        [blogId]: Math.max((prev[blogId] || 0) - 1, 0),
+      }));
       toast.success("Đã xóa bình luận thành công!");
     } catch (error) {
-      console.error("Lỗi khi xóa bình luận:", error.response.data);
-      toast.error("Lỗi khi xóa bình luận.");
+      console.error("Lỗi khi xóa bình luận:", {
+        status: error.response?.status,
+        data: error.response?.data,
+        message: error.message,
+      });
+      toast.error("Lỗi khi xóa bình luận: " + (error.response?.data?.message || "Không xác định"));
     }
   };
-  useEffect(() => {
-    const fetchAllComments = async () => {
-      const commentsData = {}; // Đối tượng để lưu số lượng bình luận theo blog ID
 
-      await Promise.all(
-        blogs.map(async (blog) => {
-          try {
-            const response = await api.get(
-              `https://maternitycare.azurewebsites.net/api/blogs/${blog.id}/comments?PageNumber=1&PageSize=${pageSize}`
-            );
-            commentsData[blog.id] = response.data.map((comment) => ({
-              id: comment.id,
-              user:
-                comment.userId === currentUser?.id
-                  ? currentUser.fullName
-                  : "Ẩn Danh",
-              text: comment.content,
-            }));
-          } catch (error) {
-            console.error(`Lỗi khi lấy bình luận cho blog ${blog.id}:`, error);
-          }
-        })
-      );
-
-      setCommentsByBlog(commentsData); // Cập nhật state một lần sau khi fetch xong
-    };
-
-    if (blogs.length > 0) {
-      fetchAllComments(); // Gọi API ngay khi component load
-    }
-  }, [blogs]); // Chạy lại khi danh sách blogs thay đổi
+  if (isUserLoading) {
+    return <div>Đang tải thông tin người dùng...</div>;
+  }
 
   return (
     <div className="blog-container">
@@ -385,19 +406,6 @@ const Blog = () => {
           </select>
         </div>
       </div>
-
-      {/* {selectedTag && (
-        <div className="selected-tag">
-          <span>Bạn đang xem bài viết có tag: </span>
-          <span className="selected-tag-name">
-            {tags.find((tag) => tag.id === selectedTag)?.name ||
-              "Không xác định"}
-          </span>
-          <button className="clear-tag-btn" onClick={() => setSelectedTag("")}>
-            Xóa lọc
-          </button>
-        </div>
-      )} */}
 
       <div className="blog-list">
         {isLoading ? (
@@ -464,20 +472,14 @@ const Blog = () => {
                       {likeData.likeCount} Thích
                     </span>
                     <span
-                      onClick={(e) => {
-                        fetchComments(blog.id);
-                        e.target.classList.toggle("active");
-                      }}
+                      onClick={() => handleCommentsToggle(blog.id)}
                       style={{ marginTop: "10px", cursor: "pointer" }}
-                      className="blog-comments"
+                      className={`blog-comments ${activeBlogId === blog.id ? "active" : ""}`}
                     >
                       <MessageCircle size={16} />{" "}
-
-                      {commentsByBlog[blog.id] === undefined
-                        ? "Đang tải bình luận..."
-                        : commentsByBlog[blog.id].length > 0
-                          ? `${commentsByBlog[blog.id].length ?? 0} Bình luận`
-                          : "Bình luận"}
+                      {commentCounts[blog.id] !== undefined
+                        ? `${commentCounts[blog.id]} Bình luận`
+                        : "Đang tải..."}
                     </span>
                   </div>
 
@@ -501,105 +503,102 @@ const Blog = () => {
                       <button type="submit" disabled={!userId}>
                         Đăng
                       </button>
-                      {/* <button
-                      onClick={() => fetchComments(blog.id)}
-                      style={{ marginTop: "10px" }}
-                    >
-                      Tải bình luận
-                    </button> */}
                     </form>
-                    <div className="comments-section">
-                      {(commentsByBlog[blog.id] || []).map((comment) => (
-                        <div key={comment.id} className="comment">
-                          <div
-                            style={{ display: "flex", alignItems: "center" }}
-                          >
-                            <img
-                              src={comment.avatar}
-                              alt={comment.user}
-                              className="comment-avatar"
-                              style={{
-                                width: "30px",
-                                height: "30px",
-                                borderRadius: "50%",
-                                marginRight: "8px",
-                              }}
-                            />
-                            <strong>{comment.user}:</strong>
-                          </div>
-                          {/* Nếu đang sửa comment, hiển thị ô input */}
-                          {editCommentId === comment.id ? (
-                            <div className="edit-comment">
-                              <input
-                                type="text"
-                                value={editContent}
-                                onChange={(e) => setEditContent(e.target.value)}
-                              />
-                              <button
-                                onClick={() => {
-                                  setEditCommentId(null);
-                                  setEditContent("");
-                                }}
-                              >
-                                Hủy
-                              </button>
-                              <button
-                                className="save"
-                                onClick={() => handleEditComment(blog.id)}
-                              >
-                                Lưu
-                              </button>
-                            </div>
-                          ) : (
-                            <div
-                              className={`comment-text ${comment.text.length > 100 ? "long" : ""
-                                }`}
-                            >
-                              <input
-                                type="checkbox"
-                                id={`toggle-${comment.id}`}
-                                className="comment-toggle"
-                              />
-                              <span className="short-text">
-                                {comment.text.length > 100
-                                  ? comment.text.slice(0, 100) + "..."
-                                  : comment.text}
-                              </span>
-                              <span className="full-text">{comment.text}</span>
-                              {comment.text.length > 100 && (
-                                <label
-                                  htmlFor={`toggle-${comment.id}`}
-                                  className="read-more"
-                                ></label>
-                              )}
-                            </div>
-                          )}
 
-                          {/* Chỉ hiển thị nút Sửa/Xóa nếu currentUser.id trùng với comment.userId và không đang sửa */}
-                          {currentUser?.id === comment.userId &&
-                            editCommentId !== comment.id && (
-                              <div className="comment-btn">
+                    {activeBlogId === blog.id && (
+                      <div className="comments-section">
+                        {(commentsByBlog[blog.id] || []).map((comment) => (
+                          <div key={comment.id} className="comment">
+                            <div
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
+                              <img
+                                src={comment.avatar}
+                                alt={comment.user}
+                                className="comment-avatar"
+                                style={{
+                                  width: "30px",
+                                  height: "30px",
+                                  borderRadius: "50%",
+                                  marginRight: "8px",
+                                }}
+                              />
+                              <strong>{comment.user}:</strong>
+                            </div>
+                            {editCommentId === comment.id ? (
+                              <div className="edit-comment">
+                                <input
+                                  type="text"
+                                  value={editContent}
+                                  onChange={(e) =>
+                                    setEditContent(e.target.value)
+                                  }
+                                />
                                 <button
                                   onClick={() => {
-                                    setEditCommentId(comment.id);
-                                    setEditContent(comment.text);
-                                    setCurrentBlogId(blog.id);
+                                    setEditCommentId(null);
+                                    setEditContent("");
                                   }}
                                 >
-                                  Sửa
+                                  Hủy
                                 </button>
                                 <button
-                                  onClick={() =>
-                                    handleDeleteComment(blog.id, comment.id)
-                                  }
+                                  className="save"
+                                  onClick={() => handleEditComment(blog.id)}
                                 >
-                                  Xóa
+                                  Lưu
                                 </button>
                               </div>
+                            ) : (
+                              <div
+                                className={`comment-text ${comment.text.length > 100 ? "long" : ""}`}
+                              >
+                                <input
+                                  type="checkbox"
+                                  id={`toggle-${comment.id}`}
+                                  className="comment-toggle"
+                                />
+                                <span className="short-text">
+                                  {comment.text.length > 100
+                                    ? comment.text.slice(0, 100) + "..."
+                                    : comment.text}
+                                </span>
+                                <span className="full-text">
+                                  {comment.text}
+                                </span>
+                                {comment.text.length > 100 && (
+                                  <label
+                                    htmlFor={`toggle-${comment.id}`}
+                                    className="read-more"
+                                  ></label>
+                                )}
+                              </div>
                             )}
-                        </div>
-                      ))}
-                    </div>
+
+                            {currentUser?.id === comment.userId &&
+                              editCommentId !== comment.id && (
+                                <div className="comment-btn">
+                                  <button
+                                    onClick={() => {
+                                      setEditCommentId(comment.id);
+                                      setEditContent(comment.text);
+                                    }}
+                                  >
+                                    Sửa
+                                  </button>
+                                  <button
+                                    onClick={() =>
+                                      handleDeleteComment(blog.id, comment.id)
+                                    }
+                                  >
+                                    Xóa
+                                  </button>
+                                </div>
+                              )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
