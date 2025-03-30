@@ -24,7 +24,7 @@
     margin: 0 auto; 
 }
 .info-section {
-    text-align: center; 
+    text-align: start; 
     margin: 0 auto; 
     width: 80%;
 }
@@ -71,3 +71,30 @@
     height: 40px;
   }
     
+.image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.image-container img{
+    width: 650px;
+    border-radius: 10px;
+}
+.info-section h3{
+    color: #4caf93;
+    font-weight: 500;
+    margin-bottom: 10px;
+    font-weight: 800;
+    font-family: auto;
+    font-size: xx-large;
+}
+
+.info-section p{
+  color: #333;
+  font-weight: 500;
+  margin-bottom: 10px;
+  font-family: auto;
+  font-size: large;
+}
