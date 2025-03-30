@@ -10,6 +10,7 @@ const Header = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [notifications, setNotifications] = useState([]);
     const [currentPackage, setCurrentPackage] = useState("Free");
+    const [refresh, setRefresh] = useState(false);
     const notificationRef = useRef(null);
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
@@ -28,9 +29,22 @@ const Header = () => {
     }, [token]);
 
     useEffect(() => {
-        const storedReminders = JSON.parse(localStorage.getItem("reminders")) || [];
-        setNotifications(storedReminders);
-    }, []);
+        fetchReminders();
+    }, [refresh]);
+
+    const fetchReminders = async () => {
+        try {
+            const storedReminders = JSON.parse(localStorage.getItem("reminders")) || [];
+            setNotifications(storedReminders);
+        } catch (error) {
+            console.error("Error fetching reminders:", error);
+        }
+    };
+
+    const handleRefresh = () => {
+        setRefresh(!refresh);
+        fetchReminders();
+    };
 
     const checkPermission = useCallback(async (e, url) => {
         if (!user) {
@@ -132,6 +146,7 @@ const Header = () => {
                                 ) : (
                                     <div className="dropdown-item">Không có thông báo</div>
                                 )}
+                                <button className="dropdown-item refresh-button" onClick={handleRefresh}>Làm mới</button>
                             </div>
                         )}
                     </div>
