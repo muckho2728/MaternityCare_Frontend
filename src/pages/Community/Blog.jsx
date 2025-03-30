@@ -6,7 +6,6 @@ import "react-toastify/dist/ReactToastify.css";
 import "./Blog.css";
 import api from "../../config/api";
 import { Link } from "react-router-dom";
-import { Avatar } from "antd";
 
 const Blog = () => {
   const [blogs, setBlogs] = useState([]);
