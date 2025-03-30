@@ -195,17 +195,17 @@ const Profile = () => {
 
   const paymentHistoryColumns = [
     { 
-      title: 'Số tiền', 
-      dataIndex: 'amount', 
-      key: 'amount', 
-      render: (amount) => amount.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) 
-    },
-    { title: 'Mô tả', dataIndex: 'description', key: 'description' },
-    { 
       title: 'Ngày', 
       dataIndex: 'createdAt', 
       key: 'createdAt', 
       render: (text) => new Date(text).toLocaleString() 
+    },
+    { title: 'Mô tả', dataIndex: 'description', key: 'description' },
+    { 
+      title: 'Số tiền', 
+      dataIndex: 'amount', 
+      key: 'amount', 
+      render: (amount) => amount.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) 
     },
     {
       title: 'Trạng thái',
