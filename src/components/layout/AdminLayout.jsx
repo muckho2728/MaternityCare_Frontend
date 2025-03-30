@@ -32,34 +32,34 @@ const AdminLayout = () => {
     {
       key: '/admin/manage-user',
       icon: <PieChartOutlined />,
-      label: <Link to="/admin/manage-user">User</Link>,
+      label: <Link to="/admin/manage-user">Người dùng</Link>,
     },
     {
       key: '/admin/manage-packages',
       icon: <DesktopOutlined />,
-      label: <Link to="/admin/manage-packages">Packages</Link>,
+      label: <Link to="/admin/manage-packages">Gói dịch vụ</Link>,
     },
     {
       key: 'doctor',
       icon: <TeamOutlined />,
-      label: 'Doctor',
+      label: 'Bác sĩ',
       children: [
         {
           key: '/admin/manage-doctor',
           icon: <CalendarOutlined />,
-          label: <Link to="/admin/manage-doctor">Quản lý Doctor</Link>,
+          label: <Link to="/admin/manage-doctor">Quản lý bác sĩ</Link>,
         },
         {
           key: '/admin/create-doctor-slot',
           icon: <FileSearchOutlined />,
-          label: <Link to="/admin/create-doctor-slot">Tạo Slot Doctor</Link>,
+          label: <Link to="/admin/create-doctor-slot">Tạo Slot bác sĩ</Link>,
         },
       ],
     },
     {
       key: 'blog',
       icon: <ReadOutlined />,
-      label: 'Blog',
+      label: 'Diễn đàn',
       children: [
         {
           key: '/admin/manage-blog',
@@ -70,17 +70,17 @@ const AdminLayout = () => {
     {
       key: 'transaction',
       icon: <TransactionOutlined />,
-      label: <Link to="/admin/manage-transaction">Transaction</Link>,
+      label: <Link to="/admin/manage-transaction">Giao dịch</Link>,
     },
     {
       key: 'feedback',
       icon: <CommentOutlined  />,
-      label: <Link to="/admin/manage-feedback">Feedback</Link>,
+      label: <Link to="/admin/manage-feedback">Phản hồi</Link>,
     },
     {
       key: 'logout',
       icon: <LogoutOutlined />,
-      label: <span style={{ color: 'red' }}>Logout</span>,
+      label: <span style={{ color: 'red' }}>Đăng xuất</span>,
       onClick: handleLogout,
     },
   ];
@@ -101,12 +101,12 @@ const AdminLayout = () => {
         <Content style={{ margin: '0 16px' }}>
           <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>Admin</Breadcrumb.Item>
-            {location.pathname.includes('manage-user') && <Breadcrumb.Item>Manage Users</Breadcrumb.Item>}
-            {location.pathname.includes('manage-packages') && <Breadcrumb.Item>Manage Packages</Breadcrumb.Item>}
-            {location.pathname.includes('manage-doctor') && <Breadcrumb.Item>Manage Doctor</Breadcrumb.Item>}
-            {location.pathname.includes('create-doctor-slot') && <Breadcrumb.Item>Tạo Slot Doctor</Breadcrumb.Item>}
-            {location.pathname.includes('manage-transaction') && <Breadcrumb.Item>Manage Transaction</Breadcrumb.Item>}
-            {location.pathname.includes('manage-feedback') && <Breadcrumb.Item>Manage Feedback</Breadcrumb.Item>}
+            {location.pathname.includes('manage-user') && <Breadcrumb.Item>Quản lí người dùng</Breadcrumb.Item>}
+            {location.pathname.includes('manage-packages') && <Breadcrumb.Item>Quản lí gói dịch vụ</Breadcrumb.Item>}
+            {location.pathname.includes('manage-doctor') && <Breadcrumb.Item>Quản lí bác sĩ</Breadcrumb.Item>}
+            {location.pathname.includes('create-doctor-slot') && <Breadcrumb.Item>Tạo Slot bác sĩ</Breadcrumb.Item>}
+            {location.pathname.includes('manage-transaction') && <Breadcrumb.Item>Quản lí lịch sử thanh toán</Breadcrumb.Item>}
+            {location.pathname.includes('manage-feedback') && <Breadcrumb.Item>Quản lí phản hồi</Breadcrumb.Item>}
           </Breadcrumb>
           <div
             style={{
