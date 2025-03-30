@@ -6,7 +6,7 @@ import { updateUserByIdAction, changePassworbyUserIdAction, fetchUserByIdAction 
 import api from '../../config/api';
 import { Link } from 'react-router-dom';
 import './Profile.css';
-
+import { Tag } from 'antd';
 const { Content } = Layout;
 const { Title } = Typography;
 
@@ -76,7 +76,7 @@ const Profile = () => {
         const response = await api.get(url, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setCurrentUser(response.data); // Thiết lập currentUser
+        setCurrentUser(response.data); 
       } catch (error) {
         console.error('Failed to fetch current user:', error);
       }
@@ -107,7 +107,7 @@ const Profile = () => {
   useEffect(() => {
     if (userDetailData) {
       profileForm.setFieldsValue({
-        roleId: userDetailData.role?.name || '',
+        // roleId: userDetailData.role?.name || '',
         username: userDetailData?.username,
         email: userDetailData?.email,
         fullName: userDetailData?.fullName,
@@ -194,12 +194,53 @@ const Profile = () => {
   };
 
   const paymentHistoryColumns = [
-    { title: 'Id', dataIndex: 'id', key: 'id' },
-    { title: 'Số tiền', dataIndex: 'amount', key: 'amount' },
+    { 
+      title: 'Số tiền', 
+      dataIndex: 'amount', 
+      key: 'amount', 
+      render: (amount) => amount.toLocaleString("vi-VN", { style: "currency", currency: "VND" }) 
+    },
     { title: 'Mô tả', dataIndex: 'description', key: 'description' },
-    { title: 'Ngày', dataIndex: 'createdAt', key: 'createdAt' },
-    { title: 'Trạng thái', dataIndex: 'status', key: 'status' },
-    { title: 'Id đăng kí', dataIndex: 'subscriptionId', key: 'subscriptionId' },
+    { 
+      title: 'Ngày', 
+      dataIndex: 'createdAt', 
+      key: 'createdAt', 
+      render: (text) => new Date(text).toLocaleString() 
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      key: 'status',
+      render: (status) => {
+        const statusText = status.toLowerCase();
+        let color, text;
+    
+        switch (statusText) {
+          case 'success':
+            color = 'green';
+            text = 'Thành công';
+            break;
+          case 'failed':
+            color = 'red';
+            text = 'Thất bại';
+            break;
+          // case 'pending':
+          //   color = 'orange';
+          //   text = 'Đang chờ';
+          //   break;
+          default:
+            color = 'default';
+            text = status;
+        }
+    
+        return (
+          <Tag color={color} style={{ fontWeight: 500 }}>
+            {text}
+          </Tag>
+        );
+      },
+    }
+    // { title: 'Id đăng kí', dataIndex: 'subscriptionId', key: 'subscriptionId' },
   ];
 
   return (
@@ -316,14 +357,14 @@ const Profile = () => {
                       </Col>
                       <Col xs={24} sm={12}>
                         <Form.Item label="Ngày Sinh" name="dateOfBirth">
-                          <Input type="date" disabled={!isEditing} />
+                          <Input className="profile-input" type="date" disabled={!isEditing} />
                         </Form.Item>
                       </Col>
-                      <Col xs={24} sm={12}>
+                      {/* <Col xs={24} sm={12}>
                         <Form.Item label="Vai Trò" name="roleId">
                           <Input disabled />
                         </Form.Item>
-                      </Col>
+                      </Col> */}
                     </Row>
                     <Form.Item>
                       <Space style={{ display: 'flex', justifyContent: 'center' }}>

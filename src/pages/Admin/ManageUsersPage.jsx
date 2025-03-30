@@ -47,15 +47,15 @@ const ManageUsersPage = () => {
 
   const filteredUsersData = Array.isArray(usersData)
     ? usersData.filter((user) => {
-        const userRole = user.role?.name?.toLowerCase() || '';
-        const matchesRole = filterRole === 'all' || userRole === filterRole;
-        const matchesSearch =
-          !searchValue ||
-          (user.fullName && user.fullName.toLowerCase().includes(searchValue)) ||
-          (user.email && user.email.toLowerCase().includes(searchValue)) ||
-          (user.address && user.address.toLowerCase().includes(searchValue));
-        return matchesRole && matchesSearch;
-      })
+      const userRole = user.role?.name?.toLowerCase() || '';
+      const matchesRole = filterRole === 'all' || userRole === filterRole;
+      const matchesSearch =
+        !searchValue ||
+        (user.fullName && user.fullName.toLowerCase().includes(searchValue)) ||
+        (user.email && user.email.toLowerCase().includes(searchValue)) ||
+        (user.address && user.address.toLowerCase().includes(searchValue));
+      return matchesRole && matchesSearch;
+    })
     : [filterRole, searchValue, usersData];
 
   useEffect(() => {
@@ -144,7 +144,12 @@ const ManageUsersPage = () => {
   const columns = [
     { title: 'Họ tên', dataIndex: 'fullName', key: 'fullName' },
     { title: 'Email', dataIndex: 'email', key: 'email' },
-    { title: 'Vai trò', dataIndex: 'role', key: 'role', render: (role) => role.name || 'Không xác định' },
+    {
+      title: 'Vai trò',
+      dataIndex: 'role',
+      key: 'role',
+      render: (role) => (role.name === 'Member' ? 'Thành viên' : role.name || 'Không xác định')
+    },
     { title: 'Ngày sinh', dataIndex: 'dateOfBirth', key: 'dateOfBirth' },
     {
       title: 'Trạng thái',
