@@ -137,14 +137,16 @@ const Header = () => {
                             {notifications.length > 0 && <span className="notification-badge">{notifications.length}</span>}
                         </button>
                         {isNotificationOpen && (
-                            <div className="dropdown-menu">
+                            <div className="dropdown-menu-notification">
                                 <div className="dropdown-header">Thông báo</div>
                                 {notifications.length > 0 ? (
                                     notifications.map((reminder) => (
-                                        <div key={reminder.id} className="dropdown-item">{reminder.description}</div>
+                                        <div key={reminder.id} className="dropdown-item-notification">
+                                            Tuần {reminder.week}: {reminder.description}
+                                        </div>
                                     ))
                                 ) : (
-                                    <div className="dropdown-item">Không có thông báo</div>
+                                    <div className="dropdown-item-notification">Không có thông báo</div>
                                 )}
                                 <button className="dropdown-item refresh-button" onClick={handleRefresh}>Làm mới</button>
                             </div>
