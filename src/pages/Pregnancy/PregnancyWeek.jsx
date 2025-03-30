@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import './Pregnancy.css';
 import { Modal, Button } from 'antd';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import api from '../../config/api';
 import pregnancyData from './pregnancyData';
 
@@ -105,11 +105,11 @@ const PregnancyWeek = () => {
           const standardValue = standardData[item.key] ? parseRange(standardData[item.key]) : 0;
           const userValue = userData && userData[item.key] ? userData[item.key] : 0;
 
-          if (userData && Math.abs(userValue - standardValue) > 5) {
+          if (userData && Math.abs(userValue - standardValue) > 10) {
             alertsList.push({
               name: item.name,
               userValue: userValue,
-              range: { min: standardValue - 5, max: standardValue + 5 }
+              range: { min: standardValue - 10, max: standardValue + 10 }
             });
           }
 
@@ -208,6 +208,8 @@ const PregnancyWeek = () => {
             <h4>{alert.name} ({alert.userValue} mm)</h4>
             <p>Chỉ số an toàn: {alert.range.min} - {alert.range.max} mm</p>
             <p style={{ color: 'red', fontWeight: 'bold' }}>⚠️ Chỉ số ngoài phạm vi an toàn!</p>
+            <p style={{ color: 'red', fontWeight: 'bold' }}>⚠️ Bạn nên tham khảo ý kiến bác sĩ</p>
+            <p style={{ color: 'green', fontWeight: 'bold' }}>Bạn có thể đặt lịch khám tại <Link to="/booking">Đây</Link></p>
           </div>
         )) : <p>Không có chỉ số bất thường.</p>}
       </Modal>
