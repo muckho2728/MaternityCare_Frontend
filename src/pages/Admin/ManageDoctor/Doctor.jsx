@@ -17,7 +17,7 @@ const Doctor = () => {
 
     const fetchDoctors = async () => {
         try {
-            const response = await api.get("doctors/active-doctors");
+            const response = await api.get("doctors");
             setDoctors(response.data);
         } catch (error) {
             message.error("Lỗi khi tải danh sách bác sĩ!", error);
@@ -31,10 +31,10 @@ const Doctor = () => {
     };
 
     const handleEditDoctor = (doctor) => {
-        setOpen(true);  
+        setOpen(true);
         console.log(doctor)
         setSelectedDoctor(doctor);
-        form.setFieldsValue({ ...doctor ,avatar : null });
+        form.setFieldsValue({ ...doctor, avatar: null });
         setFile(null);
     };
 
@@ -63,15 +63,15 @@ const Doctor = () => {
             formData.append("email", values.email);
             formData.append("phoneNumber", values.phoneNumber);
 
-            
-    
+
+
             // Check if a new file is uploaded
             if (file) {
                 formData.append("avatar", file);
             } else if (selectedDoctor && selectedDoctor.avatar) {
                 formData.append("avatar", selectedDoctor.avatar); // Keep existing avatar if no new file
             }
-    
+
             if (selectedDoctor) {
                 console.log(selectedDoctor)
                 await api.put(`doctors/${selectedDoctor.id}`, formData, {
@@ -100,13 +100,15 @@ const Doctor = () => {
         { title: "Tên", dataIndex: "fullName", key: "fullName" },
         { title: "Chuyên khoa", dataIndex: "specialization", key: "specialization" },
         { title: "Kinh nghiệm", dataIndex: "yearsOfExperience", key: "yearsOfExperience" },
-        { title: "Hành động", render: (_, record) => (
-            <>
-                <Button type="link" icon={<EyeOutlined />} onClick={() => showDrawer(record)}>Xem</Button>
-                <Button onClick={() => handleEditDoctor(record)}>Cập nhật</Button>
-                <Button danger onClick={() => handleDeleteDoctor(record.id)}>Xóa</Button>
-            </>
-        )},
+        {
+            title: "Hành động", render: (_, record) => (
+                <>
+                    <Button type="link" icon={<EyeOutlined />} onClick={() => showDrawer(record)}>Xem</Button>
+                    <Button onClick={() => handleEditDoctor(record)}>Cập nhật</Button>
+                    <Button danger onClick={() => handleDeleteDoctor(record.id)}>Xóa</Button>
+                </>
+            )
+        },
     ];
 
     return (
@@ -120,39 +122,39 @@ const Doctor = () => {
                 footer={null}
             >
                 <Form form={form} onFinish={handleSubmit} layout="vertical">
-                    <Form.Item name="fullName" label="Tên" rules={[{ required: true, message: "Vui lòng nhập tên!" }]}> 
+                    <Form.Item name="fullName" label="Tên" rules={[{ required: true, message: "Vui lòng nhập tên!" }]}>
                         <Input />
                     </Form.Item>
-                    <Form.Item name="specialization" label="Chuyên khoa" rules={[{ required: true, message: "Vui lòng nhập chuyên khoa!" }]}> 
+                    <Form.Item name="specialization" label="Chuyên khoa" rules={[{ required: true, message: "Vui lòng nhập chuyên khoa!" }]}>
                         <Input />
                     </Form.Item>
-                    <Form.Item name="yearsOfExperience" label="Kinh nghiệm" rules={[{ required: true, message: "Vui lòng nhập kinh nghiệm!" }]}> 
+                    <Form.Item name="yearsOfExperience" label="Kinh nghiệm" rules={[{ required: true, message: "Vui lòng nhập kinh nghiệm!" }]}>
                         <Input type="number" />
                     </Form.Item>
-                    <Form.Item name="email" label="Email" rules={[{ required: true, message: "Vui lòng nhập email!" }]}> 
+                    <Form.Item name="email" label="Email" rules={[{ required: true, message: "Vui lòng nhập email!" }]}>
                         <Input />
                     </Form.Item>
-                    <Form.Item name="phoneNumber" label="Số điện thoại" rules={[{ required: true, message: "Vui lòng nhập số điện thoại!" }]}> 
+                    <Form.Item name="phoneNumber" label="Số điện thoại" rules={[{ required: true, message: "Vui lòng nhập số điện thoại!" }]}>
                         <Input />
                     </Form.Item>
                     <Form.Item name="avatar" label="Ảnh">
-                        {selectedDoctor && <img src={selectedDoctor.avatar} alt="avatar" width={100}  />}
-                        <Upload 
+                        {selectedDoctor && <img src={selectedDoctor.avatar} alt="avatar" width={100} />}
+                        <Upload
                             listType="picture"
                             beforeUpload={(newFile) => {
                                 setFile(newFile);
                                 form.setFieldsValue({ avatar: newFile });
-                                return false; 
+                                return false;
                             }}
                             onRemove={() => {
-                                setFile(null); 
+                                setFile(null);
                                 form.setFieldsValue({ avatar: null });
                             }}>
                             <Button icon={<UploadOutlined />}>Chọn ảnh</Button>
                         </Upload>
                     </Form.Item>
                     <Form.Item>
-                    
+
                         <Button type="primary" htmlType="submit">{selectedDoctor ? "Cập nhật" : "Thêm"}</Button>
                     </Form.Item>
                 </Form>
