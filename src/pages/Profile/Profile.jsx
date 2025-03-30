@@ -355,7 +355,7 @@ const Profile = () => {
                       boxShadow: '0 2px 10px rgba(0,0,0,0.2)'
                     }}
                   >
-                    <p><strong>Gói hiện tại:</strong> {userPackage ? userPackage.name : 'Free'}</p>
+                    <p><strong>Gói hiện tại:</strong> {userPackage ? (userPackage.name === 'Free' ? ' Miễn phí' : ' Cao cấp') : ' Miễn phí'}</p>
                     <p><strong>Ngày bắt đầu:</strong> {subscriptionDetails?.[0]?.startDate || 'Không có'}</p>
                     <p><strong>Ngày hết hạn:</strong> {subscriptionDetails?.[0]?.endDate || 'Không có'}</p>
                   </Card>
@@ -367,6 +367,13 @@ const Profile = () => {
                     rowKey="id"
                     pagination={false}
                     style={{ backgroundColor: '#4caf93', borderRadius: '8px' }}
+                    locale={{
+                      emptyText: (
+                        <div style={{ padding: '16px', textAlign: 'center' }}>
+                          <p style={{ fontSize: '16px', color: '#666' }}>Hiện tại không có giao dịch nào được ghi nhận</p>
+                        </div>
+                      )
+                    }}
                   />
 
                   <Title level={3} style={{ color: '#4caf93' }}>Đổi mật khẩu</Title>

@@ -46,7 +46,8 @@ const PackageList = () => {
     if (!isLoggedIn) {
       navigate("/login");
     } else if (currentPackage === "Premium") {
-      message.info("🎉 Bạn đang sử dụng gói Cao Cấp.");
+      // Xử lý khi đã dùng gói Premium
+      navigate("/feedback");
     } else {
       navigate(`/payment-detail/${id}`);
     }
@@ -84,16 +85,17 @@ const PackageList = () => {
               <Card
                 title={pkg.type}
                 bordered={true}
-                className={`package-card ${pkg.type === currentPackage ? "current-package" : ""
-                  } ${pkg.type === "Premium" ? "highlight-package" : ""}`}
+                className={`package-card ${
+                  pkg.type === currentPackage ? "current-package" : ""
+                } ${pkg.type === "Premium" ? "highlight-package" : ""}`}
               >
                 <div className="package-price">
                   {pkg.price === 0
                     ? "Miễn phí"
                     : `${pkg.price.toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}`}
+                        style: "currency",
+                        currency: "VND",
+                      })}`}
                 </div>
                 <div className="package-duration">
                   ⏳ Thời hạn: {pkg.duration} tháng
@@ -125,7 +127,7 @@ const PackageList = () => {
                         className="buy-btn"
                         onClick={() => handleBuyClick(pkg.id)}
                       >
-                        {isLoggedIn ? "Nâng Cấp Ngay" : "Đăng Ký Ngay"}
+                        {currentPackage === "Premium" ? "Gửi phản hồi" : isLoggedIn ? "Nâng Cấp Ngay" : "Đăng Ký Ngay"}
                       </Button>
                     )
                   ) : isLoggedIn ? (
