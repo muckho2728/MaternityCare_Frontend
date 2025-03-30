@@ -81,6 +81,7 @@
     border-radius: 8px;
     padding: 10px;
     border: 1px solid #ddd;
+    width: 100%; /* Đảm bảo rằng ô chiếm 100% chiều rộng của cột */
 }
 input[type="date"] {
     padding: 2px 0px;
