@@ -117,42 +117,48 @@
 
 /* 🎯 Ô nhập liệu */
 
-.form-group {
+.form-group3 {
     display: flex;
     flex-direction: column;
     align-items: left;
-    width: 100%;
+    
+    width: 104%;
+    margin-left: 3px;
 }
 
-.form-group label {
-    font-size: 15px;
+
+.form-group3 label {
+    font-size: 20px;
     font-weight: 600;
     margin-bottom: 5px;
-    color: #555;
+    color: #136c51;
+    margin-left: -52px;
+
 }
 
 input[type="date"] {
-    padding: 12px 15px;
-    border: 1.5px solid #e0a3b5;
-    border-radius: 10px;
+    padding: 12px;
     font-size: 16px;
-    width: 90%;
-    background: rgba(255, 245, 248, 0.5);
+    border: 2px solid #cfe8d5;
+    border-radius: 8px;
+    background: #fff;
     outline: none;
     transition: all 0.3s ease;
+    color: #333;
+    width: 93%;
 }
 
-input[type="date"]:focus {
+/* input[type="date"]:focus {
     border-color: #d63384;
     background: white;
     box-shadow: 0px 4px 10px rgba(214, 51, 132, 0.2);
-}
+} */
 
 
 /* 🔘 Nút lưu */
 
-.submit-button {
-    background: linear-gradient(135deg, #ff7eb3, #ff4d79);
+.submit-button1 {
+    background: #136c51;
     color: white;
     font-size: 16px;
     font-weight: bold;
@@ -164,10 +170,7 @@ input[type="date"]:focus {
     transition: all 0.3s ease-in-out;
 }
 
-.submit-button:hover {
-    background: linear-gradient(135deg, #ff5c8a, #d63384);
-    box-shadow: 0px 4px 12px rgba(255, 92, 138, 0.4);
-}
+
 
 
 /* 📱 Responsive */

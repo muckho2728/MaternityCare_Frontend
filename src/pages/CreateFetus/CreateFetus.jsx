@@ -104,7 +104,7 @@ const CreateFetus = () => {
             </div>
 
             <form className="fetus-form" onSubmit={handleSubmit}>
-                <div className="form-group">
+                <div className="form-group3">
                     <label>Ngày thụ thai</label>
                     <input
                         type="date"
@@ -116,7 +116,7 @@ const CreateFetus = () => {
                     />
                 </div>
 
-                <button type="submit" className="submit-button" disabled={isSubmitting}>
+                <button type="submit" className="submit-button1" disabled={isSubmitting}>
                     {isSubmitting ? "Đang lưu..." : "Lưu thông tin"}
                 </button>
             </form>
