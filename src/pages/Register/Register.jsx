@@ -29,11 +29,11 @@ const Register = () => {
       try {
         const response = await api.post("https://maternitycare.azurewebsites.net/api/authentications/register", formData);
         console.log(response);
-        toast.success("Đăng kí thành công");
+        toast.success("Đăng kí thành công, xin hãy xác thực email của bạn");
         console.log(formData);
         navigate("/login");
       } catch (err) {
-        console.log(err.response.data.detail);
+        console.log(err.response);
         toast.error("Đăng kí thất bại");
       } finally {
         setLoading(false);

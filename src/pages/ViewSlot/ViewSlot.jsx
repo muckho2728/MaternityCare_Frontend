@@ -219,6 +219,7 @@ const ViewSlot = () => {
                     <div key={doctor.id} className="doctor-card" onClick={() => fetchSlots(doctor)}>
                         <img src={doctor.avatar} alt={doctor.fullName} />
                         <h3>{doctor.fullName}</h3>
+                        <p>Kinh nghiệm: {doctor.yearsOfExperience} năm</p>
                         <p>Chuyên môn: {doctor.specialization}</p>
                     </div>
                 ))}
