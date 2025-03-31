@@ -43,7 +43,7 @@ const ViewSlot = () => {
         );
         toast.error(
           "Error fetching doctors: " +
-            (error.response?.data?.message || error.message)
+          (error.response?.data?.message || error.message)
         );
       }
     };
@@ -72,7 +72,7 @@ const ViewSlot = () => {
       console.error("Error fetching slots:", error);
       toast.error(
         "Error fetching slots: " +
-          (error.response?.data?.message || error.message)
+        (error.response?.data?.message || error.message)
       );
     }
   };
@@ -113,7 +113,7 @@ const ViewSlot = () => {
       console.error("Error creating slot:", error);
       toast.error(
         "Error creating slot: " +
-          (error.response?.data?.message || error.message)
+        (error.response?.data?.message || error.message)
       );
     }
   };
