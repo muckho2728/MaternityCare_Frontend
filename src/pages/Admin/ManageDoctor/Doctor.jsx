@@ -20,7 +20,7 @@ const Doctor = () => {
             const response = await api.get("doctors");
             setDoctors(response.data);
         } catch (error) {
-            message.error("Lỗi khi tải danh sách bác sĩ!");
+            message.error("Lỗi khi tải danh sách bác sĩ!", error);
         }
     };
 
@@ -48,7 +48,7 @@ const Doctor = () => {
                     message.success("Xóa bác sĩ thành công!");
                     fetchDoctors();
                 } catch (error) {
-                    message.error("Lỗi khi xóa bác sĩ!");
+                    message.error("Lỗi khi xóa bác sĩ!", error);
                 }
             },
         });

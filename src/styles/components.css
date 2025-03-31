@@ -359,6 +359,41 @@ body {
 
 /* Dropdown menu */
 
+.dropdown-menu-notification {
+    position: absolute;
+    right: 0;
+    top: 40px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    min-width: 250px;
+    z-index: 10;
+    max-height: 200px;
+    overflow-y: auto;
+    
+}
+
+.dropdown-menu-notification .dropdown-header {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.dropdown-menu-notification .dropdown-item-notification {
+    display: block;
+    padding: 10px;
+    color: #4caf93;
+    text-decoration: none;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.dropdown-menu-notification .dropdown-item-notification:hover {
+    background: #00897b;
+    color: white;
+}
+
 .dropdown-menu {
     position: absolute;
     right: 0;
