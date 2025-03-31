@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import api from "../../constants/axios";
 import moment from "moment";
@@ -9,7 +9,7 @@ const ViewSlot = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [specialtyFilter, setSpecialtyFilter] = useState("all");
   const [doctors, setDoctors] = useState([]);
-  const [pageNumber, setPageNumber] = useState(1);
+  const [pageNumber, setPageNumber1] = useState(1);
   const pageSize = 100;
   const [specialties, setSpecialties] = useState([]);
   const [selectedDoctorId, setSelectedDoctorId] = useState(null);
@@ -21,13 +21,13 @@ const ViewSlot = () => {
     const fetchDoctors = async () => {
       const token = localStorage.getItem("token");
       if (!token) {
-        console.error("No token found");
+        console.error("Không tìm thấy token");
         return;
       }
 
       try {
         const response = await api.get(
-          `https://maternitycare.azurewebsites.net/api/doctors/active-doctors?PageNumber=${pageNumber}&PageSize=${pageSize}`,
+          `https://maternitycare.azurewebsites.net/api/doctors?PageNumber=${pageNumber}&PageSize=${pageSize}`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -38,11 +38,11 @@ const ViewSlot = () => {
         extractSpecialties(response.data);
       } catch (error) {
         console.error(
-          "Error fetching doctors:",
+          "Lỗi khi lấy danh sách bác sĩ:",
           error.response?.data || error.message
         );
         toast.error(
-          "Error fetching doctors: " +
+          "Lỗi khi lấy danh sách bác sĩ: " +
           (error.response?.data?.message || error.message)
         );
       }
@@ -51,16 +51,16 @@ const ViewSlot = () => {
     fetchDoctors();
   }, [pageNumber]);
 
-  const fetchSlots = async (selectedDoctorId) => {
+  const fetchSlots = async (doctorId) => {
     const token = localStorage.getItem("token");
     if (!token) {
-      console.error("No token found");
+      console.error("Không tìm thấy token");
       return;
     }
 
     try {
       const response = await api.get(
-        `https://maternitycare.azurewebsites.net/api/doctors/${selectedDoctorId}/slots?Date=2025-03-12&PageNumber=1&PageSize=10`,
+        `https://maternitycare.azurewebsites.net/api/doctors/${doctorId}/slots?Date=2025-03-12&PageNumber=1&PageSize=10`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -69,9 +69,9 @@ const ViewSlot = () => {
       );
       setSlots(response.data);
     } catch (error) {
-      console.error("Error fetching slots:", error);
+      console.error("Lỗi khi lấy danh sách slot:", error);
       toast.error(
-        "Error fetching slots: " +
+        "Lỗi khi lấy danh sách slot: " +
         (error.response?.data?.message || error.message)
       );
     }
@@ -79,6 +79,7 @@ const ViewSlot = () => {
 
   const handleCreateSlot = async (values) => {
     const { date, startTime, endTime } = values;
+
     if (!selectedDoctorId || !date || !startTime || !endTime) {
       toast.error("Vui lòng nhập đầy đủ thông tin");
       return;
@@ -86,7 +87,7 @@ const ViewSlot = () => {
 
     const token = localStorage.getItem("token");
     if (!token) {
-      console.error("No token found");
+      console.error("Không tìm thấy token");
       return;
     }
     try {
@@ -104,15 +105,15 @@ const ViewSlot = () => {
           },
         }
       );
-      toast.success("Slot created successfully");
+      toast.success("Tạo slot thành công");
       setIsModalOpen(false);
       form.resetFields();
       fetchSlots(selectedDoctorId);
       console.log(response.data);
     } catch (error) {
-      console.error("Error creating slot:", error);
+      console.error("Lỗi khi tạo slot:", error);
       toast.error(
-        "Error creating slot: " +
+        "Lỗi khi tạo slot: " +
         (error.response?.data?.message || error.message)
       );
     }
@@ -121,7 +122,7 @@ const ViewSlot = () => {
   const handleDeleteSlot = async (doctorId, slotId) => {
     const token = localStorage.getItem("token");
     if (!token) {
-      console.error("No token found");
+      console.error("Không tìm thấy token");
       return;
     }
     try {
@@ -211,10 +212,9 @@ const ViewSlot = () => {
                 borderRadius: "5px",
               }}
               onClick={() => {
-                setSelectedDoctorId((prevId) =>
-                  prevId === doctor.id ? null : doctor.id
-                );
-                if (selectedDoctorId !== doctor.id) {
+                const newSelectedId = selectedDoctorId === doctor.id ? null : doctor.id;
+                setSelectedDoctorId(newSelectedId);
+                if (newSelectedId) {
                   fetchSlots(doctor.id);
                 }
               }}
@@ -233,11 +233,12 @@ const ViewSlot = () => {
                 <p>Email: {doctor.email}</p>
                 <p>Số điện thoại: {doctor.phoneNumber}</p>
                 <p>Chuyên môn: {doctor.specialization}</p>
-                <p>Kinh nghiệm: {doctor.yearsOfExperience} years</p>
+                <p>Kinh nghiệm: {doctor.yearsOfExperience} năm</p>
               </div>
               <div>
                 <button
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     setSelectedDoctorId(doctor.id);
                     setIsModalOpen(true);
                   }}
