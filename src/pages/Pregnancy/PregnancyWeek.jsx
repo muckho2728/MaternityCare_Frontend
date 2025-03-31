@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import './Pregnancy.css';
 import { Modal, Button } from 'antd';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import api from '../../config/api';
 import pregnancyData from './pregnancyData';
 
@@ -73,6 +73,7 @@ const PregnancyWeek = () => {
   const [dueDate, setDueDate] = useState("");
   const [alerts, setAlerts] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [refresh, setRefresh] = useState(false);
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -100,37 +101,49 @@ const PregnancyWeek = () => {
         setUserWeight(userData?.estimatedFetalWeight || 0);
 
         let alertsList = [];
-      const updatedData = data.map(item => {
-        const standardValue = standardData[item.key] ? parseRange(standardData[item.key]) : 0;
-        const userValue = userData && userData[item.key] ? userData[item.key] : 0;
+        const updatedData = data.map(item => {
+          const standardValue = standardData[item.key] ? parseRange(standardData[item.key]) : 0;
+          const userValue = userData && userData[item.key] ? userData[item.key] : 0;
 
-        // Chỉ hiển thị cảnh báo nếu người dùng có dữ liệu và lệch hơn 5 đơn vị so với chuẩn
-        if (userData && Math.abs(userValue - standardValue) > 5) {
-          alertsList.push({
+          if (userData && Math.abs(userValue - standardValue) > 10) {
+            alertsList.push({
+              name: item.name,
+              userValue: userValue,
+              range: { min: standardValue - 10, max: standardValue + 10 }
+            });
+          }
+
+        // if (userData && standardValue > 0 && Math.abs(userValue - standardValue) > standardValue * 0.1) {
+        //   alertsList.push({
+        //     name: item.name,
+        //     userValue: userValue,
+        //     range: { min: standardValue * 0.9, max: standardValue * 1.1 }
+        //   });
+        // }
+
+          return {
             name: item.name,
-            userValue: userValue,
-            range: { min: standardValue - 5, max: standardValue + 5 }
-          });
-        }
-
-        return {
-          name: item.name,
-          standard: standardValue,
-          user: userValue, // Nếu userValue = 0 thì biểu đồ không hiển thị dữ liệu người dùng
-          key: item.key
-        };
-      });
+            standard: standardValue,
+            user: userValue,
+            key: item.key
+          };
+        });
   
         setChartData(updatedData);
         setAlerts(alertsList);
+        handleRefresh(); 
       } catch (error) {
         console.log("Lỗi khi lấy dữ liệu:", error);
       }
     };
   
     fetchStandardData();
-  }, [week]);
-  
+  }, [week, refresh]); 
+
+  const handleRefresh = () => {
+    setRefresh(!refresh);
+  };
+
   const parseRange = (range) => {
     if (!range || range === null) return 0; 
     const parts = range.split('-').map(Number);
@@ -195,6 +208,8 @@ const PregnancyWeek = () => {
             <h4>{alert.name} ({alert.userValue} mm)</h4>
             <p>Chỉ số an toàn: {alert.range.min} - {alert.range.max} mm</p>
             <p style={{ color: 'red', fontWeight: 'bold' }}>⚠️ Chỉ số ngoài phạm vi an toàn!</p>
+            <p style={{ color: 'red', fontWeight: 'bold' }}>⚠️ Bạn nên tham khảo ý kiến bác sĩ</p>
+            <p style={{ color: 'green', fontWeight: 'bold' }}>Bạn có thể đặt lịch khám tại <Link to="/booking">Đây</Link></p>
           </div>
         )) : <p>Không có chỉ số bất thường.</p>}
       </Modal>

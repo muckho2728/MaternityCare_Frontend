@@ -96,7 +96,15 @@ body {
     max-width: 900px; /* Giới hạn chiều rộng để nhìn gọn gàng hơn */
     margin: 0 auto; /* Canh giữa */
 }
-
+.blog-search {
+    display: flex
+;
+    align-items: center;
+    background: white;
+    border: 2px solid #4caf93;
+    border-radius: 8px;
+    padding: 5px;
+}
 .body-blog:hover {
     transform: translateY(-5px);
 }
@@ -282,6 +290,7 @@ body {
 /* Chỉ hiển thị phần rút gọn */
 .short-text {
     display: inline;
+    margin-left: 40px;
 }
 
 /* Ẩn checkbox */

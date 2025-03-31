@@ -173,7 +173,7 @@ const CreateFetusHealth = () => {
                             onChange={handleChange}
                             required
                             placeholder={healthData.week >= 2 && healthData.week <= 5 && "Không có dữ liệu"}
-                            disabled={healthData.week >= 2 && healthData.week <= 5  >= 16}
+                            disabled={healthData.week <= 5}
                         >
                             <option value={0}>Chọn mức độ</option>
                             <option value={1}>Bình thường(1)</option>
@@ -277,4 +277,3 @@ const CreateFetusHealth = () => {
 };
 
 export default CreateFetusHealth;
-

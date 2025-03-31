@@ -10,6 +10,7 @@ const Header = () => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [notifications, setNotifications] = useState([]);
     const [currentPackage, setCurrentPackage] = useState("Free");
+    const [refresh, setRefresh] = useState(false);
     const notificationRef = useRef(null);
     const dropdownRef = useRef(null);
     const navigate = useNavigate();
@@ -28,9 +29,22 @@ const Header = () => {
     }, [token]);
 
     useEffect(() => {
-        const storedReminders = JSON.parse(localStorage.getItem("reminders")) || [];
-        setNotifications(storedReminders);
-    }, []);
+        fetchReminders();
+    }, [refresh]);
+
+    const fetchReminders = async () => {
+        try {
+            const storedReminders = JSON.parse(localStorage.getItem("reminders")) || [];
+            setNotifications(storedReminders);
+        } catch (error) {
+            console.error("Error fetching reminders:", error);
+        }
+    };
+
+    const handleRefresh = () => {
+        setRefresh(!refresh);
+        fetchReminders();
+    };
 
     const checkPermission = useCallback(async (e, url) => {
         if (!user) {
@@ -123,15 +137,18 @@ const Header = () => {
                             {notifications.length > 0 && <span className="notification-badge">{notifications.length}</span>}
                         </button>
                         {isNotificationOpen && (
-                            <div className="dropdown-menu">
+                            <div className="dropdown-menu-notification">
                                 <div className="dropdown-header">Thông báo</div>
                                 {notifications.length > 0 ? (
                                     notifications.map((reminder) => (
-                                        <div key={reminder.id} className="dropdown-item">{reminder.description}</div>
+                                        <div key={reminder.id} className="dropdown-item-notification">
+                                            Tuần {reminder.week}: {reminder.description}
+                                        </div>
                                     ))
                                 ) : (
-                                    <div className="dropdown-item">Không có thông báo</div>
+                                    <div className="dropdown-item-notification">Không có thông báo</div>
                                 )}
+                                <button className="dropdown-item refresh-button" onClick={handleRefresh}>Làm mới</button>
                             </div>
                         )}
                     </div>
