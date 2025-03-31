@@ -151,7 +151,7 @@ const CreateFetusHealth = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Chu vi đầu (Head Circumference) (mm)</label>
+                        <label>Chu vi đầu (HC) (mm)</label>
                         <input
                             type="number"
                             name="headCircumference"
@@ -165,15 +165,15 @@ const CreateFetusHealth = () => {
                     </div>
                 </div>
                 <div className="form-row">
-                    <div className="form-group">
-                        <label>Mức độ nước ối (Amniotic fluid)</label>
+                    <div className="form-group2">
+                        <label>Mức độ nước ối (Amniotic Fluid Level)</label>
                         <select
                             name="amnioticFluidLevel"
                             value={healthData.amnioticFluidLevel}
                             onChange={handleChange}
                             required
                             placeholder={healthData.week >= 2 && healthData.week <= 5 && "Không có dữ liệu"}
-                            disabled={healthData.week <= 5}
+                            disabled={healthData.week >= 2 && healthData.week <= 5  >= 16}
                         >
                             <option value={0}>Chọn mức độ</option>
                             <option value={1}>Bình thường(1)</option>
@@ -182,7 +182,7 @@ const CreateFetusHealth = () => {
                         </select>
                     </div>
                     <div className="form-group">
-                        <label> Chiều dài đầu mông (Crown Rump Length) (mm)</label>
+                        <label> Chiều dài đầu mông (CRL) (mm)</label>
                         <input
                             type="number"
                             name="crownRumpLength"
@@ -198,7 +198,7 @@ const CreateFetusHealth = () => {
 
                 <div className="form-row">
                     <div className="form-group">
-                        <label> Đường kính lưỡng đỉnh (Biparietal Diameter) (mm)</label>
+                        <label> Đường kính lưỡng đỉnh (BD) (mm)</label>
                         <input
                             type="number"
                             name="biparietalDiameter"
@@ -211,7 +211,7 @@ const CreateFetusHealth = () => {
                         />
                     </div>
                     <div className="form-group">
-                        <label>Chiều dài xương đùi (Femur Length) (mm)</label>
+                        <label>Chiều dài xương đùi (FL) (mm)</label>
                         <input
                             type="number"
                             name="femurLength"
@@ -227,7 +227,7 @@ const CreateFetusHealth = () => {
 
                 <div className="form-row">
                     <div className="form-group">
-                        <label>Đường kính túi thai (Gestational Sac Diameter) (mm)</label>
+                        <label>Đường kính túi thai (GSD) (mm)</label>
                         <input
                             type="number"
                             name="gestationalSacDiameter"
@@ -239,11 +239,8 @@ const CreateFetusHealth = () => {
                             disabled={healthData.week >= 2 && healthData.week <= 5 || healthData.week >= 14}
                         />
                     </div>
-                </div>
-
-                <div className="form-row">
                     <div className="form-group">
-                        <label>Cân nặng thai nhi ước tính (Estimated Fetal Weight) (g)</label>
+                        <label>Cân nặng thai nhi ước tính (EFW) (g)</label>
                         <input
                             type="number"
                             name="estimatedFetalWeight"
@@ -255,8 +252,12 @@ const CreateFetusHealth = () => {
                             disabled={healthData.week >= 2 && healthData.week <= 9}
                         />
                     </div>
-                    <div className="form-group">
-                        <label>Chu vi vòng bụng (Abdominal Circumference) (mm)</label>
+                </div>
+
+                <div className="form-row">
+                    
+                    <div className="form-group1">
+                        <label>Chu vi vòng bụng (AC) (mm)</label>
                         <input
                             type="number"
                             name="abdominalCircumference"

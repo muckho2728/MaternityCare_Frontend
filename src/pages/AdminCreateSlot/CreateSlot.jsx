@@ -271,7 +271,19 @@ const ViewSlot = () => {
                   <p>Ngày: {slot.date}</p>
                   <p>Giờ bắt đầu: {slot.startTime}</p>
                   <p>Giờ kết thúc: {slot.endTime}</p>
-                  <button onClick={() => handleDeleteSlot(doctor.id, slot.id)}>
+                  <button
+                    style={{
+                      marginRight: "40px",
+                      backgroundColor: "rgb(218 21 46)",
+                      borderColor: "rgb(218 21 46)",
+                      fontSize: "14px",
+                      height: "30px",
+                      padding: "0px 20px",
+                      borderRadius: "6px",
+                      color: "#fff",
+                    }}
+                    onClick={() => handleDeleteSlot(doctor.id, slot.id)}
+                  >
                     Xóa Slot
                   </button>
                 </div>

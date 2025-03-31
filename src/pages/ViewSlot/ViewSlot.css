@@ -154,7 +154,8 @@
 }
 
 .doctor-card img {
-  height: 120px;
+  width: 150px;
+  height: 105px;
   border-radius: 8px;
   margin-bottom: 10px;
 }
