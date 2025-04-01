@@ -5,9 +5,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Blog.css";
 import api from "../../config/api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Blog = () => {
+  const navigate = useNavigate();
   const [blogs, setBlogs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [tags, setTags] = useState([]);
@@ -357,6 +358,10 @@ const Blog = () => {
     }
   };
 
+  const handleAuthRedirect = () => {
+    navigate('/login');
+  };
+
   if (isUserLoading) {
     return <div>Đang tải thông tin người dùng...</div>;
   }
@@ -382,12 +387,18 @@ const Blog = () => {
           </button>
         </div>
 
-        <Link to="/view-blog-user">
-          <button className="blog-btn">Bài Viết Của Tôi</button>
-        </Link>
-        <Link to="/create-blog">
-          <button className="blog-btn">Tạo Bài Viết</button>
-        </Link>
+        <button 
+          className="blog-btn" 
+          onClick={() => userId ? navigate('/view-blog-user') : handleAuthRedirect()}
+        >
+          Bài Viết Của Tôi
+        </button>
+        <button 
+          className="blog-btn" 
+          onClick={() => userId ? navigate('/create-blog') : handleAuthRedirect()}
+        >
+          Tạo Bài Viết
+        </button>
 
         <div className="blog-filter">
           <label htmlFor="tagFilter">Lọc theo Tag:</label>
@@ -453,7 +464,13 @@ const Blog = () => {
                   <div className="blog-info">
                     <span className="blog-time">
                       <button
-                        onClick={() => handleLike(blog.id)}
+                        onClick={() => {
+                          if (!userId) {
+                            handleAuthRedirect();
+                            return;
+                          }
+                          handleLike(blog.id);
+                        }}
                         disabled={!userId}
                         style={{
                           border: "none",
@@ -485,7 +502,14 @@ const Blog = () => {
                   <div>
                     <form
                       className="upcomment"
-                      onSubmit={(e) => handleCommentSubmit(e, blog.id)}
+                      onSubmit={(e) => {
+                        if (!userId) {
+                          e.preventDefault();
+                          handleAuthRedirect();
+                          return;
+                        }
+                        handleCommentSubmit(e, blog.id);
+                      }}
                     >
                       <input
                         type="text"
