@@ -16,7 +16,6 @@ const ManagePreg = () => {
     // Gọi API lấy danh sách thai
     const fetchData = async () => {
         if (!userId) {
-            message.error("Không tìm thấy userId! Vui lòng kiểm tra lại.");
             return;
         }
 
@@ -24,7 +23,7 @@ const ManagePreg = () => {
             const response = await api.get(`/users/${userId}/fetuses`);
             setFetusData(response.data);
         } catch (error) {
-            message.error("Lỗi khi tải dữ liệu! Vui lòng thử lại.");
+            message.error("", error);
         }
     };
 
@@ -38,7 +37,7 @@ const ManagePreg = () => {
             const response = await api.get(`/fetuses/${fetusId}/fetus-healths`);
             setFetusHealthData(response.data);
         } catch (error) {
-            message.error("Lỗi khi tải dữ liệu sức khỏe thai nhi! Vui lòng thử lại.");
+            message.error("", error);
         }
     };
 

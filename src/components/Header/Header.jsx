@@ -96,7 +96,7 @@ const Header = () => {
             <div className="header-container">
                 <div className="logo-section" onClick={() => navigate('/')}> 
                     <Link to="/" className="logo-link">
-                        <img src="/src/assets/Vector.png" alt="Baby Logo" className="logo" />
+                        <img src="https://i.pinimg.com/736x/1b/eb/d1/1bebd1f8eeaca63322da4858e57edaea.jpg" alt="Baby Logo" className="logo" />
                         <span className="brand-name">Maternity Care</span>
                     </Link>
                 </div>
