@@ -154,7 +154,7 @@ const ViewSlot = () => {
             navigate("/viewBookedSlot");
         } catch (error) {
             console.log(error.response);
-            toast.error("Đăng ký thất bại: " + (error.response?.data?.message || error.message));
+            toast.error("Đăng ký thất bại, bạn đã đặt lịch ngày này!");
         }
     };
 

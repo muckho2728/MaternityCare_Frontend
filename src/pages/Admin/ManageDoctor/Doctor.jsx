@@ -17,7 +17,7 @@ const Doctor = () => {
 
     const fetchDoctors = async () => {
         try {
-            const response = await api.get("doctors");
+            const response = await api.get("doctors/active-doctors");
             setDoctors(response.data);
         } catch (error) {
             message.error("Lỗi khi tải danh sách bác sĩ!", error);
