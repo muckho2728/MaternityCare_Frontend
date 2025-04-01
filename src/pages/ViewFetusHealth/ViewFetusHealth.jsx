@@ -21,7 +21,6 @@ const ViewFetusHealth = () => {
                 const response = await api.get(`users/${userId}/fetuses`);
                 console.log(response)
                 if (response.data.length === 0) {
-                    message.error("Không có dữ liệu thai nhi!");
                     return;
                 }
                 
@@ -35,7 +34,6 @@ const ViewFetusHealth = () => {
                 const responseHealth = await api.get(`fetuses/${fetusID}/fetus-healths`);
                 
                 if (responseHealth.data.length === 0) {
-                    message.error("Không có dữ liệu sức khỏe thai nhi!");
                     return;
                 }
 
@@ -50,7 +48,7 @@ const ViewFetusHealth = () => {
                 });
             } catch (error) {
                 console.error("Lỗi khi tải dữ liệu:", error);
-                message.error("Không thể tải dữ liệu, vui lòng thử lại!");
+                message.error("", error);
             }
         };
         fetchData();
@@ -61,7 +59,7 @@ const ViewFetusHealth = () => {
             const values = await form.validateFields();
             const userId = localStorage.getItem('userId');
             if (!fetusData || !healthData) {
-                message.error("Không có dữ liệu để cập nhật!");
+                message.error("");
                 return;
             }
             await api.put(`users/${userId}/fetuses/${fetusData.id}`, {
@@ -84,13 +82,13 @@ const ViewFetusHealth = () => {
             setIsEditing(false);
         } catch (error) {
             console.error('Lỗi khi cập nhật:', error);
-            message.error('Cập nhật thất bại, vui lòng thử lại!');
+            message.error("", error);
         }
     };
 
-    if (!fetusData || !healthData) {
-        return <div>Không có dữ liệu thai nhi.</div>;
-    }
+    // if (!fetusData || !healthData) {
+    //     return <div>Không có dữ liệu thai nhi.</div>;
+    // }
 
     return (
         <Layout style={{ backgroundColor: 'transparent' }}>
@@ -139,18 +137,20 @@ const ViewFetusHealth = () => {
                                     <Col span={12}><Form.Item label="Chu vi bụng (mm)" name="abdominalCircumference"><Input disabled={!isEditing} /></Form.Item></Col>
                                     <Col span={12}><Form.Item label="Đường kính túi thai (mm)" name="gestationalSacDiameter"><Input disabled={!isEditing} /></Form.Item></Col>
                                 </Row>
-                                <Form.Item>
-                                    <Space style={{ display: 'flex', justifyContent: 'center' }}>
-                                        {!isEditing ? (
-                                            <Button type="primary" onClick={() => setIsEditing(true)}>Cập nhật</Button>
-                                        ) : (
-                                            <>
-                                                <Button type="primary" onClick={handleSave}>Lưu</Button>
-                                                <Button onClick={() => setIsEditing(false)}>Hủy</Button>
-                                            </>
-                                        )}
-                                    </Space>
-                                </Form.Item>
+                                {fetusData && healthData ? (
+                                    <Form.Item>
+                                        <Space style={{ display: 'flex', justifyContent: 'center' }}>
+                                            {!isEditing ? (
+                                                <Button type="primary" onClick={() => setIsEditing(true)}>Cập nhật</Button>
+                                            ) : (
+                                                <>
+                                                    <Button type="primary" onClick={handleSave}>Lưu</Button>
+                                                    <Button onClick={() => setIsEditing(false)}>Hủy</Button>
+                                                </>
+                                            )}
+                                        </Space>
+                                    </Form.Item>
+                                ) : null}
                             </Form>
                         </Card>
                     </Col>

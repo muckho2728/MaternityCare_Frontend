@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
 import api from '../../config/api';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -6,88 +8,111 @@ import { useNavigate } from 'react-router-dom';
 import './Blog.css';
 
 const CreateBlog = () => {
-    const [newBlog, setNewBlog] = useState({
-      title: '',
-      content: '',
-      image: null,
-      tagId: '',
-    });
     const [tags, setTags] = useState([]);
     const userId = localStorage.getItem('userId');
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchTags = async () => {
-           try {
-            const response = await api.get('tags');
-            setTags(response.data);
-           } catch (error) {
-            console.error('Error fetching tags:', error);
-           }
-        }
+            try {
+                const response = await api.get('tags');
+                setTags(response.data);
+            } catch (error) {
+                console.error('Lỗi khi lấy danh sách tag:', error);
+            }
+        };
         fetchTags();
     }, []);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setNewBlog((prev) => ({ ...prev, [name]: value }));
-    };
+    const validationSchema = yup.object({
+        title: yup.string().trim().required('Không được để trống Tiêu đề'),
+        content: yup.string().trim().required('Không được để trống Nội dung'),
+        tagId: yup.string().required('Hãy chọn Tag'),
+    });
 
-    const handleImageChange = (e) => {
-        setNewBlog((prev) => ({ ...prev, image: e.target.files[0] }));
-    };
+    const formik = useFormik({
+        initialValues: {
+            title: '',
+            content: '',
+            image: null,
+            tagId: '',
+        },
+        validationSchema,
+        onSubmit: async (values) => {
+            setLoading(true);
+            const formData = new FormData();
+            formData.append('title', values.title);
+            formData.append('content', values.content);
+            if (values.image) {
+                formData.append('image', values.image);
+            }
+            formData.append('tagId', values.tagId);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setError('');
+            try {
+                const response = await api.post(`users/${userId}/blogs`, formData);
+                console.log("API Response:", response.data);
+                toast.success('Tạo bài viết thành công, đang chờ duyệt bài');
+                setTimeout(() => navigate("/community"), 2000);
+            } catch (error) {
+                console.error('Lỗi khi tạo blog:', error);
+                toast.error('Lỗi khi tạo bài viết!');
+            } finally {
+                setLoading(false);
+            }
+        },
+    });
 
-        const formData = new FormData();
-        formData.append('title', newBlog.title);
-        formData.append('content', newBlog.content);
-        if (newBlog.image) {
-            formData.append('image', newBlog.image);
-        }
-        formData.append('tagId', newBlog.tagId);
-
-        try {
-            const response = await api.post(`users/${userId}/blogs`, formData);
-            toast.success('Tạo bài viết thành công, đang chờ duyệt bài');
-            setTimeout(() => navigate("/community"), 2000); 
-            console.log(response);
-        } catch (error) {
-            console.error('Error creating blog:', error);
-            setError(error.response?.data?.message || 'Lỗi khi tạo blog. Vui lòng thử lại.');
-            toast.error('Lỗi khi tạo bài viết!');
-        } finally {
-            setLoading(false);
-        }
-    }
     return (
         <div className="blog-form-container">
             <h1>Tạo Bài Viết Mới</h1>
             <div className='blog-form'>
-                {error && <p>{error}</p>}
-                <form onSubmit={handleSubmit}>
-                    <input type="text" name="title" placeholder="Tiêu Đề" value={newBlog.title} onChange={handleChange} required />
-                    <textarea name="content" placeholder="Nội Dung" value={newBlog.content} onChange={handleChange} required />
-                    <input type="file" name="image" accept="image/*" onChange={handleImageChange} />
-                    <select name="tagId" value={newBlog.tagId} onChange={handleChange}>
+                <form onSubmit={formik.handleSubmit}>
+                    <input 
+                        type="text" 
+                        name="title" 
+                        placeholder="Tiêu Đề" 
+                        value={formik.values.title} 
+                        onChange={formik.handleChange} 
+                        onBlur={formik.handleBlur} 
+                    />
+                    {formik.touched.title && formik.errors.title && <p className="error" style={{ color: 'red' }}>{formik.errors.title}</p>}
+                    
+                    <textarea 
+                        name="content" 
+                        placeholder="Nội Dung" 
+                        value={formik.values.content} 
+                        onChange={formik.handleChange} 
+                        onBlur={formik.handleBlur} 
+                    />
+                    {formik.touched.content && formik.errors.content && <p className="error" style={{ color: 'red' }}>{formik.errors.content}</p>}
+                    
+                    <input 
+                        type="file" 
+                        name="image" 
+                        accept="image/*" 
+                        onChange={(event) => formik.setFieldValue("image", event.currentTarget.files[0])} 
+                    />
+                    
+                    <select 
+                        name="tagId" 
+                        value={formik.values.tagId} 
+                        onChange={formik.handleChange} 
+                        onBlur={formik.handleBlur} 
+                    >
                         <option value="">Chọn Tag</option>
                         {tags.map((tag) => (
                             <option key={tag.id} value={tag.id}>{tag.name}</option>
                         ))}
                     </select>
+                    {formik.touched.tagId && formik.errors.tagId && <p className="error" style={{ color: 'red' }}>{formik.errors.tagId}</p>}
+                    
                     <div className="button-group">
-                        <button type="submit" className="" disabled={loading}>{loading ? "Đang Tạo..." : "Tạo Bài Viết"}</button>
+                        <button type="submit" disabled={loading}>{loading ? "Đang Tạo..." : "Tạo Bài Viết"}</button>
                         <button type="button" className="cancel-btn" onClick={() => window.history.back()}>Hủy</button>
                     </div>
-                    
                 </form>
             </div>
-            
             <ToastContainer />
         </div>
     );
