@@ -19,7 +19,6 @@ const ManagePregnancy = () => {
     // Hàm gọi API lấy dữ liệu sức khỏe thai nhi
     const fetchData = async () => {
         if (!fetusId) {
-            message.error("Không tìm thấy fetusId! Vui lòng kiểm tra lại.");
             return;
         }
 
