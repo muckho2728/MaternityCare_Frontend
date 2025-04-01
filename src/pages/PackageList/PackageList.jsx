@@ -85,20 +85,19 @@ const PackageList = () => {
               <Card
                 title={pkg.type}
                 bordered={true}
-                className={`package-card ${
-                  pkg.type === currentPackage ? "current-package" : ""
-                } ${pkg.type === "Premium" ? "highlight-package" : ""}`}
+                className={`package-card ${pkg.type === currentPackage ? "current-package" : ""
+                  } ${pkg.type === "Premium" ? "highlight-package" : ""}`}
               >
                 <div className="package-price">
                   {pkg.price === 0
                     ? "Miễn phí"
                     : `${pkg.price.toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      })}`}
+                      style: "currency",
+                      currency: "VND",
+                    })}`}
                 </div>
                 <div className="package-duration">
-                  ⏳ Thời hạn: {pkg.duration} tháng
+                  ⏳ Thời hạn: {pkg.duration === 0 ? "Không giới hạn" : `${pkg.duration} tháng`}
                 </div>
                 <ul className="package-features">
                   {pkg.features.map((feature, index) => (
